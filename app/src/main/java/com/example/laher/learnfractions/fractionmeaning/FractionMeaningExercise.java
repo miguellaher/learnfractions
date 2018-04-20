@@ -1,0 +1,173 @@
+package com.example.laher.learnfractions.fractionmeaning;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.laher.learnfractions.R;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class FractionMeaningExercise extends AppCompatActivity {
+    ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
+    Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
+    TextView txtScore, txtInstruction;
+    ArrayList<String> instructions;
+    Button btnTest;
+    String strCorrectAns;
+    int num, denom, consecutiveRights, consecutiveWrongs;
+    public final String INSTRUCTION_DENOM = "click how many parts the whole is divided into";
+    public final String INSTRUCTION_NUM = "click how many parts we have";
+    int requiredCorrectAns = 6;
+    int maxWrongAns = 4;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_fraction_meaning_exercise);
+        imgBox1 = (ImageView) findViewById(R.id.imgBox1);
+        imgBox2 = (ImageView) findViewById(R.id.imgBox2);
+        imgBox3 = (ImageView) findViewById(R.id.imgBox3);
+        imgBox4 = (ImageView) findViewById(R.id.imgBox4);
+        imgBox5 = (ImageView) findViewById(R.id.imgBox5);
+        imgBox6 = (ImageView) findViewById(R.id.imgBox6);
+        imgBox7 = (ImageView) findViewById(R.id.imgBox7);
+        imgBox8 = (ImageView) findViewById(R.id.imgBox8);
+        imgBox9 = (ImageView) findViewById(R.id.imgBox9);
+        btnChoice1 = (Button) findViewById(R.id.btnChoice1);
+        btnChoice2 = (Button) findViewById(R.id.btnChoice2);
+        btnChoice3 = (Button) findViewById(R.id.btnChoice3);
+        btnChoice4 = (Button) findViewById(R.id.btnChoice4);
+        btnChoice1.setOnClickListener(new btnChoiceListener());
+        btnChoice2.setOnClickListener(new btnChoiceListener());
+        btnChoice3.setOnClickListener(new btnChoiceListener());
+        btnChoice4.setOnClickListener(new btnChoiceListener());
+        txtInstruction = (TextView) findViewById(R.id.txtInstruction);
+        txtScore = (TextView) findViewById(R.id.txtScore);
+        txtScore.setText(consecutiveRights + " / " + requiredCorrectAns);
+        btnTest = (Button) findViewById(R.id.btnTest);
+        btnTest.setOnClickListener(new btnTestListener());
+        instructions = new ArrayList<String>();
+        instructions.add(INSTRUCTION_DENOM);
+        instructions.add(INSTRUCTION_NUM);
+        consecutiveRights = 0;
+        consecutiveWrongs = 0;
+        go();
+    }
+    public void go(){
+        generateFraction();
+        setBoxes(num, denom);
+        setTxtInstruction();
+        setButtonChoices(Integer.valueOf(strCorrectAns));
+    }
+    public void setBoxes(int num, int denom){
+        denom = denom - num;
+        ArrayList<Integer> fractionList = new ArrayList<Integer>();
+        for (int i = 1; i <= num; i++){
+            fractionList.add(R.drawable.greenbox);
+        }
+        for (int i = 1; i <= denom; i++){
+            fractionList.add(R.drawable.box);
+        }
+        for (int i = fractionList.size(); i <= 9; i++){
+            fractionList.add(0);
+        }
+        imgBox1.setImageResource(fractionList.get(0));
+        imgBox2.setImageResource(fractionList.get(1));
+        imgBox3.setImageResource(fractionList.get(2));
+        imgBox4.setImageResource(fractionList.get(3));
+        imgBox5.setImageResource(fractionList.get(4));
+        imgBox6.setImageResource(fractionList.get(5));
+        imgBox7.setImageResource(fractionList.get(6));
+        imgBox8.setImageResource(fractionList.get(7));
+        imgBox9.setImageResource(fractionList.get(8));
+    }
+    public void setButtonChoices(int correctAnswer){
+        strCorrectAns = String.valueOf(correctAnswer);
+        ArrayList<Integer> choiceNums = new ArrayList<>();
+        //FOUR CHOICES
+        choiceNums.add(correctAnswer);
+        int randomNum;
+        boolean numAvailable = false;
+        for(int i = 0; i < 3; i++){
+            randomNum = (int) (Math.random() * 9 + 1);
+            while (choiceNums.contains(randomNum)){
+                randomNum = (int) (Math.random() * 9 + 1);
+            }
+            choiceNums.add(randomNum);
+        }
+        Collections.shuffle(choiceNums);
+        btnChoice1.setText(String.valueOf(choiceNums.get(0)));
+        btnChoice2.setText(String.valueOf(choiceNums.get(1)));
+        btnChoice3.setText(String.valueOf(choiceNums.get(2)));
+        btnChoice4.setText(String.valueOf(choiceNums.get(3)));
+    }
+    public void setTxtInstruction(){
+        Collections.shuffle(instructions);
+        txtInstruction.setText(instructions.get(0));
+        if(instructions.get(0) == INSTRUCTION_DENOM){
+            strCorrectAns = String.valueOf(denom);
+        } else if (instructions.get(0) == INSTRUCTION_NUM){
+            strCorrectAns = String.valueOf(num);
+        }
+    }
+    public void generateFraction(){
+        num = (int) (Math.random() * 9 + 1);
+        denom = (int) (Math.random() * 9 + 1);
+        while (denom<num) {
+            denom = (int) (Math.random() * 9 + 1);
+        }
+    }
+    public void resetValues(){
+        consecutiveRights = 0;
+        consecutiveWrongs = 0;
+    }
+    public class btnTestListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            resetValues();
+            go();
+        }
+    }
+    public class btnChoiceListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            Button choice = (Button) view;
+            if (choice.getText() == strCorrectAns) {
+                //FOR TESTS
+                //txtInstruction.setText("correct " + choice.getText() + " / " + strCorrectAns + " " + consecutiveRights);
+                consecutiveWrongs = 0;
+                consecutiveRights++;
+                txtScore.setText(consecutiveRights + " / " + requiredCorrectAns);
+                if (consecutiveRights >= requiredCorrectAns){
+                    txtInstruction.setText("finish " + consecutiveRights);
+                } else {
+                    instructions.remove(0);
+                    if (instructions.size()==0){
+                        instructions.add(INSTRUCTION_DENOM);
+                        instructions.add(INSTRUCTION_NUM);
+                        go();
+                    } else {
+                        setTxtInstruction();
+                        setButtonChoices(Integer.parseInt(strCorrectAns));
+                    }
+                }
+            } else {
+                consecutiveRights = 0;
+                consecutiveWrongs++;
+                if (consecutiveWrongs >= maxWrongAns){
+                    txtScore.setText("Go back to video 1");
+                    resetValues();
+                    go();
+                } else {
+                    go();
+                }
+                //FOR TESTS
+                //txtInstruction.setText("wrong " + choice.getText() + " / " + strCorrectAns);
+            }
+        }
+    }
+}
