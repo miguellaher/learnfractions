@@ -22,21 +22,21 @@ public class FractionMeaningExercise extends AppCompatActivity {
     int num, denom, consecutiveRights, consecutiveWrongs;
     public final String INSTRUCTION_DENOM = "click how many parts the whole is divided into";
     public final String INSTRUCTION_NUM = "click how many parts we have";
-    int requiredCorrectAns = 6;
-    int maxWrongAns = 4;
+    int requiredConsecutiveCorrects = 6;
+    int maxConsecutiveWrongs = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_meaning_exercise);
-        imgBox1 = (ImageView) findViewById(R.id.imgBox1);
-        imgBox2 = (ImageView) findViewById(R.id.imgBox2);
-        imgBox3 = (ImageView) findViewById(R.id.imgBox3);
-        imgBox4 = (ImageView) findViewById(R.id.imgBox4);
-        imgBox5 = (ImageView) findViewById(R.id.imgBox5);
-        imgBox6 = (ImageView) findViewById(R.id.imgBox6);
-        imgBox7 = (ImageView) findViewById(R.id.imgBox7);
-        imgBox8 = (ImageView) findViewById(R.id.imgBox8);
-        imgBox9 = (ImageView) findViewById(R.id.imgBox9);
+        imgBox1 = (ImageView) findViewById(R.id.a_imgBox1);
+        imgBox2 = (ImageView) findViewById(R.id.a_imgBox2);
+        imgBox3 = (ImageView) findViewById(R.id.a_imgBox3);
+        imgBox4 = (ImageView) findViewById(R.id.a_imgBox4);
+        imgBox5 = (ImageView) findViewById(R.id.a_imgBox5);
+        imgBox6 = (ImageView) findViewById(R.id.a_imgBox6);
+        imgBox7 = (ImageView) findViewById(R.id.a_imgBox7);
+        imgBox8 = (ImageView) findViewById(R.id.a_imgBox8);
+        imgBox9 = (ImageView) findViewById(R.id.a_imgBox9);
         btnChoice1 = (Button) findViewById(R.id.btnChoice1);
         btnChoice2 = (Button) findViewById(R.id.btnChoice2);
         btnChoice3 = (Button) findViewById(R.id.btnChoice3);
@@ -47,7 +47,7 @@ public class FractionMeaningExercise extends AppCompatActivity {
         btnChoice4.setOnClickListener(new btnChoiceListener());
         txtInstruction = (TextView) findViewById(R.id.txtInstruction);
         txtScore = (TextView) findViewById(R.id.txtScore);
-        txtScore.setText(consecutiveRights + " / " + requiredCorrectAns);
+        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
         btnTest = (Button) findViewById(R.id.btnTest);
         btnTest.setOnClickListener(new btnTestListener());
         instructions = new ArrayList<String>();
@@ -67,7 +67,7 @@ public class FractionMeaningExercise extends AppCompatActivity {
         denom = denom - num;
         ArrayList<Integer> fractionList = new ArrayList<Integer>();
         for (int i = 1; i <= num; i++){
-            fractionList.add(R.drawable.greenbox);
+            fractionList.add(R.drawable.chocolate);
         }
         for (int i = 1; i <= denom; i++){
             fractionList.add(R.drawable.box);
@@ -124,6 +124,9 @@ public class FractionMeaningExercise extends AppCompatActivity {
     public void resetValues(){
         consecutiveRights = 0;
         consecutiveWrongs = 0;
+        instructions.clear();
+        instructions.add(INSTRUCTION_DENOM);
+        instructions.add(INSTRUCTION_NUM);
     }
     public class btnTestListener implements View.OnClickListener{
         @Override
@@ -141,8 +144,8 @@ public class FractionMeaningExercise extends AppCompatActivity {
                 //txtInstruction.setText("correct " + choice.getText() + " / " + strCorrectAns + " " + consecutiveRights);
                 consecutiveWrongs = 0;
                 consecutiveRights++;
-                txtScore.setText(consecutiveRights + " / " + requiredCorrectAns);
-                if (consecutiveRights >= requiredCorrectAns){
+                txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+                if (consecutiveRights >= requiredConsecutiveCorrects){
                     txtInstruction.setText("finish " + consecutiveRights);
                 } else {
                     instructions.remove(0);
@@ -158,7 +161,8 @@ public class FractionMeaningExercise extends AppCompatActivity {
             } else {
                 consecutiveRights = 0;
                 consecutiveWrongs++;
-                if (consecutiveWrongs >= maxWrongAns){
+                txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+                if (consecutiveWrongs >= maxConsecutiveWrongs){
                     txtScore.setText("Go back to video 1");
                     resetValues();
                     go();

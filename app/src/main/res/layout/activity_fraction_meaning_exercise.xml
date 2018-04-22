@@ -7,42 +7,42 @@
     tools:context="com.example.laher.learnfractions.fractionmeaning.FractionMeaningExercise">
 
     <ImageView
-        android:id="@+id/imgBox9"
+        android:id="@+id/a_imgBox9"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:layout_constraintStart_toEndOf="@+id/imgBox8"
-        app:layout_constraintTop_toBottomOf="@+id/imgBox6"
+        app:layout_constraintStart_toEndOf="@+id/a_imgBox8"
+        app:layout_constraintTop_toBottomOf="@+id/a_imgBox6"
         app:srcCompat="@android:color/background_light" />
 
     <ImageView
-        android:id="@+id/imgBox8"
+        android:id="@+id/a_imgBox8"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:layout_constraintEnd_toStartOf="@+id/imgBox6"
+        app:layout_constraintEnd_toStartOf="@+id/a_imgBox6"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imgBox5"
-        app:layout_constraintTop_toBottomOf="@+id/imgBox5"
+        app:layout_constraintStart_toStartOf="@+id/a_imgBox5"
+        app:layout_constraintTop_toBottomOf="@+id/a_imgBox5"
         app:srcCompat="@android:color/background_light" />
 
     <ImageView
-        android:id="@+id/imgBox7"
+        android:id="@+id/a_imgBox7"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:layout_constraintEnd_toStartOf="@+id/imgBox8"
-        app:layout_constraintTop_toBottomOf="@+id/imgBox4"
+        app:layout_constraintEnd_toStartOf="@+id/a_imgBox8"
+        app:layout_constraintTop_toBottomOf="@+id/a_imgBox4"
         app:srcCompat="@android:color/background_light" />
 
     <ImageView
-        android:id="@+id/imgBox6"
+        android:id="@+id/a_imgBox6"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/imgBox8"
-        app:layout_constraintStart_toEndOf="@+id/imgBox5"
-        app:layout_constraintTop_toTopOf="@+id/imgBox5"
+        app:layout_constraintBottom_toTopOf="@+id/a_imgBox8"
+        app:layout_constraintStart_toEndOf="@+id/a_imgBox5"
+        app:layout_constraintTop_toTopOf="@+id/a_imgBox5"
         app:srcCompat="@android:color/background_light" />
 
     <ImageView
-        android:id="@+id/imgBox5"
+        android:id="@+id/a_imgBox5"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginBottom="8dp"
@@ -56,37 +56,37 @@
         app:srcCompat="@android:color/background_light" />
 
     <ImageView
-        android:id="@+id/imgBox4"
+        android:id="@+id/a_imgBox4"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/imgBox8"
-        app:layout_constraintEnd_toStartOf="@+id/imgBox5"
-        app:layout_constraintTop_toTopOf="@+id/imgBox5"
+        app:layout_constraintBottom_toTopOf="@+id/a_imgBox8"
+        app:layout_constraintEnd_toStartOf="@+id/a_imgBox5"
+        app:layout_constraintTop_toTopOf="@+id/a_imgBox5"
         app:srcCompat="@android:color/background_light" />
 
     <ImageView
-        android:id="@+id/imgBox3"
+        android:id="@+id/a_imgBox3"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/imgBox6"
-        app:layout_constraintStart_toEndOf="@+id/imgBox2"
+        app:layout_constraintBottom_toTopOf="@+id/a_imgBox6"
+        app:layout_constraintStart_toEndOf="@+id/a_imgBox2"
         app:srcCompat="@android:color/background_light" />
 
     <ImageView
-        android:id="@+id/imgBox2"
+        android:id="@+id/a_imgBox2"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/imgBox5"
-        app:layout_constraintEnd_toStartOf="@+id/imgBox6"
-        app:layout_constraintStart_toStartOf="@+id/imgBox5"
+        app:layout_constraintBottom_toTopOf="@+id/a_imgBox5"
+        app:layout_constraintEnd_toStartOf="@+id/a_imgBox6"
+        app:layout_constraintStart_toStartOf="@+id/a_imgBox5"
         app:srcCompat="@android:color/background_light" />
 
     <ImageView
-        android:id="@+id/imgBox1"
+        android:id="@+id/a_imgBox1"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/imgBox4"
-        app:layout_constraintEnd_toStartOf="@+id/imgBox2"
+        app:layout_constraintBottom_toTopOf="@+id/a_imgBox4"
+        app:layout_constraintEnd_toStartOf="@+id/a_imgBox2"
         app:srcCompat="@android:color/background_light" />
 
     <TextView
@@ -141,7 +141,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgBox8">
+        app:layout_constraintTop_toBottomOf="@+id/a_imgBox8">
 
         <Button
             android:id="@+id/btnChoice1"
