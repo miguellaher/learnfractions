@@ -10,9 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
-        <activity android:name=".fractionmeaning.FractionMeaningVideoActivity"></activity>
-        <activity android:name=".fractionmeaning.FractionMeaningExercise">
-        </activity>
+        <activity android:name=".fractionmeaning.FractionMeaningVideoActivity" />
+        <activity android:name=".fractionmeaning.FractionMeaningExercise"></activity>
         <activity android:name=".fractionmeaning.FractionMeaningExercise2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".TopicsMenuActivity"></activity>
     </application>
 
 </manifest>

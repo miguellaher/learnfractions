@@ -41,15 +41,15 @@ public class FractionMeaningExercise extends AppCompatActivity {
         btnChoice2 = (Button) findViewById(R.id.btnChoice2);
         btnChoice3 = (Button) findViewById(R.id.btnChoice3);
         btnChoice4 = (Button) findViewById(R.id.btnChoice4);
-        btnChoice1.setOnClickListener(new btnChoiceListener());
-        btnChoice2.setOnClickListener(new btnChoiceListener());
-        btnChoice3.setOnClickListener(new btnChoiceListener());
-        btnChoice4.setOnClickListener(new btnChoiceListener());
+        btnChoice1.setOnClickListener(new BtnChoiceListener());
+        btnChoice2.setOnClickListener(new BtnChoiceListener());
+        btnChoice3.setOnClickListener(new BtnChoiceListener());
+        btnChoice4.setOnClickListener(new BtnChoiceListener());
         txtInstruction = (TextView) findViewById(R.id.txtInstruction);
         txtScore = (TextView) findViewById(R.id.txtScore);
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
         btnTest = (Button) findViewById(R.id.btnTest);
-        btnTest.setOnClickListener(new btnTestListener());
+        btnTest.setOnClickListener(new BtnTestListener());
         instructions = new ArrayList<String>();
         instructions.add(INSTRUCTION_DENOM);
         instructions.add(INSTRUCTION_NUM);
@@ -65,25 +65,25 @@ public class FractionMeaningExercise extends AppCompatActivity {
     }
     public void setBoxes(int num, int denom){
         denom = denom - num;
-        ArrayList<Integer> fractionList = new ArrayList<Integer>();
+        ArrayList<Integer> imageList = new ArrayList<Integer>();
         for (int i = 1; i <= num; i++){
-            fractionList.add(R.drawable.chocolate);
+            imageList.add(R.drawable.chocolate);
         }
         for (int i = 1; i <= denom; i++){
-            fractionList.add(R.drawable.box);
+            imageList.add(R.drawable.chocosmudge);
         }
-        for (int i = fractionList.size(); i <= 9; i++){
-            fractionList.add(0);
+        for (int i = imageList.size(); i <= 9; i++){
+            imageList.add(0);
         }
-        imgBox1.setImageResource(fractionList.get(0));
-        imgBox2.setImageResource(fractionList.get(1));
-        imgBox3.setImageResource(fractionList.get(2));
-        imgBox4.setImageResource(fractionList.get(3));
-        imgBox5.setImageResource(fractionList.get(4));
-        imgBox6.setImageResource(fractionList.get(5));
-        imgBox7.setImageResource(fractionList.get(6));
-        imgBox8.setImageResource(fractionList.get(7));
-        imgBox9.setImageResource(fractionList.get(8));
+        imgBox1.setImageResource(imageList.get(0));
+        imgBox2.setImageResource(imageList.get(1));
+        imgBox3.setImageResource(imageList.get(2));
+        imgBox4.setImageResource(imageList.get(3));
+        imgBox5.setImageResource(imageList.get(4));
+        imgBox6.setImageResource(imageList.get(5));
+        imgBox7.setImageResource(imageList.get(6));
+        imgBox8.setImageResource(imageList.get(7));
+        imgBox9.setImageResource(imageList.get(8));
     }
     public void setButtonChoices(int correctAnswer){
         strCorrectAns = String.valueOf(correctAnswer);
@@ -128,14 +128,14 @@ public class FractionMeaningExercise extends AppCompatActivity {
         instructions.add(INSTRUCTION_DENOM);
         instructions.add(INSTRUCTION_NUM);
     }
-    public class btnTestListener implements View.OnClickListener{
+    public class BtnTestListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
             resetValues();
             go();
         }
     }
-    public class btnChoiceListener implements View.OnClickListener{
+    public class BtnChoiceListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
             Button choice = (Button) view;
