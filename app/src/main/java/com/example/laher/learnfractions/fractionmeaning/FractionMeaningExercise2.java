@@ -1,5 +1,7 @@
 package com.example.laher.learnfractions.fractionmeaning;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.TopicsMenuActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,8 +24,9 @@ public class FractionMeaningExercise2 extends AppCompatActivity {
     ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
     EditText inputNum, inputDenom;
     TextView txtScore, txtInstruction;
+    Button btnBack, btnNext;
     ArrayList<String> instructions;
-    Button btnTest, btnOK;
+    Button btnOK;
     int num, denom, consecutiveRights, consecutiveWrongs;
     int maxInputLength = 3;
     int requiredConsecutiveCorrects = 5;
@@ -61,11 +65,17 @@ public class FractionMeaningExercise2 extends AppCompatActivity {
         txtScore = (TextView) findViewById(R.id.a1_txtScore);
         txtInstruction = (TextView) findViewById(R.id.a1_txtInstrucion);
 
-        btnTest = (Button) findViewById(R.id.a1_btnTest);
-        btnTest.setOnClickListener(new BtnTestListener());
+        btnBack = (Button) findViewById(R.id.btnBack);
+        btnNext = (Button) findViewById(R.id.btnNext);
+        btnBack.setOnClickListener(new BtnBackListener());
+        btnNext.setOnClickListener(new BtnNextListener());
+
         go();
     }
     public void go(){
+        btnNext.setText("DONE");
+        btnNext.setEnabled(false);
+
         generateFraction();
         setBoxes(num, denom);
         inputNum.setEnabled(true);
@@ -116,6 +126,14 @@ public class FractionMeaningExercise2 extends AppCompatActivity {
     public void setTxtScore(){
         txtScore.setText(consecutiveRights + "/" + requiredConsecutiveCorrects);
     }
+    public void finishExercise(){
+        txtInstruction.setText("lesson ended");
+        inputNum.setEnabled(false);
+        inputDenom.setEnabled(false);
+        btnOK.setEnabled(false);
+
+        btnNext.setEnabled(true);
+    }
     public class BtnOkListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
@@ -125,9 +143,10 @@ public class FractionMeaningExercise2 extends AppCompatActivity {
                 consecutiveRights++;
                 setTxtScore();
                 txtInstruction.setText("correct");
-                reset();
                 if (consecutiveRights >= 5){
-                    txtInstruction.setText("lesson ended");
+                    finishExercise();
+                } else {
+                    reset();
                 }
             } else {
                 consecutiveRights = 0;
@@ -135,7 +154,10 @@ public class FractionMeaningExercise2 extends AppCompatActivity {
                 setTxtScore();
                 reset();
                 if (consecutiveWrongs >= maxConsecutiveWrongs){
-                    txtInstruction.setText("go back to exercise 1");
+                    txtInstruction.setText("go back to previous exercise");
+                    inputNum.setEnabled(false);
+                    inputDenom.setEnabled(false);
+                    btnOK.setEnabled(false);
                 }
             }
         }
@@ -148,17 +170,26 @@ public class FractionMeaningExercise2 extends AppCompatActivity {
                     || (inputDenom.getText().toString().trim().length() == 0)){
                 btnOK.setEnabled(false);
             } else {
-                txtInstruction.setText(inputNum.getText().toString().trim().length() + "/"
-                        + inputDenom.getText().toString().trim().length());
+                //txtInstruction.setText(inputNum.getText().toString().trim().length() + "/" + inputDenom.getText().toString().trim().length());
                 btnOK.setEnabled(true);
             }
             return false;
         }
     }
-    public class BtnTestListener implements View.OnClickListener{
+
+    public class BtnBackListener implements Button.OnClickListener{
         @Override
-        public void onClick(View view) {
-            reset();
+        public void onClick(View v) {
+            finish();
+        }
+    }
+
+    public class BtnNextListener implements Button.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(FractionMeaningExercise2.this, TopicsMenuActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
         }
     }
 }

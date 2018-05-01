@@ -1,198 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.laher.learnfractions.fractionmeaning.FractionMeaningExercise2">
 
-    <Button
-        android:id="@+id/a1_btnTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Test"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/a1_txtScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/a1_imgAvatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/avatar" />
-
-    <TextView
-        android:id="@+id/a1_txtInstrucion"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:text="fill in the blanks"
-        app:layout_constraintBottom_toBottomOf="@+id/a1_imgAvatar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/a1_imgAvatar"
-        app:layout_constraintTop_toTopOf="@+id/a1_imgAvatar" />
-
-    <ImageView
-        android:id="@+id/a1_imgBox9"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/a1_imgBox8"
-        app:layout_constraintStart_toEndOf="@+id/a1_imgBox8"
-        app:layout_constraintTop_toTopOf="@+id/a1_imgBox8"
-        app:srcCompat="@android:color/background_light" />
-
-    <ImageView
-        android:id="@+id/a1_imgBox8"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toStartOf="@+id/a1_imgBox6"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/a1_imgBox5"
-        app:layout_constraintTop_toBottomOf="@+id/a1_imgBox5"
-        app:srcCompat="@android:color/background_light" />
-
-    <ImageView
-        android:id="@+id/a1_imgBox7"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/a1_imgBox8"
-        app:layout_constraintEnd_toStartOf="@+id/a1_imgBox8"
-        app:layout_constraintTop_toTopOf="@+id/a1_imgBox8"
-        app:srcCompat="@android:color/background_light" />
-
-    <ImageView
-        android:id="@+id/a1_imgBox6"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/a1_imgBox5"
-        app:layout_constraintStart_toEndOf="@+id/a1_imgBox5"
-        app:layout_constraintTop_toTopOf="@+id/a1_imgBox5"
-        app:srcCompat="@android:color/background_light" />
-
-    <ImageView
-        android:id="@+id/a1_imgBox5"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35"
-        app:srcCompat="@android:color/background_light" />
-
-    <ImageView
-        android:id="@+id/a1_imgBox4"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/a1_imgBox5"
-        app:layout_constraintEnd_toStartOf="@+id/a1_imgBox5"
-        app:layout_constraintTop_toTopOf="@+id/a1_imgBox5"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:color/background_light" />
-
-    <ImageView
-        android:id="@+id/a1_imgBox3"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/a1_imgBox5"
-        app:layout_constraintStart_toEndOf="@+id/a1_imgBox2"
-        app:layout_constraintTop_toTopOf="@+id/a1_imgBox2"
-        app:srcCompat="@android:color/background_light" />
-
-    <ImageView
-        android:id="@+id/a1_imgBox2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/a1_imgBox5"
-        app:layout_constraintEnd_toEndOf="@+id/a1_imgBox5"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/a1_imgBox5"
-        app:srcCompat="@android:color/background_light" />
-
-    <ImageView
-        android:id="@+id/a1_imgBox1"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/a1_imgBox5"
-        app:layout_constraintEnd_toStartOf="@+id/a1_imgBox2"
-        app:layout_constraintTop_toTopOf="@+id/a1_imgBox2"
-        app:srcCompat="@android:color/background_light" />
-
-    <Button
-        android:id="@+id/a1_btnOk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="CHECK"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
+    <include layout="@layout/layout_toolbar" />
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.302">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/a1_imgBox4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/a1_imgBox5"
+            app:layout_constraintEnd_toStartOf="@+id/a1_imgBox5"
+            app:layout_constraintTop_toTopOf="@+id/a1_imgBox5"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@android:color/background_light" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="48dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.302">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/line" />
+
+            <EditText
+                android:id="@+id/a1_denominator"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:ems="10"
+                android:inputType="number"
+                android:text="99"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="@+id/imageView2"
+                app:layout_constraintStart_toStartOf="@+id/imageView2"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+            <EditText
+                android:id="@+id/a1_numerator"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:ems="10"
+                android:inputType="number"
+                android:text="99"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toTopOf="@+id/imageView2"
+                app:layout_constraintEnd_toEndOf="@+id/imageView2"
+                app:layout_constraintStart_toStartOf="@+id/imageView2" />
+        </android.support.constraint.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/a1_imgBox6"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/a1_imgBox5"
+            app:layout_constraintStart_toEndOf="@+id/a1_imgBox5"
+            app:layout_constraintTop_toTopOf="@+id/a1_imgBox5"
+            app:srcCompat="@android:color/background_light" />
+
+        <ImageView
+            android:id="@+id/a1_imgAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/avatar" />
+
+        <ImageView
+            android:id="@+id/a1_imgBox7"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/a1_imgBox8"
+            app:layout_constraintEnd_toStartOf="@+id/a1_imgBox8"
+            app:layout_constraintTop_toTopOf="@+id/a1_imgBox8"
+            app:srcCompat="@android:color/background_light" />
+
+        <ImageView
+            android:id="@+id/a1_imgBox2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/a1_imgBox5"
+            app:layout_constraintEnd_toEndOf="@+id/a1_imgBox5"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/a1_imgBox5"
+            app:srcCompat="@android:color/background_light" />
+
+        <ImageView
+            android:id="@+id/a1_imgBox5"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/line" />
+            app:layout_constraintVertical_bias="0.35"
+            app:srcCompat="@android:color/background_light" />
 
-        <EditText
-            android:id="@+id/a1_denominator"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:ems="10"
-            android:inputType="number"
-            android:text="99"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="@+id/imageView2"
-            app:layout_constraintStart_toStartOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        <TextView
+            android:id="@+id/a1_txtScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/a1_numerator"
+        <ImageView
+            android:id="@+id/a1_imgBox1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/a1_imgBox5"
+            app:layout_constraintEnd_toStartOf="@+id/a1_imgBox2"
+            app:layout_constraintTop_toTopOf="@+id/a1_imgBox2"
+            app:srcCompat="@android:color/background_light" />
+
+        <TextView
+            android:id="@+id/a1_txtInstrucion"
             android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:ems="10"
-            android:inputType="number"
-            android:text="99"
+            android:layout_height="57dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            android:text="fill in the blanks"
+            app:layout_constraintBottom_toBottomOf="@+id/a1_imgAvatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/a1_imgAvatar"
+            app:layout_constraintTop_toTopOf="@+id/a1_imgAvatar" />
+
+        <ImageView
+            android:id="@+id/a1_imgBox8"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toStartOf="@+id/a1_imgBox6"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/a1_imgBox5"
+            app:layout_constraintTop_toBottomOf="@+id/a1_imgBox5"
+            app:srcCompat="@android:color/background_light" />
+
+        <Button
+            android:id="@+id/a1_btnOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="CHECK"
             android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@+id/imageView2"
-            app:layout_constraintEnd_toEndOf="@+id/imageView2"
-            app:layout_constraintStart_toStartOf="@+id/imageView2" />
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+        <ImageView
+            android:id="@+id/a1_imgBox9"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/a1_imgBox8"
+            app:layout_constraintStart_toEndOf="@+id/a1_imgBox8"
+            app:layout_constraintTop_toTopOf="@+id/a1_imgBox8"
+            app:srcCompat="@android:color/background_light" />
+
+        <ImageView
+            android:id="@+id/a1_imgBox3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/a1_imgBox5"
+            app:layout_constraintStart_toEndOf="@+id/a1_imgBox2"
+            app:layout_constraintTop_toTopOf="@+id/a1_imgBox2"
+            app:srcCompat="@android:color/background_light" />
     </android.support.constraint.ConstraintLayout>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

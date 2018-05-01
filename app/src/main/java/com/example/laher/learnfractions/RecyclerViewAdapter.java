@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,12 +28,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<String> mImageNames = new ArrayList<>();
     private ArrayList<String> mImages = new ArrayList<>();
+    private ArrayList<Class> mClasses = new ArrayList<>();
     private Context mContext;
 
-    public RecyclerViewAdapter (Context context ,ArrayList<String> imageNames, ArrayList<String> images){
+    public RecyclerViewAdapter (Context context ,ArrayList<String> imageNames, ArrayList<String> images, ArrayList<Class> classes){
         mImageNames = imageNames;
         mImages = images;
         mContext = context;
+        mClasses = classes;
     }
     @NonNull
     @Override
@@ -41,6 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
@@ -60,7 +64,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 Toast.makeText(mContext, mImageNames.get(position), Toast.LENGTH_SHORT).show();
 
-
+                Intent intent = new Intent(mContext, mClasses.get(position));
+                mContext.startActivity(intent);
             }
         });
     }
