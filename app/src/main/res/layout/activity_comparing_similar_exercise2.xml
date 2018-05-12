@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".comparing_similar_fractions.ComparingSimilarExercise2Activity">
+
+    <include
+        layout="@layout/layout_toolbar"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/c2_imgAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/avatar" />
+
+        <TextView
+            android:id="@+id/c2_txtInstruction"
+            android:layout_width="0dp"
+            android:layout_height="57dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="compare the two fractions"
+            app:layout_constraintBottom_toBottomOf="@+id/c2_imgAvatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/c2_imgAvatar"
+            app:layout_constraintTop_toTopOf="@+id/c2_imgAvatar" />
+
+        <TextView
+            android:id="@+id/c2_txtScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="99 / 99"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/c2_compareSign"
+            app:layout_constraintEnd_toStartOf="@+id/c2_compareSign"
+            app:layout_constraintTop_toTopOf="@+id/c2_compareSign"
+            app:srcCompat="@drawable/line" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/c2_compareSign"
+            app:layout_constraintStart_toEndOf="@+id/c2_compareSign"
+            app:layout_constraintTop_toTopOf="@+id/c2_compareSign"
+            app:srcCompat="@drawable/line" />
+
+        <TextView
+            android:id="@+id/c2_num2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="99"
+            android:textSize="80sp"
+            app:layout_constraintBottom_toTopOf="@+id/imageView6"
+            app:layout_constraintEnd_toEndOf="@+id/imageView6"
+            app:layout_constraintStart_toStartOf="@+id/imageView6" />
+
+        <TextView
+            android:id="@+id/c2_denom1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="99"
+            android:textSize="80sp"
+            app:layout_constraintEnd_toEndOf="@+id/imageView7"
+            app:layout_constraintStart_toStartOf="@+id/imageView7"
+            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+
+        <TextView
+            android:id="@+id/c2_denom2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="99"
+            android:textSize="80sp"
+            app:layout_constraintEnd_toEndOf="@+id/imageView6"
+            app:layout_constraintStart_toStartOf="@+id/imageView6"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+        <TextView
+            android:id="@+id/c2_num1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="99"
+            android:textSize="80sp"
+            app:layout_constraintBottom_toTopOf="@+id/imageView7"
+            app:layout_constraintEnd_toEndOf="@+id/imageView7"
+            app:layout_constraintStart_toStartOf="@+id/imageView7" />
+
+        <TextView
+            android:id="@+id/c2_compareSign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="="
+            android:textSize="80sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <Button
+            android:id="@+id/c2_btnGreater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/greaterThan"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="@+id/c2_btnEqual"
+            app:layout_constraintEnd_toStartOf="@+id/c2_btnEqual"
+            app:layout_constraintTop_toTopOf="@+id/c2_btnEqual" />
+
+        <Button
+            android:id="@+id/c2_btnEqual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="="
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="@+id/c2_compareSign"
+            app:layout_constraintStart_toStartOf="@+id/c2_compareSign"
+            app:layout_constraintTop_toBottomOf="@+id/c2_denom2" />
+
+        <Button
+            android:id="@+id/c2_btnLess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/lessThan"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="@+id/c2_btnEqual"
+            app:layout_constraintStart_toEndOf="@+id/c2_btnEqual"
+            app:layout_constraintTop_toTopOf="@+id/c2_btnEqual" />
+    </android.support.constraint.ConstraintLayout>
+
+
+</LinearLayout>

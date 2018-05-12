@@ -52,7 +52,6 @@ public class ComparingSimilarVideoActivity extends AppCompatActivity {
         go();
     }
     public void go(){
-        //btnNext.setVisibility(Button.INVISIBLE);
         btnNext.setEnabled(false);
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small); //SAMPLE VIDEO
         video.setVideoURI(uri);
