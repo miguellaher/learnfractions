@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.fractionmeaning;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -29,6 +30,8 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
     int maxInputLength = 3;
     int requiredConsecutiveCorrects = 5;
     int maxConsecutiveWrongs = 2;
+
+    final Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +90,7 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
         inputNum.requestFocus();
     }
     public void reset(){
+        txtInstruction.setText("fill in the blanks");
         generateFraction();
         setBoxes(num, denom);
         inputNum.getText().clear();
@@ -143,21 +147,42 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
                 consecutiveRights++;
                 setTxtScore();
                 txtInstruction.setText("correct");
+                inputNum.setEnabled(false);
+                inputDenom.setEnabled(false);
+                btnOK.setEnabled(false);
                 if (consecutiveRights >= 5){
                     finishExercise();
                 } else {
-                    reset();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            inputNum.setEnabled(true);
+                            inputDenom.setEnabled(true);
+                            btnOK.setEnabled(true);
+                            reset();
+                        }
+                    }, 2000);
                 }
             } else {
                 consecutiveRights = 0;
                 consecutiveWrongs++;
                 setTxtScore();
-                reset();
+                txtInstruction.setText("wrong");
+                inputNum.setEnabled(false);
+                inputDenom.setEnabled(false);
+                btnOK.setEnabled(false);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        inputNum.setEnabled(true);
+                        inputDenom.setEnabled(true);
+                        btnOK.setEnabled(true);
+                        reset();
+                    }
+                }, 2000);
                 if (consecutiveWrongs >= maxConsecutiveWrongs){
                     txtInstruction.setText("go back to previous exercise");
-                    inputNum.setEnabled(false);
-                    inputDenom.setEnabled(false);
-                    btnOK.setEnabled(false);
+
                 }
             }
         }

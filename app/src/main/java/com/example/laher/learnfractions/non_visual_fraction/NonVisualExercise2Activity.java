@@ -1,6 +1,8 @@
 package com.example.laher.learnfractions.non_visual_fraction;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -30,6 +32,7 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
     public final String INSTRUCTION_NUM = "type the numerator";
     public final String INSTRUCTION_DENOM = "type the denominator";
     public final String TITLE = "NON-VISUAL";
+    final Handler handler = new Handler();
 
     int requiredConsecutiveCorrects = 8;
     int maxConsecutiveWrongs = 4;
@@ -104,24 +107,42 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         consecutiveRights++;
         consecutiveWrongs = 0;
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        inputAnswer.setEnabled(false);
+        btnCheck.setEnabled(false);
+        txtInstruction.setText("correct");
         if (consecutiveRights >= requiredConsecutiveCorrects){
             txtInstruction.setText("Finish");
-            inputAnswer.setEnabled(false);
             inputAnswer.getText().clear();
-            btnCheck.setEnabled(false);
             btnNext.setEnabled(true);
         } else {
-            go();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    inputAnswer.setEnabled(true);
+                    btnCheck.setEnabled(true);
+                    go();
+                }
+            }, 2000);
         }
     }
     public void wrong(){
         consecutiveWrongs++;
         consecutiveRights = 0;
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        inputAnswer.setEnabled(false);
+        btnCheck.setEnabled(false);
+        txtInstruction.setText("wrong");
         if (consecutiveWrongs >= maxConsecutiveWrongs){
             txtInstruction.setText("go back to activity 1");
         } else {
-            go();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    inputAnswer.setEnabled(true);
+                    btnCheck.setEnabled(true);
+                    go();
+                }
+            }, 2000);
         }
     }
     public void reset(){

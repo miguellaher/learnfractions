@@ -79,9 +79,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
     public void generateFractions(){
         num1 = (int) (Math.random() * 9 + 1);
         num2 = (int) (Math.random() * 9 + 1);
-        while (denom<num1 || denom<num2){
-            denom = (int) (Math.random() * 9 + 1);
-        }
+        denom = (int) (Math.random() * 9 + 1);
         setTxtFractions();
     }
     public void setTxtFractions(){

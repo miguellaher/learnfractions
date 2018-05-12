@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.fractionmeaning;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,8 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     public final String INSTRUCTION_NUM = "click how many parts we have";
     int requiredConsecutiveCorrects = 6;
     int maxConsecutiveWrongs = 3;
+
+    final Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,35 +160,62 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
                 consecutiveWrongs = 0;
                 consecutiveRights++;
                 txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+                txtInstruction.setText("correct");
+                btnChoice1.setEnabled(false);
+                btnChoice2.setEnabled(false);
+                btnChoice3.setEnabled(false);
+                btnChoice4.setEnabled(false);
                 if (consecutiveRights >= requiredConsecutiveCorrects) {
-                    txtInstruction.setText("finish " + consecutiveRights);
+                    txtInstruction.setText("proceed");
                     finishExercise();
                 } else {
-                    instructions.remove(0);
-                    if (instructions.size() == 0) {
-                        instructions.add(INSTRUCTION_DENOM);
-                        instructions.add(INSTRUCTION_NUM);
-                        go();
-                    } else {
-                        setTxtInstruction();
-                        setButtonChoices(Integer.parseInt(strCorrectAns));
-                    }
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            btnChoice1.setEnabled(true);
+                            btnChoice2.setEnabled(true);
+                            btnChoice3.setEnabled(true);
+                            btnChoice4.setEnabled(true);
+
+                            instructions.remove(0);
+                            if (instructions.size() == 0) {
+                                instructions.add(INSTRUCTION_DENOM);
+                                instructions.add(INSTRUCTION_NUM);
+                                go();
+                            } else {
+                                setTxtInstruction();
+                                setButtonChoices(Integer.parseInt(strCorrectAns));
+                            }
+                        }
+                    }, 2000);
+
                 }
             } else {
                 consecutiveRights = 0;
                 consecutiveWrongs++;
+                txtInstruction.setText("wrong");
                 txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+                btnChoice1.setEnabled(false);
+                btnChoice2.setEnabled(false);
+                btnChoice3.setEnabled(false);
+                btnChoice4.setEnabled(false);
                 if (consecutiveWrongs >= maxConsecutiveWrongs) {
                     txtInstruction.setText("Go watch the video again.");
-                    btnChoice1.setEnabled(false);
-                    btnChoice2.setEnabled(false);
-                    btnChoice3.setEnabled(false);
-                    btnChoice4.setEnabled(false);
                 } else {
-                    instructions.clear();
-                    instructions.add(INSTRUCTION_DENOM);
-                    instructions.add(INSTRUCTION_NUM);
-                    go();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            btnChoice1.setEnabled(true);
+                            btnChoice2.setEnabled(true);
+                            btnChoice3.setEnabled(true);
+                            btnChoice4.setEnabled(true);
+
+                            instructions.clear();
+                            instructions.add(INSTRUCTION_DENOM);
+                            instructions.add(INSTRUCTION_NUM);
+                            go();
+                        }
+                    }, 2000);
                 }
                 //FOR TESTS
                 //txtInstruction.setText("wrong " + choice.getText() + " / " + strCorrectAns);

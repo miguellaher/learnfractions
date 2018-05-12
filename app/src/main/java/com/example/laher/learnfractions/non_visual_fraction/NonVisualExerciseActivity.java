@@ -1,6 +1,8 @@
 package com.example.laher.learnfractions.non_visual_fraction;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +26,7 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
     ArrayList<String> instructions;
     public final String INSTRUCTION_NUM = "click the numerator";
     public final String INSTRUCTION_DENOM = "click the denominator";
+    final Handler handler = new Handler();
 
     int requiredConsecutiveCorrects = 8;
     int maxConsecutiveWrongs = 4;
@@ -65,7 +68,8 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
         instructions.add(INSTRUCTION_DENOM);
         go();
     }
-    public void go(){
+    public void go() {
+        resetColor();
         generateFraction();
         generateInstruction();
     }
@@ -91,13 +95,21 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
         consecutiveWrongs = 0;
         consecutiveRights++;
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        txtNumerator.setOnClickListener(null);
+        txtDenominator.setOnClickListener(null);
         if (consecutiveRights == requiredConsecutiveCorrects){
             txtInstruction.setText("done");
-            txtNumerator.setOnClickListener(null);
-            txtDenominator.setOnClickListener(null);
+
             btnNext.setEnabled(true);
         } else {
-            go();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    txtNumerator.setOnClickListener(new TxtFractionListener());
+                    txtDenominator.setOnClickListener(new TxtFractionListener());
+                    go();
+                }
+            }, 2000);
         }
     }
     public void wrong(){
@@ -105,25 +117,42 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
         consecutiveRights = 0;
         consecutiveWrongs++;
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        txtNumerator.setOnClickListener(null);
+        txtDenominator.setOnClickListener(null);
         if (consecutiveWrongs == maxConsecutiveWrongs){
             txtInstruction.setText("go back to video");
         } else {
-            go();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    txtNumerator.setOnClickListener(new TxtFractionListener());
+                    txtDenominator.setOnClickListener(new TxtFractionListener());
+                    go();
+                }
+            }, 2000);
         }
+    }
+    public void resetColor() {
+        txtNumerator.setTextColor(Color.rgb(0,0,0));
+        txtDenominator.setTextColor(Color.rgb(0,0,0));
     }
     public class TxtFractionListener implements TextView.OnClickListener{
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.b1_txtNumerator){
                 if (txtInstruction.getText()==INSTRUCTION_NUM){
+                    txtNumerator.setTextColor(Color.rgb(0,255,0));
                     correct();
                 } else {
+                    txtNumerator.setTextColor(Color.rgb(255,0,0));
                     wrong();
                 }
             } else if (v.getId() == R.id.b1_txtDenominator){
                 if (txtInstruction.getText()==INSTRUCTION_DENOM){
+                    txtDenominator.setTextColor(Color.rgb(0,255,0));
                     correct();
                 } else {
+                    txtDenominator.setTextColor(Color.rgb(255,0,0));
                     wrong();
                 }
             }
