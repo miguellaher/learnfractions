@@ -1,12 +1,9 @@
 package com.example.laher.learnfractions.fractionmeaning;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.method.KeyListener;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -18,9 +15,8 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
-public class FractionMeaningExercise2 extends AppCompatActivity {
+public class FractionMeaningExercise2Activity extends AppCompatActivity {
     ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
     EditText inputNum, inputDenom;
     TextView txtScore, txtInstruction;
@@ -187,7 +183,7 @@ public class FractionMeaningExercise2 extends AppCompatActivity {
     public class BtnNextListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(FractionMeaningExercise2.this, TopicsMenuActivity.class);
+            Intent intent = new Intent(FractionMeaningExercise2Activity.this, TopicsMenuActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         }

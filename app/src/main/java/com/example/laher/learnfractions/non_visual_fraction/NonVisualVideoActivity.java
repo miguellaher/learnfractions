@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.fractionmeaning;
+package com.example.laher.learnfractions.non_visual_fraction;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -11,14 +11,15 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.fractionmeaning.FractionMeaningExerciseActivity;
 
-public class FractionMeaningVideoActivity extends AppCompatActivity {
+public class NonVisualVideoActivity extends AppCompatActivity {
     VideoView video;
     Button btnBack, btnNext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fraction_meaning_video);
+        setContentView(R.layout.activity_non_visual_video);
         video = (VideoView) findViewById(R.id.fractionMeaningVid);
         btnBack = (Button) findViewById(R.id.btnBack);
         btnNext = (Button) findViewById(R.id.btnNext);
@@ -30,7 +31,7 @@ public class FractionMeaningVideoActivity extends AppCompatActivity {
     public void go(){
         //btnNext.setVisibility(Button.INVISIBLE);
         btnNext.setEnabled(false);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small); //SAMPLE VIDEO
         video.setVideoURI(uri);
         video.setMediaController(new MediaController(this));
         video.requestFocus();
@@ -56,7 +57,7 @@ public class FractionMeaningVideoActivity extends AppCompatActivity {
     public class BtnNextListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(FractionMeaningVideoActivity.this, FractionMeaningExerciseActivity.class);
+            Intent intent = new Intent(NonVisualVideoActivity.this, NonVisualExerciseActivity.class);
             startActivity(intent);
         }
     }

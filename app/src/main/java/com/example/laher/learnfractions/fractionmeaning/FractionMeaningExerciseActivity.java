@@ -13,7 +13,7 @@ import com.example.laher.learnfractions.R;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FractionMeaningExercise extends AppCompatActivity {
+public class FractionMeaningExerciseActivity extends AppCompatActivity {
     ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
     Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
     Button btnBack, btnNext;
@@ -199,7 +199,7 @@ public class FractionMeaningExercise extends AppCompatActivity {
     public class BtnNextListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(FractionMeaningExercise.this, FractionMeaningExercise2.class);
+            Intent intent = new Intent(FractionMeaningExerciseActivity.this, FractionMeaningExercise2Activity.class);
             startActivity(intent);
         }
     }
