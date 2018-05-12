@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.laher.learnfractions.R;
@@ -15,16 +16,21 @@ import com.example.laher.learnfractions.fractionmeaning.FractionMeaningExerciseA
 
 public class NonVisualVideoActivity extends AppCompatActivity {
     VideoView video;
+
     Button btnBack, btnNext;
+    TextView txtTitle;
+    public final String TITLE = "Non-Visual";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_non_visual_video);
-        video = (VideoView) findViewById(R.id.fractionMeaningVid);
+        setContentView(R.layout.activity_video);
+        video = (VideoView) findViewById(R.id.videoView);
         btnBack = (Button) findViewById(R.id.btnBack);
         btnNext = (Button) findViewById(R.id.btnNext);
         btnBack.setOnClickListener(new BtnBackListener());
         btnNext.setOnClickListener(new BtnNextListener());
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle.setText(TITLE);
         go();
     }
 

@@ -17,13 +17,13 @@ import java.util.Collections;
 public class NonVisualExerciseActivity extends AppCompatActivity {
     Button btnBack, btnNext;
     TextView txtTitle;
+    public final String TITLE = "NON-VISUAL";
 
     TextView txtNumerator, txtDenominator, txtInstruction, txtScore;
     int num, denom, consecutiveRights, consecutiveWrongs;
     ArrayList<String> instructions;
     public final String INSTRUCTION_NUM = "click the numerator";
     public final String INSTRUCTION_DENOM = "click the denominator";
-    public final String TITLE = "NON-VISUAL";
 
     int requiredConsecutiveCorrects = 8;
     int maxConsecutiveWrongs = 4;

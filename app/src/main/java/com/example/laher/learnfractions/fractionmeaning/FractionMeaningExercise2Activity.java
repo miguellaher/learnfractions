@@ -21,6 +21,8 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
     EditText inputNum, inputDenom;
     TextView txtScore, txtInstruction;
     Button btnBack, btnNext;
+    TextView txtTitle;
+    public final String TITLE = "Fraction Meaning";
     ArrayList<String> instructions;
     Button btnOK;
     int num, denom, consecutiveRights, consecutiveWrongs;
@@ -65,6 +67,8 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btnNext);
         btnBack.setOnClickListener(new BtnBackListener());
         btnNext.setOnClickListener(new BtnNextListener());
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle.setText(TITLE);
 
         go();
     }

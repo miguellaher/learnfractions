@@ -17,6 +17,8 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
     Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
     Button btnBack, btnNext;
+    TextView txtTitle;
+    public final String TITLE = "Fraction Meaning";
     TextView txtScore, txtInstruction;
     ArrayList<String> instructions;
     Button btnTest;
@@ -53,6 +55,8 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btnNext);
         btnBack.setOnClickListener(new BtnBackListener());
         btnNext.setOnClickListener(new BtnNextListener());
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle.setText(TITLE);
 
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
         instructions = new ArrayList<String>();

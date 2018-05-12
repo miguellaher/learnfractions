@@ -59,6 +59,7 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         });
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
+        btnNext.setText("DONE");
 
         txtNumerator = (TextView) findViewById(R.id.b2_txtNumerator);
         txtDenominator = (TextView) findViewById(R.id.b2_txtDenominator);
@@ -108,6 +109,7 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
             inputAnswer.setEnabled(false);
             inputAnswer.getText().clear();
             btnCheck.setEnabled(false);
+            btnNext.setEnabled(true);
         } else {
             go();
         }

@@ -12,21 +12,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
-        <activity android:name=".fractionmeaning.FractionMeaningVideoActivity" />
-        <activity android:name=".fractionmeaning.FractionMeaningExerciseActivity" />
-        <activity android:name=".fractionmeaning.FractionMeaningExercise2Activity" />
-        <activity android:name=".TopicsMenuActivity">
+        <activity android:name=".fractionmeaning.FractionMeaningVideoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".fractionmeaning.FractionMeaningExerciseActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".fractionmeaning.FractionMeaningExercise2Activity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TopicsMenuActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".non_visual_fraction.NonVisualVideoActivity" />
-        <activity android:name=".non_visual_fraction.NonVisualExerciseActivity">
-        </activity>
-        <activity android:name=".non_visual_fraction.NonVisualExercise2Activity">
-        </activity>
+        <activity android:name=".non_visual_fraction.NonVisualVideoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".non_visual_fraction.NonVisualExerciseActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".non_visual_fraction.NonVisualExercise2Activity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".comparing_similar_fractions.ComparingSimilarVideoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".comparing_similar_fractions.ComparingSimilarExerciseActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
