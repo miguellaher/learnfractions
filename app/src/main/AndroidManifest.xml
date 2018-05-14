@@ -45,8 +45,11 @@
         <activity
             android:name=".comparing_similar_fractions.ComparingSimilarExerciseActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".comparing_similar_fractions.ComparingSimilarExercise2Activity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".comparing_similar_fractions.ComparingSimilarExercise2Activity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".comparing_dissimilar_fractions.ComparingDissimilarVideoActivity" />
+        <activity android:name=".comparing_dissimilar_fractions.ComparingDissimilarExerciseActivity"></activity>
     </application>
 
 </manifest>
