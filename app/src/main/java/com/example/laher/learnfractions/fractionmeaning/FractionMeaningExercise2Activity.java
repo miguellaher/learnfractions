@@ -171,18 +171,28 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
                 inputNum.setEnabled(false);
                 inputDenom.setEnabled(false);
                 btnOK.setEnabled(false);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        inputNum.setEnabled(true);
-                        inputDenom.setEnabled(true);
-                        btnOK.setEnabled(true);
-                        reset();
-                    }
-                }, 2000);
                 if (consecutiveWrongs >= maxConsecutiveWrongs){
-                    txtInstruction.setText("go back to previous exercise");
-
+                    txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
+                            " Preparing to start previous exercise");
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(FractionMeaningExercise2Activity.this,
+                                    FractionMeaningExerciseActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+                    }, 3000);
+                } else {
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            inputNum.setEnabled(true);
+                            inputDenom.setEnabled(true);
+                            btnOK.setEnabled(true);
+                            reset();
+                        }
+                    }, 2000);
                 }
             }
         }
@@ -205,7 +215,10 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
     public class BtnBackListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            finish();
+            Intent intent = new Intent(FractionMeaningExercise2Activity.this,
+                    FractionMeaningExerciseActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
     }
 
@@ -213,7 +226,7 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(FractionMeaningExercise2Activity.this, TopicsMenuActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
     }

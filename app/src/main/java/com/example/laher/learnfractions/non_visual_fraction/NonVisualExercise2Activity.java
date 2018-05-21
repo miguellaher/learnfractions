@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.fractionmeaning.FractionMeaningExercise2Activity;
+import com.example.laher.learnfractions.fractionmeaning.FractionMeaningExerciseActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +47,10 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(NonVisualExercise2Activity.this,
+                        NonVisualExerciseActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
         btnNext = (Button) findViewById(R.id.btnNext);
@@ -56,7 +60,7 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
                 Intent intent = new Intent(NonVisualExercise2Activity.this, TopicsMenuActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -133,7 +137,17 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         btnCheck.setEnabled(false);
         txtInstruction.setText("wrong");
         if (consecutiveWrongs >= maxConsecutiveWrongs){
-            txtInstruction.setText("go back to activity 1");
+            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
+                    " Preparing to start previous exercise");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(NonVisualExercise2Activity.this,
+                            NonVisualExerciseActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            }, 3000);
         } else {
             handler.postDelayed(new Runnable() {
                 @Override

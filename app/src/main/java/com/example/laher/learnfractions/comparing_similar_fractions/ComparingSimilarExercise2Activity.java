@@ -17,8 +17,8 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
     TextView txtTitle;
     public final String TITLE = "Comparing Similar";
     //GUI
-    TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtCompareSign, txtScore;
-    Button btnGreater, btnEqual, btnLess;
+    TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtCompareSign, txtScore, txtInstruction;
+    Button btnGreater, btnEquals, btnLess;
     //VARIABLES
     int num1, num2, denom, consecutiveRights, consecutiveWrongs;
     public final String GREATER_THAN = ">";
@@ -37,7 +37,10 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(ComparingSimilarExercise2Activity.this,
+                        ComparingSimilarExerciseActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
         btnNext = (Button) findViewById(R.id.btnNext);
@@ -47,7 +50,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
                 Intent intent = new Intent(ComparingSimilarExercise2Activity.this, TopicsMenuActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -62,17 +65,19 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         txtCompareSign = (TextView) findViewById(R.id.c2_compareSign);
         txtScore = (TextView) findViewById(R.id.c2_txtScore);
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        txtInstruction = (TextView) findViewById(R.id.c2_txtInstruction);
 
         btnGreater = (Button) findViewById(R.id.c2_btnGreater);
-        btnEqual = (Button) findViewById(R.id.c2_btnEqual);
+        btnEquals = (Button) findViewById(R.id.c2_btnEqual);
         btnLess = (Button) findViewById(R.id.c2_btnLess);
         btnGreater.setOnClickListener(new BtnListener());
-        btnEqual.setOnClickListener(new BtnListener());
+        btnEquals.setOnClickListener(new BtnListener());
         btnLess.setOnClickListener(new BtnListener());
 
         go();
     }
     public void go(){
+        txtInstruction.setText("compare the two fractions");
         txtCompareSign.setText("_");
         generateFractions();
     }
@@ -116,8 +121,9 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         consecutiveWrongs = 0;
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
         btnGreater.setEnabled(false);
-        btnEqual.setEnabled(false);
+        btnEquals.setEnabled(false);
         btnLess.setEnabled(false);
+        txtInstruction.setText("correct");
         if (consecutiveRights >= requiredConsecutiveCorrects){
             btnNext.setEnabled(true);
         } else {
@@ -125,7 +131,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
                 @Override
                 public void run() {
                     btnGreater.setEnabled(true);
-                    btnEqual.setEnabled(true);
+                    btnEquals.setEnabled(true);
                     btnLess.setEnabled(true);
                     go();
                 }
@@ -137,16 +143,27 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         consecutiveRights = 0;
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
         btnGreater.setEnabled(false);
-        btnEqual.setEnabled(false);
+        btnEquals.setEnabled(false);
         btnLess.setEnabled(false);
-        if (consecutiveRights >= requiredConsecutiveCorrects){
+        txtInstruction.setText("wrong");
+        if (consecutiveWrongs >= maxConsecutiveWrongs){
+            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
+                    " Preparing to start previous exercise.");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(ComparingSimilarExercise2Activity.this,
+                            ComparingSimilarExerciseActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            }, 3000);
         } else {
-
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     btnGreater.setEnabled(true);
-                    btnEqual.setEnabled(true);
+                    btnEquals.setEnabled(true);
                     btnLess.setEnabled(true);
                     go();
                 }
@@ -160,7 +177,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
                 txtCompareSign.setText(">");
                 check(GREATER_THAN);
             }
-            if (v.getId() == btnEqual.getId()){
+            if (v.getId() == btnEquals.getId()){
                 txtCompareSign.setText("=");
                 check(EQUAL_TO);
             }

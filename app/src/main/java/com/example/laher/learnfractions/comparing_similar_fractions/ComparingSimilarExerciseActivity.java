@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.fractionmeaning.FractionMeaningExerciseActivity;
+import com.example.laher.learnfractions.fractionmeaning.FractionMeaningVideoActivity;
 
 public class ComparingSimilarExerciseActivity extends AppCompatActivity {
     //TOOLBAR
@@ -36,7 +38,10 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(ComparingSimilarExerciseActivity.this,
+                        ComparingSimilarVideoActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
         btnNext = (Button) findViewById(R.id.btnNext);
@@ -46,11 +51,13 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
                 Intent intent = new Intent(ComparingSimilarExerciseActivity.this, ComparingSimilarExercise2Activity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
+        txtTitle.setTextSize(14);
         //GUI
         txtNum1 = (TextView) findViewById(R.id.c1_txtNum1);
         txtNum2 = (TextView) findViewById(R.id.c1_txtNum2);
@@ -69,6 +76,7 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
     }
     public void go(){
         txtCompareSign.setText("_");
+        txtInstruction.setText("compare the two numbers");
         generateNumbers();
     }
     public void generateNumbers(){
@@ -127,6 +135,7 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
         btnGreater.setEnabled(false);
         btnEquals.setEnabled(false);
         btnLess.setEnabled(false);
+        txtInstruction.setText("correct");
         if (consecutiveRights >= requiredConsecutiveCorrects){
             btnNext.setEnabled(true);
             txtInstruction.setText("proceed");
@@ -149,8 +158,19 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
         btnGreater.setEnabled(false);
         btnEquals.setEnabled(false);
         btnLess.setEnabled(false);
+        txtInstruction.setText("wrong");
         if (consecutiveWrongs >= maxConsecutiveWrongs){
-            txtInstruction.setText("go back to video");
+            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
+                    " Preparing to watch video again.");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(ComparingSimilarExerciseActivity.this,
+                            ComparingSimilarVideoActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            }, 3000);
         } else {
             handler.postDelayed(new Runnable() {
                 @Override
@@ -163,4 +183,5 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
             }, 2000);
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.non_visual_fraction;
+package com.example.laher.learnfractions.comparing_fractions;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -12,30 +12,50 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.fractionmeaning.FractionMeaningExerciseActivity;
+import com.example.laher.learnfractions.TopicsMenuActivity;
 
-public class NonVisualVideoActivity extends AppCompatActivity {
-    VideoView video;
-
+public class ComparingFractionVideoActivity extends AppCompatActivity {
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Non-Visual";
+    public final String TITLE = "Comparing Fractions";
+
+    VideoView video;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-        video = (VideoView) findViewById(R.id.videoView);
+
         btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ComparingFractionVideoActivity.this,
+                        TopicsMenuActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
         btnNext = (Button) findViewById(R.id.btnNext);
-        btnBack.setOnClickListener(new BtnBackListener());
-        btnNext.setOnClickListener(new BtnNextListener());
+        btnNext.setEnabled(false);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // CHANGE INTENT PARAMS
+                Intent intent = new Intent(ComparingFractionVideoActivity.this,
+                        ComparingFractionsExerciseActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
+        txtTitle.setTextSize(14);
+
+        video = (VideoView) findViewById(R.id.videoView);
+
         go();
     }
-
     public void go(){
-        //btnNext.setVisibility(Button.INVISIBLE);
         btnNext.setEnabled(false);
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small); //SAMPLE VIDEO
         video.setVideoURI(uri);
@@ -50,22 +70,6 @@ public class NonVisualVideoActivity extends AppCompatActivity {
         public void onCompletion(MediaPlayer mp) {
             //btnNext.setVisibility(Button.VISIBLE);
             btnNext.setEnabled(true);
-        }
-    }
-
-    public class BtnBackListener implements Button.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            finish();
-        }
-    }
-
-    public class BtnNextListener implements Button.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(NonVisualVideoActivity.this, NonVisualExerciseActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
         }
     }
 }

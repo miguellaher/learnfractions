@@ -14,11 +14,13 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.Fraction;
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.comparing_similar_fractions.ComparingSimilarExerciseActivity;
 import com.example.laher.learnfractions.comparing_similar_fractions.ComparingSimilarVideoActivity;
 
 import java.util.ArrayList;
 
-public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
+public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -30,25 +32,31 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
     EditText diagInputProduct;
     Button dialogBtnCheck;
     //GUI
-    TextView txtScore, txtProduct1, txtProduct2, txtNum1, txtNum2, txtDenom1, txtDenom2, txtInstruction;
+    TextView txtScore, txtProduct1, txtProduct2, txtNum1, txtNum2, txtDenom1, txtDenom2, txtCompareSign, txtInstruction;
+    Button btnGreater, btnEquals, btnLess;
     //VARIABLES
     ArrayList<Integer> stepsIdList;
     Fraction fractionOne, fractionTwo;
-    int corrects;
+    int consecutiveRights, consecutiveWrongs;
     final Handler handler = new Handler();
 
-    int requiredConsecutiveCorrects = 8;
+    public final String GREATER_THAN = ">";
+    public final String EQUAL_TO = "=";
+    public final String LESS_THAN = "<";
+
+    int requiredConsecutiveCorrects = 5;
+    int maxConsecutiveWrongs = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comparing_dissimilar_exercise);
+        setContentView(R.layout.activity_comparing_dissimilar_exercise2);
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ComparingDissimilarExerciseActivity.this,
-                        ComparingSimilarVideoActivity.class);
+                Intent intent = new Intent(ComparingDissimilarExercise2Activity.this,
+                        ComparingSimilarExerciseActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -59,8 +67,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
-                Intent intent = new Intent(ComparingDissimilarExerciseActivity.this,
-                        ComparingDissimilarExercise2Activity.class);
+                Intent intent = new Intent(ComparingDissimilarExercise2Activity.this, TopicsMenuActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -68,9 +75,10 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
+        btnNext.setText("DONE");
         //MULTIPLICATION DIALOG
         mdView = getLayoutInflater().inflate(R.layout.layout_dialog_multiplication, null);
-        multiplicationDialog = new Dialog(ComparingDissimilarExerciseActivity.this);
+        multiplicationDialog = new Dialog(ComparingDissimilarExercise2Activity.this);
         multiplicationDialog.setTitle("Multiplication Equation");
         multiplicationDialog.setContentView(mdView);
         diagTxtMultiplicand = (TextView) mdView.findViewById(R.id.md_txtMultiplicand);
@@ -79,17 +87,25 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
         dialogBtnCheck = (Button) mdView.findViewById(R.id.md_btnCheck);
         dialogBtnCheck.setOnClickListener(new DiagBtnCheckListener());
         //GUI
-        txtScore = (TextView) findViewById(R.id.d1_txtScore);
-        txtScore.setText(corrects + " / " + requiredConsecutiveCorrects);
-        txtProduct1 = (TextView) findViewById(R.id.d1_txtProduct1);
-        txtProduct2 = (TextView) findViewById(R.id.d1_txtProduct2);
-        txtNum1 = (TextView) findViewById(R.id.d1_txtNum1);
-        txtNum2 = (TextView) findViewById(R.id.d1_txtNum2);
-        txtDenom1 = (TextView) findViewById(R.id.d1_txtDenom1);
-        txtDenom2 = (TextView) findViewById(R.id.d1_txtDenom2);
+        txtScore = (TextView) findViewById(R.id.d2_txtScore);
+        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        txtProduct1 = (TextView) findViewById(R.id.d2_txtProduct1);
+        txtProduct2 = (TextView) findViewById(R.id.d2_txtProduct2);
+        txtNum1 = (TextView) findViewById(R.id.d2_txtNum1);
+        txtNum2 = (TextView) findViewById(R.id.d2_txtNum2);
+        txtDenom1 = (TextView) findViewById(R.id.d2_txtDenom1);
+        txtDenom2 = (TextView) findViewById(R.id.d2_txtDenom2);
+        txtCompareSign = (TextView) findViewById(R.id.d2_txtCompareSign);
         resetTxtFractionsColor();
-        txtInstruction = (TextView) findViewById(R.id.d1_txtInstruction);
+        txtInstruction = (TextView) findViewById(R.id.d2_txtInstruction);
         stepsIdList = new ArrayList<>();
+
+        btnGreater = (Button) findViewById(R.id.d2_btnGreater);
+        btnEquals = (Button) findViewById(R.id.d2_btnEquals);
+        btnLess = (Button) findViewById(R.id.d2_btnLess);
+        btnGreater.setOnClickListener(new BtnListener());
+        btnEquals.setOnClickListener(new BtnListener());
+        btnLess.setOnClickListener(new BtnListener());
         //VARIABLES
         fractionOne = new Fraction();
         fractionTwo = new Fraction();
@@ -98,10 +114,17 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
     }
     public void go(){
         setup();
-        setFractions();
     }
     public void setup(){
+        enableBtnCompareSign(false);
+        setFractions();
+        txtCompareSign.setText("_");
         txtInstruction.setText("Click a denominator");
+    }
+    public void enableBtnCompareSign(boolean bool){
+        btnGreater.setEnabled(bool);
+        btnEquals.setEnabled(bool);
+        btnLess.setEnabled(bool);
     }
     public void setFractions(){
         fractionOne.generateRandFraction(9);
@@ -153,13 +176,15 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
     public void correct(){
         stepsIdList.clear();
         removeTxtListeners();
-        corrects++;
-        txtScore.setText(corrects + " / " + requiredConsecutiveCorrects);
+        enableBtnCompareSign(false);
+        consecutiveRights++;
+        consecutiveWrongs = 0;
+        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
         txtInstruction.setText("correct");
 
-        if (corrects >= requiredConsecutiveCorrects) {
+        if (consecutiveRights >= requiredConsecutiveCorrects) {
             btnNext.setEnabled(true);
-            txtInstruction.setText("go to next exercise");
+            txtInstruction.setText("lesson finished");
         } else {
             handler.postDelayed(new Runnable() {
                 @Override
@@ -167,6 +192,59 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                     go();
                 }
             }, 2000);
+        }
+    }
+    public void wrong(){
+        stepsIdList.clear();
+        removeTxtListeners();
+        enableBtnCompareSign(false);
+        consecutiveWrongs++;
+        consecutiveRights = 0;
+        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        txtInstruction.setText("wrong");
+
+        if (consecutiveWrongs >= maxConsecutiveWrongs) {
+            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
+                    " Preparing to start previous exercise.");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(ComparingDissimilarExercise2Activity.this,
+                            ComparingDissimilarExerciseActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            }, 3000);
+        } else {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    go();
+                }
+            }, 2000);
+        }
+    }
+    public void check(String compareSign){
+        if (compareSign == GREATER_THAN){
+            if (Integer.valueOf(String.valueOf(txtProduct1.getText())) > Integer.valueOf(String.valueOf(txtProduct2.getText()))) {
+                correct();
+            } else {
+                wrong();
+            }
+        }
+        if (compareSign == EQUAL_TO){
+            if (Integer.valueOf(String.valueOf(txtProduct1.getText())) == Integer.valueOf(String.valueOf(txtProduct2.getText()))) {
+                correct();
+            } else {
+                wrong();
+            }
+        }
+        if (compareSign == LESS_THAN){
+            if (Integer.valueOf(String.valueOf(txtProduct1.getText())) < Integer.valueOf(String.valueOf(txtProduct2.getText()))) {
+                correct();
+            } else {
+                wrong();
+            }
         }
     }
     public class TxtFractionListener implements TextView.OnClickListener {
@@ -283,14 +361,32 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                 resetTxtFractionsColor();
                 diagInputProduct.setText("");
                 multiplicationDialog.dismiss();
-                if(txtProduct1.getVisibility() != TextView.VISIBLE || txtProduct2.getVisibility() != TextView.VISIBLE){
-                    txtInstruction.setText("Click the other denominator");
-                }
-                if(txtProduct1.getVisibility() == TextView.VISIBLE && txtProduct2.getVisibility() == TextView.VISIBLE){
-                    correct();
-                }
             } else {
                 shakeAnimate(diagInputProduct);
+            }
+            if(txtProduct1.getVisibility() == TextView.VISIBLE
+                    && txtProduct2.getVisibility() == TextView.VISIBLE){
+                enableBtnCompareSign(true);
+                txtInstruction.setText("Compare the two products");
+            } else {
+                txtInstruction.setText("Click the other denominator");
+            }
+        }
+    }
+    public class BtnListener implements Button.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == btnGreater.getId()){
+                txtCompareSign.setText(GREATER_THAN);
+                check(GREATER_THAN);
+            }
+            if (v.getId() == btnEquals.getId()){
+                txtCompareSign.setText(EQUAL_TO);
+                check(EQUAL_TO);
+            }
+            if (v.getId() == btnLess.getId()){
+                txtCompareSign.setText(LESS_THAN);
+                check(LESS_THAN);
             }
         }
     }

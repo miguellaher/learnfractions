@@ -32,7 +32,10 @@ public class ComparingDissimilarVideoActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(ComparingDissimilarVideoActivity.this,
+                        TopicsMenuActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
         btnNext = (Button) findViewById(R.id.btnNext);
@@ -41,12 +44,15 @@ public class ComparingDissimilarVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
-                Intent intent = new Intent(ComparingDissimilarVideoActivity.this, TopicsMenuActivity.class);
+                Intent intent = new Intent(ComparingDissimilarVideoActivity.this,
+                        ComparingDissimilarExerciseActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
+        txtTitle.setTextSize(14);
 
         video = (VideoView) findViewById(R.id.videoView);
 
@@ -68,10 +74,5 @@ public class ComparingDissimilarVideoActivity extends AppCompatActivity {
             //btnNext.setVisibility(Button.VISIBLE);
             btnNext.setEnabled(true);
         }
-    }
-    @Override
-    protected void onRestart() {
-        video.start();
-        super.onRestart();
     }
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.TopicsMenuActivity;
 
 public class FractionMeaningVideoActivity extends AppCompatActivity {
     VideoView video;
@@ -54,21 +55,21 @@ public class FractionMeaningVideoActivity extends AppCompatActivity {
     public class BtnBackListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            finish();
+            Intent intent = new Intent(FractionMeaningVideoActivity.this,
+                    TopicsMenuActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
         }
     }
 
     public class BtnNextListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(FractionMeaningVideoActivity.this, FractionMeaningExerciseActivity.class);
+            Intent intent = new Intent(FractionMeaningVideoActivity.this,
+                    FractionMeaningExerciseActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
     }
 
-    @Override
-    protected void onRestart() {
-        video.start();
-        super.onRestart();
-    }
 }

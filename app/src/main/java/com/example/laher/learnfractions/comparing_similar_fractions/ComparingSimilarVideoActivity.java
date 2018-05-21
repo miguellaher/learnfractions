@@ -12,9 +12,6 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.non_visual_fraction.NonVisualExercise2Activity;
-import com.example.laher.learnfractions.non_visual_fraction.NonVisualExerciseActivity;
-import com.example.laher.learnfractions.non_visual_fraction.NonVisualVideoActivity;
 
 public class ComparingSimilarVideoActivity extends AppCompatActivity {
     Button btnBack, btnNext;
@@ -40,12 +37,15 @@ public class ComparingSimilarVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
-                Intent intent = new Intent(ComparingSimilarVideoActivity.this, ComparingSimilarExerciseActivity.class);
+                Intent intent = new Intent(ComparingSimilarVideoActivity.this,
+                        ComparingSimilarExerciseActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
+        txtTitle.setTextSize(14);
 
         video = (VideoView) findViewById(R.id.videoView);
 

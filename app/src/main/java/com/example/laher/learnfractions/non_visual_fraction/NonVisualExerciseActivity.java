@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.fractionmeaning.FractionMeaningExercise2Activity;
 import com.example.laher.learnfractions.fractionmeaning.FractionMeaningExerciseActivity;
+import com.example.laher.learnfractions.fractionmeaning.FractionMeaningVideoActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,9 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(NonVisualExerciseActivity.this, NonVisualVideoActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
         btnNext = (Button) findViewById(R.id.btnNext);
@@ -49,6 +52,7 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
                 Intent intent = new Intent(NonVisualExerciseActivity.this, NonVisualExercise2Activity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -120,7 +124,17 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
         txtNumerator.setOnClickListener(null);
         txtDenominator.setOnClickListener(null);
         if (consecutiveWrongs == maxConsecutiveWrongs){
-            txtInstruction.setText("go back to video");
+            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
+                    " Preparing to watch video again.");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(NonVisualExerciseActivity.this,
+                            NonVisualVideoActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            }, 3000);
         } else {
             handler.postDelayed(new Runnable() {
                 @Override

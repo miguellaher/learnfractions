@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.TopicsMenuActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -136,13 +137,6 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
             denom = (int) (Math.random() * 9 + 1);
         }
     }
-    public void resetValues(){
-        consecutiveRights = 0;
-        consecutiveWrongs = 0;
-        instructions.clear();
-        instructions.add(INSTRUCTION_DENOM);
-        instructions.add(INSTRUCTION_NUM);
-    }
     public void finishExercise(){
         btnChoice1.setEnabled(false);
         btnChoice2.setEnabled(false);
@@ -200,7 +194,17 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
                 btnChoice3.setEnabled(false);
                 btnChoice4.setEnabled(false);
                 if (consecutiveWrongs >= maxConsecutiveWrongs) {
-                    txtInstruction.setText("Go watch the video again.");
+                    txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
+                            " Preparing to watch video again.");
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(FractionMeaningExerciseActivity.this,
+                                    FractionMeaningVideoActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+                    }, 3000);
                 } else {
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -226,26 +230,20 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     public class BtnBackListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            finish();
+            Intent intent = new Intent(FractionMeaningExerciseActivity.this,
+                    FractionMeaningVideoActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
     }
 
     public class BtnNextListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(FractionMeaningExerciseActivity.this, FractionMeaningExercise2Activity.class);
+            Intent intent = new Intent(FractionMeaningExerciseActivity.this,
+                    FractionMeaningExercise2Activity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
-    }
-    @Override
-    protected void onRestart() {
-        resetValues();
-        btnChoice1.setEnabled(true);
-        btnChoice2.setEnabled(true);
-        btnChoice3.setEnabled(true);
-        btnChoice4.setEnabled(true);
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
-        go();
-        super.onRestart();
     }
 }

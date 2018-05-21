@@ -5,17 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".comparing_dissimilar_fractions.ComparingDissimilarExerciseActivity">
+    tools:context=".comparing_fractions.ComparingFractionsExercise2Activity">
 
     <include
-        layout="@layout/layout_toolbar"/>
+        layout="@layout/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/e2_btnGreater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/greaterThan"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="@+id/e2_btnEquals"
+            app:layout_constraintEnd_toStartOf="@+id/e2_btnEquals"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+
+        <Button
+            android:id="@+id/e2_btnEquals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="="
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout3"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+
+        <Button
+            android:id="@+id/e2_btnLess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/lessThan"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="@+id/e2_btnEquals"
+            app:layout_constraintStart_toEndOf="@+id/e2_btnEquals"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+
         <ImageView
-            android:id="@+id/d1_imgAvatar"
+            android:id="@+id/e2_imgAvatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginBottom="8dp"
@@ -25,75 +59,91 @@
             app:srcCompat="@drawable/avatar" />
 
         <TextView
-            android:id="@+id/d1_txtInstruction"
+            android:id="@+id/e2_txtInstruction"
             android:layout_width="0dp"
             android:layout_height="57dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="compare the two fractions"
-            app:layout_constraintBottom_toBottomOf="@+id/d1_imgAvatar"
+            app:layout_constraintBottom_toBottomOf="@+id/e2_imgAvatar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/d1_imgAvatar"
-            app:layout_constraintTop_toTopOf="@+id/d1_imgAvatar" />
+            app:layout_constraintStart_toEndOf="@+id/e2_imgAvatar"
+            app:layout_constraintTop_toTopOf="@+id/e2_imgAvatar" />
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3">
+            app:layout_constraintVertical_bias="0.20">
 
             <TextView
-                android:id="@+id/d1_txtDenom2"
+                android:id="@+id/e2_txtCompareSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="="
+                android:textSize="80sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.35000002" />
+
+            <TextView
+                android:id="@+id/e2_txtDenom2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="99"
-                android:textSize="80sp"
+                android:textAlignment="center"
+                android:textSize="60sp"
                 app:layout_constraintEnd_toEndOf="@+id/imageView10"
                 app:layout_constraintStart_toStartOf="@+id/imageView10"
                 app:layout_constraintTop_toBottomOf="@+id/imageView10" />
 
             <TextView
-                android:id="@+id/d1_txtNum2"
+                android:id="@+id/e2_txtNum2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="99"
-                android:textSize="80sp"
+                android:textAlignment="center"
+                android:textSize="60sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView10"
                 app:layout_constraintEnd_toEndOf="@+id/imageView10"
-                app:layout_constraintStart_toStartOf="@+id/imageView10" />
+                app:layout_constraintStart_toStartOf="@+id/imageView10"
+                app:layout_constraintTop_toBottomOf="@+id/e2_txtProduct2" />
 
             <TextView
-                android:id="@+id/d1_txtDenom1"
+                android:id="@+id/e2_txtDenom1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="99"
-                android:textSize="80sp"
+                android:textAlignment="center"
+                android:textSize="60sp"
                 app:layout_constraintEnd_toEndOf="@+id/imageView9"
                 app:layout_constraintStart_toStartOf="@+id/imageView9"
                 app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
             <TextView
-                android:id="@+id/d1_txtNum1"
-                android:layout_width="wrap_content"
+                android:id="@+id/e2_txtNum1"
+                android:layout_width="67dp"
                 android:layout_height="wrap_content"
                 android:text="99"
-                android:textSize="80sp"
+                android:textAlignment="center"
+                android:textSize="60sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView9"
                 app:layout_constraintEnd_toEndOf="@+id/imageView9"
-                app:layout_constraintStart_toStartOf="@+id/imageView9" />
+                app:layout_constraintStart_toStartOf="@+id/imageView9"
+                app:layout_constraintTop_toBottomOf="@+id/e2_txtProduct1" />
 
             <ImageView
                 android:id="@+id/imageView10"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +152,7 @@
 
             <ImageView
                 android:id="@+id/imageView9"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="25dp"
                 android:layout_marginEnd="64dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -112,28 +162,26 @@
                 app:srcCompat="@drawable/line" />
 
             <TextView
-                android:id="@+id/d1_txtProduct2"
+                android:id="@+id/e2_txtProduct2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="99"
                 android:textSize="30sp"
-                app:layout_constraintBottom_toTopOf="@+id/d1_txtNum2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/d1_txtProduct1"
+                android:id="@+id/e2_txtProduct1"
                 android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:text="99"
                 android:textSize="30sp"
-                app:layout_constraintBottom_toTopOf="@+id/d2_txtNum1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
         <TextView
-            android:id="@+id/d1_txtScore"
+            android:id="@+id/e2_txtScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

@@ -49,7 +49,11 @@
             android:name=".comparing_similar_fractions.ComparingSimilarExercise2Activity"
             android:screenOrientation="portrait" />
         <activity android:name=".comparing_dissimilar_fractions.ComparingDissimilarVideoActivity" />
-        <activity android:name=".comparing_dissimilar_fractions.ComparingDissimilarExerciseActivity"></activity>
+        <activity android:name=".comparing_dissimilar_fractions.ComparingDissimilarExerciseActivity" />
+        <activity android:name=".comparing_dissimilar_fractions.ComparingDissimilarExercise2Activity" />
+        <activity android:name=".comparing_fractions.ComparingFractionsExerciseActivity" />
+        <activity android:name=".comparing_fractions.ComparingFractionsExercise2Activity" />
+        <activity android:name=".comparing_fractions.ComparingFractionVideoActivity"></activity>
     </application>
 
 </manifest>
