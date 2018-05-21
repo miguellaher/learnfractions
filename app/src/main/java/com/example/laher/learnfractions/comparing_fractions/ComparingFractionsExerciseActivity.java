@@ -96,7 +96,8 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
         } else {
             fractionOne.generateRandFraction(9);
             fractionTwo.generateRandFraction(9);
-            while (fractionOne.getDenominator() == fractionTwo.getDenominator()){ //DISSIMILAR
+            while (fractionOne.getDenominator() == fractionTwo.getDenominator() &&
+                    fractionOne.getNumerator() == fractionTwo.getNumerator()){ //DISSIMILAR
                 fractionOne.generateRandFraction(9);
             }
         }
@@ -135,7 +136,8 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
         btnSimilar.setEnabled(false);
         btnDissimilar.setEnabled(false);
         if (consecutiveWrongs>=maxConsecutiveWrongs){
-            txtInstruction.setText("Preparing to watch video again.");
+            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
+                    " Preparing to watch video again.");
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

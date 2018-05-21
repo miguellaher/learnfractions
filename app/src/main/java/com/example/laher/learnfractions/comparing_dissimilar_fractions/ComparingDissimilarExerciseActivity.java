@@ -48,7 +48,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ComparingDissimilarExerciseActivity.this,
-                        ComparingSimilarVideoActivity.class);
+                        ComparingDissimilarVideoActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -106,6 +106,10 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
     public void setFractions(){
         fractionOne.generateRandFraction(9);
         fractionTwo.generateRandFraction(9);
+        while (fractionOne.getDenominator()==fractionTwo.getDenominator() &&
+                fractionOne.getNumerator()==fractionTwo.getNumerator()){
+            fractionTwo.generateRandFraction(9);
+        }
         setGuiFractions();
     }
     public void setGuiFractions(){

@@ -8,8 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.Fraction;
+import com.example.laher.learnfractions.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class ComparingSimilarExercise2Activity extends AppCompatActivity {
     //TOOLBAR
@@ -20,11 +25,15 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtCompareSign, txtScore, txtInstruction;
     Button btnGreater, btnEquals, btnLess;
     //VARIABLES
-    int num1, num2, denom, consecutiveRights, consecutiveWrongs;
+    int questionNum, consecutiveRights, consecutiveWrongs;
     public final String GREATER_THAN = ">";
     public final String EQUAL_TO = "=";
     public final String LESS_THAN = "<";
     final Handler handler = new Handler();
+    Fraction fractionOne, fractionTwo;
+    FractionQuestion fractionQuestion;
+    ArrayList<FractionQuestion> fractionQuestions;
+    String strAnswer;
 
     int requiredConsecutiveCorrects = 8;
     int maxConsecutiveWrongs = 4;
@@ -70,51 +79,39 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         btnGreater = (Button) findViewById(R.id.c2_btnGreater);
         btnEquals = (Button) findViewById(R.id.c2_btnEqual);
         btnLess = (Button) findViewById(R.id.c2_btnLess);
+        btnGreater.setText(FractionQuestion.ANSWER_GREATER);
+        btnEquals.setText(FractionQuestion.ANSWER_EQUAL);
+        btnLess.setText(FractionQuestion.ANSWER_LESS);
         btnGreater.setOnClickListener(new BtnListener());
         btnEquals.setOnClickListener(new BtnListener());
         btnLess.setOnClickListener(new BtnListener());
+        //VARIABLES
+        fractionOne = new Fraction();
+        fractionTwo = new Fraction();
+        fractionQuestion = new FractionQuestion();
+        fractionQuestions = new ArrayList<>();
 
         go();
     }
     public void go(){
-        txtInstruction.setText("compare the two fractions");
-        txtCompareSign.setText("_");
-        generateFractions();
+        setFractionQuestions();
     }
-    public void generateFractions(){
-        num1 = (int) (Math.random() * 9 + 1);
-        num2 = (int) (Math.random() * 9 + 1);
-        denom = (int) (Math.random() * 9 + 1);
+    public void setFractionQuestions(){
+        fractionQuestions = new ArrayList<>();
+        questionNum = 0;
+        for(int i = 0; i < requiredConsecutiveCorrects; i++){
+            fractionQuestion = new FractionQuestion(FractionQuestion.COMPARING_SIMILAR);
+            fractionQuestions.add(fractionQuestion);
+        }
         setTxtFractions();
     }
     public void setTxtFractions(){
-        txtNum1.setText(String.valueOf(num1));
-        txtNum2.setText(String.valueOf(num2));
-        txtDenom1.setText(String.valueOf(denom));
-        txtDenom2.setText(String.valueOf(denom));
-    }
-    public void check(String compareSign){
-        if(compareSign == GREATER_THAN){
-            if (num1 > num2){
-                correct();
-            } else {
-                wrong();
-            }
-        }
-        if(compareSign == EQUAL_TO){
-            if (num1 == num2){
-                correct();
-            } else {
-                wrong();
-            }
-        }
-        if(compareSign == LESS_THAN){
-            if (num1 < num2){
-                correct();
-            } else {
-                wrong();
-            }
-        }
+        txtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()));
+        txtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()));
+        txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
+        txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
+        strAnswer = fractionQuestions.get(questionNum).getAnswer();
+        txtInstruction.setText("compare the two fractions");
     }
     public void correct(){
         consecutiveRights++;
@@ -130,10 +127,11 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    questionNum++;
+                    setTxtFractions();
                     btnGreater.setEnabled(true);
                     btnEquals.setEnabled(true);
                     btnLess.setEnabled(true);
-                    go();
                 }
             }, 2000);
         }
@@ -173,17 +171,13 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
     public class BtnListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            if (v.getId() == btnGreater.getId()){
-                txtCompareSign.setText(">");
-                check(GREATER_THAN);
-            }
-            if (v.getId() == btnEquals.getId()){
-                txtCompareSign.setText("=");
-                check(EQUAL_TO);
-            }
-            if (v.getId() == btnLess.getId()){
-                txtCompareSign.setText("<");
-                check(LESS_THAN);
+            Button b = (Button) v;
+            String s = b.getText().toString();
+            txtCompareSign.setText(s);
+            if (s == fractionQuestions.get(questionNum).getAnswer()){
+                correct();
+            } else {
+                wrong();
             }
         }
     }

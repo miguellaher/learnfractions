@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.TopicsMenuActivity;
 
 public class ComparingSimilarVideoActivity extends AppCompatActivity {
     Button btnBack, btnNext;
@@ -28,7 +29,10 @@ public class ComparingSimilarVideoActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(ComparingSimilarVideoActivity.this,
+                        TopicsMenuActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
         btnNext = (Button) findViewById(R.id.btnNext);

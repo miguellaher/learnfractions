@@ -129,6 +129,10 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
     public void setFractions(){
         fractionOne.generateRandFraction(9);
         fractionTwo.generateRandFraction(9);
+        while (fractionOne.getDenominator()==fractionTwo.getDenominator() &&
+                fractionOne.getNumerator()==fractionTwo.getNumerator()){
+            fractionTwo.generateRandFraction(9);
+        }
         setGuiFractions();
     }
     public void setGuiFractions(){
