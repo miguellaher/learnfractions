@@ -40,14 +40,14 @@ public class FractionQuestion {
             compareTwoFractions();
         }
         if (Context == COMPARING_SIMILAR){
-            while (fractionOne.getDenominator()!=fractionTwo.getDenominator() ||
+            while (fractionOne.getDenominator()!=fractionTwo.getDenominator() &&
                     fractionOne.getNumerator()!=fractionTwo.getNumerator()){
                 fractionTwo = new Fraction();
             }
             compareTwoFractions();
         }
         if (Context == COMPARING_DISSIMILAR){
-            while (fractionOne.getDenominator()==fractionTwo.getDenominator() &&
+            while (fractionOne.getDenominator()==fractionTwo.getDenominator() ||
                     fractionOne.getNumerator()==fractionTwo.getNumerator()){
                 fractionTwo = new Fraction();
             }

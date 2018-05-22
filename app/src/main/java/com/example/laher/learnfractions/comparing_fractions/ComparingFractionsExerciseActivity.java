@@ -54,7 +54,7 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
                 Intent intent = new Intent(ComparingFractionsExerciseActivity.this,
-                        TopicsMenuActivity.class);
+                        ComparingFractionsExercise2Activity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -90,13 +90,14 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
         if (Math.random() > 0.5) {
             fractionOne.generateRandFraction(9);
             fractionTwo.generateRandFraction(9);
-            while (fractionOne.getDenominator() != fractionTwo.getDenominator()){ //SIMILAR
+            while (fractionOne.getDenominator() != fractionTwo.getDenominator() &&
+                    fractionOne.getNumerator() != fractionTwo.getNumerator()){ //SIMILAR
                 fractionOne.generateRandFraction(9);
             }
         } else {
             fractionOne.generateRandFraction(9);
             fractionTwo.generateRandFraction(9);
-            while (fractionOne.getDenominator() == fractionTwo.getDenominator() &&
+            while (fractionOne.getDenominator() == fractionTwo.getDenominator() ||
                     fractionOne.getNumerator() == fractionTwo.getNumerator()){ //DISSIMILAR
                 fractionOne.generateRandFraction(9);
             }
@@ -160,16 +161,16 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.e1_btnSimilar){
-                if (fractionOne.getDenominator()
-                        == fractionTwo.getDenominator()){
+                if (fractionOne.getDenominator() == fractionTwo.getDenominator() ||
+                        fractionOne.getNumerator() == fractionTwo.getNumerator()){
                     correct();
                 } else {
                     wrong();
                 }
             }
             if (v.getId() == R.id.e1_btnDissimilar){
-                if (fractionOne.getDenominator()
-                        != fractionTwo.getDenominator()){
+                if (fractionOne.getDenominator() != fractionTwo.getDenominator() &&
+                        fractionOne.getNumerator() != fractionTwo.getNumerator()){
                     correct();
                 } else {
                     wrong();

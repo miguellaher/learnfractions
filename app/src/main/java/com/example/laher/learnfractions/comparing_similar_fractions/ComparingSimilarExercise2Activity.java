@@ -112,14 +112,18 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
         strAnswer = fractionQuestions.get(questionNum).getAnswer();
         txtInstruction.setText("compare the two fractions");
+        txtCompareSign.setText("_");
+    }
+    public void enableButtons(boolean bool){
+        btnGreater.setEnabled(bool);
+        btnEquals.setEnabled(bool);
+        btnLess.setEnabled(bool);
     }
     public void correct(){
         consecutiveRights++;
         consecutiveWrongs = 0;
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
-        btnGreater.setEnabled(false);
-        btnEquals.setEnabled(false);
-        btnLess.setEnabled(false);
+        enableButtons(false);
         txtInstruction.setText("correct");
         if (consecutiveRights >= requiredConsecutiveCorrects){
             btnNext.setEnabled(true);
@@ -129,9 +133,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
                 public void run() {
                     questionNum++;
                     setTxtFractions();
-                    btnGreater.setEnabled(true);
-                    btnEquals.setEnabled(true);
-                    btnLess.setEnabled(true);
+                    enableButtons(true);
                 }
             }, 2000);
         }
@@ -140,9 +142,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         consecutiveWrongs++;
         consecutiveRights = 0;
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
-        btnGreater.setEnabled(false);
-        btnEquals.setEnabled(false);
-        btnLess.setEnabled(false);
+        enableButtons(false);
         txtInstruction.setText("wrong");
         if (consecutiveWrongs >= maxConsecutiveWrongs){
             txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
@@ -160,9 +160,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    btnGreater.setEnabled(true);
-                    btnEquals.setEnabled(true);
-                    btnLess.setEnabled(true);
+                    enableButtons(true);
                     go();
                 }
             }, 2000);
