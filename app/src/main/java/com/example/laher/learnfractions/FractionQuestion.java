@@ -2,6 +2,7 @@ package com.example.laher.learnfractions;
 
 public class FractionQuestion {
     Fraction fractionOne, fractionTwo;
+    String context;
     String answer;
     public final static String COMPARING_FRACTION = "COMPARING_FRACTION";
     public final static String COMPARING_SIMILAR = "COMPARING_SIMILAR";
@@ -19,6 +20,9 @@ public class FractionQuestion {
     public String getAnswer() {
         return answer;
     }
+    public String getContext() {
+        return context;
+    }
     public void setFractionOne(Fraction fractionOne) {
         this.fractionOne = fractionOne;
     }
@@ -33,20 +37,21 @@ public class FractionQuestion {
         fractionOne = new Fraction();
         fractionTwo = new Fraction();
     }
-    public FractionQuestion(String Context){
+    public FractionQuestion(String context){
         fractionOne = new Fraction();
         fractionTwo = new Fraction();
-        if (Context == COMPARING_FRACTION){
+        this.context = context;
+        if (context == COMPARING_FRACTION){
             compareTwoFractions();
         }
-        if (Context == COMPARING_SIMILAR){
+        if (context == COMPARING_SIMILAR){
             while (fractionOne.getDenominator()!=fractionTwo.getDenominator() &&
                     fractionOne.getNumerator()!=fractionTwo.getNumerator()){
                 fractionTwo = new Fraction();
             }
             compareTwoFractions();
         }
-        if (Context == COMPARING_DISSIMILAR){
+        if (context == COMPARING_DISSIMILAR){
             while (fractionOne.getDenominator()==fractionTwo.getDenominator() ||
                     fractionOne.getNumerator()==fractionTwo.getNumerator()){
                 fractionTwo = new Fraction();

@@ -15,7 +15,6 @@ import com.example.laher.learnfractions.Fraction;
 import com.example.laher.learnfractions.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
-import com.example.laher.learnfractions.comparing_dissimilar_fractions.ComparingDissimilarExercise2Activity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +44,7 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
     int consecutiveCorrects, consecutiveWrongs;
     int questionNum;
     int requiredConsecutiveCorrects = 10;
-    int maxConsecutiveWrongs = 3;
+    int maxConsecutiveWrongs = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,11 +160,10 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         consecutiveCorrects++;
         consecutiveWrongs = 0;
         txtScore.setText(consecutiveCorrects + " / " + requiredConsecutiveCorrects);
+        enableBtnAnswers(false);
         if (consecutiveCorrects >= requiredConsecutiveCorrects){
-            btnGreater.setEnabled(false);
-            btnEqual.setEnabled(false);
-            btnLess.setEnabled(false);
             txtInstruction.setText("finish");
+            btnNext.setEnabled(true);
         } else {
             txtInstruction.setText("correct");
             handler.postDelayed(new Runnable() {
@@ -174,6 +172,7 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
                     questionNum++;
                     setTxtFractions();
                     setup();
+                    enableBtnAnswers(true);
                 }
             }, 2000);
         }
@@ -182,12 +181,10 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         consecutiveWrongs++;
         consecutiveCorrects = 0;
         txtScore.setText(consecutiveCorrects + " / " + requiredConsecutiveCorrects);
+        enableBtnAnswers(false);
         if (consecutiveWrongs>=maxConsecutiveWrongs){
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
-                            " Preparing to start previous exercise.");
+            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
+                    " Preparing to start previous exercise.");
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -197,13 +194,12 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     }, 3000);
-                }
-            }, 2000);
         } else {
             txtInstruction.setText("wrong");
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    enableBtnAnswers(true);
                     go();
                 }
             }, 2000);
@@ -222,6 +218,11 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         multiplicationDialog.setCanceledOnTouchOutside(false);
         multiplicationDialog.show();
     }
+    public void enableBtnAnswers(boolean bool){
+        btnGreater.setEnabled(bool);
+        btnEqual.setEnabled(bool);
+        btnLess.setEnabled(bool);
+    }
     public class BtnAnswerListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
@@ -239,6 +240,17 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             crossMultiplicationStepList.add(v.getId());
+            if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.COMPARING_SIMILAR){
+                crossMultiplicationStepList.clear();
+                txtInstruction.setText("Do not use the cross multiplication technique to similar fractions.");
+                enableBtnAnswers(false);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        wrong();
+                    }
+                }, 4000);
+            }
             if (crossMultiplicationStepList.size() == 1){
                 if (crossMultiplicationStepList.get(0) == txtDenom1.getId()){
                     txtDenom1.setTextColor(Color.rgb(0,255,0));
