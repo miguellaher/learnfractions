@@ -1,6 +1,8 @@
 package com.example.laher.learnfractions;
 
-public class Fraction {
+import android.support.annotation.NonNull;
+
+public class Fraction implements Comparable<Fraction>{
     private int numerator;
     private int denominator;
 
@@ -26,5 +28,18 @@ public class Fraction {
     public void generateRandFraction(int minimum, int maximum){
         numerator = (int) (Math.random() * maximum + minimum);
         denominator = (int) (Math.random() * maximum + minimum);
+    }
+    public Double getValue(){
+        return Double.valueOf(numerator/denominator);
+    }
+
+    @Override
+    public int compareTo(@NonNull Fraction o) {
+        if(this.getValue()>o.getValue()){
+            return 1;
+        } else if(this.getValue()>o.getValue()){
+            return -1;
+        }
+        return 0;
     }
 }

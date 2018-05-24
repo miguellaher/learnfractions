@@ -127,6 +127,7 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         txtProduct2.setVisibility(TextView.INVISIBLE);
         txtCompareSign.setText("_");
         txtInstruction.setText("Compare the two fractions");
+        crossMultiplicationStepList.clear();
     }
     public void setFractionQuestions(){
         fractionQuestions = new ArrayList<>();
@@ -271,7 +272,7 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
                     }
                 } else if (crossMultiplicationStepList.get(0) == txtDenom2.getId()){
                     if (crossMultiplicationStepList.get(1) == txtNum1.getId()){
-                        txtNum1.setTextColor(Color.rgb(0,255,0));
+                        txtNum2.setTextColor(Color.rgb(0,255,0));
                         diagInputProduct(fractionQuestions.get(questionNum).getFractionOne().getNumerator(),
                                 fractionQuestions.get(questionNum).getFractionTwo().getDenominator());
                     } else {
@@ -321,21 +322,23 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         public void onClick(View v) {
             int product = Integer.valueOf((String) diagTxtMultiplicand.getText())
                     * Integer.valueOf((String) diagTxtMultiplier.getText());
-            if (Integer.valueOf(String.valueOf(diagInputProduct.getText()))==product){
-                if (crossMultiplicationStepList.get(crossMultiplicationStepList.size()-1) == txtNum2.getId()) {
-                    if (crossMultiplicationStepList.get(crossMultiplicationStepList.size()-2) == txtDenom1.getId()) {
-                        txtProduct2.setText(diagInputProduct.getText());
-                        txtProduct2.setVisibility(TextView.VISIBLE);
+            if (!diagInputProduct.getText().toString().matches("")) {
+                if (Integer.valueOf(String.valueOf(diagInputProduct.getText())) == product) {
+                    if (crossMultiplicationStepList.get(crossMultiplicationStepList.size() - 1) == txtNum2.getId()) {
+                        if (crossMultiplicationStepList.get(crossMultiplicationStepList.size() - 2) == txtDenom1.getId()) {
+                            txtProduct2.setText(diagInputProduct.getText());
+                            txtProduct2.setVisibility(TextView.VISIBLE);
+                        }
+                    } else if (crossMultiplicationStepList.get(crossMultiplicationStepList.size() - 1) == txtNum1.getId()) {
+                        if (crossMultiplicationStepList.get(crossMultiplicationStepList.size() - 2) == txtDenom2.getId()) {
+                            txtProduct1.setText(diagInputProduct.getText());
+                            txtProduct1.setVisibility(TextView.VISIBLE);
+                        }
                     }
-                } else if (crossMultiplicationStepList.get(crossMultiplicationStepList.size()-1) == txtNum1.getId()) {
-                    if (crossMultiplicationStepList.get(crossMultiplicationStepList.size()-2) == txtDenom2.getId()) {
-                        txtProduct1.setText(diagInputProduct.getText());
-                        txtProduct1.setVisibility(TextView.VISIBLE);
-                    }
+                    resetTxtFractionsColor();
+                    diagInputProduct.setText("");
+                    multiplicationDialog.dismiss();
                 }
-                resetTxtFractionsColor();
-                diagInputProduct.setText("");
-                multiplicationDialog.dismiss();
             }
         }
     }

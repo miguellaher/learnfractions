@@ -1,12 +1,17 @@
 package com.example.laher.learnfractions;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class FractionQuestion {
-    Fraction fractionOne, fractionTwo;
+    Fraction fractionOne, fractionTwo, fractionThree;
     String context;
     String answer;
+    ArrayList<Fraction> fractions;
     public final static String COMPARING_FRACTION = "COMPARING_FRACTION";
     public final static String COMPARING_SIMILAR = "COMPARING_SIMILAR";
     public final static String COMPARING_DISSIMILAR = "COMPARING_DISSIMILAR";
+    public final static String ORDERING_SIMILAR = "ORDERING_SIMILAR";
     public final static String ANSWER_GREATER = ">";
     public final static String ANSWER_EQUAL = "=";
     public final static String ANSWER_LESS = "<";
@@ -28,9 +33,6 @@ public class FractionQuestion {
     }
     public void setFractionTwo(Fraction fractionTwo) {
         this.fractionTwo = fractionTwo;
-    }
-    public void setAnswer(String answer) {
-        this.answer = answer;
     }
 
     public FractionQuestion(){
@@ -57,6 +59,13 @@ public class FractionQuestion {
                 fractionTwo = new Fraction();
             }
             compareTwoFractions();
+        }
+        if (context == ORDERING_SIMILAR){
+            fractionThree = new Fraction();
+            fractions.add(fractionOne);
+            fractions.add(fractionTwo);
+            fractions.add(fractionThree);
+            Collections.sort(fractions);
         }
     }
     public FractionQuestion(Fraction fractionOne, Fraction fractionTwo, String Context){

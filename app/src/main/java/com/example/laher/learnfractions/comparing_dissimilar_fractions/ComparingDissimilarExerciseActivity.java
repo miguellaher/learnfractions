@@ -106,7 +106,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
     public void setFractions(){
         fractionOne.generateRandFraction(9);
         fractionTwo.generateRandFraction(9);
-        while (fractionOne.getDenominator()==fractionTwo.getDenominator() &&
+        while (fractionOne.getDenominator()==fractionTwo.getDenominator() ||
                 fractionOne.getNumerator()==fractionTwo.getNumerator()){
             fractionTwo.generateRandFraction(9);
         }
@@ -272,28 +272,32 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
         public void onClick(View v) {
             int product = Integer.valueOf((String) diagTxtMultiplicand.getText())
                     * Integer.valueOf((String) diagTxtMultiplier.getText());
-            if (Integer.valueOf(String.valueOf(diagInputProduct.getText()))==product){
-                if (stepsIdList.get(stepsIdList.size()-1) == txtNum2.getId()) {
-                    if (stepsIdList.get(stepsIdList.size()-2) == txtDenom1.getId()) {
-                        txtProduct2.setText(diagInputProduct.getText());
-                        txtProduct2.setVisibility(TextView.VISIBLE);
+            if (!diagInputProduct.getText().toString().matches("")) {
+                if (Integer.valueOf(String.valueOf(diagInputProduct.getText())) == product){
+                    if (stepsIdList.get(stepsIdList.size() - 1) == txtNum2.getId()) {
+                        if (stepsIdList.get(stepsIdList.size() - 2) == txtDenom1.getId()) {
+                            txtProduct2.setText(diagInputProduct.getText());
+                            txtProduct2.setVisibility(TextView.VISIBLE);
+                        }
+                    } else if (stepsIdList.get(stepsIdList.size() - 1) == txtNum1.getId()) {
+                        if (stepsIdList.get(stepsIdList.size() - 2) == txtDenom2.getId()) {
+                            txtProduct1.setText(diagInputProduct.getText());
+                            txtProduct1.setVisibility(TextView.VISIBLE);
+                        }
                     }
-                } else if (stepsIdList.get(stepsIdList.size()-1) == txtNum1.getId()) {
-                    if (stepsIdList.get(stepsIdList.size()-2) == txtDenom2.getId()) {
-                        txtProduct1.setText(diagInputProduct.getText());
-                        txtProduct1.setVisibility(TextView.VISIBLE);
+                    resetTxtFractionsColor();
+                    diagInputProduct.setText("");
+                    multiplicationDialog.dismiss();
+                    if (txtProduct1.getVisibility() != TextView.VISIBLE || txtProduct2.getVisibility() != TextView.VISIBLE) {
+                        txtInstruction.setText("Click the other denominator");
                     }
+                    if (txtProduct1.getVisibility() == TextView.VISIBLE && txtProduct2.getVisibility() == TextView.VISIBLE) {
+                        correct();
+                    }
+                } else {
+                    shakeAnimate(diagInputProduct);
                 }
-                resetTxtFractionsColor();
-                diagInputProduct.setText("");
-                multiplicationDialog.dismiss();
-                if(txtProduct1.getVisibility() != TextView.VISIBLE || txtProduct2.getVisibility() != TextView.VISIBLE){
-                    txtInstruction.setText("Click the other denominator");
-                }
-                if(txtProduct1.getVisibility() == TextView.VISIBLE && txtProduct2.getVisibility() == TextView.VISIBLE){
-                    correct();
-                }
-            } else {
+            }  else {
                 shakeAnimate(diagInputProduct);
             }
         }

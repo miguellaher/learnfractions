@@ -121,7 +121,6 @@ public class OrderingSimilarExerciseActivity extends AppCompatActivity {
                 public void run() {
                     questionNum++;
                     setTxtNums();
-                    setTxtNumsListener();
                 }
             }, 2000);
         }

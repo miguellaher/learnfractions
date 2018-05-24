@@ -65,7 +65,7 @@ public class TopicsMenuActivity extends AppCompatActivity {
 
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Comparing Fractions");
-        mClasses.add(ComparingFractionVideoActivity.class);
+        mClasses.add(ComparingFractionsExercise2Activity.class);
 
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Ordering Similar Fractions");

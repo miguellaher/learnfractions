@@ -55,7 +55,8 @@
         <activity android:name=".comparing_fractions.ComparingFractionsExercise2Activity" />
         <activity android:name=".comparing_fractions.ComparingFractionVideoActivity" />
         <activity android:name=".ordering_similar.OrderingSimilarVideoActivity" />
-        <activity android:name=".ordering_similar.OrderingSimilarExerciseActivity"></activity>
+        <activity android:name=".ordering_similar.OrderingSimilarExerciseActivity" />
+        <activity android:name=".ordering_similar.OrderingSimilarExercise2Activity"></activity>
     </application>
 
 </manifest>
