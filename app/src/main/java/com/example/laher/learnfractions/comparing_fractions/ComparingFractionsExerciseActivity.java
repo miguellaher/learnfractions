@@ -10,11 +10,6 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.Fraction;
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.TopicsMenuActivity;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
 
 public class ComparingFractionsExerciseActivity extends AppCompatActivity {
     //TOOLBAR
@@ -42,7 +37,7 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ComparingFractionsExerciseActivity.this,
-                        ComparingFractionVideoActivity.class);
+                        ComparingFractionsVideoActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -143,7 +138,7 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     Intent intent = new Intent(ComparingFractionsExerciseActivity.this,
-                            ComparingFractionVideoActivity.class);
+                            ComparingFractionsVideoActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }

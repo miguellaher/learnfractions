@@ -14,7 +14,7 @@ import android.widget.VideoView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 
-public class ComparingFractionVideoActivity extends AppCompatActivity {
+public class ComparingFractionsVideoActivity extends AppCompatActivity {
     Button btnBack, btnNext;
     TextView txtTitle;
     public final String TITLE = "Comparing Fractions";
@@ -29,7 +29,7 @@ public class ComparingFractionVideoActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ComparingFractionVideoActivity.this,
+                Intent intent = new Intent(ComparingFractionsVideoActivity.this,
                         TopicsMenuActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -41,7 +41,7 @@ public class ComparingFractionVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
-                Intent intent = new Intent(ComparingFractionVideoActivity.this,
+                Intent intent = new Intent(ComparingFractionsVideoActivity.this,
                         ComparingFractionsExerciseActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

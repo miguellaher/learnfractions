@@ -9,12 +9,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.laher.learnfractions.comparing_dissimilar_fractions.ComparingDissimilarVideoActivity;
-import com.example.laher.learnfractions.comparing_fractions.ComparingFractionVideoActivity;
-import com.example.laher.learnfractions.comparing_fractions.ComparingFractionsExercise2Activity;
+import com.example.laher.learnfractions.comparing_fractions.ComparingFractionsVideoActivity;
 import com.example.laher.learnfractions.comparing_similar_fractions.ComparingSimilarVideoActivity;
 import com.example.laher.learnfractions.fractionmeaning.FractionMeaningVideoActivity;
 import com.example.laher.learnfractions.non_visual_fraction.NonVisualVideoActivity;
-import com.example.laher.learnfractions.ordering_similar.OrderingSimilarExerciseActivity;
 import com.example.laher.learnfractions.ordering_similar.OrderingSimilarVideoActivity;
 
 import java.util.ArrayList;
@@ -65,7 +63,7 @@ public class TopicsMenuActivity extends AppCompatActivity {
 
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Comparing Fractions");
-        mClasses.add(ComparingFractionsExercise2Activity.class);
+        mClasses.add(ComparingFractionsVideoActivity.class);
 
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Ordering Similar Fractions");

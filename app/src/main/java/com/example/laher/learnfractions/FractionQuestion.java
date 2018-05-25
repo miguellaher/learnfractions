@@ -22,6 +22,12 @@ public class FractionQuestion {
     public Fraction getFractionTwo() {
         return fractionTwo;
     }
+    public Fraction getFractionThree() {
+        return fractionThree;
+    }
+    public ArrayList<Fraction> getFractions() {
+        return fractions;
+    }
     public String getAnswer() {
         return answer;
     }
@@ -33,6 +39,9 @@ public class FractionQuestion {
     }
     public void setFractionTwo(Fraction fractionTwo) {
         this.fractionTwo = fractionTwo;
+    }
+    public void setFractionThree(Fraction fractionThree) {
+        this.fractionThree = fractionThree;
     }
 
     public FractionQuestion(){
@@ -62,6 +71,20 @@ public class FractionQuestion {
         }
         if (context == ORDERING_SIMILAR){
             fractionThree = new Fraction();
+            while (!(fractionOne.getDenominator()==fractionTwo.getDenominator()
+                    &&fractionTwo.getDenominator()==fractionThree.getDenominator()&&
+            fractionOne.getNumerator()!=fractionTwo.getNumerator()&&
+            fractionTwo.getNumerator()!=fractionThree.getNumerator()&&
+            fractionOne.getNumerator()!=fractionThree.getNumerator()) &&
+                    !(fractionOne.getNumerator()==fractionTwo.getNumerator()&&
+                            fractionTwo.getNumerator()==fractionThree.getNumerator()&&
+                            fractionOne.getDenominator()!=fractionTwo.getDenominator()&&
+                            fractionTwo.getDenominator()!=fractionThree.getDenominator()&&
+                            fractionOne.getDenominator()!=fractionThree.getDenominator())){
+                fractionTwo = new Fraction();
+                fractionThree = new Fraction();
+            }
+            fractions = new ArrayList<>();
             fractions.add(fractionOne);
             fractions.add(fractionTwo);
             fractions.add(fractionThree);

@@ -30,14 +30,16 @@ public class Fraction implements Comparable<Fraction>{
         denominator = (int) (Math.random() * maximum + minimum);
     }
     public Double getValue(){
-        return Double.valueOf(numerator/denominator);
+        Double num = Double.valueOf(numerator);
+        Double denom = Double.valueOf(denominator);
+        return num/denom;
     }
 
     @Override
     public int compareTo(@NonNull Fraction o) {
         if(this.getValue()>o.getValue()){
             return 1;
-        } else if(this.getValue()>o.getValue()){
+        } else if(this.getValue()<o.getValue()){
             return -1;
         }
         return 0;

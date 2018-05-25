@@ -51,11 +51,10 @@ public class OrderingSimilarExerciseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
-                /*
-                Intent intent = new Intent(ComparingFractionsExercise2Activity.this,
-                        TopicsMenuActivity.class);
+                Intent intent = new Intent(OrderingSimilarExerciseActivity.this,
+                        OrderingSimilarExercise2Activity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);*/
+                startActivity(intent);
             }
         });
         txtTitle = (TextView) findViewById(R.id.txtTitle);
@@ -154,6 +153,7 @@ public class OrderingSimilarExerciseActivity extends AppCompatActivity {
                     correct();
                 }
             } else {
+                t.setTextColor(Color.rgb(255,0,0));
                 wrong();
             }
         }
