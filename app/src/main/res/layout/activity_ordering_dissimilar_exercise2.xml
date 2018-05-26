@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ordering_dissimilar.OrderingDissimilarExercise2Activity">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/od_imgAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/avatar" />
+
+        <TextView
+            android:id="@+id/os_txtInstruction2"
+            android:layout_width="0dp"
+            android:layout_height="57dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="type the numerator"
+            app:layout_constraintBottom_toBottomOf="@+id/od_imgAvatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/od_imgAvatar"
+            app:layout_constraintTop_toTopOf="@+id/od_imgAvatar" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/od_fraction6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/od_fraction5"
+            app:layout_constraintStart_toEndOf="@+id/od_fraction5"
+            app:layout_constraintTop_toTopOf="@+id/od_fraction5">
+
+            <ImageView
+                android:id="@+id/od_imgLine"
+                android:layout_width="70dp"
+                android:layout_height="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/line" />
+
+            <TextView
+                android:id="@+id/od_txtNum6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+
+            <TextView
+                android:id="@+id/od_txtDenom6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/od_fraction5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            app:layout_constraintTop_toBottomOf="@+id/od_fraction2"
+            tools:layout_editor_absoluteX="149dp">
+
+            <ImageView
+                android:id="@+id/od_imgLine"
+                android:layout_width="70dp"
+                android:layout_height="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/line" />
+
+            <TextView
+                android:id="@+id/od_txtNum5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+
+            <TextView
+                android:id="@+id/od_txtDenom5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/od_fraction4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/od_fraction5"
+            app:layout_constraintEnd_toStartOf="@+id/od_fraction5"
+            app:layout_constraintTop_toTopOf="@+id/od_fraction5">
+
+            <ImageView
+                android:id="@+id/od_imgLine"
+                android:layout_width="70dp"
+                android:layout_height="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/line" />
+
+            <TextView
+                android:id="@+id/od_txtNum4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+
+            <TextView
+                android:id="@+id/od_txtDenom4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/od_fraction3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/od_fraction2"
+            app:layout_constraintStart_toEndOf="@+id/od_fraction2"
+            app:layout_constraintTop_toTopOf="@+id/od_fraction2">
+
+            <ImageView
+                android:id="@+id/od_imgLine"
+                android:layout_width="70dp"
+                android:layout_height="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/line" />
+
+            <TextView
+                android:id="@+id/od_txtNum3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+
+            <TextView
+                android:id="@+id/od_txtDenom3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/od_fraction2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/od_txtScore">
+
+            <ImageView
+                android:id="@+id/od_imgLine"
+                android:layout_width="70dp"
+                android:layout_height="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/line" />
+
+            <TextView
+                android:id="@+id/od_txtNum2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+
+            <TextView
+                android:id="@+id/od_txtDenom2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/od_txtScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="99 / 99"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/od_fraction1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/od_fraction2"
+            app:layout_constraintEnd_toStartOf="@+id/od_fraction2"
+            app:layout_constraintTop_toTopOf="@+id/od_fraction2">
+
+            <ImageView
+                android:id="@+id/od_imgLine"
+                android:layout_width="70dp"
+                android:layout_height="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/line" />
+
+            <TextView
+                android:id="@+id/od_txtNum1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+
+            <TextView
+                android:id="@+id/od_txtDenom1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/od_txtEquation1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="99x99="
+            app:layout_constraintBottom_toTopOf="@+id/od_fraction4"
+            app:layout_constraintStart_toStartOf="@+id/od_fraction4" />
+
+        <TextView
+            android:id="@+id/od_txtEquation2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="99x99="
+            app:layout_constraintBottom_toTopOf="@+id/od_fraction5"
+            app:layout_constraintStart_toStartOf="@+id/od_fraction5" />
+
+        <TextView
+            android:id="@+id/od_txtEquation3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="99x99="
+            app:layout_constraintBottom_toTopOf="@+id/od_fraction6"
+            app:layout_constraintStart_toStartOf="@+id/od_fraction6" />
+    </android.support.constraint.ConstraintLayout>
+
+
+</LinearLayout>

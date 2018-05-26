@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.ordering_similar;
+package com.example.laher.learnfractions.ordering_dissimilar;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -14,7 +14,7 @@ import android.widget.VideoView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 
-public class OrderingSimilarVideoActivity extends AppCompatActivity {
+public class OrderingDissimilarVideoActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -25,13 +25,11 @@ public class OrderingSimilarVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-
-
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OrderingSimilarVideoActivity.this,
+                Intent intent = new Intent(OrderingDissimilarVideoActivity.this,
                         TopicsMenuActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -42,11 +40,11 @@ public class OrderingSimilarVideoActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // CHANGE INTENT PARAMS
-                Intent intent = new Intent(OrderingSimilarVideoActivity.this,
+                /* CHANGE INTENT PARAMS
+                Intent intent = new Intent(OrderingDissimilarVideoActivity.this,
                         OrderingSimilarExerciseActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
         txtTitle = (TextView) findViewById(R.id.txtTitle);
