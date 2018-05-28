@@ -12,6 +12,7 @@ public class FractionQuestion {
     public final static String COMPARING_SIMILAR = "COMPARING_SIMILAR";
     public final static String COMPARING_DISSIMILAR = "COMPARING_DISSIMILAR";
     public final static String ORDERING_SIMILAR = "ORDERING_SIMILAR";
+    public final static String ORDERING_DISSIMILAR = "ORDERING_DISSIMILAR";
     public final static String ANSWER_GREATER = ">";
     public final static String ANSWER_EQUAL = "=";
     public final static String ANSWER_LESS = "<";
@@ -84,10 +85,21 @@ public class FractionQuestion {
                 fractionTwo = new Fraction();
                 fractionThree = new Fraction();
             }
-            fractions = new ArrayList<>();
-            fractions.add(fractionOne);
-            fractions.add(fractionTwo);
-            fractions.add(fractionThree);
+            addAllToFractionList();
+            Collections.sort(fractions);
+        }
+        if (context == ORDERING_DISSIMILAR){
+            fractionThree = new Fraction();
+            while((fractionOne.getNumerator()==fractionTwo.getNumerator()||
+                    fractionTwo.getNumerator()==fractionThree.getNumerator()||
+                    fractionOne.getNumerator()==fractionThree.getNumerator())||
+                    fractionOne.getDenominator()==fractionTwo.getDenominator()||
+                    fractionTwo.getDenominator()==fractionThree.getDenominator()||
+                    fractionOne.getDenominator()==fractionThree.getDenominator()){
+                fractionTwo = new Fraction();
+                fractionThree = new Fraction();
+            }
+            addAllToFractionList();
             Collections.sort(fractions);
         }
     }
@@ -109,6 +121,12 @@ public class FractionQuestion {
                 (fractionOne.getDenominator()*fractionTwo.getNumerator()) ) {
             answer = ANSWER_EQUAL;
         }
+    }
+    public void addAllToFractionList(){
+        fractions = new ArrayList<>();
+        fractions.add(fractionOne);
+        fractions.add(fractionTwo);
+        fractions.add(fractionThree);
     }
 
 

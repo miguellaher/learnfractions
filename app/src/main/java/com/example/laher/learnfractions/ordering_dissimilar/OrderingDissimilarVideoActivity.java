@@ -13,6 +13,7 @@ import android.widget.VideoView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.ordering_similar.OrderingSimilarExerciseActivity;
 
 public class OrderingDissimilarVideoActivity extends AppCompatActivity {
     //TOOLBAR
@@ -40,11 +41,11 @@ public class OrderingDissimilarVideoActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* CHANGE INTENT PARAMS
+                // CHANGE INTENT PARAMS
                 Intent intent = new Intent(OrderingDissimilarVideoActivity.this,
                         OrderingSimilarExerciseActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);*/
+                startActivity(intent);
             }
         });
         txtTitle = (TextView) findViewById(R.id.txtTitle);

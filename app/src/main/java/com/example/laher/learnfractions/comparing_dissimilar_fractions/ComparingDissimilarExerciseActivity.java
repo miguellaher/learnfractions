@@ -130,14 +130,11 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                 .start();
     }
     public void diagInputProduct(int num, int denom){
-        int width = (int) (getResources().getDisplayMetrics().widthPixels);
-        int height = (int) (getResources().getDisplayMetrics().heightPixels*0.3);
 
         txtInstruction.setText("Get the product of the clicked numbers.");
 
         diagTxtMultiplicand.setText(String.valueOf(denom));
         diagTxtMultiplier.setText(String.valueOf(num));
-        multiplicationDialog.getWindow().setLayout(width,height);
         multiplicationDialog.setCancelable(false);
         multiplicationDialog.setCanceledOnTouchOutside(false);
         multiplicationDialog.show();

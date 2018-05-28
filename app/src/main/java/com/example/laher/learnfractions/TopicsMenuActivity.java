@@ -13,7 +13,9 @@ import com.example.laher.learnfractions.comparing_fractions.ComparingFractionsVi
 import com.example.laher.learnfractions.comparing_similar_fractions.ComparingSimilarVideoActivity;
 import com.example.laher.learnfractions.fractionmeaning.FractionMeaningVideoActivity;
 import com.example.laher.learnfractions.non_visual_fraction.NonVisualVideoActivity;
+import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarExercise2Activity;
 import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarExerciseActivity;
+import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarVideoActivity;
 import com.example.laher.learnfractions.ordering_similar.OrderingSimilarVideoActivity;
 
 import java.util.ArrayList;
@@ -72,7 +74,7 @@ public class TopicsMenuActivity extends AppCompatActivity {
 
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Ordering Dissimilar Fractions");
-        mClasses.add(OrderingDissimilarExerciseActivity.class);
+        mClasses.add(OrderingDissimilarVideoActivity.class);
 
         initRecyclerView();
     }

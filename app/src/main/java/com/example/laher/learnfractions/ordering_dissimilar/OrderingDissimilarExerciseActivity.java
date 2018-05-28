@@ -118,7 +118,7 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         txtNum1.setText(String.valueOf(questions.get(questionNum).getNum1()));
         txtNum2.setText(String.valueOf(questions.get(questionNum).getNum2()));
         txtNum3.setText(String.valueOf(questions.get(questionNum).getNum3()));
-        txtInstruction.setText(questions.get(questionNum).getAnswer());
+        txtInstruction.setText("click all numbers");
     }
     public void setTxtListeners(){
         txtNum1.setOnClickListener(new TxtNumListener());
@@ -177,16 +177,13 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         }
     }
     public void diagInputLcm(){
-        int width = (int) (getResources().getDisplayMetrics().widthPixels);
-        int height = (int) (getResources().getDisplayMetrics().heightPixels*0.4);
-
         diagLcmtxtNum1.setText(String.valueOf(questions.get(questionNum).getNum1()));
         diagLcmtxtNum2.setText(String.valueOf(questions.get(questionNum).getNum2()));
         diagLcmtxtNum3.setText(String.valueOf(questions.get(questionNum).getNum3()));
-        lcmDialog.getWindow().setLayout(width,height);
         lcmDialog.setCancelable(false);
         lcmDialog.setCanceledOnTouchOutside(false);
         lcmDialog.show();
+        txtInstruction.setText("Get the lcm");
     }
     public void removeTxtNumListener(){
         txtNum1.setOnClickListener(null);
