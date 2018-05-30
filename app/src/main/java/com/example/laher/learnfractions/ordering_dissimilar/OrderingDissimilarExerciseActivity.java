@@ -63,7 +63,7 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
                 Intent intent = new Intent(OrderingDissimilarExerciseActivity.this,
-                        OrderingSimilarExercise2Activity.class);
+                        OrderingDissimilarExercise2Activity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }

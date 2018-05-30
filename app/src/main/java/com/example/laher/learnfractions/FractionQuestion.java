@@ -101,6 +101,8 @@ public class FractionQuestion {
             }
             addAllToFractionList();
             Collections.sort(fractions);
+            int[] denominators = {fractionOne.getDenominator(), fractionTwo.getDenominator(), fractionThree.getDenominator()};
+            answer = String.valueOf(Question.getLCM(denominators));
         }
     }
     public FractionQuestion(Fraction fractionOne, Fraction fractionTwo, String Context){

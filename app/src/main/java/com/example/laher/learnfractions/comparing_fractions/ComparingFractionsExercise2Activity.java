@@ -101,7 +101,7 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         btnEqual.setOnClickListener(new BtnAnswerListener());
         btnLess.setOnClickListener(new BtnAnswerListener());
         //MULTIPLICATION DIALOG
-        mdView = getLayoutInflater().inflate(R.layout.layout_dialog_multiplication, null);
+        mdView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         multiplicationDialog = new Dialog(ComparingFractionsExercise2Activity.this);
         multiplicationDialog.setTitle("Multiplication Equation");
         multiplicationDialog.setContentView(mdView);

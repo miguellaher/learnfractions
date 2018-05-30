@@ -16,7 +16,6 @@ import com.example.laher.learnfractions.Fraction;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.comparing_similar_fractions.ComparingSimilarExerciseActivity;
-import com.example.laher.learnfractions.comparing_similar_fractions.ComparingSimilarVideoActivity;
 
 import java.util.ArrayList;
 
@@ -77,7 +76,7 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
         txtTitle.setTextSize(14);
         btnNext.setText("DONE");
         //MULTIPLICATION DIALOG
-        mdView = getLayoutInflater().inflate(R.layout.layout_dialog_multiplication, null);
+        mdView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         multiplicationDialog = new Dialog(ComparingDissimilarExercise2Activity.this);
         multiplicationDialog.setTitle("Multiplication Equation");
         multiplicationDialog.setContentView(mdView);

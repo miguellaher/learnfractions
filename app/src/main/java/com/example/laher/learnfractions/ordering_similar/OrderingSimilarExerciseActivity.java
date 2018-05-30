@@ -114,6 +114,7 @@ public class OrderingSimilarExerciseActivity extends AppCompatActivity {
         removeTxtNumsListener();
         if (consecutiveRights>=requiredConsecutiveCorrects){
             txtInstruction.setText("finish");
+            btnNext.setEnabled(true);
         } else {
             handler.postDelayed(new Runnable() {
                 @Override
