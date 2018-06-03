@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".adding_similar.AddingSimilarExerciseActivity">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/fe_imgAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/avatar" />
+
+        <TextView
+            android:id="@+id/fe_txtInstruction"
+            android:layout_width="0dp"
+            android:layout_height="57dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="solve"
+            app:layout_constraintBottom_toBottomOf="@+id/fe_imgAvatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fe_imgAvatar"
+            app:layout_constraintTop_toTopOf="@+id/fe_imgAvatar" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/fe_clFraction3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/fe_txtEqual"
+            app:layout_constraintStart_toEndOf="@+id/fe_txtEqual"
+            app:layout_constraintTop_toTopOf="@+id/fe_txtEqual">
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/line" />
+
+            <EditText
+                android:id="@+id/fe_inputDenom"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:maxLength="2"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="60sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView11"
+                app:layout_constraintStart_toStartOf="@+id/imageView11"
+                app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+
+            <EditText
+                android:id="@+id/fe_inputNum"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:maxLength="2"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView11"
+                app:layout_constraintEnd_toEndOf="@+id/imageView11"
+                app:layout_constraintStart_toStartOf="@+id/imageView11" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_Fraction2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3">
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/line" />
+
+            <TextView
+                android:id="@+id/fe_txtNum2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView11"
+                app:layout_constraintEnd_toEndOf="@+id/imageView11"
+                app:layout_constraintStart_toStartOf="@+id/imageView11" />
+
+            <TextView
+                android:id="@+id/fe_txtDenom2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textSize="60sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView11"
+                app:layout_constraintStart_toStartOf="@+id/imageView11"
+                app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/fe_txtSign"
+            app:layout_constraintEnd_toStartOf="@+id/fe_txtSign"
+            app:layout_constraintTop_toTopOf="@+id/fe_txtSign">
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/line" />
+
+            <TextView
+                android:id="@+id/fe_txtNum1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView11"
+                app:layout_constraintEnd_toEndOf="@+id/imageView11"
+                app:layout_constraintStart_toStartOf="@+id/imageView11" />
+
+            <TextView
+                android:id="@+id/fe_txtDenom1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textSize="60sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView11"
+                app:layout_constraintStart_toStartOf="@+id/imageView11"
+                app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/fe_txtScore"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="99 / 99"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/fe_txtEqual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="="
+            android:textSize="60sp"
+            app:layout_constraintBottom_toBottomOf="@+id/cl_Fraction2"
+            app:layout_constraintStart_toEndOf="@+id/cl_Fraction2"
+            app:layout_constraintTop_toTopOf="@+id/cl_Fraction2" />
+
+        <TextView
+            android:id="@+id/fe_txtSign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textSize="60sp"
+            app:layout_constraintBottom_toBottomOf="@+id/cl_Fraction2"
+            app:layout_constraintEnd_toStartOf="@+id/cl_Fraction2"
+            app:layout_constraintTop_toTopOf="@+id/cl_Fraction2" />
+
+        <Button
+            android:id="@+id/fe_btnCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="CHECK"
+            app:layout_constraintEnd_toEndOf="@+id/fe_clFraction3"
+            app:layout_constraintStart_toEndOf="@+id/fe_txtEqual"
+            app:layout_constraintTop_toBottomOf="@+id/fe_clFraction3" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

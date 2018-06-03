@@ -13,6 +13,8 @@ public class FractionQuestion {
     public final static String COMPARING_DISSIMILAR = "COMPARING_DISSIMILAR";
     public final static String ORDERING_SIMILAR = "ORDERING_SIMILAR";
     public final static String ORDERING_DISSIMILAR = "ORDERING_DISSIMILAR";
+    public final static String ADDING_FRACTION = "ADDING_FRACTION";
+    public final static String ADDING_SIMILAR = "ADDING_SIMILAR";
     public final static String ANSWER_GREATER = ">";
     public final static String ANSWER_EQUAL = "=";
     public final static String ANSWER_LESS = "<";
@@ -103,6 +105,22 @@ public class FractionQuestion {
             Collections.sort(fractions);
             int[] denominators = {fractionOne.getDenominator(), fractionTwo.getDenominator(), fractionThree.getDenominator()};
             answer = String.valueOf(Question.getLCM(denominators));
+        }
+        if (context == ADDING_FRACTION){
+            int [] denominators = {fractionOne.getDenominator(), fractionTwo.getDenominator()};
+            int lcd = (int) Question.getLCM(denominators);
+            fractionOne.lcdConvert(lcd);
+            fractionTwo.lcdConvert(lcd);
+            int num = fractionOne.getNumerator() + fractionTwo.getNumerator();
+            fractionThree.setNumerator(num);
+            fractionThree.setDenominator(lcd);
+        }
+        if (context == ADDING_SIMILAR) {
+            while (fractionOne.getDenominator() != fractionTwo.getDenominator()){
+                fractionTwo = new Fraction();
+            }
+            int numerator = fractionOne.getNumerator()+fractionTwo.getNumerator();
+            fractionThree = new Fraction(numerator,fractionOne.getDenominator());
         }
     }
     public FractionQuestion(Fraction fractionOne, Fraction fractionTwo, String Context){

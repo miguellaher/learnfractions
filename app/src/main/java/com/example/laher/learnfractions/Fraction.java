@@ -9,6 +9,10 @@ public class Fraction implements Comparable<Fraction>{
     public Fraction(){
         generateRandFraction(9);
     }
+    public Fraction(int num, int denom) {
+        this.numerator = num;
+        this.denominator = denom;
+    }
     public int getNumerator() {
         return numerator;
     }
@@ -33,6 +37,12 @@ public class Fraction implements Comparable<Fraction>{
         Double num = Double.valueOf(numerator);
         Double denom = Double.valueOf(denominator);
         return num/denom;
+    }
+    public void lcdConvert(int lcd){
+        int q = lcd/this.denominator;
+        int p = q*this.numerator;
+        setNumerator(p);
+        setDenominator(lcd);
     }
 
     @Override
