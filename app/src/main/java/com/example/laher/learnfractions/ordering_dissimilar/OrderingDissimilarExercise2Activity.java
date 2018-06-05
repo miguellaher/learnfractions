@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.ordering_dissimilar;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -86,6 +89,7 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         //EQUATION DIALOG
         edView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         equationDialog = new Dialog(OrderingDissimilarExercise2Activity.this);
+        equationDialog.setOnDismissListener(new EquationDialogListener());
         equationDialog.setTitle("Division Equation");
         equationDialog.setContentView(edView);
         diagEdTxtNum1 = (TextView) edView.findViewById(R.id.md_txtMultiplicand);
@@ -98,6 +102,7 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         //LCM DIALOG
         lcmView = getLayoutInflater().inflate(R.layout.layout_dialog_lcm, null);
         lcmDialog = new Dialog(OrderingDissimilarExercise2Activity.this);
+        lcmDialog.setOnDismissListener(new LcmDialogListener());
         lcmDialog.setTitle("Getting the LCD");
         lcmDialog.setContentView(lcmView);
         diagLcmtxtNum1 = (TextView) lcmView.findViewById(R.id.lcm_txtNum1);
@@ -145,6 +150,7 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         consecutiveWrongs = 0;
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
         txtInstruction.setText("correct");
+        removeFractionsListener();
         if (consecutiveRights>=requiredConsecutiveCorrects){
             txtInstruction.setText("finish");
             btnNext.setEnabled(true);
@@ -169,6 +175,7 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         consecutiveRights = 0;
         txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
         txtInstruction.setText("wrong");
+        removeFractionsListener();
         if (consecutiveWrongs>=maxConsecutiveWrongs){
             txtInstruction.setText("you had " + consecutiveWrongs + " consecutive wrongs. Preparing to go back to" +
                     " previous exercise.");
@@ -266,8 +273,6 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         diagLcmtxtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
         diagLcmtxtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
         diagLcmtxtNum3.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionThree().getDenominator()));
-        lcmDialog.setCancelable(false);
-        lcmDialog.setCanceledOnTouchOutside(false);
         lcmDialog.show();
         txtInstruction.setText("Get the lcd.");
     }
@@ -275,8 +280,6 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         diagEdInputAnswer.setText("");
         diagEdTxtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getAnswer()));
         diagEdTxtNum2.setText(String.valueOf(standByTxt.getText()));
-        equationDialog.setCancelable(false);
-        equationDialog.setCanceledOnTouchOutside(false);
         equationDialog.show();
         txtInstruction.setText("Get the quotient.");
     }
@@ -285,8 +288,6 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         diagEdTxtSign.setText("x");
         diagEdTxtNum1.setText(String.valueOf(standByTxtEquation.getText()));
         diagEdTxtNum2.setText(String.valueOf(standByTxt.getText()));
-        equationDialog.setCancelable(false);
-        equationDialog.setCanceledOnTouchOutside(false);
         equationDialog.show();
         txtInstruction.setText("Get the product.");
     }
@@ -324,6 +325,12 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         v.setOnClickListener(null);
         v.setClickable(false);
     }
+    public void removeOnClickListner(View v1, View v2){
+        v1.setOnClickListener(null);
+        v1.setClickable(false);
+        v2.setOnClickListener(null);
+        v2.setClickable(false);
+    }
     public void showTxtView(TextView t){
         t.setVisibility(TextView.VISIBLE);
     }
@@ -347,6 +354,32 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         clFraction2.setClickable(true);
         clFraction3.setClickable(true);
     }
+    public void removeFractionsListener(){
+        clFraction1.setOnClickListener(null);
+        clFraction2.setOnClickListener(null);
+        clFraction3.setOnClickListener(null);
+        clFraction1.setClickable(false);
+        clFraction2.setClickable(false);
+        clFraction3.setClickable(false);
+    }
+    public void removeCorrespondingListener(TextView t){
+        if (t.getId()==txtEquation1.getId()){
+            removeOnClickListner(txtDenom1,txtDenom4);
+        } else if (t.getId()==txtEquation2.getId()) {
+            removeOnClickListner(txtDenom2,txtDenom5);
+        } else if (t.getId()==txtEquation3.getId()) {
+            removeOnClickListner(txtDenom3,txtDenom6);
+        }
+    }
+    public void removeCorrespondingListener2(TextView t){
+        if (t.getId()==txtNum4.getId()){
+            removeOnClickListner(txtNum1,txtEquation1);
+        } else if (t.getId()==txtNum5.getId()) {
+            removeOnClickListner(txtNum2,txtEquation2);
+        } else if (t.getId()==txtNum6.getId()) {
+            removeOnClickListner(txtNum3,txtEquation3);
+        }
+    }
     public class TxtDenomListener implements TextView.OnClickListener{
         @Override
         public void onClick(View v) {
@@ -369,7 +402,6 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
                     setGuiFractionSet2Denominators();
                     showGuiFractionSet2();
                     hideGuiFractionSet2Numerators();
-                    resetTextColors();
                     removeFractionSet1TxtDenomsListner();
                     setTxtQuotientListener();
                     txtInstruction.setText("Divide the lcd to its' corresponding denominator by clicking the two.");
@@ -399,15 +431,12 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
                 if (t.getId() == txtDenom4.getId()) {
                     standByTxt = txtDenom1;
                     standByTxtEquation = txtEquation1;
-                    removeOnClickListner(t);
                 } else if (t.getId() == txtDenom5.getId()) {
                     standByTxt = txtDenom2;
                     standByTxtEquation = txtEquation2;
-                    removeOnClickListner(t);
                 } else if (t.getId() == txtDenom6.getId()) {
                     standByTxt = txtDenom3;
                     standByTxtEquation = txtEquation3;
-                    removeOnClickListner(t);
                 } else {
                     clicks = 0;
                     t.setTextColor(defaultColor);
@@ -417,9 +446,9 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
                 if (t.getId() == standByTxt.getId()){
                     clicks = 0;
                     popUpDivisionDialog();
-                    removeOnClickListner(t);
                 } else {
                     t.setTextColor(defaultColor);
+                    clicks--;
                 }
             }
         }
@@ -435,17 +464,14 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
                     standByTxt = txtNum1;
                     standByTxtEquation = txtEquation1;
                     standByTxtNum = txtNum4;
-                    removeOnClickListner(t);
                 } else if (t.getId() == txtEquation2.getId()) {
                     standByTxt = txtNum2;
                     standByTxtEquation = txtEquation2;
                     standByTxtNum = txtNum5;
-                    removeOnClickListner(t);
                 } else if (t.getId() == txtEquation3.getId()) {
                     standByTxt = txtNum3;
                     standByTxtEquation = txtEquation3;
                     standByTxtNum = txtNum6;
-                    removeOnClickListner(t);
                 } else {
                     clicks = 0;
                     t.setTextColor(defaultColor);
@@ -454,10 +480,10 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
                 t.setTextColor(Color.rgb(0,255,0));
                 if (t.getId() == standByTxt.getId()){
                     clicks = 0;
-                    removeOnClickListner(t);
                     popUpMultiplicationDialog();
                 } else {
                     t.setTextColor(defaultColor);
+                    clicks--;
                 }
             }
         }
@@ -471,7 +497,7 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
                             == Integer.valueOf(String.valueOf(diagEdInputAnswer.getText()))) {
                         standByTxtEquation.setText(String.valueOf(diagEdInputAnswer.getText()));
                         showTxtView(standByTxtEquation);
-                        resetTextColors();
+                        removeCorrespondingListener(standByTxtEquation);
                         txtInstruction.setText("Click another two.");
                         equationDialog.dismiss();
                     } else {
@@ -490,7 +516,7 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
                                 + "x" + String.valueOf(diagEdTxtNum2.getText()) + "=");
                         standByTxtNum.setText(String.valueOf(diagEdInputAnswer.getText()));
                         showTxtView(standByTxtNum);
-                        resetTextColors2();
+                        removeCorrespondingListener2(standByTxtNum);
                         txtInstruction.setText("Click another two.");
                         equationDialog.dismiss();
                     } else {
@@ -539,6 +565,19 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
             if (clicks>=3){
                 correct();
             }
+        }
+    }
+    public class LcmDialogListener implements Dialog.OnDismissListener{
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            resetTextColors();
+        }
+    }
+    public class EquationDialogListener implements Dialog.OnDismissListener{
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            resetTextColors();
+            resetTextColors2();
         }
     }
 }

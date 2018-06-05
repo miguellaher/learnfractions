@@ -61,7 +61,9 @@
         <activity android:name=".ordering_dissimilar.OrderingDissimilarExercise2Activity" />
         <activity android:name=".ordering_dissimilar.OrderingDissimilarExerciseActivity" />
         <activity android:name=".adding_similar.AddingSimilarVideoActivity" />
-        <activity android:name=".adding_similar.AddingSimilarExerciseActivity"></activity>
+        <activity android:name=".adding_similar.AddingSimilarExerciseActivity" />
+        <activity android:name=".classifying_fractions.ClassifyingFractionsVideoActivity" />
+        <activity android:name=".classifying_fractions.ClassifyingFractionsExerciseActivity"></activity>
     </application>
 
 </manifest>

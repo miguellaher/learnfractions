@@ -2,6 +2,7 @@ package com.example.laher.learnfractions;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class FractionQuestion {
     Fraction fractionOne, fractionTwo, fractionThree;
