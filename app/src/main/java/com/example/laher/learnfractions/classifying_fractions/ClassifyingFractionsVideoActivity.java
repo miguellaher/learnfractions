@@ -41,11 +41,11 @@ public class ClassifyingFractionsVideoActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* CHANGE INTENT PARAMS
-                Intent intent = new Intent(OrderingDissimilarVideoActivity.this,
-                        OrderingDissimilarExerciseActivity.class);
+                // CHANGE INTENT PARAMS
+                Intent intent = new Intent(ClassifyingFractionsVideoActivity.this,
+                        ClassifyingFractionsExerciseActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);*/
+                startActivity(intent);
             }
         });
         txtTitle = (TextView) findViewById(R.id.txtTitle);

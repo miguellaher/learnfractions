@@ -12,7 +12,10 @@ import com.example.laher.learnfractions.adding_similar.AddingSimilarExerciseActi
 import com.example.laher.learnfractions.adding_similar.AddingSimilarVideoActivity;
 import com.example.laher.learnfractions.classifying_fractions.ClassifyingFractionsExerciseActivity;
 import com.example.laher.learnfractions.classifying_fractions.ClassifyingFractionsVideoActivity;
+import com.example.laher.learnfractions.comparing_dissimilar_fractions.ComparingDissimilarExercise2Activity;
+import com.example.laher.learnfractions.comparing_dissimilar_fractions.ComparingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.comparing_dissimilar_fractions.ComparingDissimilarVideoActivity;
+import com.example.laher.learnfractions.comparing_fractions.ComparingFractionsExercise2Activity;
 import com.example.laher.learnfractions.comparing_fractions.ComparingFractionsVideoActivity;
 import com.example.laher.learnfractions.comparing_similar_fractions.ComparingSimilarVideoActivity;
 import com.example.laher.learnfractions.fractionmeaning.FractionMeaningVideoActivity;

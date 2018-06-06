@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.comparing_fractions;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -103,6 +104,7 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         //MULTIPLICATION DIALOG
         mdView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         multiplicationDialog = new Dialog(ComparingFractionsExercise2Activity.this);
+        multiplicationDialog.setOnDismissListener(new DiagMultiplicationListener());
         multiplicationDialog.setTitle("Multiplication Equation");
         multiplicationDialog.setContentView(mdView);
         diagTxtMultiplicand = (TextView) mdView.findViewById(R.id.md_txtMultiplicand);
@@ -212,8 +214,6 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
 
         diagTxtMultiplicand.setText(String.valueOf(denom));
         diagTxtMultiplier.setText(String.valueOf(num));
-        multiplicationDialog.setCancelable(false);
-        multiplicationDialog.setCanceledOnTouchOutside(false);
         multiplicationDialog.show();
     }
     public void enableBtnAnswers(boolean bool){
@@ -261,7 +261,7 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
             if (crossMultiplicationStepList.size() == 2){
                 if (crossMultiplicationStepList.get(0) == txtDenom1.getId()){
                     if (crossMultiplicationStepList.get(1) == txtNum2.getId()){
-                        txtNum1.setTextColor(Color.rgb(0,255,0));
+                        txtNum2.setTextColor(Color.rgb(0,255,0));
                         diagInputProduct(fractionQuestions.get(questionNum).getFractionTwo().getNumerator(),
                                 fractionQuestions.get(questionNum).getFractionOne().getDenominator());
                     } else {
@@ -269,7 +269,7 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
                     }
                 } else if (crossMultiplicationStepList.get(0) == txtDenom2.getId()){
                     if (crossMultiplicationStepList.get(1) == txtNum1.getId()){
-                        txtNum2.setTextColor(Color.rgb(0,255,0));
+                        txtNum1.setTextColor(Color.rgb(0,255,0));
                         diagInputProduct(fractionQuestions.get(questionNum).getFractionOne().getNumerator(),
                                 fractionQuestions.get(questionNum).getFractionTwo().getDenominator());
                     } else {
@@ -332,9 +332,25 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
                             txtProduct1.setVisibility(TextView.VISIBLE);
                         }
                     }
-                    resetTxtFractionsColor();
-                    diagInputProduct.setText("");
                     multiplicationDialog.dismiss();
+                }
+            }
+        }
+    }
+    public class DiagMultiplicationListener implements Dialog.OnDismissListener{
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            resetTxtFractionsColor();
+            diagInputProduct.setText("");
+            if (crossMultiplicationStepList.size()==2){
+                if (txtProduct1.getVisibility()==TextView.INVISIBLE && txtProduct2.getVisibility()==TextView.INVISIBLE){
+                    crossMultiplicationStepList.clear();
+                }
+            }
+            if (crossMultiplicationStepList.size()==4){
+                if (txtProduct1.getVisibility()==TextView.INVISIBLE || txtProduct2.getVisibility()==TextView.INVISIBLE){
+                    crossMultiplicationStepList.remove(crossMultiplicationStepList.size()-1);
+                    crossMultiplicationStepList.remove(crossMultiplicationStepList.size()-1);
                 }
             }
         }

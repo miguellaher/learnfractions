@@ -2,6 +2,7 @@ package com.example.laher.learnfractions.comparing_dissimilar_fractions;
 
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -78,6 +79,7 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
         //MULTIPLICATION DIALOG
         mdView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         multiplicationDialog = new Dialog(ComparingDissimilarExercise2Activity.this);
+        multiplicationDialog.setOnDismissListener(new DiagMultiplicationListener());
         multiplicationDialog.setTitle("Multiplication Equation");
         multiplicationDialog.setContentView(mdView);
         diagTxtMultiplicand = (TextView) mdView.findViewById(R.id.md_txtMultiplicand);
@@ -157,8 +159,6 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
 
         diagTxtMultiplicand.setText(String.valueOf(denom));
         diagTxtMultiplier.setText(String.valueOf(num));
-        multiplicationDialog.setCancelable(false);
-        multiplicationDialog.setCanceledOnTouchOutside(false);
         multiplicationDialog.show();
     }
     public void resetTxtFractionsColor(){
@@ -359,8 +359,6 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
                             txtProduct1.setVisibility(TextView.VISIBLE);
                         }
                     }
-                    resetTxtFractionsColor();
-                    diagInputProduct.setText("");
                     multiplicationDialog.dismiss();
                 } else {
                     shakeAnimate(diagInputProduct);
@@ -391,6 +389,25 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
             if (v.getId() == btnLess.getId()){
                 txtCompareSign.setText(LESS_THAN);
                 check(LESS_THAN);
+            }
+        }
+    }
+    public class DiagMultiplicationListener implements Dialog.OnDismissListener{
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            resetTxtFractionsColor();
+            diagInputProduct.setText("");
+            if (stepsIdList.size()==2){
+                if (txtProduct1.getVisibility()==TextView.INVISIBLE && txtProduct2.getVisibility()==TextView.INVISIBLE){
+                    stepsIdList.clear();
+                    txtInstruction.setText("Click a denominator");
+                }
+            }
+            if (stepsIdList.size()==4){
+                if (txtProduct1.getVisibility()==TextView.INVISIBLE || txtProduct2.getVisibility()==TextView.INVISIBLE){
+                    stepsIdList.remove(stepsIdList.size()-1);
+                    stepsIdList.remove(stepsIdList.size()-1);
+                }
             }
         }
     }

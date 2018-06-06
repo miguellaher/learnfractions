@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.ordering_dissimilar;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -74,6 +75,7 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         //LCM DIALOG
         lcmView = getLayoutInflater().inflate(R.layout.layout_dialog_lcm, null);
         lcmDialog = new Dialog(OrderingDissimilarExerciseActivity.this);
+        lcmDialog.setOnDismissListener(new LcmDialogListener());
         lcmDialog.setTitle("Getting the LCM");
         lcmDialog.setContentView(lcmView);
         diagLcmtxtNum1 = (TextView) lcmView.findViewById(R.id.lcm_txtNum1);
@@ -180,8 +182,6 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         diagLcmtxtNum1.setText(String.valueOf(questions.get(questionNum).getNum1()));
         diagLcmtxtNum2.setText(String.valueOf(questions.get(questionNum).getNum2()));
         diagLcmtxtNum3.setText(String.valueOf(questions.get(questionNum).getNum3()));
-        lcmDialog.setCancelable(false);
-        lcmDialog.setCanceledOnTouchOutside(false);
         lcmDialog.show();
         txtInstruction.setText("Get the lcm");
     }
@@ -210,8 +210,6 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         public void onClick(View v) {
             if (String.valueOf(diagLcmInputLcm.getText()).matches(questions.get(questionNum).getAnswer())){
                 correct();
-                diagLcmInputLcm.setText("");
-                diagLcmInputLcm.setTextColor(Color.rgb(0,0,0));
                 lcmDialog.dismiss();
             } else {
                 diagLcmInputLcm.setTextColor(Color.rgb(255,0,0));
@@ -223,6 +221,16 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             diagLcmInputLcm.setTextColor(Color.rgb(0,0,0));
             return false;
+        }
+    }
+    public class LcmDialogListener implements Dialog.OnDismissListener{
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            diagLcmInputLcm.setText("");
+            diagLcmInputLcm.setTextColor(Color.rgb(0,0,0));
+            clicks = 0;
+            resetTxtColors();
+            txtInstruction.setText("click all numbers");
         }
     }
 }

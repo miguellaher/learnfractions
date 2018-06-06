@@ -2,6 +2,7 @@ package com.example.laher.learnfractions.comparing_dissimilar_fractions;
 
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -70,6 +71,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
         //MULTIPLICATION DIALOG
         mdView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         multiplicationDialog = new Dialog(ComparingDissimilarExerciseActivity.this);
+        multiplicationDialog.setOnDismissListener(new DiagMultiplicationListener());
         multiplicationDialog.setTitle("Multiplication Equation");
         multiplicationDialog.setContentView(mdView);
         diagTxtMultiplicand = (TextView) mdView.findViewById(R.id.md_txtMultiplicand);
@@ -129,13 +131,10 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                 .start();
     }
     public void diagInputProduct(int num, int denom){
-
         txtInstruction.setText("Get the product of the clicked numbers.");
 
         diagTxtMultiplicand.setText(String.valueOf(denom));
         diagTxtMultiplier.setText(String.valueOf(num));
-        multiplicationDialog.setCancelable(false);
-        multiplicationDialog.setCanceledOnTouchOutside(false);
         multiplicationDialog.show();
     }
     public void resetTxtFractionsColor(){
@@ -281,8 +280,6 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                             txtProduct1.setVisibility(TextView.VISIBLE);
                         }
                     }
-                    resetTxtFractionsColor();
-                    diagInputProduct.setText("");
                     multiplicationDialog.dismiss();
                     if (txtProduct1.getVisibility() != TextView.VISIBLE || txtProduct2.getVisibility() != TextView.VISIBLE) {
                         txtInstruction.setText("Click the other denominator");
@@ -295,6 +292,25 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                 }
             }  else {
                 shakeAnimate(diagInputProduct);
+            }
+        }
+    }
+    public class DiagMultiplicationListener implements Dialog.OnDismissListener{
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            resetTxtFractionsColor();
+            diagInputProduct.setText("");
+            if (stepsIdList.size()==2){
+                if (txtProduct1.getVisibility()==TextView.INVISIBLE && txtProduct2.getVisibility()==TextView.INVISIBLE){
+                    stepsIdList.clear();
+                    txtInstruction.setText("Click a denominator");
+                }
+            }
+            if (stepsIdList.size()==4){
+                if (txtProduct1.getVisibility()==TextView.INVISIBLE || txtProduct2.getVisibility()==TextView.INVISIBLE){
+                    stepsIdList.remove(stepsIdList.size()-1);
+                    stepsIdList.remove(stepsIdList.size()-1);
+                }
             }
         }
     }
