@@ -96,17 +96,29 @@ public class Fraction implements Comparable<Fraction>{
         if (newWholeNum>0){
             this.wholeNum = newWholeNum;
             this.numerator = newNum;
+            this.context = Fraction.MIXED;
+        }
+    }
+    public void toImproper(){
+        if (this.context == Fraction.MIXED) {
+            int newNum = (denominator * wholeNum) + numerator;
+            this.wholeNum = 0;
+            this.numerator = newNum;
+            this.context = Fraction.IMPROPER;
         }
     }
     public Fraction mixed(){
         int newNum = numerator%denominator;
         int newWholeNum = numerator/denominator;
-        Fraction newFraction = new Fraction();
-        newFraction.wholeNum = newWholeNum;
-        newFraction.numerator = newNum;
-        newFraction.denominator = denominator;
-        newFraction.setContext(Fraction.MIXED);
-        return newFraction;
+        if (wholeNum>0) {
+            Fraction newFraction = new Fraction();
+            newFraction.wholeNum = newWholeNum;
+            newFraction.numerator = newNum;
+            newFraction.denominator = denominator;
+            newFraction.setContext(Fraction.MIXED);
+            return newFraction;
+        }
+        return null;
     }
     public Double getValue(){
         Double num = Double.valueOf(numerator);

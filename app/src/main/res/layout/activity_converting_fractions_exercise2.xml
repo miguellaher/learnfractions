@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".converting_fractions.ConvertingFractionsExercise2Activity">
+
+    <include layout="@layout/layout_toolbar"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/cvt_imgAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/avatar" />
+
+        <TextView
+            android:id="@+id/cvt2_txtInstruction"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Convert"
+            app:layout_constraintBottom_toBottomOf="@+id/cvt_imgAvatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cvt_imgAvatar"
+            app:layout_constraintTop_toTopOf="@+id/cvt_imgAvatar" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout6"
+            android:layout_width="wrap_content"
+            android:layout_height="187dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3">
+
+            <EditText
+                android:id="@+id/cvt2_inputDenom"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:maxLength="2"
+                android:textAlignment="center"
+                android:textSize="40sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView15"
+                app:layout_constraintStart_toStartOf="@+id/imageView15"
+                app:layout_constraintTop_toBottomOf="@+id/imageView15" />
+
+            <ImageView
+                android:id="@+id/imageView15"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="@+id/textView"
+                app:srcCompat="@drawable/line" />
+
+            <ImageView
+                android:id="@+id/imageView16"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintEnd_toStartOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="@+id/textView"
+                app:srcCompat="@drawable/line" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="="
+                android:textSize="60sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/cvt2_txtWholeNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+                app:layout_constraintEnd_toStartOf="@+id/imageView16"
+                app:layout_constraintTop_toTopOf="@+id/imageView16" />
+
+            <TextView
+                android:id="@+id/cvt2_txtDenom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="60sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView16"
+                app:layout_constraintStart_toStartOf="@+id/imageView16"
+                app:layout_constraintTop_toBottomOf="@+id/imageView16" />
+
+            <TextView
+                android:id="@+id/cvt2_txtNum2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView15"
+                app:layout_constraintEnd_toEndOf="@+id/imageView15"
+                app:layout_constraintStart_toStartOf="@+id/imageView15" />
+
+            <TextView
+                android:id="@+id/cvt2_txtNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textAlignment="center"
+                android:textSize="60sp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView16"
+                app:layout_constraintEnd_toEndOf="@+id/imageView16"
+                app:layout_constraintStart_toStartOf="@+id/imageView16" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/cvt2_txtScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="99 / 99"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/cvt2_btnCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="CHECK"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout6"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
+
+        <TextView
+            android:id="@+id/cvt2_txtEquation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:text="99 + 99 ="
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout6" />
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

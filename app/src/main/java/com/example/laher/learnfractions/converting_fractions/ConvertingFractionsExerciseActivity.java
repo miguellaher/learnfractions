@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,9 +40,8 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
     Fraction fraction;
     ArrayList<Fraction> fractions;
     int questionNum;
-    int consecutiveRights, consecutiveWrongs;
+    int consecutiveRights;
     int requiredConsecutiveCorrects = 10;
-    int maxConsecutiveWrongs = 3;
     int clicks;
     final Handler handler = new Handler();
     ColorStateList defaultColor;
@@ -67,7 +67,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //CHANGE INTENT PARAMS
                 Intent intent = new Intent(ConvertingFractionsExerciseActivity.this,
-                        TopicsMenuActivity.class);
+                        ConvertingFractionsExercise2Activity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -77,10 +77,9 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         txtTitle.setTextSize(14);
         //GUI
         txtNum1 = (TextView) findViewById(R.id.cvt_txtNum1);
-        txtNum1.setOnClickListener(new TxtFractionListener());
         txtDenom1 = (TextView) findViewById(R.id.cvt_txtDenom1);
-        txtDenom1.setOnClickListener(new TxtFractionListener());
         txtScore = (TextView) findViewById(R.id.cvt_txtScore);
+        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
         txtInstruction = (TextView) findViewById(R.id.cvt_txtInstruction);
         txtQuotient = (TextView) findViewById(R.id.cvt_txtQuotient);
         txtRemainder = (TextView) findViewById(R.id.cvt_txtRemainder);
@@ -101,6 +100,8 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         diagDdTxtSign = (TextView) ddView.findViewById(R.id.dd_txtSign);
         diagDdInputAnswer = (EditText) ddView.findViewById(R.id.dd_inputProduct);
         diagDdInputRemainder = (EditText) ddView.findViewById(R.id.dd_inputRemainder);
+        diagDdInputAnswer.setOnKeyListener(new DiagInputListener());
+        diagDdInputRemainder.setOnKeyListener(new DiagInputListener());
         //diagEdInputAnswer.setOnKeyListener(new DiagTxtInputAnswerListener());
         diagDdBtnCheck = (Button) ddView.findViewById(R.id.dd_btnCheck);
         diagDdBtnCheck.setOnClickListener(new DiagDdBtnCheckListener());
@@ -116,9 +117,23 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
     }
     public void correct(){
         consecutiveRights++;
-        questionNum++;
-        setGuiFraction();
-        setUp();
+        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        setInputEnabled(false);
+        btnCheck.setEnabled(false);
+        if (consecutiveRights >= requiredConsecutiveCorrects){
+            btnNext.setEnabled(true);
+            txtInstruction.setText("Finished");
+        } else {
+            txtInstruction.setText("Correct");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    questionNum++;
+                    setGuiFraction();
+                    setUp();
+                }
+            },2000);
+        }
     }
     public void setQuestions(){
         questionNum = 0;
@@ -136,8 +151,9 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         txtDenom1.setText(String.valueOf(fractions.get(questionNum).getDenominator()));
     }
     public void setUp(){
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
-        txtInstruction.setText("Divide the denominator and numerator by clicking the two.");
+        txtInstruction.setText("To divide the numerator by the denominator, click the numerator first and the " +
+                "denominator second.");
+        setFractionTxtListener(true);
         setAnswerVisibility(false);
         setInputEnabled(false);
         btnCheck.setEnabled(false);
@@ -179,6 +195,17 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
                 .setDuration(1000)
                 .start();
     }
+    public void setFractionTxtListener(boolean bool){
+        if (bool) {
+            txtNum1.setOnClickListener(new TxtFractionListener());
+            txtDenom1.setOnClickListener(new TxtFractionListener());
+        } else {
+            txtNum1.setOnClickListener(null);
+            txtDenom1.setOnClickListener(null);
+        }
+        txtNum1.setClickable(bool);
+        txtDenom1.setClickable(bool);
+    }
     public class TxtFractionListener implements TextView.OnClickListener{
         @Override
         public void onClick(View v) {
@@ -219,6 +246,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
                     setInputEnabled(true);
                     inputWholeNum.requestFocus();
                     btnCheck.setEnabled(true);
+                    setFractionTxtListener(false);
                     divisionDialog.dismiss();
                     txtInstruction.setText("The quotient will be the whole number. The remainder will be the numerator. " +
                             "The denominator remains the same.");
@@ -263,6 +291,14 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         public void onDismiss(DialogInterface dialog) {
             txtNum1.setTextColor(defaultColor);
             txtDenom1.setTextColor(defaultColor);
+        }
+    }
+    public class DiagInputListener implements EditText.OnKeyListener{
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            TextView t = (TextView) v;
+            t.setTextColor(Color.rgb(0,0,0));
+            return false;
         }
     }
 }
