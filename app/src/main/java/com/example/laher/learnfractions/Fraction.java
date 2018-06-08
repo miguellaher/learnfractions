@@ -118,7 +118,7 @@ public class Fraction implements Comparable<Fraction>{
             newFraction.setContext(Fraction.MIXED);
             return newFraction;
         }
-        return null;
+        return this;
     }
     public Double getValue(){
         Double num = Double.valueOf(numerator);
