@@ -90,6 +90,24 @@ public class Fraction implements Comparable<Fraction>{
             generateRandFraction(9);
         }
     }
+    public void toMixed(){
+        int newNum = numerator%denominator;
+        int newWholeNum = numerator/denominator;
+        if (newWholeNum>0){
+            this.wholeNum = newWholeNum;
+            this.numerator = newNum;
+        }
+    }
+    public Fraction mixed(){
+        int newNum = numerator%denominator;
+        int newWholeNum = numerator/denominator;
+        Fraction newFraction = new Fraction();
+        newFraction.wholeNum = newWholeNum;
+        newFraction.numerator = newNum;
+        newFraction.denominator = denominator;
+        newFraction.setContext(Fraction.MIXED);
+        return newFraction;
+    }
     public Double getValue(){
         Double num = Double.valueOf(numerator);
         Double denom = Double.valueOf(denominator);

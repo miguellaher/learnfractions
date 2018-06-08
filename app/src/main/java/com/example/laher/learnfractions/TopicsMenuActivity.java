@@ -18,6 +18,7 @@ import com.example.laher.learnfractions.comparing_dissimilar_fractions.Comparing
 import com.example.laher.learnfractions.comparing_fractions.ComparingFractionsExercise2Activity;
 import com.example.laher.learnfractions.comparing_fractions.ComparingFractionsVideoActivity;
 import com.example.laher.learnfractions.comparing_similar_fractions.ComparingSimilarVideoActivity;
+import com.example.laher.learnfractions.converting_fractions.ConvertingFractionsExerciseActivity;
 import com.example.laher.learnfractions.fractionmeaning.FractionMeaningVideoActivity;
 import com.example.laher.learnfractions.non_visual_fraction.NonVisualVideoActivity;
 import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarExercise2Activity;
@@ -86,6 +87,10 @@ public class TopicsMenuActivity extends AppCompatActivity {
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Classifying Fractions");
         mClasses.add(ClassifyingFractionsVideoActivity.class);
+
+        mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
+        mNames.add("Converting Fractions");
+        mClasses.add(ConvertingFractionsExerciseActivity.class);
 
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Adding Similar Fractions");
