@@ -92,7 +92,7 @@ public class TopicsMenuActivity extends AppCompatActivity {
 
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Converting Fractions");
-        mClasses.add(ConvertingFractionsExercise2Activity.class);
+        mClasses.add(ConvertingFractionsVideoActivity.class);
 
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Adding Similar Fractions");
