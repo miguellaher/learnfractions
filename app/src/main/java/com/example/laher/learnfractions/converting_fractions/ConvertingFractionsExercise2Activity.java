@@ -41,7 +41,7 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
     int questionNum;
     int consecutiveRights;
     int requiredConsecutiveCorrects = 10;
-    int clicks;
+    ArrayList<Integer> viewId;
     final Handler handler = new Handler();
     ColorStateList defaultColor;
     @Override
@@ -102,6 +102,7 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
         diagEdBtnCheck = (Button) edView.findViewById(R.id.md_btnCheck);
         diagEdBtnCheck.setOnClickListener(new DiagEdBtnCheckListener());
         defaultColor = txtDenom1.getTextColors();
+        viewId = new ArrayList<>();
 
         go();
     }
@@ -200,21 +201,24 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             TextView t = (TextView) v;
-            if (clicks == 0){
-                if (t.getId()==txtEquation.getId()
-                        || t.getId()== txtDenom1.getId()) {
-                    clicks++;
+            viewId.add(t.getId());
+            if (viewId.size()==1){
+                if (viewId.get(0)==txtEquation.getId()
+                        || viewId.get(0)== txtDenom1.getId()) {
                     Styles.paintGreen(t);
+                } else {
+                    viewId.clear();
                 }
             }
-            if (clicks == 1){
-                clicks=0;
-                Styles.paintGreen(t);
-                if (t.getId()==txtWholeNum.getId()){
+            if (viewId.size()==2){
+                if (viewId.get(1)==txtWholeNum.getId()){
                     popUpMultiplicationDialog();
-                }
-                if (t.getId()== txtNum1.getId()){
+                    Styles.paintGreen(t);
+                } else if (viewId.get(1)== txtNum1.getId()){
                     popUpAddDialog();
+                    Styles.paintGreen(t);
+                } else {
+                    viewId.remove(viewId.size()-1);
                 }
             }
         }
@@ -222,11 +226,11 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
     public class DiagEdBtnCheckListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            if (!diagEdInputAnswer.getText().toString().matches("")){
+            if (!diagEdInputAnswer.getText().toString().trim().matches("")){
                 if (String.valueOf(diagEdTxtSign.getText())=="+") {
                     if (Integer.valueOf(String.valueOf(diagEdTxtNum1.getText()))
                             + Integer.valueOf(String.valueOf(diagEdTxtNum2.getText()))
-                            == Integer.valueOf(String.valueOf(diagEdInputAnswer.getText()))){
+                            == Integer.valueOf(String.valueOf(diagEdInputAnswer.getText().toString().trim()))){
                         txtEquation.setText(txtEquation.getText()+" + "
                                 + String.valueOf(fractions.get(questionNum).getNumerator())
                                 + " =");
@@ -234,16 +238,16 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
                         setInputEnabled(true);
                         inputDenom.requestFocus();
                         btnCheck.setEnabled(true);
-                        txtNum2.setText(String.valueOf(diagEdInputAnswer.getText()));
+                        txtNum2.setText(String.valueOf(diagEdInputAnswer.getText().toString().trim()));
                         fractions.get(questionNum).toImproper();
                         equationDialog.dismiss();
                         txtInstruction.setText("The new denominator remains the same.");
                     } else {
                         Styles.shakeAnimate(diagEdInputAnswer);
                     }
-                } else {
+                } else if (String.valueOf(diagEdTxtSign.getText())=="x"){
                     if (fractions.get(questionNum).getDenominator() * fractions.get(questionNum).getWholeNum()
-                            == Integer.valueOf(String.valueOf(diagEdInputAnswer.getText()))) {
+                            == Integer.valueOf(String.valueOf(diagEdInputAnswer.getText().toString().trim()))) {
                         txtEquation.setText(String.valueOf(diagEdInputAnswer.getText()));
                         txtEquation.setVisibility(TextView.VISIBLE);
                         setMultiplyTxtListeners(false);
@@ -268,13 +272,14 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
         @Override
         public void onShow(DialogInterface dialog) {
             diagEdInputAnswer.setText("");
+            viewId.clear();
         }
     }
     public class BtnCheckListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
             if (!inputDenom.getText().toString().matches("")){
-                if (Integer.valueOf(String.valueOf(inputDenom.getText()))
+                if (Integer.valueOf(String.valueOf(inputDenom.getText().toString().trim()))
                         ==fractions.get(questionNum).getDenominator()){
                     correct();
                 } else {

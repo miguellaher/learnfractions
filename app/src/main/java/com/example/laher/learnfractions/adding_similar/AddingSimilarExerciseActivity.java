@@ -183,6 +183,7 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
     public class BtnCheckListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
+
             if (inputNum.getText().toString().trim().length() != 0 &&
                     inputDenom.getText().toString().trim().length() != 0 ) {
                 if (Integer.valueOf(String.valueOf(inputNum.getText()))

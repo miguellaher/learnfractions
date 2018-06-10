@@ -140,7 +140,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         fractions = new ArrayList<>();
         for (int i = 0; i < requiredConsecutiveCorrects; i++){
             fraction = new Fraction(Fraction.IMPROPER);
-            while (fraction.mixed().getNumerator()==0){
+            while (fraction.getNumerator()%fraction.getDenominator()==0){
                 fraction = new Fraction(Fraction.IMPROPER);
             }
             fractions.add(fraction);
