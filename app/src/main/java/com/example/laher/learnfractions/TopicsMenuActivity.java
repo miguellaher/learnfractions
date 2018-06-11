@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.laher.learnfractions.adding_dissimilar.AddingDissimilarExerciseActivity;
+import com.example.laher.learnfractions.adding_dissimilar.AddingDissimilarVideoActivity;
 import com.example.laher.learnfractions.adding_similar.AddingSimilarExerciseActivity;
 import com.example.laher.learnfractions.adding_similar.AddingSimilarVideoActivity;
 import com.example.laher.learnfractions.classifying_fractions.ClassifyingFractionsExerciseActivity;
@@ -28,6 +29,9 @@ import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarEx
 import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarVideoActivity;
 import com.example.laher.learnfractions.ordering_similar.OrderingSimilarVideoActivity;
+import com.example.laher.learnfractions.subtracting_dissimilar.SubtractingDissimilarExerciseActivity;
+import com.example.laher.learnfractions.subtracting_similar.SubtractingSimilarExerciseActivity;
+import com.example.laher.learnfractions.subtracting_similar.SubtractingSimilarVideoActivity;
 
 import java.util.ArrayList;
 
@@ -101,11 +105,18 @@ public class TopicsMenuActivity extends AppCompatActivity {
 
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Adding Dissimilar Fractions");
-        mClasses.add(AddingDissimilarExerciseActivity.class);
+        mClasses.add(AddingDissimilarVideoActivity.class);
+
+        mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
+        mNames.add("Subtracting Similar Fractions");
+        mClasses.add(SubtractingSimilarVideoActivity.class);
+
+        mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
+        mNames.add("Subtracting Dissimilar Fractions");
+        mClasses.add(SubtractingDissimilarExerciseActivity.class);
 
         initRecyclerView();
     }
-
     private void initRecyclerView(){
         Log.d(TAG, "initRecyclerView: init recyclerview.");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_topics);
@@ -113,7 +124,6 @@ public class TopicsMenuActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
     public class BtnBackListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {

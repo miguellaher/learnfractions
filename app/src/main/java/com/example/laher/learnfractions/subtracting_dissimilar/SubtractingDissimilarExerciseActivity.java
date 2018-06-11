@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.adding_dissimilar;
+package com.example.laher.learnfractions.subtracting_dissimilar;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -20,14 +20,14 @@ import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
-public class AddingDissimilarExerciseActivity extends AppCompatActivity {
+public class SubtractingDissimilarExerciseActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Adding Fractions";
+    public final String TITLE = "Subtracting Fractions";
     //GUI
     TextView txtNum1, txtNum2, txtNum3, txtNum4, txtDenom1, txtDenom2, txtDenom3, txtDenom4, txtEquation1, txtEquation2
-            , txtScore, txtInstruction;
+            , txtScore, txtInstruction, txtSign1, txtSign2;
     EditText inputNum, inputDenom;
     Button btnCheck;
     //LCM DIALOG
@@ -62,8 +62,8 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddingDissimilarExerciseActivity.this,
-                        AddingDissimilarVideoActivity.class);
+                Intent intent = new Intent(SubtractingDissimilarExerciseActivity.this,
+                        SubtractingDissimilarVideoActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -74,7 +74,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
-                Intent intent = new Intent(AddingDissimilarExerciseActivity.this,
+                Intent intent = new Intent(SubtractingDissimilarExerciseActivity.this,
                         TopicsMenuActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -101,9 +101,13 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
         inputDenom = findViewById(R.id.adsm_inputDenom);
         btnCheck = findViewById(R.id.adsm_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
+        txtSign1 = findViewById(R.id.adsm_txtSign1);
+        txtSign2 = findViewById(R.id.adsm_txtSign2);
+        txtSign1.setText(" - ");
+        txtSign2.setText(" - ");
         //LCM DIALOG
         lcmView = getLayoutInflater().inflate(R.layout.layout_dialog_lcm, null);
-        lcmDialog = new Dialog(AddingDissimilarExerciseActivity.this);
+        lcmDialog = new Dialog(SubtractingDissimilarExerciseActivity.this);
         lcmDialog.setOnDismissListener(new DialogListener());
         lcmDialog.setTitle("Getting the LCD");
         lcmDialog.setContentView(lcmView);
@@ -115,7 +119,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
         diagLcmBtnCheck.setOnClickListener(new DiagLcmBtnCheckListener());
         //EQUATION DIALOG
         edView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
-        equationDialog = new Dialog(AddingDissimilarExerciseActivity.this);
+        equationDialog = new Dialog(SubtractingDissimilarExerciseActivity.this);
         equationDialog.setOnDismissListener(new DialogListener());
         equationDialog.setTitle("Division Equation");
         equationDialog.setContentView(edView);
@@ -171,8 +175,8 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(AddingDissimilarExerciseActivity.this,
-                            AddingDissimilarVideoActivity.class);
+                    Intent intent = new Intent(SubtractingDissimilarExerciseActivity.this,
+                            SubtractingDissimilarVideoActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
@@ -197,7 +201,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
         fractionQuestions = new ArrayList<>();
         questionNum = 0;
         for (int i = 0; i < requiredConsecutiveCorrects; i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.ADDING_DISSIMILAR);
+            fractionQuestion = new FractionQuestion(FractionQuestion.SUBTRACTING_DISSIMILAR);
             fractionQuestions.add(fractionQuestion);
         }
     }
@@ -470,7 +474,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
                             inputDenom.setEnabled(true);
                             inputNum.requestFocus();
                             btnCheck.setEnabled(true);
-                            txtInstruction.setText("Add the numerators and copy the denominators.");
+                            txtInstruction.setText("Subtract the numerators and copy the denominators.");
                         }
                     } else {
                         Styles.shakeAnimate(diagEdInputAnswer);

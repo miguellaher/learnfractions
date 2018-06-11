@@ -17,4 +17,7 @@ public class Styles {
     public static void paintRed(TextView v){
         v.setTextColor(Color.rgb(255,0,0));
     }
+    public static void paintBlack(TextView v){
+        v.setTextColor(Color.rgb(0,0,0));
+    }
 }

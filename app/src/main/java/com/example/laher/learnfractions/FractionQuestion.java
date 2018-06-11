@@ -17,6 +17,8 @@ public class FractionQuestion {
     public final static String ADDING_FRACTION = "ADDING_FRACTION";
     public final static String ADDING_SIMILAR = "ADDING_SIMILAR";
     public final static String ADDING_DISSIMILAR = "ADDING_DISSIMILAR";
+    public final static String SUBTRACTING_SIMILAR = "SUBTRACTING_SIMILAR";
+    public final static String SUBTRACTING_DISSIMILAR = "SUBTRACTING_DISSIMILAR";
     public final static String ANSWER_GREATER = ">";
     public final static String ANSWER_EQUAL = "=";
     public final static String ANSWER_LESS = "<";
@@ -139,6 +141,27 @@ public class FractionQuestion {
             int sumNum = ((lcd/fractionOne.getDenominator())*fractionOne.getNumerator()) +
                     ((lcd/fractionTwo.getDenominator())*fractionTwo.getNumerator());
             fractionAnswer = new Fraction(sumNum,lcd);
+        }
+        if (context == SUBTRACTING_SIMILAR) {
+            while (fractionOne.getDenominator() != fractionTwo.getDenominator() ||
+                    fractionOne.getNumerator()<=fractionTwo.getNumerator()){
+                fractionOne = new Fraction();
+                fractionTwo = new Fraction();
+            }
+            int numerator = fractionOne.getNumerator()-fractionTwo.getNumerator();
+            fractionAnswer = new Fraction(numerator,fractionOne.getDenominator());
+        }
+        if (context == SUBTRACTING_DISSIMILAR) {
+            while (fractionOne.getDenominator() == fractionTwo.getDenominator() ||
+                    fractionOne.getValue() <= fractionTwo.getValue()){
+                fractionOne = new Fraction();
+                fractionTwo = new Fraction();
+            }
+            int [] denominators = {fractionOne.getDenominator(), fractionTwo.getDenominator()};
+            int lcd = (int) Question.getLCM(denominators);
+            int difNum = ((lcd/fractionOne.getDenominator())*fractionOne.getNumerator()) -
+                    ((lcd/fractionTwo.getDenominator())*fractionTwo.getNumerator());
+            fractionAnswer = new Fraction(difNum,lcd);
         }
     }
     public FractionQuestion(Fraction fractionOne, Fraction fractionTwo, String Context){
