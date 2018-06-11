@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Random;
 
 public class FractionQuestion {
-    Fraction fractionOne, fractionTwo, fractionThree;
+    Fraction fractionOne, fractionTwo, fractionThree, fractionAnswer;
     String context;
     String answer;
     ArrayList<Fraction> fractions;
@@ -16,6 +16,7 @@ public class FractionQuestion {
     public final static String ORDERING_DISSIMILAR = "ORDERING_DISSIMILAR";
     public final static String ADDING_FRACTION = "ADDING_FRACTION";
     public final static String ADDING_SIMILAR = "ADDING_SIMILAR";
+    public final static String ADDING_DISSIMILAR = "ADDING_DISSIMILAR";
     public final static String ANSWER_GREATER = ">";
     public final static String ANSWER_EQUAL = "=";
     public final static String ANSWER_LESS = "<";
@@ -28,6 +29,9 @@ public class FractionQuestion {
     }
     public Fraction getFractionThree() {
         return fractionThree;
+    }
+    public Fraction getFractionAnswer() {
+        return fractionAnswer;
     }
     public ArrayList<Fraction> getFractions() {
         return fractions;
@@ -46,6 +50,9 @@ public class FractionQuestion {
     }
     public void setFractionThree(Fraction fractionThree) {
         this.fractionThree = fractionThree;
+    }
+    public void setFractionAnswer(Fraction fractionAnswer) {
+        this.fractionAnswer = fractionAnswer;
     }
 
     public FractionQuestion(){
@@ -122,6 +129,16 @@ public class FractionQuestion {
             }
             int numerator = fractionOne.getNumerator()+fractionTwo.getNumerator();
             fractionThree = new Fraction(numerator,fractionOne.getDenominator());
+        }
+        if (context == ADDING_DISSIMILAR) {
+            while (fractionOne.getDenominator() == fractionTwo.getDenominator()){
+                fractionTwo = new Fraction();
+            }
+            int [] denominators = {fractionOne.getDenominator(), fractionTwo.getDenominator()};
+            int lcd = (int) Question.getLCM(denominators);
+            int sumNum = ((lcd/fractionOne.getDenominator())*fractionOne.getNumerator()) +
+                    ((lcd/fractionTwo.getDenominator())*fractionTwo.getNumerator());
+            fractionAnswer = new Fraction(sumNum,lcd);
         }
     }
     public FractionQuestion(Fraction fractionOne, Fraction fractionTwo, String Context){

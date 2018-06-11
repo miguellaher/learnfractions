@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.laher.learnfractions.adding_dissimilar.AddingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.adding_similar.AddingSimilarExerciseActivity;
 import com.example.laher.learnfractions.adding_similar.AddingSimilarVideoActivity;
 import com.example.laher.learnfractions.classifying_fractions.ClassifyingFractionsExerciseActivity;
@@ -97,6 +98,10 @@ public class TopicsMenuActivity extends AppCompatActivity {
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Adding Similar Fractions");
         mClasses.add(AddingSimilarVideoActivity.class);
+
+        mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
+        mNames.add("Adding Dissimilar Fractions");
+        mClasses.add(AddingDissimilarExerciseActivity.class);
 
         initRecyclerView();
     }

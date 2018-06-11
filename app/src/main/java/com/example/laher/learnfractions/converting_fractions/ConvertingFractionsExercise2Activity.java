@@ -101,6 +101,7 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
         diagEdInputAnswer = (EditText) edView.findViewById(R.id.md_inputProduct);
         diagEdBtnCheck = (Button) edView.findViewById(R.id.md_btnCheck);
         diagEdBtnCheck.setOnClickListener(new DiagEdBtnCheckListener());
+
         defaultColor = txtDenom1.getTextColors();
         viewId = new ArrayList<>();
 
@@ -283,8 +284,7 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
                         ==fractions.get(questionNum).getDenominator()){
                     correct();
                 } else {
-                    txtInstruction.setText(fractions.get(questionNum).getNumerator() + " / "
-                            + fractions.get(questionNum).getDenominator());
+                    Styles.shakeAnimate(inputDenom);
                 }
             } else {
                 Styles.shakeAnimate(inputDenom);

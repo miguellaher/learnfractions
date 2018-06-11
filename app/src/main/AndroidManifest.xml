@@ -66,7 +66,9 @@
         <activity android:name=".classifying_fractions.ClassifyingFractionsExerciseActivity" />
         <activity android:name=".converting_fractions.ConvertingFractionsVideoActivity" />
         <activity android:name=".converting_fractions.ConvertingFractionsExerciseActivity" />
-        <activity android:name=".converting_fractions.ConvertingFractionsExercise2Activity"></activity>
+        <activity android:name=".converting_fractions.ConvertingFractionsExercise2Activity" />
+        <activity android:name=".adding_dissimilar.AddingDissimilarVideoActivity" />
+        <activity android:name=".adding_dissimilar.AddingDissimilarExerciseActivity"></activity>
     </application>
 
 </manifest>
