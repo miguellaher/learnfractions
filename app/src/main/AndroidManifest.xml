@@ -72,7 +72,11 @@
         <activity android:name=".subtracting_similar.SubtractingSimilarVideoActivity" />
         <activity android:name=".subtracting_similar.SubtractingSimilarExerciseActivity" />
         <activity android:name=".subtracting_dissimilar.SubtractingDissimilarVideoActivity" />
-        <activity android:name=".subtracting_dissimilar.SubtractingDissimilarExerciseActivity"></activity>
+        <activity android:name=".subtracting_dissimilar.SubtractingDissimilarExerciseActivity" />
+        <activity android:name=".multiplying_fractions.MultiplyingFractionsVideoActivity" />
+        <activity android:name=".multiplying_fractions.MultiplyingFractionsExerciseActivity" />
+        <activity android:name=".dividing_fractions.DividingFractionsVideoActivity" />
+        <activity android:name=".dividing_fractions.DividingFractionsExerciseActivity"></activity>
     </application>
 
 </manifest>

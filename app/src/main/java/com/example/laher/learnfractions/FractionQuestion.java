@@ -19,6 +19,8 @@ public class FractionQuestion {
     public final static String ADDING_DISSIMILAR = "ADDING_DISSIMILAR";
     public final static String SUBTRACTING_SIMILAR = "SUBTRACTING_SIMILAR";
     public final static String SUBTRACTING_DISSIMILAR = "SUBTRACTING_DISSIMILAR";
+    public final static String MULTIPLYING_FRACTIONS = "MULTIPLYING_FRACTIONS";
+    public final static String DIVIDING_FRACTIONS = "DIVIDING_FRACTIONS";
     public final static String ANSWER_GREATER = ">";
     public final static String ANSWER_EQUAL = "=";
     public final static String ANSWER_LESS = "<";
@@ -162,6 +164,16 @@ public class FractionQuestion {
             int difNum = ((lcd/fractionOne.getDenominator())*fractionOne.getNumerator()) -
                     ((lcd/fractionTwo.getDenominator())*fractionTwo.getNumerator());
             fractionAnswer = new Fraction(difNum,lcd);
+        }
+        if (context == MULTIPLYING_FRACTIONS){
+            int prodNum = fractionOne.getNumerator() * fractionTwo.getNumerator();
+            int prodDenom = fractionOne.getDenominator() * fractionTwo.getDenominator();
+            fractionAnswer = new Fraction(prodNum,prodDenom);
+        }
+        if (context == DIVIDING_FRACTIONS){
+            int prodNum = fractionOne.getNumerator() * fractionTwo.getDenominator();
+            int prodDenom = fractionOne.getDenominator() * fractionTwo.getNumerator();
+            fractionAnswer = new Fraction(prodNum,prodDenom);
         }
     }
     public FractionQuestion(Fraction fractionOne, Fraction fractionTwo, String Context){

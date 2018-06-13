@@ -20,4 +20,7 @@ public class Styles {
     public static void paintBlack(TextView v){
         v.setTextColor(Color.rgb(0,0,0));
     }
+    public static void bgpaintBurlyWood(TextView v){
+        v.setBackgroundColor(Color.rgb(222,184,135));
+    }
 }

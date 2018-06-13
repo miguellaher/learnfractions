@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.subtracting_dissimilar;
+package com.example.laher.learnfractions.dividing_fractions;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -14,11 +14,11 @@ import android.widget.VideoView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 
-public class SubtractingDissimilarVideoActivity extends AppCompatActivity {
+public class DividingFractionsVideoActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Subtracting Fractions";
+    public final String TITLE = "Dividing Fractions";
 
     VideoView video;
     @Override
@@ -30,7 +30,7 @@ public class SubtractingDissimilarVideoActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SubtractingDissimilarVideoActivity.this,
+                Intent intent = new Intent(DividingFractionsVideoActivity.this,
                         TopicsMenuActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -42,8 +42,8 @@ public class SubtractingDissimilarVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
-                Intent intent = new Intent(SubtractingDissimilarVideoActivity.this,
-                        SubtractingDissimilarExerciseActivity.class);
+                Intent intent = new Intent(DividingFractionsVideoActivity.this,
+                        DividingFractionsExerciseActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }

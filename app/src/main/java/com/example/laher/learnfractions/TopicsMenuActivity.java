@@ -23,13 +23,18 @@ import com.example.laher.learnfractions.comparing_similar_fractions.ComparingSim
 import com.example.laher.learnfractions.converting_fractions.ConvertingFractionsExercise2Activity;
 import com.example.laher.learnfractions.converting_fractions.ConvertingFractionsExerciseActivity;
 import com.example.laher.learnfractions.converting_fractions.ConvertingFractionsVideoActivity;
+import com.example.laher.learnfractions.dividing_fractions.DividingFractionsExerciseActivity;
+import com.example.laher.learnfractions.dividing_fractions.DividingFractionsVideoActivity;
 import com.example.laher.learnfractions.fractionmeaning.FractionMeaningVideoActivity;
+import com.example.laher.learnfractions.multiplying_fractions.MultiplyingFractionsExerciseActivity;
+import com.example.laher.learnfractions.multiplying_fractions.MultiplyingFractionsVideoActivity;
 import com.example.laher.learnfractions.non_visual_fraction.NonVisualVideoActivity;
 import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarExercise2Activity;
 import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarVideoActivity;
 import com.example.laher.learnfractions.ordering_similar.OrderingSimilarVideoActivity;
 import com.example.laher.learnfractions.subtracting_dissimilar.SubtractingDissimilarExerciseActivity;
+import com.example.laher.learnfractions.subtracting_dissimilar.SubtractingDissimilarVideoActivity;
 import com.example.laher.learnfractions.subtracting_similar.SubtractingSimilarExerciseActivity;
 import com.example.laher.learnfractions.subtracting_similar.SubtractingSimilarVideoActivity;
 
@@ -113,7 +118,15 @@ public class TopicsMenuActivity extends AppCompatActivity {
 
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Subtracting Dissimilar Fractions");
-        mClasses.add(SubtractingDissimilarExerciseActivity.class);
+        mClasses.add(SubtractingDissimilarVideoActivity.class);
+
+        mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
+        mNames.add("Multiplying Fractions");
+        mClasses.add(MultiplyingFractionsVideoActivity.class);
+
+        mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
+        mNames.add("Dividing Fractions");
+        mClasses.add(DividingFractionsVideoActivity.class);
 
         initRecyclerView();
     }
