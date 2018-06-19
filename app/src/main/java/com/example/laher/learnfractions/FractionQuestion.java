@@ -21,6 +21,7 @@ public class FractionQuestion {
     public final static String SUBTRACTING_DISSIMILAR = "SUBTRACTING_DISSIMILAR";
     public final static String MULTIPLYING_FRACTIONS = "MULTIPLYING_FRACTIONS";
     public final static String DIVIDING_FRACTIONS = "DIVIDING_FRACTIONS";
+    public final static String ADDING_WITH_MIXED = "ADDING_WITH_MIXED";
     public final static String ANSWER_GREATER = ">";
     public final static String ANSWER_EQUAL = "=";
     public final static String ANSWER_LESS = "<";
@@ -174,6 +175,40 @@ public class FractionQuestion {
             int prodNum = fractionOne.getNumerator() * fractionTwo.getDenominator();
             int prodDenom = fractionOne.getDenominator() * fractionTwo.getNumerator();
             fractionAnswer = new Fraction(prodNum,prodDenom);
+        }
+        if (context == ADDING_WITH_MIXED){
+            int random = (int) (Math.random() * 3 + 1);
+            int sumNum = 0;
+            int num;
+            int lcd = 0;
+            if (random==1){
+                fractionOne = new Fraction(Fraction.MIXED);
+                num = (fractionOne.getDenominator()*fractionOne.getWholeNum()) + fractionOne.getNumerator();
+                int [] denominators = {fractionOne.getDenominator(), fractionTwo.getDenominator()};
+                lcd = (int) Question.getLCM(denominators);
+                sumNum = ((lcd/fractionOne.getDenominator())*num) +
+                        ((lcd/fractionTwo.getDenominator())*fractionTwo.getNumerator());
+                fractionAnswer = new Fraction(sumNum,lcd);
+            } else if (random==2){
+                fractionTwo = new Fraction(Fraction.MIXED);
+                num = (fractionTwo.getDenominator()*fractionTwo.getWholeNum()) + fractionTwo.getNumerator();
+                int [] denominators = {fractionOne.getDenominator(), fractionTwo.getDenominator()};
+                lcd = (int) Question.getLCM(denominators);
+                sumNum = ((lcd/fractionOne.getDenominator())*fractionOne.getNumerator()) +
+                        ((lcd/fractionTwo.getDenominator())*num);
+                fractionAnswer = new Fraction(sumNum,lcd);
+            } else if (random==3){
+                fractionOne = new Fraction(Fraction.MIXED);
+                fractionTwo = new Fraction(Fraction.MIXED);
+                num = (fractionOne.getDenominator()*fractionOne.getWholeNum()) + fractionOne.getNumerator();
+                int num2 = (fractionTwo.getDenominator()*fractionTwo.getWholeNum()) + fractionTwo.getNumerator();
+                int [] denominators = {fractionOne.getDenominator(), fractionTwo.getDenominator()};
+                lcd = (int) Question.getLCM(denominators);
+                sumNum = ((lcd/fractionOne.getDenominator())*num) +
+                        ((lcd/fractionTwo.getDenominator())*num2);
+            }
+            fractionAnswer = new Fraction(sumNum,lcd);
+
         }
     }
     public FractionQuestion(Fraction fractionOne, Fraction fractionTwo, String Context){

@@ -56,7 +56,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ConvertingFractionsExerciseActivity.this,
                         ConvertingFractionsVideoActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -68,7 +68,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
                 //CHANGE INTENT PARAMS
                 Intent intent = new Intent(ConvertingFractionsExerciseActivity.this,
                         ConvertingFractionsExercise2Activity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });

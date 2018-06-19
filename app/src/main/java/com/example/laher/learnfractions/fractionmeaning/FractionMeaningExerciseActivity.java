@@ -201,7 +201,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
                         public void run() {
                             Intent intent = new Intent(FractionMeaningExerciseActivity.this,
                                     FractionMeaningVideoActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                         }
                     }, 3000);
@@ -232,7 +232,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(FractionMeaningExerciseActivity.this,
                     FractionMeaningVideoActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
     }
@@ -242,7 +242,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(FractionMeaningExerciseActivity.this,
                     FractionMeaningExercise2Activity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
     }

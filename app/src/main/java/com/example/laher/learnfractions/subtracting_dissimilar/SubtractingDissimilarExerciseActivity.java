@@ -64,7 +64,7 @@ public class SubtractingDissimilarExerciseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SubtractingDissimilarExerciseActivity.this,
                         SubtractingDissimilarVideoActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -76,7 +76,7 @@ public class SubtractingDissimilarExerciseActivity extends AppCompatActivity {
                 // CHANGE INTENT PARAMS
                 Intent intent = new Intent(SubtractingDissimilarExerciseActivity.this,
                         TopicsMenuActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -177,7 +177,7 @@ public class SubtractingDissimilarExerciseActivity extends AppCompatActivity {
                 public void run() {
                     Intent intent = new Intent(SubtractingDissimilarExerciseActivity.this,
                             SubtractingDissimilarVideoActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
             }, 4000);

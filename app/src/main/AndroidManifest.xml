@@ -76,7 +76,10 @@
         <activity android:name=".multiplying_fractions.MultiplyingFractionsVideoActivity" />
         <activity android:name=".multiplying_fractions.MultiplyingFractionsExerciseActivity" />
         <activity android:name=".dividing_fractions.DividingFractionsVideoActivity" />
-        <activity android:name=".dividing_fractions.DividingFractionsExerciseActivity"></activity>
+        <activity android:name=".dividing_fractions.DividingFractionsExerciseActivity" />
+        <activity android:name=".solving_mixed.SolvingMixedVideoActivity" />
+        <activity android:name=".solving_mixed.SolvingMixedExerciseActivity" />
+        <activity android:name=".solving_mixed.SolvingMixedExercise2Activity"></activity>
     </application>
 
 </manifest>

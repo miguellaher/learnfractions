@@ -38,7 +38,7 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ComparingFractionsExerciseActivity.this,
                         ComparingFractionsVideoActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -50,7 +50,7 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
                 // CHANGE INTENT PARAMS
                 Intent intent = new Intent(ComparingFractionsExerciseActivity.this,
                         ComparingFractionsExercise2Activity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -139,7 +139,7 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
                 public void run() {
                     Intent intent = new Intent(ComparingFractionsExerciseActivity.this,
                             ComparingFractionsVideoActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
             }, 3000);

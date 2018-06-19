@@ -69,14 +69,14 @@ public class Fraction implements Comparable<Fraction>{
         while (numerator>=denominator){
             generateRandFraction(9);
         }
-        wholeNum = (int) (Math.random() * maximum + 1);
+        wholeNum = (int) (Math.random() * 2 + 1);
     }
     public void generateMixedFraction(int minimum, int maximum){
         generateRandFraction(9);
         while (numerator>=denominator){
             generateRandFraction(9);
         }
-        wholeNum = (int) (Math.random() * maximum + minimum);
+        wholeNum = (int) (Math.random() * 2 + minimum);
     }
     public void generateImproperFraction(int maximum){
         generateRandFraction(9);

@@ -33,6 +33,9 @@ import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarEx
 import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarVideoActivity;
 import com.example.laher.learnfractions.ordering_similar.OrderingSimilarVideoActivity;
+import com.example.laher.learnfractions.solving_mixed.SolvingMixedExercise2Activity;
+import com.example.laher.learnfractions.solving_mixed.SolvingMixedExerciseActivity;
+import com.example.laher.learnfractions.solving_mixed.SolvingMixedVideoActivity;
 import com.example.laher.learnfractions.subtracting_dissimilar.SubtractingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.subtracting_dissimilar.SubtractingDissimilarVideoActivity;
 import com.example.laher.learnfractions.subtracting_similar.SubtractingSimilarExerciseActivity;
@@ -127,6 +130,10 @@ public class TopicsMenuActivity extends AppCompatActivity {
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         mNames.add("Dividing Fractions");
         mClasses.add(DividingFractionsVideoActivity.class);
+
+        mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
+        mNames.add("Equations with Mixed Fractions");
+        mClasses.add(SolvingMixedVideoActivity.class);
 
         initRecyclerView();
     }

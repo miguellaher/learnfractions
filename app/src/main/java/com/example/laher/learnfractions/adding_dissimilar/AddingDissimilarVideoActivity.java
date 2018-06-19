@@ -32,7 +32,7 @@ public class AddingDissimilarVideoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(AddingDissimilarVideoActivity.this,
                         TopicsMenuActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -44,7 +44,7 @@ public class AddingDissimilarVideoActivity extends AppCompatActivity {
                 // CHANGE INTENT PARAMS
                 Intent intent = new Intent(AddingDissimilarVideoActivity.this,
                         AddingDissimilarExerciseActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });

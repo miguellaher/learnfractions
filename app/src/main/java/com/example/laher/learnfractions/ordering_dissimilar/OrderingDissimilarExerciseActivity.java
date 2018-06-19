@@ -53,7 +53,7 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(OrderingDissimilarExerciseActivity.this,
                         OrderingDissimilarVideoActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -65,7 +65,7 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
                 // CHANGE INTENT PARAMS
                 Intent intent = new Intent(OrderingDissimilarExerciseActivity.this,
                         OrderingDissimilarExercise2Activity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -164,7 +164,7 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
                 public void run() {
                     Intent intent = new Intent(OrderingDissimilarExerciseActivity.this,
                             OrderingDissimilarVideoActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
             }, 2000);

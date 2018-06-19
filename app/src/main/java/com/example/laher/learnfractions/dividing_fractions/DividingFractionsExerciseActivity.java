@@ -30,14 +30,12 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
     EditText inputNum, inputDenom;
     Button btnCheck;
     //VARIABLES
-    Fraction fraction;
     FractionQuestion fractionQuestion;
     ArrayList<FractionQuestion> fractionQuestions;
     int questionNum;
     int consecutiveRights, consecutiveWrongs;
     int requiredConsecutiveCorrects = 10;
     int maxConsecutiveWrongs = 5;
-    ArrayList<Integer> viewIds;
     final Handler handler = new Handler();
     ColorStateList defaultColor;
     TextView txtContainer;
@@ -52,7 +50,7 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(DividingFractionsExerciseActivity.this,
                         DividingFractionsVideoActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -64,7 +62,7 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
                 // CHANGE INTENT PARAMS
                 Intent intent = new Intent(DividingFractionsExerciseActivity.this,
                         TopicsMenuActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -140,7 +138,7 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
                 public void run() {
                     Intent intent = new Intent(DividingFractionsExerciseActivity.this,
                             DividingFractionsVideoActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
             }, 4000);

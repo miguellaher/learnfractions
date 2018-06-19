@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.adding_similar;
+package com.example.laher.learnfractions.solving_mixed;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -14,22 +14,23 @@ import android.widget.VideoView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 
-public class AddingSimilarVideoActivity extends AppCompatActivity {
+public class SolvingMixedVideoActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Adding Fractions";
+    public final String TITLE = "Solving Equations";
 
     VideoView video;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
+        //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddingSimilarVideoActivity.this,
+                Intent intent = new Intent(SolvingMixedVideoActivity.this,
                         TopicsMenuActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -41,8 +42,8 @@ public class AddingSimilarVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // CHANGE INTENT PARAMS
-                Intent intent = new Intent(AddingSimilarVideoActivity.this,
-                        AddingSimilarExerciseActivity.class);
+                Intent intent = new Intent(SolvingMixedVideoActivity.this,
+                        SolvingMixedExerciseActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
@@ -64,10 +65,10 @@ public class AddingSimilarVideoActivity extends AppCompatActivity {
         video.start();
         video.setOnCompletionListener(new VideoOnCompletionListener());
     }
+
     public class VideoOnCompletionListener implements MediaPlayer.OnCompletionListener{
         @Override
         public void onCompletion(MediaPlayer mp) {
-            //btnNext.setVisibility(Button.VISIBLE);
             btnNext.setEnabled(true);
         }
     }

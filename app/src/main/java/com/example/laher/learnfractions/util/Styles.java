@@ -3,6 +3,7 @@ package com.example.laher.learnfractions.util;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class Styles {
@@ -20,7 +21,13 @@ public class Styles {
     public static void paintBlack(TextView v){
         v.setTextColor(Color.rgb(0,0,0));
     }
+
     public static void bgpaintBurlyWood(TextView v){
         v.setBackgroundColor(Color.rgb(222,184,135));
+    }
+
+    public static void removeListener(View v){
+        v.setOnClickListener(null);
+        v.setClickable(false);
     }
 }

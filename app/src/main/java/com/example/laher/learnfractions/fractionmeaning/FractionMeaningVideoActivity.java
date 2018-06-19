@@ -57,7 +57,7 @@ public class FractionMeaningVideoActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(FractionMeaningVideoActivity.this,
                     TopicsMenuActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
     }
@@ -67,7 +67,7 @@ public class FractionMeaningVideoActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(FractionMeaningVideoActivity.this,
                     FractionMeaningExerciseActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
     }
