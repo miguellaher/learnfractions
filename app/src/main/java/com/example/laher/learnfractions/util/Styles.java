@@ -22,8 +22,11 @@ public class Styles {
         v.setTextColor(Color.rgb(0,0,0));
     }
 
-    public static void bgpaintBurlyWood(TextView v){
+    public static void bgPaintBurlyWood(TextView v){
         v.setBackgroundColor(Color.rgb(222,184,135));
+    }
+    public static void bgPaintWhite(TextView v){
+        v.setBackgroundColor(Color.rgb(255,255,255));
     }
 
     public static void removeListener(View v){

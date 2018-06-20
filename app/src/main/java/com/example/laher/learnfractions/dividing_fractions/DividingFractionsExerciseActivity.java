@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.laher.learnfractions.Fraction;
 import com.example.laher.learnfractions.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
@@ -189,18 +188,18 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
         int random = (int) (Math.random() * 2 + 1);
         if (random==1){
             if (txtNum4.getText().toString().trim().matches("")) {
-                Styles.bgpaintBurlyWood(txtNum4);
+                Styles.bgPaintBurlyWood(txtNum4);
                 txtContainer = txtNum4;
             } else if (txtDenom4.getText().toString().trim().matches("")) {
-                Styles.bgpaintBurlyWood(txtDenom4);
+                Styles.bgPaintBurlyWood(txtDenom4);
                 txtContainer = txtDenom4;
             }
         } else if (random==2){
             if (txtDenom4.getText().toString().trim().matches("")) {
-                Styles.bgpaintBurlyWood(txtDenom4);
+                Styles.bgPaintBurlyWood(txtDenom4);
                 txtContainer = txtDenom4;
             } else if (txtNum4.getText().toString().trim().matches("")) {
-                Styles.bgpaintBurlyWood(txtNum4);
+                Styles.bgPaintBurlyWood(txtNum4);
                 txtContainer = txtNum4;
             }
         }
