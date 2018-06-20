@@ -13,6 +13,11 @@ public class Fraction implements Comparable<Fraction>{
 
     public Fraction(){
         generateRandFraction(9);
+        if (getNumerator()>getDenominator()){
+            context = IMPROPER;
+        } else {
+            context = PROPER;
+        }
     }
     public Fraction(String context){
         if (context == MIXED){
@@ -120,9 +125,21 @@ public class Fraction implements Comparable<Fraction>{
         }
         return this;
     }
+    public static Fraction improper(Fraction f){
+        if (f.getContext()==MIXED){
+            Fraction newF = new Fraction((f.getDenominator()*f.getWholeNum())+f.getNumerator(),
+                    f.getDenominator());
+            return newF;
+        }
+        return null;
+    }
     public Double getValue(){
         Double num = Double.valueOf(numerator);
         Double denom = Double.valueOf(denominator);
+        if (context == MIXED){
+            Double wholeNum = Double.valueOf(getWholeNum());
+            return ((denom*wholeNum)+num)/denom;
+        }
         return num/denom;
     }
     public void lcdConvert(int lcd){

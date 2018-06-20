@@ -24,6 +24,7 @@ import com.example.laher.learnfractions.util_layout.EquationDialog;
 import com.example.laher.learnfractions.util_layout.LcmDialog;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static android.content.DialogInterface.*;
 
@@ -57,8 +58,8 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
     ArrayList<FractionQuestion> fractionQuestions;
     int questionNum;
     int consecutiveRights, consecutiveWrongs;
-    int requiredConsecutiveCorrects = 10;
-    int maxConsecutiveWrongs = 3;
+    int requiredConsecutiveCorrects = 16;
+    int maxConsecutiveWrongs = 5;
     final Handler handler = new Handler();
     ColorStateList defaultColor;
     int clicks;
@@ -226,11 +227,16 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
     public void setFractionQuestions(){
         fractionQuestions = new ArrayList<>();
         questionNum = 0;
-        for (int i = 0; i <= requiredConsecutiveCorrects; i++){
+        for (int i = 0; i < requiredConsecutiveCorrects; i++){
             FractionQuestion fractionQuestion;
-            fractionQuestion = new FractionQuestion(FractionQuestion.ADDING_WITH_MIXED);
+            if (i < (requiredConsecutiveCorrects/2)){
+                fractionQuestion = new FractionQuestion(FractionQuestion.ADDING_WITH_MIXED);
+            } else {
+                fractionQuestion = new FractionQuestion(FractionQuestion.SUBTRACTING_WITH_MIXED);
+            }
             fractionQuestions.add(fractionQuestion);
         }
+        Collections.shuffle(fractionQuestions);
     }
     public void setFractionGui(){
         if (fractionQuestions.get(questionNum).getFractionOne().getContext()== Fraction.MIXED){
@@ -244,6 +250,13 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
             clFraction2.setOnClickListener(new ClFractionListener());
         } else {
             txtWholeNum2.setText("");
+        }
+        if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.ADDING_WITH_MIXED){
+            txtSign1.setText("+");
+            txtSign2.setText("+");
+        } else if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.SUBTRACTING_WITH_MIXED){
+            txtSign1.setText("-");
+            txtSign2.setText("-");
         }
         txtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()));
         txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
@@ -482,8 +495,13 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
                     inputNum.requestFocus();
                 } else {
                     setTxtLcmListener(true);
-                    txtInstruction.setText("Now, we have an equation of two dissimilar fractions. Add the two" +
-                            " dissimilar fractions like we did last time.");
+                    if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.ADDING_WITH_MIXED){
+                        txtInstruction.setText("Now, we have an equation of two dissimilar fractions. Add the two" +
+                                " dissimilar fractions like we did last time.");
+                    } else if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.SUBTRACTING_WITH_MIXED){
+                        txtInstruction.setText("Now, we have an equation of two dissimilar fractions. Subtract the two" +
+                                " dissimilar fractions like we did last time.");
+                    }
                 }
             }
         }

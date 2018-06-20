@@ -8,37 +8,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.laher.learnfractions.adding_dissimilar.AddingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.adding_dissimilar.AddingDissimilarVideoActivity;
-import com.example.laher.learnfractions.adding_similar.AddingSimilarExerciseActivity;
 import com.example.laher.learnfractions.adding_similar.AddingSimilarVideoActivity;
-import com.example.laher.learnfractions.classifying_fractions.ClassifyingFractionsExerciseActivity;
 import com.example.laher.learnfractions.classifying_fractions.ClassifyingFractionsVideoActivity;
-import com.example.laher.learnfractions.comparing_dissimilar_fractions.ComparingDissimilarExercise2Activity;
-import com.example.laher.learnfractions.comparing_dissimilar_fractions.ComparingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.comparing_dissimilar_fractions.ComparingDissimilarVideoActivity;
-import com.example.laher.learnfractions.comparing_fractions.ComparingFractionsExercise2Activity;
 import com.example.laher.learnfractions.comparing_fractions.ComparingFractionsVideoActivity;
 import com.example.laher.learnfractions.comparing_similar_fractions.ComparingSimilarVideoActivity;
-import com.example.laher.learnfractions.converting_fractions.ConvertingFractionsExercise2Activity;
-import com.example.laher.learnfractions.converting_fractions.ConvertingFractionsExerciseActivity;
 import com.example.laher.learnfractions.converting_fractions.ConvertingFractionsVideoActivity;
-import com.example.laher.learnfractions.dividing_fractions.DividingFractionsExerciseActivity;
 import com.example.laher.learnfractions.dividing_fractions.DividingFractionsVideoActivity;
 import com.example.laher.learnfractions.fractionmeaning.FractionMeaningVideoActivity;
-import com.example.laher.learnfractions.multiplying_fractions.MultiplyingFractionsExerciseActivity;
 import com.example.laher.learnfractions.multiplying_fractions.MultiplyingFractionsVideoActivity;
 import com.example.laher.learnfractions.non_visual_fraction.NonVisualVideoActivity;
-import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarExercise2Activity;
-import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.ordering_dissimilar.OrderingDissimilarVideoActivity;
 import com.example.laher.learnfractions.ordering_similar.OrderingSimilarVideoActivity;
-import com.example.laher.learnfractions.solving_mixed.SolvingMixedExercise2Activity;
 import com.example.laher.learnfractions.solving_mixed.SolvingMixedExerciseActivity;
 import com.example.laher.learnfractions.solving_mixed.SolvingMixedVideoActivity;
-import com.example.laher.learnfractions.subtracting_dissimilar.SubtractingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.subtracting_dissimilar.SubtractingDissimilarVideoActivity;
-import com.example.laher.learnfractions.subtracting_similar.SubtractingSimilarExerciseActivity;
 import com.example.laher.learnfractions.subtracting_similar.SubtractingSimilarVideoActivity;
 
 import java.util.ArrayList;
@@ -132,7 +117,7 @@ public class TopicsMenuActivity extends AppCompatActivity {
         mClasses.add(DividingFractionsVideoActivity.class);
 
         mImageUrls.add("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
-        mNames.add("Equations with Mixed Fractions");
+        mNames.add("Adding and Subtracting with Mixed Fractions");
         mClasses.add(SolvingMixedVideoActivity.class);
 
         initRecyclerView();

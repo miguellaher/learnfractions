@@ -79,7 +79,6 @@
         <activity android:name=".dividing_fractions.DividingFractionsExerciseActivity" />
         <activity android:name=".solving_mixed.SolvingMixedVideoActivity" />
         <activity android:name=".solving_mixed.SolvingMixedExerciseActivity" />
-        <activity android:name=".solving_mixed.SolvingMixedExercise2Activity"></activity>
     </application>
 
 </manifest>
