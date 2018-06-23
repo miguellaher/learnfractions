@@ -11,76 +11,148 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
-        <activity
-            android:name=".fractionmeaning.FractionMeaningVideoActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".fractionmeaning.FractionMeaningExerciseActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".fractionmeaning.FractionMeaningExercise2Activity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TopicsMenuActivity"
-            android:screenOrientation="portrait">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" />
         <activity
-            android:name=".non_visual_fraction.NonVisualVideoActivity"
+            android:name=".lessons.fraction_meaning.FractionMeaningVideoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".non_visual_fraction.NonVisualExerciseActivity"
+            android:name=".lessons.fraction_meaning.FractionMeaningExerciseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".non_visual_fraction.NonVisualExercise2Activity"
+            android:name=".lessons.fraction_meaning.FractionMeaningExercise2Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".comparing_similar_fractions.ComparingSimilarVideoActivity"
+            android:name=".TopicsMenuActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".comparing_similar_fractions.ComparingSimilarExerciseActivity"
+            android:name=".lessons.non_visual_fraction.NonVisualVideoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".comparing_similar_fractions.ComparingSimilarExercise2Activity"
+            android:name=".lessons.non_visual_fraction.NonVisualExerciseActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".comparing_dissimilar_fractions.ComparingDissimilarVideoActivity" />
-        <activity android:name=".comparing_dissimilar_fractions.ComparingDissimilarExerciseActivity" />
-        <activity android:name=".comparing_dissimilar_fractions.ComparingDissimilarExercise2Activity" />
-        <activity android:name=".comparing_fractions.ComparingFractionsExerciseActivity" />
-        <activity android:name=".comparing_fractions.ComparingFractionsExercise2Activity" />
-        <activity android:name=".comparing_fractions.ComparingFractionsVideoActivity" />
-        <activity android:name=".ordering_similar.OrderingSimilarVideoActivity" />
-        <activity android:name=".ordering_similar.OrderingSimilarExerciseActivity" />
-        <activity android:name=".ordering_similar.OrderingSimilarExercise2Activity" />
-        <activity android:name=".ordering_dissimilar.OrderingDissimilarVideoActivity" />
-        <activity android:name=".ordering_dissimilar.OrderingDissimilarExercise2Activity" />
-        <activity android:name=".ordering_dissimilar.OrderingDissimilarExerciseActivity" />
-        <activity android:name=".adding_similar.AddingSimilarVideoActivity" />
-        <activity android:name=".adding_similar.AddingSimilarExerciseActivity" />
-        <activity android:name=".classifying_fractions.ClassifyingFractionsVideoActivity" />
-        <activity android:name=".classifying_fractions.ClassifyingFractionsExerciseActivity" />
-        <activity android:name=".converting_fractions.ConvertingFractionsVideoActivity" />
-        <activity android:name=".converting_fractions.ConvertingFractionsExerciseActivity" />
-        <activity android:name=".converting_fractions.ConvertingFractionsExercise2Activity" />
-        <activity android:name=".adding_dissimilar.AddingDissimilarVideoActivity" />
-        <activity android:name=".adding_dissimilar.AddingDissimilarExerciseActivity" />
-        <activity android:name=".subtracting_similar.SubtractingSimilarVideoActivity" />
-        <activity android:name=".subtracting_similar.SubtractingSimilarExerciseActivity" />
-        <activity android:name=".subtracting_dissimilar.SubtractingDissimilarVideoActivity" />
-        <activity android:name=".subtracting_dissimilar.SubtractingDissimilarExerciseActivity" />
-        <activity android:name=".multiplying_fractions.MultiplyingFractionsVideoActivity" />
-        <activity android:name=".multiplying_fractions.MultiplyingFractionsExerciseActivity" />
-        <activity android:name=".dividing_fractions.DividingFractionsVideoActivity" />
-        <activity android:name=".dividing_fractions.DividingFractionsExerciseActivity" />
-        <activity android:name=".solving_mixed.SolvingMixedVideoActivity" />
-        <activity android:name=".solving_mixed.SolvingMixedExerciseActivity" />
-        <activity android:name=".solving_mixed2.SolvingMixed2VideoActivity" />
-        <activity android:name=".solving_mixed2.SolvingMixed2ExerciseActivity" />
+        <activity
+            android:name=".lessons.non_visual_fraction.NonVisualExercise2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.comparing_similar_fractions.ComparingSimilarVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.comparing_similar_fractions.ComparingSimilarExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.comparing_similar_fractions.ComparingSimilarExercise2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.comparing_dissimilar_fractions.ComparingDissimilarVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.comparing_dissimilar_fractions.ComparingDissimilarExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.comparing_dissimilar_fractions.ComparingDissimilarExercise2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.comparing_fractions.ComparingFractionsExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.comparing_fractions.ComparingFractionsExercise2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.comparing_fractions.ComparingFractionsVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.ordering_similar.OrderingSimilarVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.ordering_similar.OrderingSimilarExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.ordering_similar.OrderingSimilarExercise2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.ordering_dissimilar.OrderingDissimilarVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.ordering_dissimilar.OrderingDissimilarExercise2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.ordering_dissimilar.OrderingDissimilarExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.adding_similar.AddingSimilarVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.adding_similar.AddingSimilarExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.classifying_fractions.ClassifyingFractionsVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.classifying_fractions.ClassifyingFractionsExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.converting_fractions.ConvertingFractionsVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.converting_fractions.ConvertingFractionsExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.converting_fractions.ConvertingFractionsExercise2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.adding_dissimilar.AddingDissimilarVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.adding_dissimilar.AddingDissimilarExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.subtracting_similar.SubtractingSimilarVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.subtracting_similar.SubtractingSimilarExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.subtracting_dissimilar.SubtractingDissimilarVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.subtracting_dissimilar.SubtractingDissimilarExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.multiplying_fractions.MultiplyingFractionsVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.multiplying_fractions.MultiplyingFractionsExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.dividing_fractions.DividingFractionsVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.dividing_fractions.DividingFractionsExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.solving_mixed.SolvingMixedVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.solving_mixed.SolvingMixedExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.solving_mixed2.SolvingMixed2VideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".lessons.solving_mixed2.SolvingMixed2ExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".admin_activities.AdminMainActivity" />
+        <activity android:name=".admin_activities.ManageLessonsActivity"></activity>
     </application>
 
 </manifest>

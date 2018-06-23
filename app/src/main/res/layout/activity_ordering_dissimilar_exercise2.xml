@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ordering_dissimilar.OrderingDissimilarExercise2Activity">
+    tools:context=".lessons.ordering_dissimilar.OrderingDissimilarExercise2Activity">
 
     <include layout="@layout/layout_toolbar" />
 

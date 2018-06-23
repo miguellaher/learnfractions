@@ -33,4 +33,9 @@ public class Styles {
         v.setOnClickListener(null);
         v.setClickable(false);
     }
+
+    public static void error(TextView v){
+        paintRed(v);
+        shakeAnimate(v);
+    }
 }

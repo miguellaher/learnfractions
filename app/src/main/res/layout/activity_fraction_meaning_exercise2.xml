@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.laher.learnfractions.fractionmeaning.FractionMeaningExercise2Activity">
+    tools:context=".lessons.fraction_meaning.FractionMeaningExercise2Activity">
 
     <include layout="@layout/layout_toolbar" />
     <android.support.constraint.ConstraintLayout

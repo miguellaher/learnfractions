@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <TextView
+        android:id="@+id/rTxtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="REGISTRATION"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/rTxtTitle"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="@+id/rTxtTitle"
+        app:layout_constraintTop_toBottomOf="@+id/rTxtError">
+
+        <EditText
+            android:id="@+id/rInputUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Username"
+            android:maxLength="12"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/rRadioGroupGender"
+            android:layout_width="78dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/rInputConfirm"
+            app:layout_constraintTop_toBottomOf="@+id/rInputConfirm">
+
+            <RadioButton
+                android:id="@+id/rRadioMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Male" />
+
+            <RadioButton
+                android:id="@+id/rRadioFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Female" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/rInputPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Password"
+            android:maxLength="12"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rInputUsername" />
+
+        <EditText
+            android:id="@+id/rInputConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:maxLength="12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rInputPassword" />
+
+        <Spinner
+            android:id="@+id/rSpinnerSecurityQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rRadioGroupGender" />
+
+        <EditText
+            android:id="@+id/rInputTeacherCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Teacher Code"
+            android:inputType="textPassword"
+            android:maxLength="12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rInputSecurityAnswer" />
+
+        <EditText
+            android:id="@+id/rInputAge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Age"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textAlignment="textStart"
+            app:layout_constraintEnd_toStartOf="@+id/rRadioGroupGender"
+            app:layout_constraintStart_toStartOf="@+id/rInputConfirm"
+            app:layout_constraintTop_toBottomOf="@+id/rInputConfirm" />
+
+        <EditText
+            android:id="@+id/rInputSecurityAnswer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Security Answer"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rSpinnerSecurityQuestion" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/rBtnRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="REGISTER"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout9"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout9"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout9" />
+
+    <TextView
+        android:id="@+id/rTxtMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Already Registered? Login here."
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/rTxtError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Error"
+        app:layout_constraintEnd_toEndOf="@+id/rTxtTitle"
+        app:layout_constraintStart_toStartOf="@+id/rTxtTitle"
+        app:layout_constraintTop_toBottomOf="@+id/rTxtTitle" />
+
+</android.support.constraint.ConstraintLayout>

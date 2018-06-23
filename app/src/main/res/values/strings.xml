@@ -3,4 +3,11 @@
     <string name="title_activity_main_menu">MainMenuActivity</string>
     <string name="greaterThan"><![CDATA[>]]></string>
     <string name="lessThan"><![CDATA[<]]></string>
+
+    <string-array name="user_types">
+        <item>User</item>
+        <item>Student</item>
+        <item>Teacher</item>
+        <item>Admin</item>
+    </string-array>
 </resources>
