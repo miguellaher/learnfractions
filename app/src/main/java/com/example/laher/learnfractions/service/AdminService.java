@@ -22,7 +22,6 @@ public class AdminService {
 
     public static void login(final Admin admin, Service service){
         RequestParams requestParams = new RequestParams();
-        requestParams.put("id", Util.generateId());
         requestParams.put("username", admin.getUsername());
         String password = Encryptor.encrypt(admin.getPassword());
         requestParams.put("password", password);

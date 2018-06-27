@@ -11,4 +11,7 @@ public class AppConstants {
 
     public static final String ENABLE = "Enable";
     public static final String DISABLE = "Disable";
+
+    public static final String MALE= "MALE";
+    public static final String FEMALE= "FEMALE";
 }

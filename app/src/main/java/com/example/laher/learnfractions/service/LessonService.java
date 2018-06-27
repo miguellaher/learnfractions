@@ -17,4 +17,10 @@ public class LessonService {
         service.execute();
     }
 
+    public static void updateLessons(Service service){
+        String url = "http://jabahan.com/learnfractions/lesson/getAll.php";
+        service.get(url, new RequestParams());
+        service.execute();
+    }
+
 }

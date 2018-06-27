@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
 
+    <Spinner
+        android:id="@+id/rSpinnerUserType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/rTxtError"
+        app:layout_constraintStart_toStartOf="@+id/rTxtError"
+        app:layout_constraintTop_toBottomOf="@+id/rTxtError" />
+
     <TextView
         android:id="@+id/rTxtTitle"
         android:layout_width="wrap_content"
@@ -24,10 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/rTxtTitle"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="@+id/rTxtTitle"
-        app:layout_constraintTop_toBottomOf="@+id/rTxtError">
+        app:layout_constraintEnd_toEndOf="@+id/rSpinnerUserType"
+        app:layout_constraintStart_toStartOf="@+id/rSpinnerUserType"
+        app:layout_constraintTop_toBottomOf="@+id/rSpinnerUserType">
 
         <EditText
             android:id="@+id/rInputUsername"
@@ -38,10 +46,9 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="Username"
-            android:maxLength="12"
             android:inputType="textPersonName"
+            android:maxLength="12"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,8 +84,8 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="Password"
-            android:maxLength="12"
             android:inputType="textPassword"
+            android:maxLength="12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
@@ -117,7 +124,7 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="Teacher Code"
-            android:inputType="textPassword"
+            android:inputType="textPersonName"
             android:maxLength="12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

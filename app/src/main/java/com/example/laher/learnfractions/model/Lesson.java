@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.model;
 
 public class Lesson {
+    String id;
     String title;
     Class startingActivity;
     boolean enabled;
@@ -9,6 +10,14 @@ public class Lesson {
         this.title = title;
         this.startingActivity = startingActivity;
         enabled = true;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {

@@ -3,11 +3,8 @@ package com.example.laher.learnfractions.model;
 import java.util.ArrayList;
 
 public class User extends BaseModel {
-    private String username;
-    private String password;
-    private String age;
+    private int age;
     private String gender;
-    private String activitiesCode;
     private ArrayList<String> activitiesDone;
 
     public ArrayList<String> getActivitiesDone() {
@@ -17,24 +14,11 @@ public class User extends BaseModel {
         this.activitiesDone = activitiesDone;
     }
 
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getAge() {
+    public int getAge() {
         return age;
     }
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 

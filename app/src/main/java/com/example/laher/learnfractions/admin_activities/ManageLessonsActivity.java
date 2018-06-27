@@ -21,6 +21,7 @@ import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.Util;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class ManageLessonsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topics_menu);
         Log.d(TAG, "onCreate: started.");
+        //updateLessons();
         //postLessons();
         btnBack = (Button) findViewById(R.id.btnBack);
         btnNext = (Button) findViewById(R.id.btnNext);
@@ -88,6 +90,32 @@ public class ManageLessonsActivity extends AppCompatActivity {
             }
         });
         LessonService.postLessons(service);
+    }
+
+    private void updateLessons(){
+        Service service = new Service("Updating lessons...", context, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try {
+                    for (Lesson lesson : LessonArchive.getAllLessons()) {
+                        JSONArray jsonArray = response.getJSONArray("records");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            lesson.setId(jsonArray.getJSONObject(i).optString("id"));
+                            lesson.setTitle(jsonArray.getJSONObject(i).optString("title"));
+                            if (jsonArray.getJSONObject(i).optString("is_enabled").equals("1")){
+                                lesson.setEnabled(true);
+                            } else if (jsonArray.getJSONObject(i).optString("is_enabled").equals("0")){
+                                lesson.setEnabled(false);
+                            }
+                        }
+                    }
+                    Log.d("Lessons: ","updated.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        LessonService.updateLessons(service);
     }
     private class BtnBackListener implements Button.OnClickListener{
         @Override

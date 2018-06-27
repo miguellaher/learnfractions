@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.fractionmeaning;
+package com.example.laher.learnfractions.lessons.ordering_similar;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -14,29 +14,52 @@ import android.widget.VideoView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 
-public class FractionMeaningVideoActivity extends AppCompatActivity {
-    VideoView video;
+public class OrderingSimilarVideoActivity extends AppCompatActivity {
+    //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Fraction Meaning";
+    public final String TITLE = "Ordering Fractions";
+
+    VideoView video;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-        video = (VideoView) findViewById(R.id.videoView);
+
+
         btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(OrderingSimilarVideoActivity.this,
+                        TopicsMenuActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
         btnNext = (Button) findViewById(R.id.btnNext);
-        btnBack.setOnClickListener(new BtnBackListener());
-        btnNext.setOnClickListener(new BtnNextListener());
+        btnNext.setEnabled(false);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // CHANGE INTENT PARAMS
+                Intent intent = new Intent(OrderingSimilarVideoActivity.this,
+                        OrderingSimilarExerciseActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
+        txtTitle.setTextSize(14);
+
+        video = (VideoView) findViewById(R.id.videoView);
+
         go();
     }
-
     public void go(){
-        //btnNext.setVisibility(Button.INVISIBLE);
         btnNext.setEnabled(false);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small); //SAMPLE VIDEO
         video.setVideoURI(uri);
         video.setMediaController(new MediaController(this));
         video.requestFocus();
@@ -51,25 +74,4 @@ public class FractionMeaningVideoActivity extends AppCompatActivity {
             btnNext.setEnabled(true);
         }
     }
-
-    public class BtnBackListener implements Button.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(FractionMeaningVideoActivity.this,
-                    TopicsMenuActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
-    }
-
-    public class BtnNextListener implements Button.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(FractionMeaningVideoActivity.this,
-                    FractionMeaningExerciseActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
-    }
-
 }
