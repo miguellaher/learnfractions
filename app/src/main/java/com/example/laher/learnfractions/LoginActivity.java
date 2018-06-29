@@ -2,6 +2,8 @@ package com.example.laher.learnfractions;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,9 +17,11 @@ import android.widget.Toast;
 
 import com.example.laher.learnfractions.admin_activities.AdminMainActivity;
 import com.example.laher.learnfractions.model.Admin;
+import com.example.laher.learnfractions.model.Teacher;
 import com.example.laher.learnfractions.service.AdminService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
+import com.example.laher.learnfractions.service.TeacherService;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
@@ -38,6 +42,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        if (!isNetworkAvailable()){
+            Intent intent = new Intent(LoginActivity.this,
+                    TopicsMenuActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
         txtError = findViewById(R.id.txtError);
         txtRegister = findViewById(R.id.txtRegister);
         txtRegister.setOnClickListener(new TxtRegisterListener());
@@ -53,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerUserType.setAdapter(adapter);
         spinnerUserType.setOnItemSelectedListener(new UserTypeSpinnerListener());
+
     }
     private String checkErrors(){
         if (inputUsername.getText().toString().matches("")){
@@ -74,7 +85,6 @@ public class LoginActivity extends AppCompatActivity {
                         }else{
                             final Admin admin = new Admin();
                             admin.setId(response.optString("id"));
-                            admin.setUsername(response.optString("username"));
                             Intent intent = new Intent(LoginActivity.this,
                                     AdminMainActivity.class);
                             intent.putExtra("id", admin.getId());
@@ -88,6 +98,33 @@ public class LoginActivity extends AppCompatActivity {
             admin.setUsername(String.valueOf(inputUsername.getText()));
             admin.setPassword(String.valueOf(inputPassword.getText()));
             AdminService.login(admin, service);
+        }
+
+        if (userType.trim().matches(AppConstants.TEACHER)){
+            Service service = new Service("Signing in...", context, new ServiceResponse() {
+                @Override
+                public void postExecute(JSONObject response) {
+                    try{
+                        if (response.optString("message") != null && response.optString("message").equals("Incorrect username or password.")){
+                            showTxtError(String.valueOf(response.optString("message")));
+                        } else {
+                            final Teacher teacher = new Teacher();
+                            teacher.setId(response.optString("id"));
+                            Intent intent = new Intent(LoginActivity.this,
+                                    AdminMainActivity.class);//EDIT EDIT
+                            intent.putExtra("id", teacher.getId());
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+            Teacher teacher = new Teacher();
+            teacher.setUsername(String.valueOf(inputUsername.getText()));
+            teacher.setPassword(String.valueOf(inputPassword.getText()));
+            TeacherService.login(teacher, service);
         }
     }
     private void showTxtError(String errorMsg){
@@ -124,5 +161,11 @@ public class LoginActivity extends AppCompatActivity {
         public void onNothingSelected(AdapterView<?> parent) {
 
         }
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

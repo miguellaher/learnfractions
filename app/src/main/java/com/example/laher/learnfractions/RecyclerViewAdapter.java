@@ -14,8 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.laher.learnfractions.admin_activities.ManageLessonsActivity;
-import com.example.laher.learnfractions.admin_activities.dialogs.LessonSettingsDialog;
 import com.example.laher.learnfractions.archive.LessonArchive;
 
 import java.util.ArrayList;
@@ -33,7 +31,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<String> mTitle = new ArrayList<>();
     private ArrayList<String> mImageUrl = new ArrayList<>();
     private ArrayList<Class> mClasses = new ArrayList<>();
-    private ArrayList<LessonSettingsDialog> mLessonSettingsDialog;
     private Context mContext;
 
     public RecyclerViewAdapter (Context context ,ArrayList<String> imageNames, ArrayList<String> images, ArrayList<Class> classes){
@@ -42,18 +39,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         mContext = context;
         mClasses = classes;
     }
-    public RecyclerViewAdapter (Context context ,ArrayList<String> imageNames, ArrayList<LessonSettingsDialog> lessonSettingsDialog){
-        mTitle = imageNames;
-        mContext = context;
-        mLessonSettingsDialog = lessonSettingsDialog;
-    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_topic, parent, false);
-        if (mContext instanceof ManageLessonsActivity){
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_lesson, parent, false);
-        }
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -62,54 +51,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-        if (mContext instanceof ManageLessonsActivity){
-            Glide.with(mContext)
-                    .asBitmap();
+        Glide.with(mContext)
+                .asBitmap()
+                .load(mImageUrl.get(position))
+                .into(holder.imgTopic);
 
-            holder.txtLessonTitle.setText(mTitle.get(position));
-            if (LessonArchive.getLesson(mTitle.get(position)).isEnabled()){
-                holder.txtEnabled.setText("Enabled");
-            } else {
-                holder.txtEnabled.setText("Disabled");
+        holder.txtTopicName.setText(mTitle.get(position));
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: clicked on: " + mTitle.get(position));
+
+                Toast.makeText(mContext, mTitle.get(position), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(mContext, mClasses.get(position));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mContext.startActivity(intent);
             }
-            mLessonSettingsDialog.get(position).setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    if (LessonArchive.getLesson(mTitle.get(position)).isEnabled()){
-                        holder.txtEnabled.setText("Enabled");
-                    } else {
-                        holder.txtEnabled.setText("Disabled");
-                    }
-                }
-            });
-            holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "onClick: clicked on: " + mTitle.get(position));
-                    mLessonSettingsDialog.get(position).show();
-                }
-            });
-        } else {
-            Glide.with(mContext)
-                    .asBitmap()
-                    .load(mImageUrl.get(position))
-                    .into(holder.imgTopic);
+        });
 
-            holder.txtTopicName.setText(mTitle.get(position));
-
-            holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "onClick: clicked on: " + mTitle.get(position));
-
-                    Toast.makeText(mContext, mTitle.get(position), Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(mContext, mClasses.get(position));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    mContext.startActivity(intent);
-                }
-            });
-        }
     }
 
     @Override
@@ -126,16 +87,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public ViewHolder(View itemView) {
             super(itemView);
-            if (mContext instanceof ManageLessonsActivity){
-                txtLessonTitle = itemView.findViewById(R.id.layout_list_lesson_txtTitle);
-                txtEnabled = itemView.findViewById(R.id.layout_list_lesson_txtEnabled);
-                parentLayout = itemView.findViewById(R.id.parent_layout_lesson);
-            } else {
-                imgTopic = itemView.findViewById(R.id.imgTopic);
-                txtTopicName = itemView.findViewById(R.id.txtTopic);
-                parentLayout = itemView.findViewById(R.id.parent_layout_topic);
-            }
-
+            imgTopic = itemView.findViewById(R.id.imgTopic);
+            txtTopicName = itemView.findViewById(R.id.txtTopic);
+            parentLayout = itemView.findViewById(R.id.parent_layout_topic);
         }
     }
 }

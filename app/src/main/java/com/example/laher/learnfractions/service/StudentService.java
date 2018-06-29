@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.service;
 
 import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.model.User;
 import com.example.laher.learnfractions.util.Encryptor;
 import com.example.laher.learnfractions.util.Util;
 import com.loopj.android.http.RequestParams;
@@ -30,6 +31,20 @@ public class StudentService {
         String encrypted_teacher_code = Encryptor.encrypt(student.getTeacher_code());
         requestParams.put("teacher_code", encrypted_teacher_code);
         service.post("http://jabahan.com/learnfractions/student/create.php", requestParams);
+        service.execute();
+    }
+
+    public static void getAllUsers(Service service){
+        service.get("http://jabahan.com/learnfractions/student/getAllStudents.php", new RequestParams());
+        service.execute();
+    }
+
+    public static void changeUserPassword(Student student, Service service){
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("username", student.getUsername());
+        String encrypted_password = Encryptor.encrypt(student.getPassword());
+        requestParams.put("new_password", encrypted_password);
+        service.post("http://jabahan.com/learnfractions/student/changeStudentPassword.php", requestParams);
         service.execute();
     }
 

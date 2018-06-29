@@ -3,6 +3,7 @@
     package="com.example.laher.learnfractions">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,13 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".LoginActivity"></activity>
         <activity android:name=".MainActivity" />
         <activity
             android:name=".lessons.fraction_meaning.FractionMeaningVideoActivity"
@@ -30,7 +25,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".TopicsMenuActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".lessons.non_visual_fraction.NonVisualVideoActivity"
             android:screenOrientation="portrait" />
@@ -152,7 +153,11 @@
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".admin_activities.AdminMainActivity" />
-        <activity android:name=".admin_activities.ManageLessonsActivity"></activity>
+        <activity android:name=".admin_activities.AccountManagementActivity" />
+        <activity android:name=".admin_activities.ChangeUserPasswordActivity" />
+        <activity android:name=".admin_activities.UserListActivity" />
+        <activity android:name=".teacher_activities.TeacherMainActivity" />
+        <activity android:name=".teacher_activities.ManageExercisesActivity"></activity>
     </application>
 
 </manifest>

@@ -167,12 +167,12 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
                 consecutiveRights = 0;
                 consecutiveWrongs++;
                 setTxtScore();
-                txtInstruction.setText("wrong");
+                txtInstruction.setText("error");
                 inputNum.setEnabled(false);
                 inputDenom.setEnabled(false);
                 btnOK.setEnabled(false);
                 if (consecutiveWrongs >= maxConsecutiveWrongs){
-                    txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
+                    txtInstruction.setText("You had " + consecutiveWrongs + " consecutive error." +
                             " Preparing to start previous exercise");
                     handler.postDelayed(new Runnable() {
                         @Override

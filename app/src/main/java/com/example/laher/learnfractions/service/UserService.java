@@ -23,4 +23,18 @@ public class UserService {
         service.execute();
     }
 
+    public static void getAllUsers(Service service){
+        service.get("http://jabahan.com/learnfractions/user/getAllUsers.php", new RequestParams());
+        service.execute();
+    }
+
+    public static void changeUserPassword(User user, Service service){
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("username", user.getUsername());
+        String encrypted_password = Encryptor.encrypt(user.getPassword());
+        requestParams.put("new_password", encrypted_password);
+        service.post("http://jabahan.com/learnfractions/user/changeUserPassword.php", requestParams);
+        service.execute();
+    }
+
 }

@@ -22,4 +22,27 @@ public class TeacherService {
         service.post("http://jabahan.com/learnfractions/teacher/create.php", requestParams);
         service.execute();
     }
+
+    public static void login(Teacher teacher, Service service){
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("username", teacher.getUsername());
+        String encrypted_password = Encryptor.encrypt(teacher.getPassword());
+        requestParams.put("password", teacher.getPassword());
+        service.get("http://jabahan.com/learnfractions/teacher/login.php", requestParams);
+        service.execute();
+    }
+
+    public static void getAllTeachers(Service service){
+        service.get("http://jabahan.com/learnfractions/teacher/getAllTeachers.php", new RequestParams());
+        service.execute();
+    }
+
+    public static void changeUserPassword(Teacher teacher, Service service){
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("username", teacher.getUsername());
+        String encrypted_password = Encryptor.encrypt(teacher.getPassword());
+        requestParams.put("new_password", encrypted_password);
+        service.post("http://jabahan.com/learnfractions/teacher/changeTeacherPassword.php", requestParams);
+        service.execute();
+    }
 }

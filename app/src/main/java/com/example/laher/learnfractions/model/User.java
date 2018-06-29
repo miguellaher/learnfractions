@@ -14,7 +14,6 @@ public class User extends BaseModel {
         this.activitiesDone = activitiesDone;
     }
 
-
     public int getAge() {
         return age;
     }
@@ -26,5 +25,14 @@ public class User extends BaseModel {
         return gender;
     }
     public void setGender(String gender) { this.gender = gender; }
+
+    public User(){
+
+    }
+    public User(String username, int age, String gender){
+        setUsername(username);
+        setAge(age);
+        setGender(gender);
+    }
 
 }

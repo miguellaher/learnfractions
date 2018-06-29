@@ -22,13 +22,14 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     public final String TITLE = "Fraction Meaning";
     TextView txtScore, txtInstruction;
     ArrayList<String> instructions;
-    Button btnTest;
     String strCorrectAns;
-    int num, denom, consecutiveRights, consecutiveWrongs;
+    int num, denom, correct, error;
     public final String INSTRUCTION_DENOM = "click how many parts the whole is divided into";
     public final String INSTRUCTION_NUM = "click how many parts we have";
-    int requiredConsecutiveCorrects = 6;
-    int maxConsecutiveWrongs = 3;
+    int requiredCorrects = 6;
+    int maxErrors = 3;
+    boolean correctsShouldBeConsecutive;
+    boolean errorsShouldBeConsecutive;
 
     final Handler handler = new Handler();
     @Override
@@ -61,12 +62,16 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
 
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        txtScore.setText(correct + " / " + requiredCorrects);
         instructions = new ArrayList<String>();
         instructions.add(INSTRUCTION_DENOM);
         instructions.add(INSTRUCTION_NUM);
-        consecutiveRights = 0;
-        consecutiveWrongs = 0;
+        correct = 0;
+        error = 0;
+        correctsShouldBeConsecutive = true;
+        errorsShouldBeConsecutive = true;
+
+        //INSERT SERVICE TO EDIT VALUES
 
         go();
     }
@@ -149,16 +154,18 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
             Button choice = (Button) view;
             if (choice.getText() == strCorrectAns) {
                 //FOR TESTS
-                //txtInstruction.setText("correct " + choice.getText() + " / " + strCorrectAns + " " + consecutiveRights);
-                consecutiveWrongs = 0;
-                consecutiveRights++;
-                txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+                //txtInstruction.setText("correct " + choice.getText() + " / " + strCorrectAns + " " + correct);
+                if (errorsShouldBeConsecutive) {
+                    error = 0;
+                }
+                correct++;
+                txtScore.setText(correct + " / " + requiredCorrects);
                 txtInstruction.setText("correct");
                 btnChoice1.setEnabled(false);
                 btnChoice2.setEnabled(false);
                 btnChoice3.setEnabled(false);
                 btnChoice4.setEnabled(false);
-                if (consecutiveRights >= requiredConsecutiveCorrects) {
+                if (correct >= requiredCorrects) {
                     txtInstruction.setText("proceed");
                     finishExercise();
                 } else {
@@ -184,17 +191,24 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
 
                 }
             } else {
-                consecutiveRights = 0;
-                consecutiveWrongs++;
-                txtInstruction.setText("wrong");
-                txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+                if (correctsShouldBeConsecutive) {
+                    correct = 0;
+                }
+                error++;
+                txtInstruction.setText("error");
+                txtScore.setText(correct + " / " + requiredCorrects);
                 btnChoice1.setEnabled(false);
                 btnChoice2.setEnabled(false);
                 btnChoice3.setEnabled(false);
                 btnChoice4.setEnabled(false);
-                if (consecutiveWrongs >= maxConsecutiveWrongs) {
-                    txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
-                            " Preparing to watch video again.");
+                if (error >= maxErrors) {
+                    if (errorsShouldBeConsecutive) {
+                        txtInstruction.setText("You had " + error + " consecutive error." +
+                                " Preparing to watch video again.");
+                    } else {
+                        txtInstruction.setText("You had " + error + " error." +
+                                " Preparing to watch video again.");
+                    }
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -221,7 +235,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
                     }, 2000);
                 }
                 //FOR TESTS
-                //txtInstruction.setText("wrong " + choice.getText() + " / " + strCorrectAns);
+                //txtInstruction.setText("error " + choice.getText() + " / " + strCorrectAns);
             }
         }
     }
