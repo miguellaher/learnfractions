@@ -1,10 +1,22 @@
 package com.example.laher.learnfractions.model;
 
+import java.util.ArrayList;
+
 public class Lesson {
     String id;
     String title;
     Class startingActivity;
     boolean enabled;
+
+    ArrayList<Exercise> exercises;
+
+    public ArrayList<Exercise> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(ArrayList<Exercise> exercises) {
+        this.exercises = exercises;
+    }
 
     public Lesson(String title, Class startingActivity) {
         this.title = title;

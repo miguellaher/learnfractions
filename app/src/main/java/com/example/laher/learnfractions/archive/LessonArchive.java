@@ -1,5 +1,6 @@
 package com.example.laher.learnfractions.archive;
 
+import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.Lesson;
 import com.example.laher.learnfractions.lessons.adding_dissimilar.AddingDissimilarVideoActivity;
 import com.example.laher.learnfractions.lessons.adding_similar.AddingSimilarVideoActivity;
@@ -18,11 +19,12 @@ import com.example.laher.learnfractions.lessons.solving_mixed.SolvingMixedVideoA
 import com.example.laher.learnfractions.lessons.solving_mixed2.SolvingMixed2VideoActivity;
 import com.example.laher.learnfractions.lessons.subtracting_dissimilar.SubtractingDissimilarVideoActivity;
 import com.example.laher.learnfractions.lessons.subtracting_similar.SubtractingSimilarVideoActivity;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 
 public abstract class LessonArchive {
-    public static final Lesson fractionMeaning = new Lesson("Fraction Meaning", FractionMeaningVideoActivity.class);
+    public static final Lesson fractionMeaning = new Lesson(AppConstants.FRACTION_MEANING, FractionMeaningVideoActivity.class);
     public static final Lesson nonVisualFraction = new Lesson("Non-Visual Fraction", NonVisualVideoActivity.class);
     public static final Lesson comparingSimilarFractions = new Lesson("Comparing Similar Fractions", ComparingSimilarVideoActivity.class);
     public static final Lesson comparingDissimilarFractions = new Lesson("Comparing Dissimilar Fractions", ComparingDissimilarVideoActivity.class);
@@ -45,6 +47,9 @@ public abstract class LessonArchive {
 
     public static Lesson getLesson(String lessonTitle){
         if (fractionMeaning.getTitle() == lessonTitle){
+            fractionMeaning.setExercises(new ArrayList<Exercise>());
+            fractionMeaning.getExercises().add(
+                    new Exercise(fractionMeaning.getTitle(),1,6,true,3,true));
             return fractionMeaning;
         }
         if (nonVisualFraction.getTitle() == lessonTitle){
@@ -100,23 +105,23 @@ public abstract class LessonArchive {
     }
     public static ArrayList<Lesson> getAllLessons(){
         ArrayList<Lesson> lessons = new ArrayList<>();
-        lessons.add(fractionMeaning);
-        lessons.add(nonVisualFraction);
-        lessons.add(comparingSimilarFractions);
-        lessons.add(comparingDissimilarFractions);
-        lessons.add(comparingFractions);
+        lessons.add(getLesson(fractionMeaning.getTitle()));
+        lessons.add(getLesson(nonVisualFraction.getTitle()));
+        lessons.add(getLesson(comparingSimilarFractions.getTitle()));
+        lessons.add(getLesson(comparingDissimilarFractions.getTitle()));
+        lessons.add(getLesson(comparingFractions.getTitle()));
 
-        lessons.add(orderingSimilarFractions);
-        lessons.add(orderingDissimilarFractions);
-        lessons.add(classifyingFractions);
-        lessons.add(convertingFractions);
-        lessons.add(addingSimilarFractions);
+        lessons.add(getLesson(orderingSimilarFractions.getTitle()));
+        lessons.add(getLesson(orderingDissimilarFractions.getTitle()));
+        lessons.add(getLesson(classifyingFractions.getTitle()));
+        lessons.add(getLesson(convertingFractions.getTitle()));
+        lessons.add(getLesson(addingSimilarFractions.getTitle()));
 
-        lessons.add(addingDissimilarFractions);
-        lessons.add(subtractingSimilarFractions);
-        lessons.add(subtractingDissimilarFractions);
-        lessons.add(multiplyingFractions);
-        lessons.add(dividingFractions);
+        lessons.add(getLesson(addingDissimilarFractions.getTitle()));
+        lessons.add(getLesson(subtractingSimilarFractions.getTitle()));
+        lessons.add(getLesson(subtractingDissimilarFractions.getTitle()));
+        lessons.add(getLesson(multiplyingFractions.getTitle()));
+        lessons.add(getLesson(dividingFractions.getTitle()));
 
         lessons.add(solvingWithMixed1);
         lessons.add(solvingWithMixed2);

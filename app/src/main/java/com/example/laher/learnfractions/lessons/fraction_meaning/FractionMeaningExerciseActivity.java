@@ -10,11 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class FractionMeaningExerciseActivity extends AppCompatActivity {
+    Exercise exercise;
     ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
     Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
     Button btnBack, btnNext;
@@ -26,16 +30,22 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     int num, denom, correct, error;
     public final String INSTRUCTION_DENOM = "click how many parts the whole is divided into";
     public final String INSTRUCTION_NUM = "click how many parts we have";
-    int requiredCorrects = 6;
-    int maxErrors = 3;
+    int requiredCorrects;
+    int maxErrors;
     boolean correctsShouldBeConsecutive;
     boolean errorsShouldBeConsecutive;
 
+    private final int EXERCISE_NUM = 1;
     final Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_meaning_exercise);
+        exercise = LessonArchive.getLesson(AppConstants.FRACTION_MEANING).getExercises().get(EXERCISE_NUM - 1);
+        requiredCorrects = exercise.getRequiredCorrects();
+        maxErrors = exercise.getMaxErrors();
+        correctsShouldBeConsecutive = exercise.isRc_consecutive();
+        errorsShouldBeConsecutive = exercise.isMe_consecutive();
         imgBox1 = (ImageView) findViewById(R.id.a_imgBox1);
         imgBox2 = (ImageView) findViewById(R.id.a_imgBox2);
         imgBox3 = (ImageView) findViewById(R.id.a_imgBox3);
@@ -68,10 +78,10 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         instructions.add(INSTRUCTION_NUM);
         correct = 0;
         error = 0;
-        correctsShouldBeConsecutive = true;
-        errorsShouldBeConsecutive = true;
 
         //INSERT SERVICE TO EDIT VALUES
+
+
 
         go();
     }

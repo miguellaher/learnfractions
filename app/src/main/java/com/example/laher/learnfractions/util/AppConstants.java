@@ -14,4 +14,9 @@ public class AppConstants {
 
     public static final String MALE= "MALE";
     public static final String FEMALE= "FEMALE";
+
+
+
+    //LESSONS
+    public static final String FRACTION_MEANING="Fraction Meaning";
 }

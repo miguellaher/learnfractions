@@ -12,7 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter></activity>
         <activity android:name=".MainActivity" />
         <activity
             android:name=".lessons.fraction_meaning.FractionMeaningVideoActivity"
@@ -26,11 +31,6 @@
         <activity
             android:name=".TopicsMenuActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".lessons.non_visual_fraction.NonVisualVideoActivity"
@@ -157,7 +157,7 @@
         <activity android:name=".admin_activities.ChangeUserPasswordActivity" />
         <activity android:name=".admin_activities.UserListActivity" />
         <activity android:name=".teacher_activities.TeacherMainActivity" />
-        <activity android:name=".teacher_activities.ManageExercisesActivity"></activity>
+        <activity android:name=".teacher_activities.ExercisesListActivity"></activity>
     </application>
 
 </manifest>

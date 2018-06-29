@@ -27,7 +27,7 @@ public class TeacherService {
         RequestParams requestParams = new RequestParams();
         requestParams.put("username", teacher.getUsername());
         String encrypted_password = Encryptor.encrypt(teacher.getPassword());
-        requestParams.put("password", teacher.getPassword());
+        requestParams.put("password", encrypted_password);
         service.get("http://jabahan.com/learnfractions/teacher/login.php", requestParams);
         service.execute();
     }
