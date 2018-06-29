@@ -1,5 +1,6 @@
 package com.example.laher.learnfractions.service;
 
+import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.Teacher;
 import com.example.laher.learnfractions.util.Encryptor;
 import com.example.laher.learnfractions.util.Util;
@@ -45,4 +46,44 @@ public class TeacherService {
         service.post("http://jabahan.com/learnfractions/teacher/changeTeacherPassword.php", requestParams);
         service.execute();
     }
+
+    public static void postExercise(Teacher teacher, Exercise exercise, Service service){
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("exercise_id", Util.generateId());
+        requestParams.put("teacher_id", teacher.getId());
+        requestParams.put("topic_name", exercise.getTopicName());
+        requestParams.put("exercise_num", exercise.getExerciseNum());
+        requestParams.put("required_corrects", exercise.getRequiredCorrects());
+        if (exercise.isRc_consecutive()){
+            requestParams.put("rc_consecutive", "1");
+        } else {
+            requestParams.put("rc_consecutive", "0");
+        }
+        requestParams.put("max_errors", exercise.getMaxErrors());
+        if (exercise.isMe_consecutive()){
+            requestParams.put("me_consecutive", "1");
+        } else {
+            requestParams.put("me_consecutive", "0");
+        }
+        service.post("http://jabahan.com/learnfractions/exercise/create.php", requestParams);
+        service.execute();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

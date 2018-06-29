@@ -17,6 +17,8 @@ public class Exercise {
         this.me_consecutive = me_consecutive;
     }
 
+    public Exercise(){}
+
     public String getTopicName() {
         return topicName;
     }

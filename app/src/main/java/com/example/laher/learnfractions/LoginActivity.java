@@ -24,6 +24,7 @@ import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.service.TeacherService;
 import com.example.laher.learnfractions.teacher_activities.TeacherMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
@@ -111,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             final Teacher teacher = new Teacher();
                             teacher.setId(response.optString("id"));
+                            Storage.save(context, teacher);
                             Intent intent = new Intent(LoginActivity.this,
                                     TeacherMainActivity.class);
                             intent.putExtra("id", teacher.getId());
