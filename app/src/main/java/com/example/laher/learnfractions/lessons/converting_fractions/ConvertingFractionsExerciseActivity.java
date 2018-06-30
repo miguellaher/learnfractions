@@ -15,12 +15,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 
 public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 1;
+
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -39,8 +45,8 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
     Fraction fraction;
     ArrayList<Fraction> fractions;
     int questionNum;
-    int consecutiveRights;
-    int requiredConsecutiveCorrects = 10;
+    int correct;
+    int requiredCorrects;
     int clicks;
     final Handler handler = new Handler();
     ColorStateList defaultColor;
@@ -48,6 +54,9 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_converting_fractions_exercise);
+        exercise = LessonArchive.getLesson(AppConstants.CONVERTING_FRACTIONS).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +87,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         txtNum1 = (TextView) findViewById(R.id.cvt_txtNum1);
         txtDenom1 = (TextView) findViewById(R.id.cvt_txtDenom1);
         txtScore = (TextView) findViewById(R.id.cvt_txtScore);
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        setTxtScore();
         txtInstruction = (TextView) findViewById(R.id.cvt_txtInstruction);
         txtQuotient = (TextView) findViewById(R.id.cvt_txtQuotient);
         txtRemainder = (TextView) findViewById(R.id.cvt_txtRemainder);
@@ -114,16 +123,19 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         setGuiFraction();
         setUp();
     }
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public void correct(){
-        consecutiveRights++;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        correct++;
+        setTxtScore();
         setInputEnabled(false);
         btnCheck.setEnabled(false);
-        if (consecutiveRights >= requiredConsecutiveCorrects){
+        if (correct >= requiredCorrects){
             btnNext.setEnabled(true);
-            txtInstruction.setText("Finished");
+            txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
         } else {
-            txtInstruction.setText("Correct");
+            txtInstruction.setText(AppConstants.CORRECT);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -137,7 +149,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
     public void setQuestions(){
         questionNum = 0;
         fractions = new ArrayList<>();
-        for (int i = 0; i < requiredConsecutiveCorrects; i++){
+        for (int i = 0; i < requiredCorrects; i++){
             fraction = new Fraction(Fraction.IMPROPER);
             while (fraction.getNumerator()%fraction.getDenominator()==0){
                 fraction = new Fraction(Fraction.IMPROPER);
@@ -180,7 +192,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         fractions.get(questionNum).toMixed();
         divisionDialog.show();
         diagDdInputAnswer.requestFocus();
-        txtInstruction.setText("Get the quotient and remainder");
+        txtInstruction.setText("Get the quotient and remainder.");
     }
     public void clearInputAreas(){
         inputWholeNum.setText("");

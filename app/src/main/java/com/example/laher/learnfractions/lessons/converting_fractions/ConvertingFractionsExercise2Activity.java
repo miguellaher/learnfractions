@@ -13,14 +13,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
 public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 2;
+
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -39,8 +45,8 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
     Fraction fraction;
     ArrayList<Fraction> fractions;
     int questionNum;
-    int consecutiveRights;
-    int requiredConsecutiveCorrects = 10;
+    int correct;
+    int requiredCorrects;
     ArrayList<Integer> viewId;
     final Handler handler = new Handler();
     ColorStateList defaultColor;
@@ -48,6 +54,9 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_converting_fractions_exercise2);
+        exercise = LessonArchive.getLesson(AppConstants.CONVERTING_FRACTIONS).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +83,7 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
-        btnNext.setText("DONE");
+        btnNext.setText(AppConstants.DONE);
         //GUI
         txtWholeNum = (TextView) findViewById(R.id.cvt2_txtWholeNum);
         txtNum1 = (TextView) findViewById(R.id.cvt2_txtNum);
@@ -83,7 +92,7 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
         txtDenom1 = (TextView) findViewById(R.id.cvt2_txtDenom);
         txtEquation = (TextView) findViewById(R.id.cvt2_txtEquation);
         txtScore = (TextView) findViewById(R.id.cvt2_txtScore);
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        txtScore.setText(correct + " / " + requiredCorrects);
         txtInstruction = (TextView) findViewById(R.id.cvt2_txtInstruction);
         inputDenom = (EditText) findViewById(R.id.cvt2_inputDenom);
         btnCheck = (Button) findViewById(R.id.cvt2_btnCheck);
@@ -113,15 +122,15 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
         setUp();
     }
     public void correct(){
-        consecutiveRights++;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        correct++;
+        txtScore.setText(correct + " / " + requiredCorrects);
         inputDenom.setEnabled(false);
         btnCheck.setEnabled(false);
-        if (consecutiveRights>=requiredConsecutiveCorrects){
-            txtInstruction.setText("Finished");
+        if (correct >= requiredCorrects){
+            txtInstruction.setText(AppConstants.FINISHED_LESSON);
             btnNext.setEnabled(true);
         } else {
-            txtInstruction.setText("Correct");
+            txtInstruction.setText(AppConstants.CORRECT);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -136,7 +145,7 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
     public void setQuestions(){
         questionNum = 0;
         fractions = new ArrayList<>();
-        for (int i = 0; i < requiredConsecutiveCorrects; i++){
+        for (int i = 0; i < requiredCorrects; i++){
             fraction = new Fraction(Fraction.MIXED);
             fractions.add(fraction);
         }

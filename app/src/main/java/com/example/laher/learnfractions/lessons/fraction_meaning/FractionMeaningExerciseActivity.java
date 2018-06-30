@@ -28,8 +28,8 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     ArrayList<String> instructions;
     String strCorrectAns;
     int num, denom, correct, error;
-    public final String INSTRUCTION_DENOM = "click how many parts the whole is divided into";
-    public final String INSTRUCTION_NUM = "click how many parts we have";
+    public final String INSTRUCTION_DENOM = "Click how many parts the whole is divided into.";
+    public final String INSTRUCTION_NUM = "Click how many parts we have.";
     int requiredCorrects;
     int maxErrors;
     boolean correctsShouldBeConsecutive;
@@ -158,6 +158,10 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         btnChoice4.setEnabled(false);
         btnNext.setEnabled(true);
     }
+
+    public void showScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public class BtnChoiceListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -169,14 +173,14 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
                     error = 0;
                 }
                 correct++;
-                txtScore.setText(correct + " / " + requiredCorrects);
-                txtInstruction.setText("correct");
+                showScore();
+                txtInstruction.setText(AppConstants.CORRECT);
                 btnChoice1.setEnabled(false);
                 btnChoice2.setEnabled(false);
                 btnChoice3.setEnabled(false);
                 btnChoice4.setEnabled(false);
                 if (correct >= requiredCorrects) {
-                    txtInstruction.setText("proceed");
+                    txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
                     finishExercise();
                 } else {
                     handler.postDelayed(new Runnable() {
@@ -205,19 +209,17 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
                     correct = 0;
                 }
                 error++;
-                txtInstruction.setText("error");
-                txtScore.setText(correct + " / " + requiredCorrects);
+                txtInstruction.setText(AppConstants.ERROR);
+                showScore();
                 btnChoice1.setEnabled(false);
                 btnChoice2.setEnabled(false);
                 btnChoice3.setEnabled(false);
                 btnChoice4.setEnabled(false);
                 if (error >= maxErrors) {
                     if (errorsShouldBeConsecutive) {
-                        txtInstruction.setText("You had " + error + " consecutive error." +
-                                " Preparing to watch video again.");
+                        txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
                     } else {
-                        txtInstruction.setText("You had " + error + " error." +
-                                " Preparing to watch video again.");
+                        txtInstruction.setText(AppConstants.FAILED(error));
                     }
                     handler.postDelayed(new Runnable() {
                         @Override

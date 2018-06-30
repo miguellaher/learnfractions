@@ -14,10 +14,16 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 
 public class FractionMeaningExercise2Activity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 2;
+
     ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
     EditText inputNum, inputDenom;
     TextView txtScore, txtInstruction;
@@ -26,16 +32,25 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
     public final String TITLE = "Fraction Meaning";
     ArrayList<String> instructions;
     Button btnOK;
-    int num, denom, consecutiveRights, consecutiveWrongs;
+    int num, denom, correct, error;
     int maxInputLength = 3;
-    int requiredConsecutiveCorrects = 5;
-    int maxConsecutiveWrongs = 2;
+
+    int requiredCorrects = 5;
+    int maxErrors = 2;
+
+    boolean correctsShouldBeConsecutive;
+    boolean errorsShouldBeConsecutive;
 
     final Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_meaning_exercise2);
+        exercise = LessonArchive.getLesson(AppConstants.FRACTION_MEANING).getExercises().get(EXERCISE_NUM - 1);
+        requiredCorrects = exercise.getRequiredCorrects();
+        maxErrors = exercise.getMaxErrors();
+        correctsShouldBeConsecutive = exercise.isRc_consecutive();
+        errorsShouldBeConsecutive = exercise.isMe_consecutive();
         imgBox1 = (ImageView) findViewById(R.id.a1_imgBox1);
         imgBox2 = (ImageView) findViewById(R.id.a1_imgBox2);
         imgBox3 = (ImageView) findViewById(R.id.a1_imgBox3);
@@ -72,6 +87,8 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
         btnNext.setOnClickListener(new BtnNextListener());
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
+        btnNext.setText(AppConstants.DONE);
+
 
         go();
     }
@@ -90,7 +107,7 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
         inputNum.requestFocus();
     }
     public void reset(){
-        txtInstruction.setText("fill in the blanks");
+        txtInstruction.setText("Fill in the blanks.");
         generateFraction();
         setBoxes(num, denom);
         inputNum.getText().clear();
@@ -128,10 +145,10 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
         imgBox9.setImageResource(imageList.get(8));
     }
     public void setTxtScore(){
-        txtScore.setText(consecutiveRights + "/" + requiredConsecutiveCorrects);
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
     }
     public void finishExercise(){
-        txtInstruction.setText("lesson ended");
+        txtInstruction.setText(AppConstants.FINISHED_LESSON);
         inputNum.setEnabled(false);
         inputDenom.setEnabled(false);
         btnOK.setEnabled(false);
@@ -143,14 +160,16 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
         public void onClick(View view) {
             if ((Integer.parseInt(String.valueOf(inputNum.getText())) == num) &&
                     (Integer.parseInt(String.valueOf(inputDenom.getText())) == denom)){
-                consecutiveWrongs = 0;
-                consecutiveRights++;
+                if (errorsShouldBeConsecutive) {
+                    error = 0;
+                }
+                correct++;
                 setTxtScore();
-                txtInstruction.setText("correct");
+                txtInstruction.setText(AppConstants.CORRECT);
                 inputNum.setEnabled(false);
                 inputDenom.setEnabled(false);
                 btnOK.setEnabled(false);
-                if (consecutiveRights >= 5){
+                if (correct >= 5){
                     finishExercise();
                 } else {
                     handler.postDelayed(new Runnable() {
@@ -164,16 +183,21 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
                     }, 2000);
                 }
             } else {
-                consecutiveRights = 0;
-                consecutiveWrongs++;
+                if (correctsShouldBeConsecutive) {
+                    correct = 0;
+                }
+                error++;
                 setTxtScore();
-                txtInstruction.setText("error");
+                txtInstruction.setText(AppConstants.ERROR);
                 inputNum.setEnabled(false);
                 inputDenom.setEnabled(false);
                 btnOK.setEnabled(false);
-                if (consecutiveWrongs >= maxConsecutiveWrongs){
-                    txtInstruction.setText("You had " + consecutiveWrongs + " consecutive error." +
-                            " Preparing to start previous exercise");
+                if (error >= maxErrors){
+                    if (errorsShouldBeConsecutive) {
+                        txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
+                    } else {
+                        txtInstruction.setText(AppConstants.FAILED(error));
+                    }
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {

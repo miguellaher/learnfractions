@@ -12,12 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter></activity>
+            </intent-filter>
+            </activity>
         <activity android:name=".MainActivity" />
         <activity
             android:name=".lessons.fraction_meaning.FractionMeaningVideoActivity"
@@ -152,12 +154,12 @@
         <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".admin_activities.AdminMainActivity" />
-        <activity android:name=".admin_activities.AccountManagementActivity" />
-        <activity android:name=".admin_activities.ChangeUserPasswordActivity" />
-        <activity android:name=".admin_activities.UserListActivity" />
-        <activity android:name=".teacher_activities.TeacherMainActivity" />
-        <activity android:name=".teacher_activities.ExercisesListActivity"></activity>
+        <activity android:name=".admin_activities.AdminMainActivity" android:screenOrientation="portrait" />
+        <activity android:name=".admin_activities.AccountManagementActivity" android:screenOrientation="portrait" />
+        <activity android:name=".admin_activities.ChangeUserPasswordActivity" android:screenOrientation="portrait" />
+        <activity android:name=".admin_activities.UserListActivity" android:screenOrientation="portrait" />
+        <activity android:name=".teacher_activities.TeacherMainActivity" android:screenOrientation="portrait" />
+        <activity android:name=".teacher_activities.ExercisesListActivity" android:screenOrientation="portrait" />
     </application>
 
 </manifest>

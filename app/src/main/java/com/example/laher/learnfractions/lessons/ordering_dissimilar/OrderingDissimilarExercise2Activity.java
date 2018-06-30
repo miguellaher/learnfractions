@@ -15,13 +15,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 
 public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 2;
+
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -47,9 +53,11 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
     FractionQuestion fractionQuestion;
     ArrayList<FractionQuestion> fractionQuestions;
     int questionNum;
-    int consecutiveRights, consecutiveWrongs;
-    int requiredConsecutiveCorrects = 10;
-    int maxConsecutiveWrongs = 3;
+    int correct, error;
+    int requiredCorrects;
+    int maxErrors;
+    boolean correctsShouldBeConsecutive;
+    boolean errorsShouldBeConsecutive;
     int clicks;
     TextView standByTxt, standByTxtEquation, standByTxtNum;
     final Handler handler = new Handler();
@@ -58,6 +66,12 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ordering_dissimilar_exercise2);
+        exercise = LessonArchive.getLesson(AppConstants.ORDERING_DISSIMILAR).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+        maxErrors = exercise.getMaxErrors();
+        correctsShouldBeConsecutive = exercise.isRc_consecutive();
+        errorsShouldBeConsecutive = exercise.isMe_consecutive();
+
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +98,7 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
+        btnNext.setText(AppConstants.DONE);
         //EQUATION DIALOG
         edView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         equationDialog = new Dialog(OrderingDissimilarExercise2Activity.this);
@@ -143,40 +158,43 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         setGuiFractionSet1();
         startup();
     }
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public void correct(){
-        consecutiveRights++;
-        consecutiveWrongs = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
-        txtInstruction.setText("correct");
+        correct++;
+        if (errorsShouldBeConsecutive) {
+            error = 0;
+        }
+        setTxtScore();
+        txtInstruction.setText(AppConstants.CORRECT);
         removeFractionsListener();
-        if (consecutiveRights>=requiredConsecutiveCorrects){
-            txtInstruction.setText("finish");
+        if (correct >= requiredCorrects){
+            txtInstruction.setText(AppConstants.FINISHED_LESSON);
             btnNext.setEnabled(true);
         } else {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    resetTextColors();
-                    resetTextColors2();
-                    hideGuiFractionSet2();
-                    hideEquations();
-                    questionNum++;
-                    setGuiFractionSet1();
-                    setFractionSet1TxtDenomsListner();
-                    resetVariables();
+                    nextQuestion();
                 }
             }, 2000);
         }
     }
     public void wrong(){
-        consecutiveWrongs++;
-        consecutiveRights = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
-        txtInstruction.setText("wrong");
+        error++;
+        if (correctsShouldBeConsecutive) {
+            correct = 0;
+        }
+        setTxtScore();
+        txtInstruction.setText(AppConstants.ERROR);
         removeFractionsListener();
-        if (consecutiveWrongs>=maxConsecutiveWrongs){
-            txtInstruction.setText("you had " + consecutiveWrongs + " consecutive wrongs. Preparing to go back to" +
-                    " previous exercise.");
+        if (error >= maxErrors){
+            if (errorsShouldBeConsecutive) {
+                txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
+            } else {
+                txtInstruction.setText(AppConstants.FAILED(error));
+            }
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -190,34 +208,52 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    go();
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                    } else {
+                        addQuestion();
+                        nextQuestion();
+                    }
                 }
             }, 2000);
         }
     }
+    public void nextQuestion(){
+        resetTextColors();
+        resetTextColors2();
+        hideGuiFractionSet2();
+        hideEquations();
+        questionNum++;
+        setGuiFractionSet1();
+        setFractionSet1TxtDenomsListner();
+        resetVariables();
+    }
     public void startup(){
-        consecutiveRights = 0;
-        consecutiveWrongs = 0;
+        correct = 0;
+        error = 0;
         hideGuiFractionSet2();
         hideEquations();
         resetVariables();
         setFractionSet1TxtDenomsListner();
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        setTxtScore();
     }
     public void resetVariables(){
         txtInstruction.setText("Click the denominators and get the lcd (least common denominator).");
         diagEdTxtSign.setText("÷");
         clicks = 0;
     }
+    public void addQuestion(){
+        fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_DISSIMILAR);
+        while(Integer.valueOf(fractionQuestion.getAnswer())>100){
+            fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_DISSIMILAR);
+        }
+        fractionQuestions.add(fractionQuestion);
+    }
     public void setQuestions(){
         fractionQuestions = new ArrayList<>();
         questionNum = 0;
-        for (int i = 0; i < requiredConsecutiveCorrects; i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_DISSIMILAR);
-            while(Integer.valueOf(fractionQuestion.getAnswer())>100){
-                fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_DISSIMILAR);
-            }
-            fractionQuestions.add(fractionQuestion);
+        for (int i = 0; i < requiredCorrects; i++){
+            addQuestion();
         }
     }
     public void setGuiFractionSet1(){

@@ -30,6 +30,31 @@ public class ExercisesListActivity extends AppCompatActivity {
         exerciseListView = findViewById(R.id.exercise_list);
         exercises = new ArrayList<>();
         exercises.add(LessonArchive.getLesson(AppConstants.FRACTION_MEANING).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.FRACTION_MEANING).getExercises().get(1));
+        exercises.add(LessonArchive.getLesson(AppConstants.NON_VISUAL_FRACTION).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.NON_VISUAL_FRACTION).getExercises().get(1));
+        exercises.add(LessonArchive.getLesson(AppConstants.COMPARING_SIMILAR_FRACTIONS).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.COMPARING_SIMILAR_FRACTIONS).getExercises().get(1));
+        exercises.add(LessonArchive.getLesson(AppConstants.COMPARING_DISSIMILAR_FRACTIONS).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.COMPARING_DISSIMILAR_FRACTIONS).getExercises().get(1));
+        exercises.add(LessonArchive.getLesson(AppConstants.COMPARING_FRACTIONS).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.COMPARING_FRACTIONS).getExercises().get(1));
+        exercises.add(LessonArchive.getLesson(AppConstants.ORDERING_SIMILAR).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.ORDERING_SIMILAR).getExercises().get(1));
+        exercises.add(LessonArchive.getLesson(AppConstants.ORDERING_DISSIMILAR).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.ORDERING_DISSIMILAR).getExercises().get(1));
+        exercises.add(LessonArchive.getLesson(AppConstants.CLASSIFYING_FRACTIONS).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.CONVERTING_FRACTIONS).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.CONVERTING_FRACTIONS).getExercises().get(1));
+        exercises.add(LessonArchive.getLesson(AppConstants.ADDING_SIMILAR).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.ADDING_DISSIMILAR).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.SUBTRACTING_SIMILAR).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.SUBTRACTING_DISSIMILAR).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.MULTIPLYING_FRACTIONS).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.DIVIDING_FRACTIONS).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.ADDING_SUBTRACTING_MIXED).getExercises().get(0));
+        exercises.add(LessonArchive.getLesson(AppConstants.MULTIPLYING_DIVIDING_MIXED).getExercises().get(0));
+
 
         ExerciseListAdapter exerciseListAdapter = new ExerciseListAdapter(mContext, R.layout.layout_user_item, exercises);
         exerciseListView.setAdapter(exerciseListAdapter);

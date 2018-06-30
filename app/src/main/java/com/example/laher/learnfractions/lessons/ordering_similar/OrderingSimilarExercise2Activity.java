@@ -10,14 +10,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 
 public class OrderingSimilarExercise2Activity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 2;
+
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -31,15 +37,23 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
     ArrayList<FractionQuestion> fractionQuestions;
     int questionNum;
 
-    int consecutiveRights, consecutiveWrongs;
-    int requiredConsecutiveCorrects = 10;
-    int maxConsecutiveWrongs = 4;
+    int correct, error;
+    int requiredCorrects;
+    int maxErrors;
+    boolean correctsShouldBeConsecutive;
+    boolean errorsShouldBeConsecutive;
     int clicks;
     final Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ordering_similar_exercise2);
+        exercise = LessonArchive.getLesson(AppConstants.ORDERING_SIMILAR).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+        maxErrors = exercise.getMaxErrors();
+        correctsShouldBeConsecutive = exercise.isRc_consecutive();
+        errorsShouldBeConsecutive = exercise.isMe_consecutive();
+
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +81,7 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
+        btnNext.setText(AppConstants.DONE);
         //GUI
         txtNum1 = (TextView) findViewById(R.id.os2_txtNum1);
         txtNum2 = (TextView) findViewById(R.id.os2_txtNum2);
@@ -75,7 +90,7 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
         txtDenom2 = (TextView) findViewById(R.id.os2_txtDenom2);
         txtDenom3 = (TextView) findViewById(R.id.os2_txtDenom3);
         txtScore = (TextView) findViewById(R.id.os2_txtScore);
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        setTxtScore();
         txtInstruction = (TextView) findViewById(R.id.os2_txtInstruction);
         clFraction1 = (ConstraintLayout) findViewById(R.id.os2_clFraction1);
         clFraction2 = (ConstraintLayout) findViewById(R.id.os2_clFraction2);
@@ -89,7 +104,7 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
     public void setFractionQuestions(){
         fractionQuestions = new ArrayList<>();
         questionNum = 0;
-        for (int i = 0; i < requiredConsecutiveCorrects; i++){
+        for (int i = 0; i < requiredCorrects; i++){
             fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_SIMILAR);
             fractionQuestions.add(fractionQuestion);
         }
@@ -103,7 +118,7 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
     public void setGuiFractions(){
         clicks = 0;
         setFractions();
-        txtInstruction.setText("click from least to greatest");
+        txtInstruction.setText("Click from least to greatest.");
         txtNum1.setText(String.valueOf(fraction1.getNumerator()));
         txtNum2.setText(String.valueOf(fraction2.getNumerator()));
         txtNum3.setText(String.valueOf(fraction3.getNumerator()));
@@ -131,16 +146,21 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
         clFraction2.setOnClickListener(new ClFractionListener());
         clFraction3.setOnClickListener(new ClFractionListener());
     }
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public void correct(){
-        consecutiveRights++;
-        consecutiveWrongs = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        correct++;
+        if (errorsShouldBeConsecutive) {
+            error = 0;
+        }
+        setTxtScore();
         removeClFractionsListener();
-        if (consecutiveRights >= requiredConsecutiveCorrects){
+        if (correct >= requiredCorrects){
             btnNext.setEnabled(true);
-            txtInstruction.setText("finish");
+            txtInstruction.setText(AppConstants.FINISHED_LESSON);
         } else {
-            txtInstruction.setText("correct");
+            txtInstruction.setText(AppConstants.CORRECT);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -151,19 +171,41 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
         }
     }
     public void wrong(){
-        consecutiveWrongs++;
-        consecutiveRights = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        error++;
+        if (correctsShouldBeConsecutive) {
+            correct = 0;
+        }
+        setTxtScore();
         removeClFractionsListener();
-        if (consecutiveWrongs >= maxConsecutiveWrongs){
-            txtInstruction.setText("go back");
+        if (error >= maxErrors){
+            if (errorsShouldBeConsecutive) {
+                txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
+            } else {
+                txtInstruction.setText(AppConstants.FAILED(error));
+            }
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(OrderingSimilarExercise2Activity.this,
+                            OrderingSimilarExerciseActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            }, 3000);
         } else {
-            txtInstruction.setText("wrong ");
+            txtInstruction.setText(AppConstants.ERROR);
             clicks = 0;
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    go();
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                    } else {
+                        fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_SIMILAR);
+                        fractionQuestions.add(fractionQuestion);
+                        questionNum++;
+                        setGuiFractions();
+                    }
                 }
             }, 2000);
         }

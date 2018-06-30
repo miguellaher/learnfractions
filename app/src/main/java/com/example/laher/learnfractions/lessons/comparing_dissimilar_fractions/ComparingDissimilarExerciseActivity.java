@@ -13,12 +13,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 
 public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 1;
+
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -34,14 +40,17 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
     //VARIABLES
     ArrayList<Integer> stepsIdList;
     Fraction fractionOne, fractionTwo;
-    int corrects;
+    int correct;
     final Handler handler = new Handler();
 
-    int requiredConsecutiveCorrects = 8;
+    int requiredCorrects;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comparing_dissimilar_exercise);
+        exercise = LessonArchive.getLesson(AppConstants.COMPARING_DISSIMILAR_FRACTIONS).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +90,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
         dialogBtnCheck.setOnClickListener(new DiagBtnCheckListener());
         //GUI
         txtScore = (TextView) findViewById(R.id.d1_txtScore);
-        txtScore.setText(corrects + " / " + requiredConsecutiveCorrects);
+        setTxtScore();
         txtProduct1 = (TextView) findViewById(R.id.d1_txtProduct1);
         txtProduct2 = (TextView) findViewById(R.id.d1_txtProduct2);
         txtNum1 = (TextView) findViewById(R.id.d1_txtNum1);
@@ -102,7 +111,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
         setFractions();
     }
     public void setup(){
-        txtInstruction.setText("Click a denominator");
+        txtInstruction.setText("Click a denominator.");
     }
     public void setFractions(){
         fractionOne.generateRandFraction(9);
@@ -149,16 +158,19 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
         txtDenom1.setOnClickListener(null);
         txtDenom2.setOnClickListener(null);
     }
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public void correct(){
         stepsIdList.clear();
         removeTxtListeners();
-        corrects++;
-        txtScore.setText(corrects + " / " + requiredConsecutiveCorrects);
-        txtInstruction.setText("correct");
+        correct++;
+        setTxtScore();
+        txtInstruction.setText(AppConstants.CORRECT);
 
-        if (corrects >= requiredConsecutiveCorrects) {
+        if (correct >= requiredCorrects) {
             btnNext.setEnabled(true);
-            txtInstruction.setText("go to next exercise");
+            txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
         } else {
             handler.postDelayed(new Runnable() {
                 @Override
@@ -282,7 +294,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                     }
                     multiplicationDialog.dismiss();
                     if (txtProduct1.getVisibility() != TextView.VISIBLE || txtProduct2.getVisibility() != TextView.VISIBLE) {
-                        txtInstruction.setText("Click the other denominator");
+                        txtInstruction.setText("Click the other denominator.");
                     }
                     if (txtProduct1.getVisibility() == TextView.VISIBLE && txtProduct2.getVisibility() == TextView.VISIBLE) {
                         correct();
@@ -303,7 +315,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
             if (stepsIdList.size()==2){
                 if (txtProduct1.getVisibility()==TextView.INVISIBLE && txtProduct2.getVisibility()==TextView.INVISIBLE){
                     stepsIdList.clear();
-                    txtInstruction.setText("Click a denominator");
+                    txtInstruction.setText("Click a denominator.");
                 }
             }
             if (stepsIdList.size()==4){

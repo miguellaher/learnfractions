@@ -13,12 +13,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Question;
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 
 public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 1;
+
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -35,15 +41,23 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
     Question question;
     ArrayList<Question> questions;
     int questionNum;
-    int consecutiveRights, consecutiveWrongs;
-    int requiredConsecutiveCorrects = 10;
-    int maxConsecutiveWrongs = 3;
+    int correct, error;
+    int requiredCorrects;
+    int maxErrors;
+    boolean correctsShouldBeConsecutive;
+    boolean errorsShouldBeConsecutive;
     int clicks;
     final Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ordering_dissimilar_exercise);
+        exercise = LessonArchive.getLesson(AppConstants.ORDERING_DISSIMILAR).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+        maxErrors = exercise.getMaxErrors();
+        correctsShouldBeConsecutive = exercise.isRc_consecutive();
+        errorsShouldBeConsecutive = exercise.isMe_consecutive();
+
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +102,7 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         txtNum2 = (TextView) findViewById(R.id.od1_txtNum2);
         txtNum3 = (TextView) findViewById(R.id.od1_txtNum3);
         txtScore = (TextView) findViewById(R.id.od1_txtScore);
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        setTxtScore();
         txtInstruction = (TextView) findViewById(R.id.od1_txtInstruction);
 
         go();
@@ -103,22 +117,25 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         resetTxtColors();
         setTxtListeners();
     }
+    public void addQuestion(){
+        question = new Question(Question.GETTING_LCD);
+        while (Integer.valueOf(question.getAnswer())>100){
+            question = new Question(Question.GETTING_LCD);
+        }
+        questions.add(question);
+    }
     public void setQuestions(){
         questionNum = 0;
         questions = new ArrayList<>();
-        for(int i = 0; i < requiredConsecutiveCorrects; i++){
-            question = new Question(Question.GETTING_LCD);
-            while (Integer.valueOf(question.getAnswer())>100){
-                question = new Question(Question.GETTING_LCD);
-            }
-            questions.add(question);
+        for(int i = 0; i < requiredCorrects; i++){
+            addQuestion();
         }
     }
     public void setGuiNums(){
         txtNum1.setText(String.valueOf(questions.get(questionNum).getNum1()));
         txtNum2.setText(String.valueOf(questions.get(questionNum).getNum2()));
         txtNum3.setText(String.valueOf(questions.get(questionNum).getNum3()));
-        txtInstruction.setText("click all numbers");
+        txtInstruction.setText("Click all numbers.");
     }
     public void setTxtListeners(){
         txtNum1.setOnClickListener(new TxtNumListener());
@@ -130,33 +147,47 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         txtNum2.setTextColor(Color.rgb(128,128,128));
         txtNum3.setTextColor(Color.rgb(128,128,128));
     }
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public void correct(){
-        consecutiveRights++;
-        consecutiveWrongs = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        correct++;
+        if (errorsShouldBeConsecutive) {
+            error = 0;
+        }
+        setTxtScore();
         removeTxtNumListener();
-        if (consecutiveRights>=requiredConsecutiveCorrects){
-            txtInstruction.setText("finish");
+        if (correct >= requiredCorrects){
+            txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
             btnNext.setEnabled(true);
         } else {
-            txtInstruction.setText("correct");
+            txtInstruction.setText(AppConstants.CORRECT);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    setup();
-                    questionNum++;
-                    setGuiNums();
+                    nextQuestion();
                 }
             }, 2000);
         }
     }
+    public void nextQuestion(){
+        setup();
+        questionNum++;
+        setGuiNums();
+    }
     public void wrong(){
-        consecutiveWrongs++;
-        consecutiveRights = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        error++;
+        if (correctsShouldBeConsecutive) {
+            correct = 0;
+        }
+        setTxtScore();
         removeTxtNumListener();
-        if (consecutiveWrongs>=maxConsecutiveWrongs){
-            txtInstruction.setText("you had " + consecutiveWrongs + " consecutive wrongs. Preparing to go back to video.");
+        if (error >= maxErrors){
+            if (errorsShouldBeConsecutive) {
+                txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
+            } else {
+                txtInstruction.setText(AppConstants.FAILED(error));
+            }
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -167,11 +198,16 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
                 }
             }, 2000);
         } else {
-            txtInstruction.setText("wrong");
+            txtInstruction.setText(AppConstants.ERROR);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    go();
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                    } else {
+                        addQuestion();
+                        nextQuestion();
+                    }
                 }
             }, 2000);
         }
@@ -181,7 +217,7 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         diagLcmtxtNum2.setText(String.valueOf(questions.get(questionNum).getNum2()));
         diagLcmtxtNum3.setText(String.valueOf(questions.get(questionNum).getNum3()));
         lcmDialog.show();
-        txtInstruction.setText("Get the lcm");
+        txtInstruction.setText("Get the lcm.");
     }
     public void removeTxtNumListener(){
         txtNum1.setOnClickListener(null);
@@ -228,7 +264,7 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
             diagLcmInputLcm.setTextColor(Color.rgb(0,0,0));
             clicks = 0;
             resetTxtColors();
-            txtInstruction.setText("click all numbers");
+            txtInstruction.setText("Click all numbers.");
         }
     }
 }

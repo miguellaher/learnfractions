@@ -10,13 +10,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 
 public class AddingSimilarExerciseActivity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 1;
+
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -29,15 +35,23 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
     FractionQuestion fractionQuestion;
     ArrayList<FractionQuestion> fractionQuestions;
     int questionNum;
-    int consecutiveRights, consecutiveWrongs;
-    int requiredConsecutiveCorrects = 10;
-    int maxConsecutiveWrongs = 3;
+    int correct, error;
+    int requiredCorrects;
+    int maxErrors;
+    boolean correctsShouldBeConsecutive;
+    boolean errorsShouldBeConsecutive;
     final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_equation);
+        exercise = LessonArchive.getLesson(AppConstants.ADDING_SIMILAR).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+        maxErrors = exercise.getMaxErrors();
+        correctsShouldBeConsecutive = exercise.isRc_consecutive();
+        errorsShouldBeConsecutive = exercise.isMe_consecutive();
+
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +78,7 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
-        btnNext.setText("DONE");
+        btnNext.setText(AppConstants.DONE);
         //FRACTION EQUATION GUI
         txtNum1 = (TextView) findViewById(R.id.fe_txtNum1);
         txtNum2 = (TextView) findViewById(R.id.fe_txtNum2);
@@ -85,37 +99,51 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
         setGuiFractions();
         startUp();
     }
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public void correct(){
-        consecutiveRights++;
-        consecutiveWrongs = 0;
-        txtScore.setText(consecutiveRights + "/" + requiredConsecutiveCorrects);
+        correct++;
+        if (errorsShouldBeConsecutive) {
+            error = 0;
+        }
+        setTxtScore();
         disableInputFraction();
         btnCheck.setEnabled(false);
-        if (consecutiveRights >= requiredConsecutiveCorrects){
-            txtInstruction.setText("finished");
+        if (correct >= requiredCorrects){
+            txtInstruction.setText(AppConstants.FINISHED_LESSON);
             btnNext.setEnabled(true);
         } else {
-            txtInstruction.setText("correct");
+            txtInstruction.setText(AppConstants.CORRECT);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    questionNum++;
-                    setGuiFractions();
-                    clearInputFraction();
-                    enableInputFraction();
-                    btnCheck.setEnabled(true);
+                    nextQuestion();
                 }
             }, 2000);
         }
     }
+    public void nextQuestion(){
+        questionNum++;
+        setGuiFractions();
+        clearInputFraction();
+        enableInputFraction();
+        btnCheck.setEnabled(true);
+    }
     public void wrong(){
-        consecutiveWrongs++;
-        consecutiveRights = 0;
-        txtScore.setText(consecutiveRights + "/" + requiredConsecutiveCorrects);
+        error++;
+        if (correctsShouldBeConsecutive) {
+            correct = 0;
+        }
+        setTxtScore();
         disableInputFraction();
         btnCheck.setEnabled(false);
-        if (consecutiveWrongs >= maxConsecutiveWrongs){
-            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs. Preparing to watch video again.");
+        if (error >= maxErrors){
+            if (errorsShouldBeConsecutive) {
+                txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
+            } else {
+                txtInstruction.setText(AppConstants.FAILED(error));
+            }
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -126,19 +154,24 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
                 }
             }, 4000);
         } else {
-            txtInstruction.setText("wrong");
+            txtInstruction.setText(AppConstants.ERROR);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    go();
-                    enableInputFraction();
-                    btnCheck.setEnabled(true);
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                        enableInputFraction();
+                        btnCheck.setEnabled(true);
+                    } else {
+                        addQuestion();
+                        nextQuestion();
+                    }
                 }
             }, 2000);
         }
     }
     public void startUp(){
-        txtScore.setText(consecutiveRights + "/" + requiredConsecutiveCorrects);
+        setTxtScore();
         txtInstruction.setText("Add the two numerators and the new denominator is the same with the similar denominators.");
         clearInputFraction();
     }
@@ -150,10 +183,13 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
     public void setQuestions(){
         questionNum = 0;
         fractionQuestions = new ArrayList<>();
-        for(int i = 0; i < requiredConsecutiveCorrects; i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.ADDING_SIMILAR);
-            fractionQuestions.add(fractionQuestion);
+        for(int i = 0; i < requiredCorrects; i++){
+            addQuestion();
         }
+    }
+    public void addQuestion(){
+        fractionQuestion = new FractionQuestion(FractionQuestion.ADDING_SIMILAR);
+        fractionQuestions.add(fractionQuestion);
     }
     public void setGuiFractions(){
         txtInstruction.setText("Solve the equation.");

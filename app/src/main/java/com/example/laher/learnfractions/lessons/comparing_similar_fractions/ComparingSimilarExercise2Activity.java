@@ -8,14 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 
 public class ComparingSimilarExercise2Activity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 2;
+
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -24,7 +30,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtCompareSign, txtScore, txtInstruction;
     Button btnGreater, btnEquals, btnLess;
     //VARIABLES
-    int questionNum, consecutiveRights, consecutiveWrongs;
+    int questionNum, correct, error;
     public final String GREATER_THAN = ">";
     public final String EQUAL_TO = "=";
     public final String LESS_THAN = "<";
@@ -34,12 +40,20 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
     ArrayList<FractionQuestion> fractionQuestions;
     String strAnswer;
 
-    int requiredConsecutiveCorrects = 8;
-    int maxConsecutiveWrongs = 4;
+    int requiredCorrects;
+    int maxErrors;
+    boolean correctsShouldBeConsecutive;
+    boolean errorsShouldBeConsecutive;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comparing_similar_exercise2);
+        exercise = LessonArchive.getLesson(AppConstants.COMPARING_SIMILAR_FRACTIONS).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+        maxErrors = exercise.getMaxErrors();
+        correctsShouldBeConsecutive = exercise.isRc_consecutive();
+        errorsShouldBeConsecutive = exercise.isMe_consecutive();
+
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +78,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         });
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
-        btnNext.setText("DONE");
+        btnNext.setText(AppConstants.DONE);
         //GUI
         txtNum1 = (TextView) findViewById(R.id.c2_num1);
         txtNum2 = (TextView) findViewById(R.id.c2_num2);
@@ -72,7 +86,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         txtDenom2 = (TextView) findViewById(R.id.c2_denom2);
         txtCompareSign = (TextView) findViewById(R.id.c2_compareSign);
         txtScore = (TextView) findViewById(R.id.c2_txtScore);
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        setTxtScore();
         txtInstruction = (TextView) findViewById(R.id.c2_txtInstruction);
 
         btnGreater = (Button) findViewById(R.id.c2_btnGreater);
@@ -98,7 +112,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
     public void setFractionQuestions(){
         fractionQuestions = new ArrayList<>();
         questionNum = 0;
-        for(int i = 0; i < requiredConsecutiveCorrects; i++){
+        for(int i = 0; i < requiredCorrects; i++){
             fractionQuestion = new FractionQuestion(FractionQuestion.COMPARING_SIMILAR);
             fractionQuestions.add(fractionQuestion);
         }
@@ -110,7 +124,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
         txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
         strAnswer = fractionQuestions.get(questionNum).getAnswer();
-        txtInstruction.setText("compare the two fractions");
+        txtInstruction.setText("Compare the two fractions.");
         txtCompareSign.setText("_");
     }
     public void enableButtons(boolean bool){
@@ -118,13 +132,18 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         btnEquals.setEnabled(bool);
         btnLess.setEnabled(bool);
     }
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public void correct(){
-        consecutiveRights++;
-        consecutiveWrongs = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        correct++;
+        if (errorsShouldBeConsecutive) {
+            error = 0;
+        }
+        setTxtScore();
         enableButtons(false);
-        txtInstruction.setText("correct");
-        if (consecutiveRights >= requiredConsecutiveCorrects){
+        txtInstruction.setText(AppConstants.CORRECT);
+        if (correct >= requiredCorrects){
             btnNext.setEnabled(true);
         } else {
             handler.postDelayed(new Runnable() {
@@ -138,14 +157,19 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         }
     }
     public void wrong(){
-        consecutiveWrongs++;
-        consecutiveRights = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        error++;
+        if (correctsShouldBeConsecutive) {
+            correct = 0;
+        }
+        setTxtScore();
         enableButtons(false);
-        txtInstruction.setText("wrong");
-        if (consecutiveWrongs >= maxConsecutiveWrongs){
-            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
-                    " Preparing to start previous exercise.");
+        txtInstruction.setText(AppConstants.ERROR);
+        if (error >= maxErrors){
+            if (errorsShouldBeConsecutive) {
+                txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
+            } else {
+                txtInstruction.setText(AppConstants.FAILED(error));
+            }
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

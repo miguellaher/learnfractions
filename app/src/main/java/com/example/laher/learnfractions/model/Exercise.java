@@ -17,6 +17,12 @@ public class Exercise {
         this.me_consecutive = me_consecutive;
     }
 
+    public Exercise(String topicName, int exerciseNum, int requiredCorrects) {
+        this.topicName = topicName;
+        this.exerciseNum = exerciseNum;
+        this.requiredCorrects = requiredCorrects;
+    }
+
     public Exercise(){}
 
     public String getTopicName() {

@@ -10,28 +10,42 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class NonVisualExerciseActivity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 1;
+
     Button btnBack, btnNext;
     TextView txtTitle;
     public final String TITLE = "NON-VISUAL";
 
     TextView txtNumerator, txtDenominator, txtInstruction, txtScore;
-    int num, denom, consecutiveRights, consecutiveWrongs;
+    int num, denom, correct, error;
     ArrayList<String> instructions;
     public final String INSTRUCTION_NUM = "click the numerator";
     public final String INSTRUCTION_DENOM = "click the denominator";
     final Handler handler = new Handler();
 
-    int requiredConsecutiveCorrects = 8;
-    int maxConsecutiveWrongs = 4;
+    int requiredCorrects;
+    int maxErrors;
+    boolean correctsShouldBeConsecutive;
+    boolean errorsShouldBeConsecutive;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_non_visual_exercise);
+        exercise = LessonArchive.getLesson(AppConstants.NON_VISUAL_FRACTION).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+        maxErrors = exercise.getMaxErrors();
+        correctsShouldBeConsecutive = exercise.isRc_consecutive();
+        errorsShouldBeConsecutive = exercise.isMe_consecutive();
+
 
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +76,7 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
         txtNumerator.setOnClickListener(new TxtFractionListener());
         txtDenominator.setOnClickListener(new TxtFractionListener());
         txtScore = (TextView) findViewById(R.id.b1_txtScore);
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        setTxtScore();
 
         instructions = new ArrayList<>();
         instructions.add(INSTRUCTION_NUM);
@@ -92,14 +106,16 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
     }
 
     public void correct(){
-        txtInstruction.setText("correct");
-        consecutiveWrongs = 0;
-        consecutiveRights++;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        txtInstruction.setText(AppConstants.CORRECT);
+        if (errorsShouldBeConsecutive) {
+            error = 0;
+        }
+        correct++;
+        setTxtScore();
         txtNumerator.setOnClickListener(null);
         txtDenominator.setOnClickListener(null);
-        if (consecutiveRights == requiredConsecutiveCorrects){
-            txtInstruction.setText("done");
+        if (correct == requiredCorrects){
+            txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
 
             btnNext.setEnabled(true);
         } else {
@@ -113,16 +129,25 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
             }, 2000);
         }
     }
+
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public void wrong(){
-        txtInstruction.setText("wrong");
-        consecutiveRights = 0;
-        consecutiveWrongs++;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        txtInstruction.setText(AppConstants.ERROR);
+        if (correctsShouldBeConsecutive) {
+            correct = 0;
+        }
+        error++;
+        setTxtScore();
         txtNumerator.setOnClickListener(null);
         txtDenominator.setOnClickListener(null);
-        if (consecutiveWrongs == maxConsecutiveWrongs){
-            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
-                    " Preparing to watch video again.");
+        if (error == maxErrors){
+            if (errorsShouldBeConsecutive) {
+                txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
+            } else {
+                txtInstruction.setText(AppConstants.FAILED(error));
+            }
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

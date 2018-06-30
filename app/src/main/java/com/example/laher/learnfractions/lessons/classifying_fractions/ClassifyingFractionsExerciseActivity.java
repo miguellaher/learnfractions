@@ -8,14 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 1;
+
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -27,15 +33,23 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
     Fraction fraction;
     ArrayList<Fraction> fractions;
     int questionNum;
-    int consecutiveRights, consecutiveWrongs;
-    int requiredConsecutiveCorrects = 10;
-    int maxConsecutiveWrongs = 3;
+    int correct, error;
+    int requiredCorrects;
+    int maxErrors;
+    boolean correctsShouldBeConsecutive;
+    boolean errorsShouldBeConsecutive;
     final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classifying_fractions_exercise);
+        exercise = LessonArchive.getLesson(AppConstants.CLASSIFYING_FRACTIONS).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+        maxErrors = exercise.getMaxErrors();
+        correctsShouldBeConsecutive = exercise.isRc_consecutive();
+        errorsShouldBeConsecutive = exercise.isMe_consecutive();
+
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +76,7 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
+        btnNext.setText(AppConstants.DONE);
         //GUI
         txtNum = (TextView) findViewById(R.id.clF_txtNum);
         txtDenom = (TextView) findViewById(R.id.clF_txtDenom);
@@ -82,34 +97,47 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
         setGuiFraction();
         startUp();
     }
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public void correct(){
-        consecutiveRights++;
-        consecutiveWrongs = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        correct++;
+        if (errorsShouldBeConsecutive) {
+            error = 0;
+        }
+        setTxtScore();
         enableButtons(false);
-        if (consecutiveRights>=requiredConsecutiveCorrects){
-            txtInstruction.setText("finished");
+        if (correct >=requiredCorrects){
+            txtInstruction.setText(AppConstants.FINISHED_LESSON);
             btnNext.setEnabled(true);
         } else {
-            txtInstruction.setText("correct");
+            txtInstruction.setText(AppConstants.CORRECT);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    enableButtons(true);
-                    questionNum++;
-                    setGuiFraction();
+                    nextQuestion();
                 }
             },2000);
         }
     }
+    public void nextQuestion(){
+        enableButtons(true);
+        questionNum++;
+        setGuiFraction();
+    }
     public void wrong(){
-        consecutiveWrongs++;
-        consecutiveRights = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        error++;
+        if (correctsShouldBeConsecutive) {
+            correct = 0;
+        }
+        setTxtScore();
         enableButtons(false);
-        if (consecutiveWrongs>=maxConsecutiveWrongs){
-            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs. Preparing to watch" +
-                    " video again.");
+        if (error >=maxErrors){
+            if (errorsShouldBeConsecutive) {
+                txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
+            } else {
+                txtInstruction.setText(AppConstants.FAILED(error));
+            }
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -120,18 +148,30 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
                 }
             },4000);
         } else {
-            txtInstruction.setText("wrong");
+            txtInstruction.setText(AppConstants.ERROR);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     enableButtons(true);
-                    go();
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                    } else {
+                        if (fractions.get(questionNum).getContext()==Fraction.PROPER){
+                            fraction = new Fraction(Fraction.PROPER);
+                        } else if (fractions.get(questionNum).getContext()==Fraction.IMPROPER){
+                            fraction = new Fraction(Fraction.IMPROPER);
+                        } else if (fractions.get(questionNum).getContext()==Fraction.MIXED){
+                            fraction = new Fraction(Fraction.MIXED);
+                        }
+                        fractions.add(fraction);
+                        nextQuestion();
+                    }
                 }
             },2000);
         }
     }
     public void startUp(){
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        setTxtScore();
     }
     public void enableButtons(Boolean bool){
         btnProper.setEnabled(bool);
@@ -141,10 +181,10 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
     public void setFractionQuestions(){
         questionNum = 0;
         fractions = new ArrayList<>();
-        for (int i = 0; i < requiredConsecutiveCorrects; i++){
-            if (i < (requiredConsecutiveCorrects/3)){
+        for (int i = 0; i < requiredCorrects; i++){
+            if (i < (requiredCorrects/3)){
                 fraction = new Fraction(Fraction.PROPER);
-            } else if (i < ((requiredConsecutiveCorrects*2)/3)){
+            } else if (i < ((requiredCorrects*2)/3)){
                 fraction = new Fraction(Fraction.IMPROPER);
             } else {
                 fraction = new Fraction(Fraction.MIXED);

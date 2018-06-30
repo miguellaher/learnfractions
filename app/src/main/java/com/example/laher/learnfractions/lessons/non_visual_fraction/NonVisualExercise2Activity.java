@@ -12,31 +12,44 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class NonVisualExercise2Activity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 2;
+
     Button btnBack, btnNext;
     TextView txtTitle;
 
     Button btnCheck;
     TextView txtNumerator, txtDenominator, txtInstruction, txtScore;
     EditText inputAnswer;
-    int num, denom, consecutiveRights, consecutiveWrongs;
+    int num, denom, correct, error;
     ArrayList<String> instructions;
-    public final String INSTRUCTION_NUM = "type the numerator";
-    public final String INSTRUCTION_DENOM = "type the denominator";
+    public final String INSTRUCTION_NUM = "Type the numerator.";
+    public final String INSTRUCTION_DENOM = "Type the denominator.";
     public final String TITLE = "NON-VISUAL";
     final Handler handler = new Handler();
 
-    int requiredConsecutiveCorrects = 8;
-    int maxConsecutiveWrongs = 4;
-
+    int requiredCorrects;
+    int maxErrors;
+    boolean correctsShouldBeConsecutive;
+    boolean errorsShouldBeConsecutive;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_non_visual_exercise2);
+        exercise = LessonArchive.getLesson(AppConstants.NON_VISUAL_FRACTION).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+        maxErrors = exercise.getMaxErrors();
+        correctsShouldBeConsecutive = exercise.isRc_consecutive();
+        errorsShouldBeConsecutive = exercise.isMe_consecutive();
+
 
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -61,13 +74,13 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         });
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
-        btnNext.setText("DONE");
+        btnNext.setText(AppConstants.DONE);
 
         txtNumerator = (TextView) findViewById(R.id.b2_txtNumerator);
         txtDenominator = (TextView) findViewById(R.id.b2_txtDenominator);
         txtInstruction = (TextView) findViewById(R.id.b2_txtInstruction);
         txtScore = (TextView) findViewById(R.id.b2_txtScore);
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        setTxtScore();
         inputAnswer = (EditText) findViewById(R.id.b2_inputAnswer);
         inputAnswer.getText().clear();
         inputAnswer.setOnKeyListener(new InputAnswerListener());
@@ -102,15 +115,20 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         Collections.shuffle(instructions);
         txtInstruction.setText(instructions.get(0));
     }
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public void correct(){
-        consecutiveRights++;
-        consecutiveWrongs = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        correct++;
+        if (errorsShouldBeConsecutive) {
+            error = 0;
+        }
+        setTxtScore();
         inputAnswer.setEnabled(false);
         btnCheck.setEnabled(false);
-        txtInstruction.setText("correct");
-        if (consecutiveRights >= requiredConsecutiveCorrects){
-            txtInstruction.setText("Finish");
+        txtInstruction.setText(AppConstants.CORRECT);
+        if (correct >= requiredCorrects){
+            txtInstruction.setText(AppConstants.FINISHED_LESSON);
             inputAnswer.getText().clear();
             btnNext.setEnabled(true);
         } else {
@@ -125,15 +143,20 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         }
     }
     public void wrong(){
-        consecutiveWrongs++;
-        consecutiveRights = 0;
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        error++;
+        if (correctsShouldBeConsecutive) {
+            correct = 0;
+        }
+        setTxtScore();
         inputAnswer.setEnabled(false);
         btnCheck.setEnabled(false);
-        txtInstruction.setText("wrong");
-        if (consecutiveWrongs >= maxConsecutiveWrongs){
-            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs." +
-                    " Preparing to start previous exercise");
+        txtInstruction.setText(AppConstants.ERROR);
+        if (error >= maxErrors){
+            if (errorsShouldBeConsecutive) {
+                txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
+            } else {
+                txtInstruction.setText(AppConstants.FAILED(error));
+            }
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

@@ -14,10 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.dialog_layout.EquationDialog;
 
@@ -28,6 +31,9 @@ import static android.content.DialogInterface.OnDismissListener;
 import static android.content.DialogInterface.OnShowListener;
 
 public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
+    Exercise exercise;
+    final int EXERCISE_NUM = 1;
+
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
@@ -53,10 +59,13 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
     Fraction eDMixedFraction;
     //VARIABLES
     ArrayList<FractionQuestion> fractionQuestions;
+    FractionQuestion fractionQuestion;
     int questionNum;
-    int consecutiveRights, consecutiveWrongs;
-    int requiredConsecutiveCorrects = 16;
-    int maxConsecutiveWrongs = 5;
+    int correct, error;
+    int requiredCorrects;
+    int maxErrors;
+    boolean correctsShouldBeConsecutive;
+    boolean errorsShouldBeConsecutive;
     final Handler handler = new Handler();
     ColorStateList defaultColor;
     int clicks;
@@ -68,6 +77,12 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_equation_mixed);
+        exercise = LessonArchive.getLesson(AppConstants.MULTIPLYING_DIVIDING_MIXED).getExercises().get(EXERCISE_NUM-1);
+        requiredCorrects = exercise.getRequiredCorrects();
+        maxErrors = exercise.getMaxErrors();
+        correctsShouldBeConsecutive = exercise.isRc_consecutive();
+        errorsShouldBeConsecutive = exercise.isMe_consecutive();
+
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +106,10 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
+        btnNext.setText(AppConstants.DONE);
         //GUI
         txtNum1 = findViewById(R.id.fem_txtNum1);
         txtNum2 = findViewById(R.id.fem_txtNum2);
@@ -110,7 +126,7 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
         txtEquation1 = findViewById(R.id.fem_txtEquation1);
         txtEquation2 = findViewById(R.id.fem_txtEquation2);
         txtScore = findViewById(R.id.fem_txtScore);
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        setTxtScore();
         txtInstruction = findViewById(R.id.fem_txtInstruction);
         inputNum = findViewById(R.id.fem_inputNum);
         inputDenom = findViewById(R.id.fem_inputDenom);
@@ -156,32 +172,45 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
         setFractionQuestions();
         setFractionGui();
     }
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
     public void correct(){
-        consecutiveRights++;
-        consecutiveWrongs = 0;
+        correct++;
+        if (errorsShouldBeConsecutive) {
+            error = 0;
+        }
         answered();
-        if (consecutiveRights >= requiredConsecutiveCorrects){
-            txtInstruction.setText("Finished.");
+        if (correct >= requiredCorrects){
+            txtInstruction.setText(AppConstants.FINISHED_LESSON);
             btnNext.setEnabled(true);
         } else {
-            txtInstruction.setText("Correct.");
+            txtInstruction.setText(AppConstants.CORRECT);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startUp();
-                    questionNum++;
-                    setFractionGui();
+                    nextQuestion();
                 }
             }, 2000);
         }
     }
+    public void nextQuestion(){
+        startUp();
+        questionNum++;
+        setFractionGui();
+    }
     public void wrong(){
-        consecutiveWrongs++;
-        consecutiveRights = 0;
+        error++;
+        if (correctsShouldBeConsecutive) {
+            correct = 0;
+        }
         answered();
-        if (consecutiveWrongs >= maxConsecutiveWrongs){
-            txtInstruction.setText("You had " + consecutiveWrongs + " consecutive wrongs. Preparing to watch" +
-                    " video again.");
+        if (error >= maxErrors){
+            if (errorsShouldBeConsecutive) {
+                txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
+            } else {
+                txtInstruction.setText(AppConstants.FAILED(error));
+            }
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -192,17 +221,27 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
                 }
             }, 4000);
         } else {
-            txtInstruction.setText("Wrong.");
+            txtInstruction.setText(AppConstants.ERROR);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    go();
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                    } else {
+                        if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.MULTIPLYING_WITH_MIXED){
+                            fractionQuestion = new FractionQuestion(FractionQuestion.MULTIPLYING_WITH_MIXED);
+                        } else if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.DIVIDING_WITH_MIXED){
+                            fractionQuestion = new FractionQuestion(FractionQuestion.DIVIDING_WITH_MIXED);
+                        }
+                        fractionQuestions.add(fractionQuestion);
+                        nextQuestion();
+                    }
                 }
             }, 2000);
         }
     }
     public void answered(){
-        txtScore.setText(consecutiveRights + " / " + requiredConsecutiveCorrects);
+        setTxtScore();
         inputNum.setEnabled(false);
         inputDenom.setEnabled(false);
         btnCheck.setEnabled(false);
@@ -226,9 +265,8 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
     public void setFractionQuestions(){
         fractionQuestions = new ArrayList<>();
         questionNum = 0;
-        for (int i = 0; i < requiredConsecutiveCorrects; i++){
-            FractionQuestion fractionQuestion;
-            if (i < (requiredConsecutiveCorrects/2)){
+        for (int i = 0; i < requiredCorrects; i++){
+            if (i < (requiredCorrects /2)){
                 fractionQuestion = new FractionQuestion(FractionQuestion.MULTIPLYING_WITH_MIXED);
             } else {
                 fractionQuestion = new FractionQuestion(FractionQuestion.DIVIDING_WITH_MIXED);
