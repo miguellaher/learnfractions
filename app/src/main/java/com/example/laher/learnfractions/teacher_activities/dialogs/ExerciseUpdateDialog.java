@@ -2,7 +2,6 @@ package com.example.laher.learnfractions.teacher_activities.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -14,9 +13,9 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.Teacher;
+import com.example.laher.learnfractions.service.ExerciseService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
-import com.example.laher.learnfractions.service.TeacherService;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
@@ -79,7 +78,7 @@ public class ExerciseUpdateDialog extends Dialog {
                     } else {
                         exercise.setMe_consecutive(false);
                     }
-                    TeacherService.postExercise(mTeacher, exercise, service);
+                    ExerciseService.create(mTeacher, exercise, service);
                 }
             }
         });
@@ -104,9 +103,13 @@ public class ExerciseUpdateDialog extends Dialog {
         return true;
     }
 
+    public void focusInputRequiredCorrects(){
+        inputRequiredCorrects.requestFocus();
+    }
+
     @Override
     public void setOnShowListener(@Nullable OnShowListener listener) {
-        inputRequiredCorrects.requestFocus();
+        focusInputRequiredCorrects();
         super.setOnShowListener(listener);
     }
 }

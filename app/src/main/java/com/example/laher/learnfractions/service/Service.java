@@ -11,6 +11,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -107,6 +108,11 @@ public class Service extends AsyncTask<Void, Void, Void>{
                     super.onFailure(statusCode, headers, responseString, throwable);
                     Log.d("Failed: ", ""+statusCode);
                     Log.d("Error : ", "" + throwable);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
                 }
             });
         }

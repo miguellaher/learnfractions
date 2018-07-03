@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.archive;
 
 
+import com.example.laher.learnfractions.lessons.fraction_meaning.FractionMeaningExerciseActivity;
 import com.example.laher.learnfractions.lessons.non_visual_fraction.NonVisualExerciseActivity;
 import com.example.laher.learnfractions.lessons.non_visual_fraction.NonVisualVideoActivity;
 import com.example.laher.learnfractions.model.Exercise;
@@ -26,7 +27,8 @@ import com.example.laher.learnfractions.util.AppConstants;
 import java.util.ArrayList;
 
 public abstract class LessonArchive {
-    private static final Lesson fractionMeaning = new Lesson(AppConstants.FRACTION_MEANING, FractionMeaningVideoActivity.class);
+    //CHANGE STARTING ACTIVITIES
+    private static final Lesson fractionMeaning = new Lesson(AppConstants.FRACTION_MEANING, FractionMeaningExerciseActivity.class);
     private static final Lesson nonVisualFraction = new Lesson(AppConstants.NON_VISUAL_FRACTION, NonVisualVideoActivity.class);
     private static final Lesson comparingSimilarFractions = new Lesson(AppConstants.COMPARING_SIMILAR_FRACTIONS, ComparingSimilarVideoActivity.class);
     private static final Lesson comparingDissimilarFractions = new Lesson(AppConstants.COMPARING_DISSIMILAR_FRACTIONS, ComparingDissimilarVideoActivity.class);

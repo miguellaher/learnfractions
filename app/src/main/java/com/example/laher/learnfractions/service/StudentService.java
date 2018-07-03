@@ -48,4 +48,13 @@ public class StudentService {
         service.execute();
     }
 
+    public static void login(Student student, Service service){
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("username", student.getUsername());
+        String encrypted_password = Encryptor.encrypt(student.getPassword());
+        requestParams.put("password", encrypted_password);
+        service.get("http://jabahan.com/learnfractions/student/login.php", requestParams);
+        service.execute();
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.lessons.ordering_dissimilar;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -20,11 +21,21 @@ import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.service.ExerciseService;
+import com.example.laher.learnfractions.service.Service;
+import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Util;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
+    Context mContext = this;
+
     Exercise exercise;
     final int EXERCISE_NUM = 2;
 
@@ -67,10 +78,6 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ordering_dissimilar_exercise2);
         exercise = LessonArchive.getLesson(AppConstants.ORDERING_DISSIMILAR).getExercises().get(EXERCISE_NUM-1);
-        requiredCorrects = exercise.getRequiredCorrects();
-        maxErrors = exercise.getMaxErrors();
-        correctsShouldBeConsecutive = exercise.isRc_consecutive();
-        errorsShouldBeConsecutive = exercise.isMe_consecutive();
 
         //TOOLBAR
         btnBack = (Button) findViewById(R.id.btnBack);
@@ -151,7 +158,50 @@ public class OrderingDissimilarExercise2Activity extends AppCompatActivity {
         clFraction6 = (ConstraintLayout) findViewById(R.id.od_fraction6);
         defaultColor = txtNum1.getTextColors();
 
+        setAttributes(exercise);
+        checkUpdate();
+
         go();
+    }
+
+    public void setAttributes(Exercise exerciseAtt){
+        requiredCorrects = exerciseAtt.getRequiredCorrects();
+        maxErrors = exerciseAtt.getMaxErrors();
+        correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
+        errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
+        setTxtScore();
+    }
+    public void checkUpdate(){
+        if (Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)){
+            Service service = new Service("Checking for updates...", mContext, new ServiceResponse() {
+                @Override
+                public void postExecute(JSONObject response) {
+                    try {
+                        if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
+                        } else {
+                            Util.toast(mContext,"Exercise updated.");
+                            Exercise updatedExercise = new Exercise();
+                            updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
+                            if (response.optString("rc_consecutive").equals("1")) {
+                                updatedExercise.setRc_consecutive(true);
+                            } else {
+                                updatedExercise.setRc_consecutive(false);
+                            }
+                            updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
+                            if (response.optString("me_consecutive").equals("1")) {
+                                updatedExercise.setMe_consecutive(true);
+                            } else {
+                                updatedExercise.setMe_consecutive(false);
+                            }
+                            setAttributes(updatedExercise);
+                        }
+                    } catch (Exception e){e.printStackTrace();}
+                }
+            });
+            Student student = new Student();
+            student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+            ExerciseService.getUpdate(exercise, student, service);
+        }
     }
     public void go(){
         setQuestions();

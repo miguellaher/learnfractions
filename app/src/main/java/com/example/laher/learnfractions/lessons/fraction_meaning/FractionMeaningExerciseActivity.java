@@ -1,9 +1,11 @@
 package com.example.laher.learnfractions.lessons.fraction_meaning;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,12 +14,22 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.service.ExerciseService;
+import com.example.laher.learnfractions.service.Service;
+import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Util;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class FractionMeaningExerciseActivity extends AppCompatActivity {
+    private static final String TAG = "FM_E1";
+    Context mContext = this;
     Exercise exercise;
     ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
     Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
@@ -41,49 +53,89 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_meaning_exercise);
-        exercise = LessonArchive.getLesson(AppConstants.FRACTION_MEANING).getExercises().get(EXERCISE_NUM - 1);
-        requiredCorrects = exercise.getRequiredCorrects();
-        maxErrors = exercise.getMaxErrors();
-        correctsShouldBeConsecutive = exercise.isRc_consecutive();
-        errorsShouldBeConsecutive = exercise.isMe_consecutive();
-        imgBox1 = (ImageView) findViewById(R.id.a_imgBox1);
-        imgBox2 = (ImageView) findViewById(R.id.a_imgBox2);
-        imgBox3 = (ImageView) findViewById(R.id.a_imgBox3);
-        imgBox4 = (ImageView) findViewById(R.id.a_imgBox4);
-        imgBox5 = (ImageView) findViewById(R.id.a_imgBox5);
-        imgBox6 = (ImageView) findViewById(R.id.a_imgBox6);
-        imgBox7 = (ImageView) findViewById(R.id.a_imgBox7);
-        imgBox8 = (ImageView) findViewById(R.id.a_imgBox8);
-        imgBox9 = (ImageView) findViewById(R.id.a_imgBox9);
-        btnChoice1 = (Button) findViewById(R.id.btnChoice1);
-        btnChoice2 = (Button) findViewById(R.id.btnChoice2);
-        btnChoice3 = (Button) findViewById(R.id.btnChoice3);
-        btnChoice4 = (Button) findViewById(R.id.btnChoice4);
+        imgBox1 = findViewById(R.id.a_imgBox1);
+        imgBox2 = findViewById(R.id.a_imgBox2);
+        imgBox3 = findViewById(R.id.a_imgBox3);
+        imgBox4 = findViewById(R.id.a_imgBox4);
+        imgBox5 = findViewById(R.id.a_imgBox5);
+        imgBox6 = findViewById(R.id.a_imgBox6);
+        imgBox7 = findViewById(R.id.a_imgBox7);
+        imgBox8 = findViewById(R.id.a_imgBox8);
+        imgBox9 = findViewById(R.id.a_imgBox9);
+        btnChoice1 = findViewById(R.id.btnChoice1);
+        btnChoice2 = findViewById(R.id.btnChoice2);
+        btnChoice3 = findViewById(R.id.btnChoice3);
+        btnChoice4 = findViewById(R.id.btnChoice4);
         btnChoice1.setOnClickListener(new BtnChoiceListener());
         btnChoice2.setOnClickListener(new BtnChoiceListener());
         btnChoice3.setOnClickListener(new BtnChoiceListener());
         btnChoice4.setOnClickListener(new BtnChoiceListener());
-        txtInstruction = (TextView) findViewById(R.id.txtInstruction);
-        txtScore = (TextView) findViewById(R.id.txtScore);
-        btnBack = (Button) findViewById(R.id.btnBack);
-        btnNext = (Button) findViewById(R.id.btnNext);
+        txtInstruction = findViewById(R.id.txtInstruction);
+        txtScore = findViewById(R.id.txtScore);
+        btnBack = findViewById(R.id.btnBack);
+        btnNext = findViewById(R.id.btnNext);
         btnBack.setOnClickListener(new BtnBackListener());
         btnNext.setOnClickListener(new BtnNextListener());
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
 
-        txtScore.setText(correct + " / " + requiredCorrects);
         instructions = new ArrayList<String>();
         instructions.add(INSTRUCTION_DENOM);
         instructions.add(INSTRUCTION_NUM);
         correct = 0;
         error = 0;
 
-        //INSERT SERVICE TO EDIT VALUES
-
-
+        exercise = LessonArchive.getLesson(AppConstants.FRACTION_MEANING).getExercises().get(EXERCISE_NUM - 1);
+        setAttributes(exercise);
+        checkUpdate();
 
         go();
+    }
+
+    public void setAttributes(Exercise exerciseAtt){
+        Log.d(TAG, "set attributes");
+        requiredCorrects = exerciseAtt.getRequiredCorrects();
+        maxErrors = exerciseAtt.getMaxErrors();
+        correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
+        errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
+        showScore();
+    }
+    public void checkUpdate(){
+        if (Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)){
+            Service service = new Service("Checking for updates...", mContext, new ServiceResponse() {
+                @Override
+                public void postExecute(JSONObject response) {
+                    try {
+                        if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
+                        } else {
+                            Util.toast(mContext,"Exercise updated.");
+                            Log.d(TAG, "*service post execute");
+                            Exercise updatedExercise = new Exercise();
+                            Log.d(TAG, "rc:" + response.optString("required_corrects"));
+                            Log.d(TAG, "rcc:" + response.optString("rc_consecutive"));
+                            Log.d(TAG, "me:" + response.optString("max_errors"));
+                            Log.d(TAG, "mec:" + response.optString("me_consecutive"));
+                            updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
+                            if (response.optString("rc_consecutive").equals("1")) {
+                                updatedExercise.setRc_consecutive(true);
+                            } else {
+                                updatedExercise.setRc_consecutive(false);
+                            }
+                            updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
+                            if (response.optString("me_consecutive").equals("1")) {
+                                updatedExercise.setMe_consecutive(true);
+                            } else {
+                                updatedExercise.setMe_consecutive(false);
+                            }
+                            setAttributes(updatedExercise);
+                        }
+                    } catch (Exception e){e.printStackTrace();}
+                }
+            });
+            Student student = new Student();
+            student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+            ExerciseService.getUpdate(exercise, student, service);
+        }
     }
     public void go(){
         btnNext.setEnabled(false);
@@ -95,7 +147,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     }
     public void setBoxes(int num, int denom){
         denom = denom - num;
-        ArrayList<Integer> imageList = new ArrayList<Integer>();
+        ArrayList<Integer> imageList = new ArrayList<>();
         for (int i = 1; i <= num; i++){
             imageList.add(R.drawable.chocolate);
         }
@@ -121,7 +173,6 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         //FOUR CHOICES
         choiceNums.add(correctAnswer);
         int randomNum;
-        boolean numAvailable = false;
         for(int i = 0; i < 3; i++){
             randomNum = (int) (Math.random() * 9 + 1);
             while (choiceNums.contains(randomNum)){
@@ -138,9 +189,9 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     public void setTxtInstruction(){
         Collections.shuffle(instructions);
         txtInstruction.setText(instructions.get(0));
-        if(instructions.get(0) == INSTRUCTION_DENOM){
+        if(instructions.get(0).equals(INSTRUCTION_DENOM)){
             strCorrectAns = String.valueOf(denom);
-        } else if (instructions.get(0) == INSTRUCTION_NUM){
+        } else if (instructions.get(0).equals(INSTRUCTION_NUM)){
             strCorrectAns = String.valueOf(num);
         }
     }
@@ -160,6 +211,8 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     }
 
     public void showScore(){
+        Log.d(TAG, "c:"+correct);
+        Log.d(TAG, "rc:"+requiredCorrects);
         txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
     }
     public class BtnChoiceListener implements View.OnClickListener {
