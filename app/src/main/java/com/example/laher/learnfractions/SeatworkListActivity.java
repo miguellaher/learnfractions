@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.example.laher.learnfractions.adapters.SeatWorkListAdapter;
 import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.seatworks.AddSubMixedFractionsSeatWork;
 import com.example.laher.learnfractions.seatworks.AddingDissimilarSeatWork;
 import com.example.laher.learnfractions.seatworks.AddingSimilarSeatWork;
 import com.example.laher.learnfractions.seatworks.ComparingDissimilarSeatWork;
@@ -48,6 +49,7 @@ public class SeatworkListActivity extends AppCompatActivity {
         SubtractingDissimilarSeatWork subtractingDissimilarSeatWork = new SubtractingDissimilarSeatWork(AppConstants.SUBTRACTING_DISSIMILAR, 1);
         MultiplyingFractionsSeatWork multiplyingFractionsSeatWork = new MultiplyingFractionsSeatWork(AppConstants.MULTIPLYING_FRACTIONS, 1);
         DividingFractionsSeatWork dividingFractionsSeatWork = new DividingFractionsSeatWork(AppConstants.DIVIDING_FRACTIONS,1);
+        AddSubMixedFractionsSeatWork addSubMixedFractionsSeatWork = new AddSubMixedFractionsSeatWork(AppConstants.ADDING_SUBTRACTING_MIXED, 1);
 
         seatWorks = new ArrayList<>();
         seatWorks.add(fractionMeaningSeatWork);
@@ -61,6 +63,7 @@ public class SeatworkListActivity extends AppCompatActivity {
         seatWorks.add(subtractingDissimilarSeatWork);
         seatWorks.add(multiplyingFractionsSeatWork);
         seatWorks.add(dividingFractionsSeatWork);
+        seatWorks.add(addSubMixedFractionsSeatWork);
 
 
         SeatWorkListAdapter seatworkListAdapter = new SeatWorkListAdapter(mContext, R.layout.layout_user_item, seatWorks);

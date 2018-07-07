@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -92,7 +93,7 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
         exercise = LessonArchive.getLesson(AppConstants.ADDING_SUBTRACTING_MIXED).getExercises().get(EXERCISE_NUM-1);
 
         //TOOLBAR
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +103,7 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +115,7 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
         btnNext.setText(AppConstants.DONE);
@@ -162,11 +163,11 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
         equationDialog.setOnShowListener(new DialogEquationListener());
         equationDialog.setTitle("Division Equation");
         equationDialog.setContentView(edView);
-        eDTxtNum1 = (TextView) edView.findViewById(R.id.md_txtMultiplicand);
-        eDTxtNum2 = (TextView) edView.findViewById(R.id.md_txtMultiplier);
-        eDTxtSign = (TextView) edView.findViewById(R.id.md_txtSign);
-        eDInputAnswer = (EditText) edView.findViewById(R.id.md_inputProduct);
-        eDBtnCheck = (Button) edView.findViewById(R.id.md_btnCheck);
+        eDTxtNum1 = edView.findViewById(R.id.md_txtMultiplicand);
+        eDTxtNum2 = edView.findViewById(R.id.md_txtMultiplier);
+        eDTxtSign = edView.findViewById(R.id.md_txtSign);
+        eDInputAnswer = edView.findViewById(R.id.md_inputProduct);
+        eDBtnCheck = edView.findViewById(R.id.md_btnCheck);
         eDBtnCheck.setOnClickListener(new EDBtnCheckListener());
         defaultColor = txtNum1.getTextColors();
         stepsListId = new ArrayList<>();
@@ -279,9 +280,9 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
                     if (correctsShouldBeConsecutive) {
                         go();
                     } else {
-                        if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.ADDING_WITH_MIXED){
+                        if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.ADDING_WITH_MIXED)){
                             fractionQuestion = new FractionQuestion(FractionQuestion.ADDING_WITH_MIXED);
-                        } else if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.SUBTRACTING_WITH_MIXED){
+                        } else if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.SUBTRACTING_WITH_MIXED)){
                             fractionQuestion = new FractionQuestion(FractionQuestion.SUBTRACTING_WITH_MIXED);
                         }
                         fractionQuestions.add(fractionQuestion);
@@ -325,22 +326,22 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
         Collections.shuffle(fractionQuestions);
     }
     public void setFractionGui(){
-        if (fractionQuestions.get(questionNum).getFractionOne().getContext()== Fraction.MIXED){
+        if (fractionQuestions.get(questionNum).getFractionOne().getContext().equals(Fraction.MIXED)){
             txtWholeNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getWholeNum()));
             clFraction1.setOnClickListener(new ClFractionListener());
         } else {
             txtWholeNum1.setText("");
         }
-        if (fractionQuestions.get(questionNum).getFractionTwo().getContext()== Fraction.MIXED){
+        if (fractionQuestions.get(questionNum).getFractionTwo().getContext().equals(Fraction.MIXED)){
             txtWholeNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getWholeNum()));
             clFraction2.setOnClickListener(new ClFractionListener());
         } else {
             txtWholeNum2.setText("");
         }
-        if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.ADDING_WITH_MIXED){
+        if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.ADDING_WITH_MIXED)){
             txtSign1.setText("+");
             txtSign2.setText("+");
-        } else if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.SUBTRACTING_WITH_MIXED){
+        } else if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.SUBTRACTING_WITH_MIXED)){
             txtSign1.setText("-");
             txtSign2.setText("-");
         }

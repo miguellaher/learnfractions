@@ -62,7 +62,7 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         errorsShouldBeConsecutive = exercise.isMe_consecutive();
 
 
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +72,7 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,19 +83,19 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         btnNext.setText(AppConstants.DONE);
 
-        txtNumerator = (TextView) findViewById(R.id.b2_txtNumerator);
-        txtDenominator = (TextView) findViewById(R.id.b2_txtDenominator);
-        txtInstruction = (TextView) findViewById(R.id.b2_txtInstruction);
-        txtScore = (TextView) findViewById(R.id.b2_txtScore);
+        txtNumerator = findViewById(R.id.b2_txtNumerator);
+        txtDenominator = findViewById(R.id.b2_txtDenominator);
+        txtInstruction = findViewById(R.id.b2_txtInstruction);
+        txtScore = findViewById(R.id.b2_txtScore);
         setTxtScore();
-        inputAnswer = (EditText) findViewById(R.id.b2_inputAnswer);
+        inputAnswer = findViewById(R.id.b2_inputAnswer);
         inputAnswer.getText().clear();
         inputAnswer.setOnKeyListener(new InputAnswerListener());
-        btnCheck = (Button) findViewById(R.id.b2_btnCheck);
+        btnCheck = findViewById(R.id.b2_btnCheck);
         btnCheck.setOnClickListener(new BtnChkListener());
         btnCheck.setEnabled(false);
 
@@ -243,14 +243,14 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (inputAnswer.getText().toString().trim().length() != 0) {
-                if (instructions.get(0) == INSTRUCTION_NUM) {
+                if (instructions.get(0).equals(INSTRUCTION_NUM)) {
                     //if(inputAnswer.getText() == txtNumerator.getText()){
                     if (Integer.parseInt(String.valueOf(inputAnswer.getText())) == num) {
                         correct();
                     } else {
                         wrong();
                     }
-                } else if (instructions.get(0) == INSTRUCTION_DENOM) {
+                } else if (instructions.get(0).equals(INSTRUCTION_DENOM)) {
                     if (Integer.parseInt(String.valueOf(inputAnswer.getText())) == denom) {
                         correct();
                     } else {
