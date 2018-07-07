@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.laher.learnfractions.admin_activities.AdminMainActivity;
 import com.example.laher.learnfractions.model.Admin;
@@ -30,7 +29,6 @@ import com.example.laher.learnfractions.teacher_activities.TeacherMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
-import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 

@@ -8,6 +8,7 @@
     tools:context=".lessons.fraction_meaning.FractionMeaningExercise2Activity">
 
     <include layout="@layout/layout_toolbar" />
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,12 +27,10 @@
             android:id="@+id/constraintLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="48dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/a1_imgBox8"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.302">
+            app:layout_constraintTop_toTopOf="@+id/a1_imgBox2">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -50,8 +49,8 @@
                 android:layout_height="45dp"
                 android:ems="10"
                 android:inputType="number"
-                android:text="99"
                 android:maxLength="2"
+                android:text="99"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="@+id/imageView2"
                 app:layout_constraintStart_toStartOf="@+id/imageView2"
@@ -63,8 +62,8 @@
                 android:layout_height="49dp"
                 android:ems="10"
                 android:inputType="number"
-                android:text="99"
                 android:maxLength="2"
+                android:text="99"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toTopOf="@+id/imageView2"
                 app:layout_constraintEnd_toEndOf="@+id/imageView2"
@@ -143,7 +142,7 @@
             app:srcCompat="@android:color/background_light" />
 
         <TextView
-            android:id="@+id/a1_txtInstrucion"
+            android:id="@+id/a1_txtInstruction"
             android:layout_width="0dp"
             android:layout_height="57dp"
             android:layout_marginEnd="8dp"
@@ -164,17 +163,6 @@
             app:layout_constraintTop_toBottomOf="@+id/a1_imgBox5"
             app:srcCompat="@android:color/background_light" />
 
-        <Button
-            android:id="@+id/a1_btnOk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="CHECK"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
         <ImageView
             android:id="@+id/a1_imgBox9"
             android:layout_width="50dp"
@@ -192,6 +180,66 @@
             app:layout_constraintStart_toEndOf="@+id/a1_imgBox2"
             app:layout_constraintTop_toTopOf="@+id/a1_imgBox2"
             app:srcCompat="@android:color/background_light" />
+
+        <Button
+            android:id="@+id/a1_btnOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="OK"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/a1_clChoices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/a1_btnOk">
+
+            <Button
+                android:id="@+id/fe_btnChoice1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/a1_btnChoice4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                app:layout_constraintBottom_toBottomOf="@+id/fe_btnChoice3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/fe_btnChoice3"
+                app:layout_constraintTop_toTopOf="@+id/fe_btnChoice3" />
+
+            <Button
+                android:id="@+id/fe_btnChoice3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                app:layout_constraintBottom_toBottomOf="@+id/fe_btnChoice2"
+                app:layout_constraintStart_toEndOf="@+id/fe_btnChoice2"
+                app:layout_constraintTop_toTopOf="@+id/fe_btnChoice2" />
+
+            <Button
+                android:id="@+id/fe_btnChoice2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                app:layout_constraintBottom_toBottomOf="@+id/fe_btnChoice1"
+                app:layout_constraintStart_toEndOf="@+id/fe_btnChoice1"
+                app:layout_constraintTop_toTopOf="@+id/fe_btnChoice1" />
+        </android.support.constraint.ConstraintLayout>
+
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>

@@ -15,11 +15,6 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
         <activity
@@ -33,7 +28,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".TopicsMenuActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".lessons.non_visual_fraction.NonVisualVideoActivity"
             android:screenOrientation="portrait" />
@@ -172,7 +167,37 @@
         <activity
             android:name=".teacher_activities.ExercisesListActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".student_activities.StudentMainActivity"></activity>
+        <activity android:name=".student_activities.StudentMainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".SeatworkListActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".seatworks.FractionMeaningSeatWork"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".model.SeatWork"
+            android:screenOrientation="portrait" />
+        <activity android:name=".seatworks.ComparingSimilarSeatWork"
+            android:screenOrientation="portrait" />
+        <activity android:name=".seatworks.ComparingDissimilarSeatWork"
+            android:screenOrientation="portrait" />
+        <activity android:name=".seatworks.OrderingSimilarSeatWork"
+            android:screenOrientation="portrait" />
+        <activity android:name=".seatworks.OrderingDissimilarSeatWork"
+            android:screenOrientation="portrait" />
+        <activity android:name=".seatworks.AddingSimilarSeatWork" />
+        <activity android:name=".seatworks.AddingDissimilarSeatWork" />
+        <activity android:name=".seatworks.SubtractingSimilarSeatWork" />
+        <activity android:name=".seatworks.SubtractingDissimilarSeatWork" />
+        <activity android:name=".seatworks.MultiplyingFractionsSeatWork" />
+        <activity android:name=".seatworks.DividingFractionsSeatWork" />
+
     </application>
 
 </manifest>

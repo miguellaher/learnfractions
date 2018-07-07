@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.SeatworkListActivity;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 
 public class StudentMainActivity extends AppCompatActivity {
-    Button btnLessons;
+    Button btnLessons, btnSeatworks;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,5 +26,16 @@ public class StudentMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btnSeatworks = findViewById(R.id.student_main_btnSeatworks);
+        btnSeatworks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StudentMainActivity.this,
+                        SeatworkListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+
     }
 }

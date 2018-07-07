@@ -58,4 +58,18 @@ public class AppConstants {
             return null;
         }
     }
+    public static final String ITEM(int currentItem, int items){
+        if (items>=currentItem) {
+            return "#" + currentItem + " of " + items;
+        } else {
+            return null;
+        }
+    }
+
+
+    public static final int STARTING_NUM = 1;
+    public static final int DEFAULT_ITEMS_NUM = 10;
+
+    //INSTRUCTIONS
+    public static final String I_COMPARE = "Compare the two fractions";
 }

@@ -1,6 +1,8 @@
 package com.example.laher.learnfractions.util;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.widget.Toast;
 
 import java.util.UUID;
@@ -17,4 +19,5 @@ public class Util {
         Toast toast = Toast.makeText(con, text, duration);
         toast.show();
     }
+
 }

@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -42,6 +43,7 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtSign, txtScore, txtInstruction;
     EditText inputNum, inputDenom;
     Button btnCheck;
+    ConstraintLayout clChoices;
     //VARIABLES
     FractionQuestion fractionQuestion;
     ArrayList<FractionQuestion> fractionQuestions;
@@ -98,6 +100,8 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
         inputDenom = (EditText) findViewById(R.id.fe_inputDenom);
         btnCheck = (Button) findViewById(R.id.fe_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
+        clChoices = findViewById(R.id.fe_clChoices);
+        clChoices.setVisibility(View.INVISIBLE);
 
         setAttributes(exercise);
         checkUpdate();
@@ -222,7 +226,7 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
     }
     public void startUp(){
         setTxtScore();
-        txtInstruction.setText("Add the two numerators and the new denominator is the same with the similar denominators.");
+        txtInstruction.setText("Add the two numerators for the new numerator and copy the similar denominator for the new denominator.");
         clearInputFraction();
     }
     public void clearInputFraction(){

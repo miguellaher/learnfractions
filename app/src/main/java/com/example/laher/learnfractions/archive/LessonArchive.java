@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public abstract class LessonArchive {
     //CHANGE STARTING ACTIVITIES
-    private static final Lesson fractionMeaning = new Lesson(AppConstants.FRACTION_MEANING, FractionMeaningExerciseActivity.class);
+    private static final Lesson fractionMeaning = new Lesson(AppConstants.FRACTION_MEANING, FractionMeaningVideoActivity.class);
     private static final Lesson nonVisualFraction = new Lesson(AppConstants.NON_VISUAL_FRACTION, NonVisualVideoActivity.class);
     private static final Lesson comparingSimilarFractions = new Lesson(AppConstants.COMPARING_SIMILAR_FRACTIONS, ComparingSimilarVideoActivity.class);
     private static final Lesson comparingDissimilarFractions = new Lesson(AppConstants.COMPARING_DISSIMILAR_FRACTIONS, ComparingDissimilarVideoActivity.class);

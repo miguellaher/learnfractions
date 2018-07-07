@@ -62,7 +62,7 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
         exercise = LessonArchive.getLesson(AppConstants.ORDERING_SIMILAR).getExercises().get(EXERCISE_NUM-1);
 
         //TOOLBAR
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +72,7 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,24 +84,23 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext.setText("DONE");
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
         btnNext.setText(AppConstants.DONE);
         //GUI
-        txtNum1 = (TextView) findViewById(R.id.os2_txtNum1);
-        txtNum2 = (TextView) findViewById(R.id.os2_txtNum2);
-        txtNum3 = (TextView) findViewById(R.id.os2_txtNum3);
-        txtDenom1 = (TextView) findViewById(R.id.os2_txtDenom1);
-        txtDenom2 = (TextView) findViewById(R.id.os2_txtDenom2);
-        txtDenom3 = (TextView) findViewById(R.id.os2_txtDenom3);
-        txtScore = (TextView) findViewById(R.id.os2_txtScore);
+        txtNum1 = findViewById(R.id.os2_txtNum1);
+        txtNum2 = findViewById(R.id.os2_txtNum2);
+        txtNum3 = findViewById(R.id.os2_txtNum3);
+        txtDenom1 = findViewById(R.id.os2_txtDenom1);
+        txtDenom2 = findViewById(R.id.os2_txtDenom2);
+        txtDenom3 = findViewById(R.id.os2_txtDenom3);
+        txtScore = findViewById(R.id.os2_txtScore);
         setTxtScore();
-        txtInstruction = (TextView) findViewById(R.id.os2_txtInstruction);
-        clFraction1 = (ConstraintLayout) findViewById(R.id.os2_clFraction1);
-        clFraction2 = (ConstraintLayout) findViewById(R.id.os2_clFraction2);
-        clFraction3 = (ConstraintLayout) findViewById(R.id.os2_clFraction3);
+        txtInstruction = findViewById(R.id.os2_txtInstruction);
+        clFraction1 = findViewById(R.id.os2_clFraction1);
+        clFraction2 = findViewById(R.id.os2_clFraction2);
+        clFraction3 = findViewById(R.id.os2_clFraction3);
 
         setAttributes(exercise);
         checkUpdate();

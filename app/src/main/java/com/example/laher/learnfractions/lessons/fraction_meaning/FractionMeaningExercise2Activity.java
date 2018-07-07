@@ -3,6 +3,7 @@ package com.example.laher.learnfractions.lessons.fraction_meaning;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -43,8 +44,8 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
     Button btnBack, btnNext;
     TextView txtTitle;
     public final String TITLE = "Fraction Meaning";
-    ArrayList<String> instructions;
     Button btnOK;
+    ConstraintLayout clChoices;
     int num, denom, correct, error;
     int maxInputLength = 3;
 
@@ -59,18 +60,20 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_meaning_exercise2);
-        imgBox1 = (ImageView) findViewById(R.id.a1_imgBox1);
-        imgBox2 = (ImageView) findViewById(R.id.a1_imgBox2);
-        imgBox3 = (ImageView) findViewById(R.id.a1_imgBox3);
-        imgBox4 = (ImageView) findViewById(R.id.a1_imgBox4);
-        imgBox5 = (ImageView) findViewById(R.id.a1_imgBox5);
-        imgBox6 = (ImageView) findViewById(R.id.a1_imgBox6);
-        imgBox7 = (ImageView) findViewById(R.id.a1_imgBox7);
-        imgBox8 = (ImageView) findViewById(R.id.a1_imgBox8);
-        imgBox9 = (ImageView) findViewById(R.id.a1_imgBox9);
+        clChoices = findViewById(R.id.a1_clChoices);
+        clChoices.setVisibility(View.INVISIBLE);
+        imgBox1 = findViewById(R.id.a1_imgBox1);
+        imgBox2 = findViewById(R.id.a1_imgBox2);
+        imgBox3 = findViewById(R.id.a1_imgBox3);
+        imgBox4 = findViewById(R.id.a1_imgBox4);
+        imgBox5 = findViewById(R.id.a1_imgBox5);
+        imgBox6 = findViewById(R.id.a1_imgBox6);
+        imgBox7 = findViewById(R.id.a1_imgBox7);
+        imgBox8 = findViewById(R.id.a1_imgBox8);
+        imgBox9 = findViewById(R.id.a1_imgBox9);
 
-        inputNum = (EditText) findViewById(R.id.a1_numerator);
-        inputDenom = (EditText) findViewById(R.id.a1_denominator);
+        inputNum = findViewById(R.id.a1_numerator);
+        inputDenom = findViewById(R.id.a1_denominator);
         inputNum.setOnKeyListener(new InputListener());
         inputDenom.setOnKeyListener(new InputListener());
         inputNum.setEnabled(false);
@@ -82,18 +85,18 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
                 new InputFilter.LengthFilter(maxInputLength)
         });
 
-        btnOK = (Button) findViewById(R.id.a1_btnOk);
+        btnOK = findViewById(R.id.a1_btnOk);
         btnOK.setOnClickListener(new BtnOkListener());
         btnOK.setEnabled(false);
 
-        txtScore = (TextView) findViewById(R.id.a1_txtScore);
-        txtInstruction = (TextView) findViewById(R.id.a1_txtInstrucion);
+        txtScore = findViewById(R.id.a1_txtScore);
+        txtInstruction = findViewById(R.id.a1_txtInstruction);
 
-        btnBack = (Button) findViewById(R.id.btnBack);
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnBack = findViewById(R.id.btnBack);
+        btnNext = findViewById(R.id.btnNext);
         btnBack.setOnClickListener(new BtnBackListener());
         btnNext.setOnClickListener(new BtnNextListener());
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         btnNext.setText(AppConstants.DONE);
 
@@ -151,7 +154,7 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
         }
     }
     public void go(){
-        btnNext.setText("DONE");
+        btnNext.setText(AppConstants.DONE);
         btnNext.setEnabled(false);
 
         generateFraction();

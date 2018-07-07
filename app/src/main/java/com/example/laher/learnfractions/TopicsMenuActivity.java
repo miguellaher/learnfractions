@@ -1,5 +1,8 @@
 package com.example.laher.learnfractions;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,12 +11,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.laher.learnfractions.adapters.RecyclerViewAdapter;
 import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.dialog_layout.MessageDialog;
 import com.example.laher.learnfractions.model.Lesson;
 
 import java.util.ArrayList;
 
 public class TopicsMenuActivity extends AppCompatActivity {
+    Context mContext = this;
     private static final String TAG = "TopicsMenuActivity";
 
     //vars
@@ -28,6 +34,11 @@ public class TopicsMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topics_menu);
         Log.d(TAG, "onCreate: started.");
+        if (!isNetworkAvailable()){
+            MessageDialog messageDialog = new MessageDialog(mContext, "Go online to login/register.");
+            messageDialog.show();
+        }
+
         btnBack = (Button) findViewById(R.id.btnBack);
         btnNext = (Button) findViewById(R.id.btnNext);
         btnBack.setOnClickListener(new BtnBackListener());
@@ -62,5 +73,13 @@ public class TopicsMenuActivity extends AppCompatActivity {
         public void onClick(View v) {
             finish();
         }
+    }
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

@@ -31,12 +31,16 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     private static final String TAG = "FM_E1";
     Context mContext = this;
     Exercise exercise;
+    //GUI
     ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
     Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
+    TextView txtScore, txtInstruction;
+    //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
     public final String TITLE = "Fraction Meaning";
-    TextView txtScore, txtInstruction;
+
+    //VARIBALES
     ArrayList<String> instructions;
     String strCorrectAns;
     int num, denom, correct, error;

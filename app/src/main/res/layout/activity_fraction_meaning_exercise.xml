@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/a_imgAvatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginBottom="8dp"
@@ -51,10 +51,10 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:text="click how many parts the whole is divided into"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+            app:layout_constraintBottom_toBottomOf="@+id/a_imgAvatar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            app:layout_constraintStart_toEndOf="@+id/a_imgAvatar"
+            app:layout_constraintTop_toTopOf="@+id/a_imgAvatar"
             app:layout_constraintVertical_bias="0.511" />
 
         <ImageView

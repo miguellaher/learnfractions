@@ -1,7 +1,6 @@
-package com.example.laher.learnfractions;
+package com.example.laher.learnfractions.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.R;
 
 import java.util.ArrayList;
 

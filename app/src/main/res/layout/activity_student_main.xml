@@ -24,6 +24,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/student_main_btnSeatworks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="SEATWORKS"
+            app:layout_constraintEnd_toEndOf="@+id/student_main_btnLessons"
+            app:layout_constraintStart_toStartOf="@+id/student_main_btnLessons"
+            app:layout_constraintTop_toBottomOf="@+id/student_main_btnLessons" />
+
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>
