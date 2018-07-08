@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class AddingSimilarExerciseActivity extends AppCompatActivity {
+    public static final String TAG = "ADDING_SIMILAR";
     Context mContext = this;
 
     Exercise exercise;
@@ -62,7 +64,7 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
         exercise = LessonArchive.getLesson(AppConstants.ADDING_SIMILAR).getExercises().get(EXERCISE_NUM-1);
 
         //TOOLBAR
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +74,7 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,21 +86,21 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
         btnNext.setText(AppConstants.DONE);
         //FRACTION EQUATION GUI
-        txtNum1 = (TextView) findViewById(R.id.fe_txtNum1);
-        txtNum2 = (TextView) findViewById(R.id.fe_txtNum2);
-        txtDenom1 = (TextView) findViewById(R.id.fe_txtDenom1);
-        txtDenom2 = (TextView) findViewById(R.id.fe_txtDenom2);
-        txtSign = (TextView) findViewById(R.id.fe_txtSign);
-        txtScore = (TextView) findViewById(R.id.fe_txtScore);
-        txtInstruction = (TextView) findViewById(R.id.fe_txtInstruction);
-        inputNum = (EditText) findViewById(R.id.fe_inputNum);
-        inputDenom = (EditText) findViewById(R.id.fe_inputDenom);
-        btnCheck = (Button) findViewById(R.id.fe_btnCheck);
+        txtNum1 = findViewById(R.id.fe_txtNum1);
+        txtNum2 = findViewById(R.id.fe_txtNum2);
+        txtDenom1 = findViewById(R.id.fe_txtDenom1);
+        txtDenom2 = findViewById(R.id.fe_txtDenom2);
+        txtSign = findViewById(R.id.fe_txtSign);
+        txtScore = findViewById(R.id.fe_txtScore);
+        txtInstruction = findViewById(R.id.fe_txtInstruction);
+        inputNum = findViewById(R.id.fe_inputNum);
+        inputDenom = findViewById(R.id.fe_inputDenom);
+        btnCheck = findViewById(R.id.fe_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
         clChoices = findViewById(R.id.fe_clChoices);
         clChoices.setVisibility(View.INVISIBLE);
@@ -122,25 +124,35 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
                 @Override
                 public void postExecute(JSONObject response) {
                     try {
+                        Log.d(TAG, "post execute");
+                        Log.d(TAG, response.optString("message"));
                         if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
                         } else {
-                            Util.toast(mContext,"Exercise updated.");
                             Exercise updatedExercise = new Exercise();
                             updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
+                            Log.d(TAG, "finished setRequiredCorrects()");
                             if (response.optString("rc_consecutive").equals("1")) {
                                 updatedExercise.setRc_consecutive(true);
                             } else {
                                 updatedExercise.setRc_consecutive(false);
                             }
+                            Log.d(TAG, "finished setRc_consecutive()");
                             updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
+                            Log.d(TAG, "finished setMaxErrors()");
                             if (response.optString("me_consecutive").equals("1")) {
                                 updatedExercise.setMe_consecutive(true);
                             } else {
                                 updatedExercise.setMe_consecutive(false);
                             }
+                            Log.d(TAG, "finished setMe_consecutive()");
                             setAttributes(updatedExercise);
+                            Log.d(TAG, "finished setAttributes()");
+                            Util.toast(mContext,"Exercise updated.");
                         }
-                    } catch (Exception e){e.printStackTrace();}
+                    } catch (Exception e) {
+                        Log.d(TAG, "exception handled");
+                        e.printStackTrace();
+                    }
                 }
             });
             Student student = new Student();

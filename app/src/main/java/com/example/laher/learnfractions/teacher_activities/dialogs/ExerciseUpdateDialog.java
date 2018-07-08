@@ -16,6 +16,7 @@ import com.example.laher.learnfractions.model.Teacher;
 import com.example.laher.learnfractions.service.ExerciseService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
+import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
@@ -56,7 +57,7 @@ public class ExerciseUpdateDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 if (checkErrors()){
-                    Service service = new Service("Posting exercise", mContext, new ServiceResponse() {
+                    Service service = new Service("Posting exercise...", mContext, new ServiceResponse() {
                         @Override
                         public void postExecute(JSONObject response) {
                             Util.toast(mContext, response.optString("message"));
@@ -98,6 +99,16 @@ public class ExerciseUpdateDialog extends Dialog {
         ))){
             Styles.shakeAnimate(inputMaxErrors);
             Util.toast(mContext, "Max errors should be less than required corrects.");
+            return false;
+        }
+        if (Integer.valueOf(String.valueOf(inputMaxErrors.getText())) < 1){
+            Styles.shakeAnimate(inputMaxErrors);
+            Util.toast(mContext, AppConstants.INVALID_INPUT);
+            return false;
+        } else if (Integer.valueOf(String.valueOf(
+                inputRequiredCorrects.getText())) < 1){
+            Styles.shakeAnimate(inputRequiredCorrects);
+            Util.toast(mContext, AppConstants.INVALID_INPUT);
             return false;
         }
         return true;

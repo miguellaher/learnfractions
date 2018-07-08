@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.seatworks;
+package com.example.laher.learnfractions.seat_works;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,14 +17,15 @@ import com.example.laher.learnfractions.model.SeatWork;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
-public class AddingDissimilarSeatWork extends SeatWork {
+public class MultiplyingFractionsSeatWork extends SeatWork {
     Context mContext = this;
 
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Adding Fractions";
+    public final String TITLE = "Multiplying Fractions";
     //FRACTION EQUATION GUI
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtSign, txtIndicator, txtInstruction;
     EditText inputNum, inputDenom;
@@ -37,11 +38,11 @@ public class AddingDissimilarSeatWork extends SeatWork {
     String correctAns;
     long startingTime;
 
-    public AddingDissimilarSeatWork(String topicName, int seatworkNum) {
+    public MultiplyingFractionsSeatWork(String topicName, int seatworkNum) {
         super(topicName, seatworkNum);
     }
 
-    public AddingDissimilarSeatWork() {
+    public MultiplyingFractionsSeatWork() {
     }
 
     @Override
@@ -54,7 +55,7 @@ public class AddingDissimilarSeatWork extends SeatWork {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddingDissimilarSeatWork.this,
+                Intent intent = new Intent(MultiplyingFractionsSeatWork.this,
                         SeatworkListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -71,6 +72,7 @@ public class AddingDissimilarSeatWork extends SeatWork {
         txtDenom1 = findViewById(R.id.fe_txtDenom1);
         txtDenom2 = findViewById(R.id.fe_txtDenom2);
         txtSign = findViewById(R.id.fe_txtSign);
+        txtSign.setText("x");
         txtIndicator = findViewById(R.id.fe_txtScore);
         txtInstruction = findViewById(R.id.fe_txtInstruction);
         inputNum = findViewById(R.id.fe_inputNum);
@@ -86,6 +88,11 @@ public class AddingDissimilarSeatWork extends SeatWork {
         btnChoice3.setOnClickListener(new BtnChoiceListener());
         btnChoice4.setOnClickListener(new BtnChoiceListener());
 
+        int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
+        if (item_size != 0){
+            setItems_size(item_size);
+            updateItemIndicator(txtIndicator);
+        }
         disableInputFraction();
         startingTime = System.currentTimeMillis();
         go();
@@ -116,7 +123,7 @@ public class AddingDissimilarSeatWork extends SeatWork {
         questionNum = 0;
         fractionQuestions = new ArrayList<>();
         for(int i = 0; i < getItems_size(); i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.ADDING_DISSIMILAR);
+            fractionQuestion = new FractionQuestion(FractionQuestion.MULTIPLYING_FRACTIONS);
             fractionQuestions.add(fractionQuestion);
         }
     }
@@ -191,12 +198,12 @@ public class AddingDissimilarSeatWork extends SeatWork {
                 long endingTime = System.currentTimeMillis();
                 enableBtnChoices(false);
                 setTimeSpent(endingTime - startingTime);
-                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, AddingDissimilarSeatWork.this);
+                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, MultiplyingFractionsSeatWork.this);
                 seatWorkStatDialog.show();
                 seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        Intent intent = new Intent(AddingDissimilarSeatWork.this,
+                        Intent intent = new Intent(MultiplyingFractionsSeatWork.this,
                                 SeatworkListActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

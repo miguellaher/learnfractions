@@ -7,17 +7,18 @@ import com.example.laher.learnfractions.util.AppConstants;
 
 public class SeatWork extends AppCompatActivity {
     private String topicName;
-    private int seatworkNum;
+    private int seatWorkNum;
     private int items_size;
     private int correct;
     private int wrong;
     private long timeSpent;
     private int currentItemNum;
 
-    public SeatWork(String topicName, int seatworkNum) {
+    public SeatWork(String topicName, int seatWorkNum) {
         super();
         this.topicName = topicName;
-        this.seatworkNum = seatworkNum;
+        this.seatWorkNum = seatWorkNum;
+        setItems_size(AppConstants.DEFAULT_ITEMS_NUM);
     }
 
     public SeatWork() {
@@ -25,12 +26,12 @@ public class SeatWork extends AppCompatActivity {
         setItems_size(AppConstants.DEFAULT_ITEMS_NUM);
     }
 
-    public int getSeatworkNum() {
-        return seatworkNum;
+    public int getSeatWorkNum() {
+        return seatWorkNum;
     }
 
-    public void setSeatworkNum(int seatworkNum) {
-        this.seatworkNum = seatworkNum;
+    public void setSeatWorkNum(int seatWorkNum) {
+        this.seatWorkNum = seatWorkNum;
     }
 
     public String getTopicName() {

@@ -40,6 +40,7 @@ import java.util.Collections;
 import static android.content.DialogInterface.*;
 
 public class SolvingMixedExerciseActivity extends AppCompatActivity {
+    public static final String TAG = "SME1";
     Context mContext = this;
 
     Exercise exercise;
@@ -193,25 +194,35 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
                 @Override
                 public void postExecute(JSONObject response) {
                     try {
+                        Log.d(TAG, "post execute");
+                        Log.d(TAG, response.optString("message"));
                         if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
                         } else {
-                            Util.toast(mContext,"Exercise updated.");
                             Exercise updatedExercise = new Exercise();
                             updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
+                            Log.d(TAG, "finished setRequiredCorrects()");
                             if (response.optString("rc_consecutive").equals("1")) {
                                 updatedExercise.setRc_consecutive(true);
                             } else {
                                 updatedExercise.setRc_consecutive(false);
                             }
+                            Log.d(TAG, "finished setRc_consecutive()");
                             updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
+                            Log.d(TAG, "finished setMaxErrors()");
                             if (response.optString("me_consecutive").equals("1")) {
                                 updatedExercise.setMe_consecutive(true);
                             } else {
                                 updatedExercise.setMe_consecutive(false);
                             }
+                            Log.d(TAG, "finished setMe_consecutive()");
                             setAttributes(updatedExercise);
+                            Log.d(TAG, "finished setAttributes()");
+                            Util.toast(mContext,"Exercise updated.");
                         }
-                    } catch (Exception e){e.printStackTrace();}
+                    } catch (Exception e) {
+                        Log.d(TAG, "exception handled");
+                        e.printStackTrace();
+                    }
                 }
             });
             Student student = new Student();

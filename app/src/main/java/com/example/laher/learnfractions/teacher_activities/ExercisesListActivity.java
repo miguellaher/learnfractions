@@ -2,12 +2,15 @@ package com.example.laher.learnfractions.teacher_activities;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.archive.LessonArchive;
@@ -25,11 +28,30 @@ public class ExercisesListActivity extends AppCompatActivity {
     Context mContext = this;
     ListView exerciseListView;
     ArrayList<Exercise> exercises;
+    //TOOLBAR
+    TextView txtTitle;
+    Button btnBack, btnNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_list);
+        //TOOLBAR
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExercisesListActivity.this,
+                        TeacherMainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+        btnNext = findViewById(R.id.btnNext);
+        btnNext.setVisibility(View.INVISIBLE);
+        txtTitle = findViewById(R.id.txtTitle);
+        txtTitle.setText(AppConstants.EXERCISES);
+        //ACTIVITY
         exerciseListView = findViewById(R.id.exercise_list);
         exercises = new ArrayList<>();
         exercises.add(LessonArchive.getLesson(AppConstants.FRACTION_MEANING).getExercises().get(0));

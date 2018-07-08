@@ -26,7 +26,7 @@ public class ComparingDissimilarVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         //TOOLBAR
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,7 +36,7 @@ public class ComparingDissimilarVideoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,11 +48,10 @@ public class ComparingDissimilarVideoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
-        txtTitle.setTextSize(14);
 
-        video = (VideoView) findViewById(R.id.videoView);
+        video = findViewById(R.id.videoView);
 
         go();
     }

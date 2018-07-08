@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.seatworks;
+package com.example.laher.learnfractions.seat_works;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,18 +17,19 @@ import com.example.laher.learnfractions.model.SeatWork;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
-public class MultiplyingFractionsSeatWork extends SeatWork {
+public class MultiplyDivideMixedFractionsSeatWork extends SeatWork {
     Context mContext = this;
 
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Multiplying Fractions";
+    public final String TITLE = "Multiplying/Dividing with Mixed Fractions";
     //FRACTION EQUATION GUI
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtSign, txtIndicator, txtInstruction;
+    TextView txtWholeNum1, txtWholeNum2;
     EditText inputNum, inputDenom;
-    Button btnCheck;
     Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
     //VARIABLES
     FractionQuestion fractionQuestion;
@@ -37,24 +38,24 @@ public class MultiplyingFractionsSeatWork extends SeatWork {
     String correctAns;
     long startingTime;
 
-    public MultiplyingFractionsSeatWork(String topicName, int seatworkNum) {
+    public MultiplyDivideMixedFractionsSeatWork(String topicName, int seatworkNum) {
         super(topicName, seatworkNum);
     }
 
-    public MultiplyingFractionsSeatWork() {
+    public MultiplyDivideMixedFractionsSeatWork() {
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fraction_equation);
+        setContentView(R.layout.activity_mixed_fraction_equation);
 
         //TOOLBAR
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MultiplyingFractionsSeatWork.this,
+                Intent intent = new Intent(MultiplyDivideMixedFractionsSeatWork.this,
                         SeatworkListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -66,18 +67,17 @@ public class MultiplyingFractionsSeatWork extends SeatWork {
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
         //FRACTION EQUATION GUI
-        txtNum1 = findViewById(R.id.fe_txtNum1);
-        txtNum2 = findViewById(R.id.fe_txtNum2);
-        txtDenom1 = findViewById(R.id.fe_txtDenom1);
-        txtDenom2 = findViewById(R.id.fe_txtDenom2);
-        txtSign = findViewById(R.id.fe_txtSign);
-        txtSign.setText("x");
-        txtIndicator = findViewById(R.id.fe_txtScore);
-        txtInstruction = findViewById(R.id.fe_txtInstruction);
-        inputNum = findViewById(R.id.fe_inputNum);
-        inputDenom = findViewById(R.id.fe_inputDenom);
-        btnCheck = findViewById(R.id.fe_btnCheck);
-        btnCheck.setVisibility(View.INVISIBLE);
+        txtNum1 = findViewById(R.id.mfe_txtNum1);
+        txtNum2 = findViewById(R.id.mfe_txtNum2);
+        txtDenom1 = findViewById(R.id.mfe_txtDenom1);
+        txtDenom2 = findViewById(R.id.mfe_txtDenom2);
+        txtWholeNum1 = findViewById(R.id.mfe_txtWholeNum1);
+        txtWholeNum2 = findViewById(R.id.mfe_txtWholeNum2);
+        txtSign = findViewById(R.id.mfe_txtSign1);
+        txtIndicator = findViewById(R.id.fem_txtScore);
+        txtInstruction = findViewById(R.id.fem_txtInstruction);
+        inputNum = findViewById(R.id.mfe_inputAns1);
+        inputDenom = findViewById(R.id.mfe_inputAns2);
         btnChoice1 = findViewById(R.id.fe_btnChoice1);
         btnChoice2 = findViewById(R.id.fe_btnChoice2);
         btnChoice3 = findViewById(R.id.fe_btnChoice3);
@@ -87,6 +87,11 @@ public class MultiplyingFractionsSeatWork extends SeatWork {
         btnChoice3.setOnClickListener(new BtnChoiceListener());
         btnChoice4.setOnClickListener(new BtnChoiceListener());
 
+        int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
+        if (item_size != 0){
+            setItems_size(item_size);
+            updateItemIndicator(txtIndicator);
+        }
         disableInputFraction();
         startingTime = System.currentTimeMillis();
         go();
@@ -117,9 +122,14 @@ public class MultiplyingFractionsSeatWork extends SeatWork {
         questionNum = 0;
         fractionQuestions = new ArrayList<>();
         for(int i = 0; i < getItems_size(); i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.MULTIPLYING_FRACTIONS);
+            if (i<(getItems_size()/2)){
+                fractionQuestion = new FractionQuestion(FractionQuestion.MULTIPLYING_WITH_MIXED);
+            } else {
+                fractionQuestion = new FractionQuestion(FractionQuestion.DIVIDING_WITH_MIXED);
+            }
             fractionQuestions.add(fractionQuestion);
         }
+        Collections.shuffle(fractionQuestions);
     }
     public void setBtnChoices(){
         ArrayList<String> choices = new ArrayList<>();
@@ -155,6 +165,21 @@ public class MultiplyingFractionsSeatWork extends SeatWork {
         txtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()));
         txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
         txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
+        if (fractionQuestions.get(questionNum).getFractionOne().getWholeNum()==0){
+            txtWholeNum1.setText("");
+        } else {
+            txtWholeNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getWholeNum()));
+        }
+        if (fractionQuestions.get(questionNum).getFractionTwo().getWholeNum()==0){
+            txtWholeNum2.setText("");
+        } else {
+            txtWholeNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getWholeNum()));
+        }
+        if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.MULTIPLYING_WITH_MIXED)){
+            txtSign.setText("x");
+        } else {
+            txtSign.setText("÷");
+        }
     }
     public void disableInputFraction(){
         inputNum.setEnabled(false);
@@ -192,12 +217,12 @@ public class MultiplyingFractionsSeatWork extends SeatWork {
                 long endingTime = System.currentTimeMillis();
                 enableBtnChoices(false);
                 setTimeSpent(endingTime - startingTime);
-                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, MultiplyingFractionsSeatWork.this);
+                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, MultiplyDivideMixedFractionsSeatWork.this);
                 seatWorkStatDialog.show();
                 seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        Intent intent = new Intent(MultiplyingFractionsSeatWork.this,
+                        Intent intent = new Intent(MultiplyDivideMixedFractionsSeatWork.this,
                                 SeatworkListActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

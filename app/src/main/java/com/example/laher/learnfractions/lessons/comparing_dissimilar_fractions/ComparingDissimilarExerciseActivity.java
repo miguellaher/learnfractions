@@ -86,7 +86,6 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
         });
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
-        txtTitle.setTextSize(14);
         //MULTIPLICATION DIALOG
         mdView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         multiplicationDialog = new Dialog(ComparingDissimilarExerciseActivity.this);

@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.seatworks;
+package com.example.laher.learnfractions.seat_works;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,6 +20,7 @@ import com.example.laher.learnfractions.model.SeatWork;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class FractionMeaningSeatWork extends SeatWork {
     Context mContext = this;
@@ -95,6 +96,11 @@ public class FractionMeaningSeatWork extends SeatWork {
         btnChoice3.setOnClickListener(new BtnChoiceListener());
         btnChoice4.setOnClickListener(new BtnChoiceListener());
 
+        int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
+        if (item_size != 0){
+            setItems_size(item_size);
+            updateItemIndicator(txtItemIndicator);
+        }
         go();
         instruction = INPUT_NUM;
         startingTime = System.currentTimeMillis();

@@ -3,58 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:background="#ffff00">
+    android:background="#ffffff">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="8"
-        android:background="#ffff00">
+        android:background="#ffffff">
 
         <Button
-            android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
+            android:id="@+id/btnBack"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_weight="8"
-            android:text="NEXT"
+            android:background="#D3D3D3"
+            android:text="BACK"
+            android:textAlignment="center"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txtTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="22dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="8"
             android:text="TOPICS"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnNext"
+            app:layout_constraintStart_toEndOf="@+id/btnBack"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:id="@+id/btnNext"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="8"
-            android:text="prev"
+            android:text="NEXT"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="#D3D3D3"/>
+
     </android.support.constraint.ConstraintLayout>
 
 

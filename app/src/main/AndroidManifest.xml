@@ -179,32 +179,35 @@
             android:screenOrientation="portrait" >
         </activity>
 
-        <activity android:name=".seatworks.FractionMeaningSeatWork"
+        <activity android:name=".seat_works.FractionMeaningSeatWork"
             android:screenOrientation="portrait" />
 
         <activity android:name=".model.SeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seatworks.ComparingSimilarSeatWork"
+        <activity android:name=".seat_works.ComparingSimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seatworks.ComparingDissimilarSeatWork"
+        <activity android:name=".seat_works.ComparingDissimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seatworks.OrderingSimilarSeatWork"
+        <activity android:name=".seat_works.OrderingSimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seatworks.OrderingDissimilarSeatWork"
+        <activity android:name=".seat_works.OrderingDissimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seatworks.AddingSimilarSeatWork"
+        <activity android:name=".seat_works.AddingSimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seatworks.AddingDissimilarSeatWork"
+        <activity android:name=".seat_works.AddingDissimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seatworks.SubtractingSimilarSeatWork"
+        <activity android:name=".seat_works.SubtractingSimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seatworks.SubtractingDissimilarSeatWork"
+        <activity android:name=".seat_works.SubtractingDissimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seatworks.MultiplyingFractionsSeatWork"
+        <activity android:name=".seat_works.MultiplyingFractionsSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seatworks.DividingFractionsSeatWork"
+        <activity android:name=".seat_works.DividingFractionsSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seatworks.AddSubMixedFractionsSeatWork" />
+        <activity android:name=".seat_works.AddSubMixedFractionsSeatWork"
+            android:screenOrientation="portrait" />
+        <activity android:name=".seat_works.MultiplyDivideMixedFractionsSeatWork"
+            android:screenOrientation="portrait" />
 
     </application>
 

@@ -15,6 +15,12 @@ public class AppConstants {
     public static final String MALE= "MALE";
     public static final String FEMALE= "FEMALE";
 
+    public static final String LOG_OUT = "Log out";
+    public static final String SEAT_WORKS = "Seat Works";
+    public static final String TEACHER_MAIN = "Teacher Main";
+    public static final String EXERCISES = "Exercises";
+    public static final String LESSONS = "Lessons";
+    public static final String STUDENT_MAIN = "Student Main";
 
 
     //LESSONS
@@ -43,6 +49,7 @@ public class AppConstants {
     public static final String ERROR = "Wrong.";
     public static final String FINISHED_EXERCISE = "You have finished the exercise. Click next and proceed.";
     public static final String FINISHED_LESSON = "Congratulations, you have finished the lesson.";
+    public static final String INVALID_INPUT = "Invalid input.";
 
 
     public static final String FAILED_CONSECUTIVE(int error){

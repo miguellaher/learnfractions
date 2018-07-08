@@ -5,17 +5,41 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatworkListActivity;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.util.AppConstants;
 
 public class StudentMainActivity extends AppCompatActivity {
-    Button btnLessons, btnSeatworks;
+    Button btnLessons, btnSeatWorks;
+
+    //TOOLBAR
+    TextView txtTitle;
+    Button btnBack, btnNext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main);
+        //TOOLBAR
+        txtTitle = findViewById(R.id.txtTitle);
+        txtTitle.setText(AppConstants.STUDENT_MAIN);
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StudentMainActivity.this,
+                        LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+        btnBack.setText(AppConstants.LOG_OUT);
+        btnNext = findViewById(R.id.btnNext);
+        btnNext.setVisibility(View.INVISIBLE);
+        //GUI
         btnLessons = findViewById(R.id.student_main_btnLessons);
         btnLessons.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -26,8 +50,8 @@ public class StudentMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnSeatworks = findViewById(R.id.student_main_btnSeatworks);
-        btnSeatworks.setOnClickListener(new View.OnClickListener() {
+        btnSeatWorks = findViewById(R.id.student_main_btnSeatworks);
+        btnSeatWorks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StudentMainActivity.this,

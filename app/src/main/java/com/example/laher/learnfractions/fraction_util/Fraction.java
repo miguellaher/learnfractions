@@ -20,13 +20,13 @@ public class Fraction implements Comparable<Fraction>{
         }
     }
     public Fraction(String context){
-        if (context == MIXED){
+        if (context.equals(MIXED)){
             generateMixedFraction(9);
         }
-        if (context == IMPROPER){
+        if (context.equals(IMPROPER)){
             generateImproperFraction(9);
         }
-        if (context == PROPER){
+        if (context.equals(PROPER)){
             generateProperFraction(9);
         }
         this.context = context;
@@ -69,7 +69,7 @@ public class Fraction implements Comparable<Fraction>{
         numerator = (int) (Math.random() * maximum + minimum);
         denominator = (int) (Math.random() * maximum + minimum);
     }
-    public void generateMixedFraction(int maximum){
+    private void generateMixedFraction(int maximum){
         generateRandFraction(9);
         while (numerator>=denominator){
             generateRandFraction(9);
@@ -83,13 +83,13 @@ public class Fraction implements Comparable<Fraction>{
         }
         wholeNum = (int) (Math.random() * 2 + minimum);
     }
-    public void generateImproperFraction(int maximum){
+    private void generateImproperFraction(int maximum){
         generateRandFraction(9);
         while (numerator<=denominator){
             generateRandFraction(9);
         }
     }
-    public void generateProperFraction(int maximum){
+    private void generateProperFraction(int maximum){
         generateRandFraction(9);
         while (numerator>=denominator){
             generateRandFraction(9);
@@ -105,7 +105,7 @@ public class Fraction implements Comparable<Fraction>{
         }
     }
     public void toImproper(){
-        if (this.context == Fraction.MIXED) {
+        if (this.context.equals(Fraction.MIXED)) {
             int newNum = (denominator * wholeNum) + numerator;
             this.wholeNum = 0;
             this.numerator = newNum;
@@ -126,18 +126,17 @@ public class Fraction implements Comparable<Fraction>{
         return this;
     }
     public static Fraction improper(Fraction f){
-        if (f.getContext()==MIXED){
-            Fraction newF = new Fraction((f.getDenominator()*f.getWholeNum())+f.getNumerator(),
+        if (f.getContext().equals(MIXED)){
+            return new Fraction((f.getDenominator()*f.getWholeNum())+f.getNumerator(),
                     f.getDenominator());
-            return newF;
         }
         return null;
     }
     public Double getValue(){
-        Double num = Double.valueOf(numerator);
-        Double denom = Double.valueOf(denominator);
-        if (context == MIXED){
-            Double wholeNum = Double.valueOf(getWholeNum());
+        Double num = (double) numerator;
+        Double denom = (double) denominator;
+        if (context.equals(MIXED)){
+            Double wholeNum = (double) getWholeNum();
             return ((denom*wholeNum)+num)/denom;
         }
         return num/denom;

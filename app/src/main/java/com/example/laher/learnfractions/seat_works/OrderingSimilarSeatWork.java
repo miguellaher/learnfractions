@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.seatworks;
+package com.example.laher.learnfractions.seat_works;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,9 +18,11 @@ import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.util.AppConstants;
 
-import java.util.ArrayList;
 
-public class OrderingDissimilarSeatWork extends SeatWork {
+import java.util.ArrayList;
+import java.util.Objects;
+
+public class OrderingSimilarSeatWork extends SeatWork {
     Context mContext = this;
 
     //TOOLBAR
@@ -40,11 +42,11 @@ public class OrderingDissimilarSeatWork extends SeatWork {
     boolean wrong;
     long startingTime;
 
-    public OrderingDissimilarSeatWork(String topicName, int seatworkNum) {
+    public OrderingSimilarSeatWork(String topicName, int seatworkNum) {
         super(topicName, seatworkNum);
     }
 
-    public OrderingDissimilarSeatWork() {
+    public OrderingSimilarSeatWork() {
     }
 
     @Override
@@ -57,7 +59,7 @@ public class OrderingDissimilarSeatWork extends SeatWork {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OrderingDissimilarSeatWork.this,
+                Intent intent = new Intent(OrderingSimilarSeatWork.this,
                         SeatworkListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -83,6 +85,11 @@ public class OrderingDissimilarSeatWork extends SeatWork {
         clFraction2 = findViewById(R.id.os2_clFraction2);
         clFraction3 = findViewById(R.id.os2_clFraction3);
 
+        int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
+        if (item_size != 0){
+            setItems_size(item_size);
+            updateItemIndicator(txtItemIndicator);
+        }
         startingTime = System.currentTimeMillis();
         go();
     }
@@ -95,7 +102,7 @@ public class OrderingDissimilarSeatWork extends SeatWork {
         fractionQuestions = new ArrayList<>();
         questionNum = 0;
         for (int i = 0; i < getItems_size(); i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_DISSIMILAR);
+            fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_SIMILAR);
             fractionQuestions.add(fractionQuestion);
         }
         setGuiFractions();
@@ -136,12 +143,12 @@ public class OrderingDissimilarSeatWork extends SeatWork {
         if (getCurrentItemNum()>getItems_size()){
             long endingTime = System.currentTimeMillis();
             setTimeSpent(endingTime-startingTime);
-            SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingDissimilarSeatWork.this);
+            SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingSimilarSeatWork.this);
             seatWorkStatDialog.show();
             seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                    Intent intent = new Intent(OrderingDissimilarSeatWork.this,
+                    Intent intent = new Intent(OrderingSimilarSeatWork.this,
                             SeatworkListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -149,7 +156,7 @@ public class OrderingDissimilarSeatWork extends SeatWork {
             });
         } else {
             wrong = false;
-            //updateItemIndicator(txtItemIndicator);
+            updateItemIndicator(txtItemIndicator);
             questionNum++;
             setGuiFractions();
         }

@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.seatworks;
+package com.example.laher.learnfractions.seat_works;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,11 +19,12 @@ import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.util.AppConstants;
 
-
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class OrderingSimilarSeatWork extends SeatWork {
+public class OrderingDissimilarSeatWork extends SeatWork {
     Context mContext = this;
+    private static final String TAG = "ODSW";
 
     //TOOLBAR
     Button btnBack, btnNext;
@@ -41,11 +43,11 @@ public class OrderingSimilarSeatWork extends SeatWork {
     boolean wrong;
     long startingTime;
 
-    public OrderingSimilarSeatWork(String topicName, int seatworkNum) {
+    public OrderingDissimilarSeatWork(String topicName, int seatworkNum) {
         super(topicName, seatworkNum);
     }
 
-    public OrderingSimilarSeatWork() {
+    public OrderingDissimilarSeatWork() {
     }
 
     @Override
@@ -58,7 +60,7 @@ public class OrderingSimilarSeatWork extends SeatWork {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OrderingSimilarSeatWork.this,
+                Intent intent = new Intent(OrderingDissimilarSeatWork.this,
                         SeatworkListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -84,6 +86,13 @@ public class OrderingSimilarSeatWork extends SeatWork {
         clFraction2 = findViewById(R.id.os2_clFraction2);
         clFraction3 = findViewById(R.id.os2_clFraction3);
 
+        int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
+        Log.d(TAG, "item_size received from intent:"+item_size);
+        if (item_size != 0){
+            setItems_size(item_size);
+            Log.d(TAG, "item_size set to:"+getItems_size());
+            updateItemIndicator(txtItemIndicator);
+        }
         startingTime = System.currentTimeMillis();
         go();
     }
@@ -96,7 +105,7 @@ public class OrderingSimilarSeatWork extends SeatWork {
         fractionQuestions = new ArrayList<>();
         questionNum = 0;
         for (int i = 0; i < getItems_size(); i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_SIMILAR);
+            fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_DISSIMILAR);
             fractionQuestions.add(fractionQuestion);
         }
         setGuiFractions();
@@ -137,12 +146,12 @@ public class OrderingSimilarSeatWork extends SeatWork {
         if (getCurrentItemNum()>getItems_size()){
             long endingTime = System.currentTimeMillis();
             setTimeSpent(endingTime-startingTime);
-            SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingSimilarSeatWork.this);
+            SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingDissimilarSeatWork.this);
             seatWorkStatDialog.show();
             seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                    Intent intent = new Intent(OrderingSimilarSeatWork.this,
+                    Intent intent = new Intent(OrderingDissimilarSeatWork.this,
                             SeatworkListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -10,11 +11,15 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.laher.learnfractions.adapters.RecyclerViewAdapter;
 import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.dialog_layout.MessageDialog;
 import com.example.laher.learnfractions.model.Lesson;
+import com.example.laher.learnfractions.student_activities.StudentMainActivity;
+import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
 
 import java.util.ArrayList;
 
@@ -27,6 +32,8 @@ public class TopicsMenuActivity extends AppCompatActivity {
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private ArrayList<Class> mClasses = new ArrayList<>();
 
+    //TOOLBAR
+    TextView txtTitle;
     Button btnBack, btnNext;
 
     @Override
@@ -39,9 +46,11 @@ public class TopicsMenuActivity extends AppCompatActivity {
             messageDialog.show();
         }
 
-        btnBack = (Button) findViewById(R.id.btnBack);
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnBack = findViewById(R.id.btnBack);
+        btnNext = findViewById(R.id.btnNext);
         btnBack.setOnClickListener(new BtnBackListener());
+        txtTitle = findViewById(R.id.txtTitle);
+        txtTitle.setText(AppConstants.LESSONS);
 
         go();
     }
@@ -63,7 +72,7 @@ public class TopicsMenuActivity extends AppCompatActivity {
     }
     private void initRecyclerView(){
         Log.d(TAG, "initRecyclerView: init recyclerview.");
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_topics);
+        RecyclerView recyclerView = findViewById(R.id.recycler_topics);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mNames, mImageUrls, mClasses);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -71,7 +80,14 @@ public class TopicsMenuActivity extends AppCompatActivity {
     public class BtnBackListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            finish();
+            if(Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)){
+                Intent intent = new Intent(TopicsMenuActivity.this,
+                        StudentMainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            } else {
+                finish();
+            }
         }
     }
 

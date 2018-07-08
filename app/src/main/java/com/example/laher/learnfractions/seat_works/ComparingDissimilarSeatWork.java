@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.seatworks;
+package com.example.laher.learnfractions.seat_works;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -12,14 +12,13 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatworkListActivity;
-import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.Fraction;
-import com.example.laher.learnfractions.lessons.comparing_similar_fractions.ComparingSimilarExerciseActivity;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ComparingDissimilarSeatWork extends SeatWork {
     Context mContext = this;
@@ -93,7 +92,11 @@ public class ComparingDissimilarSeatWork extends SeatWork {
         fractionOne = new Fraction();
         fractionTwo = new Fraction();
 
-
+        int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
+        if (item_size != 0){
+            setItems_size(item_size);
+            updateItemIndicator(txtItemIndicator);
+        }
         go();
         startingTime = System.currentTimeMillis();
     }

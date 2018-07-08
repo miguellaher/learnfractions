@@ -1,43 +1,71 @@
 package com.example.laher.learnfractions;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.laher.learnfractions.adapters.SeatWorkListAdapter;
 import com.example.laher.learnfractions.model.SeatWork;
-import com.example.laher.learnfractions.seatworks.AddSubMixedFractionsSeatWork;
-import com.example.laher.learnfractions.seatworks.AddingDissimilarSeatWork;
-import com.example.laher.learnfractions.seatworks.AddingSimilarSeatWork;
-import com.example.laher.learnfractions.seatworks.ComparingDissimilarSeatWork;
-import com.example.laher.learnfractions.seatworks.ComparingSimilarSeatWork;
-import com.example.laher.learnfractions.seatworks.DividingFractionsSeatWork;
-import com.example.laher.learnfractions.seatworks.FractionMeaningSeatWork;
-import com.example.laher.learnfractions.seatworks.MultiplyingFractionsSeatWork;
-import com.example.laher.learnfractions.seatworks.OrderingDissimilarSeatWork;
-import com.example.laher.learnfractions.seatworks.OrderingSimilarSeatWork;
-import com.example.laher.learnfractions.seatworks.SubtractingDissimilarSeatWork;
-import com.example.laher.learnfractions.seatworks.SubtractingSimilarSeatWork;
+import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.model.Teacher;
+import com.example.laher.learnfractions.seat_works.AddSubMixedFractionsSeatWork;
+import com.example.laher.learnfractions.seat_works.AddingDissimilarSeatWork;
+import com.example.laher.learnfractions.seat_works.AddingSimilarSeatWork;
+import com.example.laher.learnfractions.seat_works.ComparingDissimilarSeatWork;
+import com.example.laher.learnfractions.seat_works.ComparingSimilarSeatWork;
+import com.example.laher.learnfractions.seat_works.DividingFractionsSeatWork;
+import com.example.laher.learnfractions.seat_works.FractionMeaningSeatWork;
+import com.example.laher.learnfractions.seat_works.MultiplyDivideMixedFractionsSeatWork;
+import com.example.laher.learnfractions.seat_works.MultiplyingFractionsSeatWork;
+import com.example.laher.learnfractions.seat_works.OrderingDissimilarSeatWork;
+import com.example.laher.learnfractions.seat_works.OrderingSimilarSeatWork;
+import com.example.laher.learnfractions.seat_works.SubtractingDissimilarSeatWork;
+import com.example.laher.learnfractions.seat_works.SubtractingSimilarSeatWork;
+import com.example.laher.learnfractions.service.SeatWorkService;
+import com.example.laher.learnfractions.service.Service;
+import com.example.laher.learnfractions.service.ServiceResponse;
+import com.example.laher.learnfractions.student_activities.StudentMainActivity;
+import com.example.laher.learnfractions.teacher_activities.TeacherMainActivity;
+import com.example.laher.learnfractions.teacher_activities.dialogs.SeatWorkUpdateDialog;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class SeatworkListActivity extends AppCompatActivity {
-    //private static final String TAG = "SW_LIST";
+    private static final String TAG = "SW_LIST";
     Context mContext = this;
     ListView seatWorkListView;
     ArrayList<SeatWork> seatWorks;
+    SeatWorkListAdapter seatworkListAdapter;
+
+    //TOOLBAR
+    TextView txtTitle;
+    Button btnBack, btnNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seatwork_list);
         seatWorkListView = findViewById(R.id.seatwork_list);
+        //TOOLBAR
+        txtTitle = findViewById(R.id.txtTitle);
+        txtTitle.setText(AppConstants.SEAT_WORKS);
+        btnBack = findViewById(R.id.btnBack);
+        btnNext = findViewById(R.id.btnNext);
+        btnNext.setVisibility(View.INVISIBLE);
 
+        //ACTIVITY
         FractionMeaningSeatWork fractionMeaningSeatWork = new FractionMeaningSeatWork(AppConstants.FRACTION_MEANING, 1);
         ComparingSimilarSeatWork comparingSimilarSeatWork = new ComparingSimilarSeatWork(AppConstants.COMPARING_SIMILAR_FRACTIONS, 1);
         ComparingDissimilarSeatWork comparingDissimilarSeatWork = new ComparingDissimilarSeatWork(AppConstants.COMPARING_DISSIMILAR_FRACTIONS, 1);
@@ -50,6 +78,8 @@ public class SeatworkListActivity extends AppCompatActivity {
         MultiplyingFractionsSeatWork multiplyingFractionsSeatWork = new MultiplyingFractionsSeatWork(AppConstants.MULTIPLYING_FRACTIONS, 1);
         DividingFractionsSeatWork dividingFractionsSeatWork = new DividingFractionsSeatWork(AppConstants.DIVIDING_FRACTIONS,1);
         AddSubMixedFractionsSeatWork addSubMixedFractionsSeatWork = new AddSubMixedFractionsSeatWork(AppConstants.ADDING_SUBTRACTING_MIXED, 1);
+        MultiplyDivideMixedFractionsSeatWork multiplyDivideMixedFractionsSeatWork = new MultiplyDivideMixedFractionsSeatWork(AppConstants.MULTIPLYING_DIVIDING_MIXED,1);
+
 
         seatWorks = new ArrayList<>();
         seatWorks.add(fractionMeaningSeatWork);
@@ -64,10 +94,149 @@ public class SeatworkListActivity extends AppCompatActivity {
         seatWorks.add(multiplyingFractionsSeatWork);
         seatWorks.add(dividingFractionsSeatWork);
         seatWorks.add(addSubMixedFractionsSeatWork);
+        seatWorks.add(multiplyDivideMixedFractionsSeatWork);
 
+        if (Storage.load(mContext,Storage.USER_TYPE).equals(AppConstants.TEACHER)){
+            teacherMode();
+        } else if (Storage.load(mContext,Storage.USER_TYPE).equals(AppConstants.STUDENT)){
+            studentMode();
+        } else {
+            baseMode();
+        }
+    }
 
-        SeatWorkListAdapter seatworkListAdapter = new SeatWorkListAdapter(mContext, R.layout.layout_user_item, seatWorks);
+    private void studentMode(){
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SeatworkListActivity.this,
+                        StudentMainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+            }
+        });
+        final Student student = new Student();
+        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+        Service service = new Service("Loading seat works...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try {
+                    int item_count = Integer.valueOf(response.optString("item_count"));
+                    ArrayList<SeatWork> seatWorks2 = new ArrayList<>();
+                    for (int i = 1; i <= item_count; i++) {
+                        SeatWork seatWork = new SeatWork();
+                        seatWork.setTopicName(String.valueOf(response.optString(i + "topic_name")));
+                        Log.d(TAG, seatWork.getTopicName()+":received.");
+                        seatWork.setSeatWorkNum(Integer.valueOf(String.valueOf(response.optString(i + "sw_num"))));
+                        seatWork.setItems_size(Integer.valueOf(String.valueOf(response.optString(i + "item_size"))));
+                        seatWorks2.add(seatWork);
+                    }
+                    for (SeatWork seatWork2 : seatWorks2){
+                        int i = 0;
+                        for (SeatWork seatWork1 : seatWorks){
+                            if (seatWork2.getTopicName().equals(seatWork1.getTopicName())){
+                                if(seatWork2.getSeatWorkNum()==seatWork1.getSeatWorkNum()){
+                                    seatWorks.get(i).setItems_size(seatWork2.getItems_size());
+                                    Log.d(TAG, seatWorks.get(i).getTopicName()+":updated");
+                                }
+                            }
+                            i++;
+                        }
+                    }
+                    seatworkListAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        SeatWorkService.getUpdates(student.getTeacher_code(), service);
+
+        seatworkListAdapter = new SeatWorkListAdapter(mContext, R.layout.layout_user_item, seatWorks);
         seatWorkListView.setAdapter(seatworkListAdapter);
+
+        seatWorkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(mContext, seatWorks.get(position).getClass());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("item_size", seatWorks.get(position).getItems_size());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void teacherMode(){
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SeatworkListActivity.this,
+                        TeacherMainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+        final Teacher teacher = new Teacher();
+        teacher.setId(Storage.load(mContext,Storage.TEACHER_ID));
+        teacher.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
+        Service service = new Service("Loading seat works...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try {
+                    int item_count = Integer.valueOf(response.optString("item_count"));
+                    ArrayList<SeatWork> seatWorks2 = new ArrayList<>();
+                    for (int i = 1; i <= item_count; i++) {
+                        SeatWork seatWork = new SeatWork();
+                        seatWork.setTopicName(String.valueOf(response.optString(i + "topic_name")));
+                        Log.d(TAG, seatWork.getTopicName()+":received.");
+                        seatWork.setSeatWorkNum(Integer.valueOf(String.valueOf(response.optString(i + "sw_num"))));
+                        seatWork.setItems_size(Integer.valueOf(String.valueOf(response.optString(i + "item_size"))));
+                        seatWorks2.add(seatWork);
+                    }
+                    for (SeatWork seatWork2 : seatWorks2){
+                        int i = 0;
+                        for (SeatWork seatWork1 : seatWorks){
+                            if (seatWork2.getTopicName().equals(seatWork1.getTopicName())){
+                                if(seatWork2.getSeatWorkNum()==seatWork1.getSeatWorkNum()){
+                                    seatWorks.get(i).setItems_size(seatWork2.getItems_size());
+                                    Log.d(TAG, seatWorks.get(i).getTopicName()+":updated");
+                                }
+                            }
+                            i++;
+                        }
+                    }
+                    seatworkListAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        SeatWorkService.getUpdates(teacher.getTeacher_code(), service);
+
+        seatworkListAdapter = new SeatWorkListAdapter(mContext, R.layout.layout_user_item, seatWorks, AppConstants.TEACHER);
+        seatWorkListView.setAdapter(seatworkListAdapter);
+
+        seatWorkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SeatWorkUpdateDialog seatWorkUpdateDialog = new SeatWorkUpdateDialog(mContext, seatWorks.get(position), teacher);
+                seatWorkUpdateDialog.show();
+                seatWorkUpdateDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        seatworkListAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+    }
+
+    private void baseMode(){
+        Log.d(TAG, "User type: " + Storage.load(mContext,Storage.USER_TYPE));
+
+        seatworkListAdapter = new SeatWorkListAdapter(mContext, R.layout.layout_user_item, seatWorks);
+        seatWorkListView.setAdapter(seatworkListAdapter);
+
         seatWorkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

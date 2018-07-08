@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.seatworks;
+package com.example.laher.learnfractions.seat_works;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,8 +17,9 @@ import com.example.laher.learnfractions.model.SeatWork;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
-public class SubtractingDissimilarSeatWork extends SeatWork {
+public class SubtractingSimilarSeatWork extends SeatWork {
     Context mContext = this;
 
     //TOOLBAR
@@ -26,7 +27,7 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
     TextView txtTitle;
     public final String TITLE = "Subtracting Fractions";
     //FRACTION EQUATION GUI
-    TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtSign, txtIndicator, txtInstruction;
+    TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtSign, txtItemIndicator, txtInstruction;
     EditText inputNum, inputDenom;
     Button btnCheck;
     Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
@@ -37,11 +38,11 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
     String correctAns;
     long startingTime;
 
-    public SubtractingDissimilarSeatWork(String topicName, int seatworkNum) {
+    public SubtractingSimilarSeatWork(String topicName, int seatworkNum) {
         super(topicName, seatworkNum);
     }
 
-    public SubtractingDissimilarSeatWork() {
+    public SubtractingSimilarSeatWork() {
     }
 
     @Override
@@ -54,7 +55,7 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SubtractingDissimilarSeatWork.this,
+                Intent intent = new Intent(SubtractingSimilarSeatWork.this,
                         SeatworkListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -72,7 +73,7 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
         txtDenom2 = findViewById(R.id.fe_txtDenom2);
         txtSign = findViewById(R.id.fe_txtSign);
         txtSign.setText("-");
-        txtIndicator = findViewById(R.id.fe_txtScore);
+        txtItemIndicator = findViewById(R.id.fe_txtScore);
         txtInstruction = findViewById(R.id.fe_txtInstruction);
         inputNum = findViewById(R.id.fe_inputNum);
         inputDenom = findViewById(R.id.fe_inputDenom);
@@ -87,6 +88,11 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
         btnChoice3.setOnClickListener(new BtnChoiceListener());
         btnChoice4.setOnClickListener(new BtnChoiceListener());
 
+        int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
+        if (item_size != 0){
+            setItems_size(item_size);
+            updateItemIndicator(txtItemIndicator);
+        }
         disableInputFraction();
         startingTime = System.currentTimeMillis();
         go();
@@ -101,11 +107,11 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
         questionNum++;
         setGuiFractions();
         setBtnChoices();
-        updateItemIndicator(txtIndicator);
+        updateItemIndicator(txtItemIndicator);
         clearInputFraction();
     }
     public void startUp(){
-        updateItemIndicator(txtIndicator);
+        updateItemIndicator(txtItemIndicator);
         clearInputFraction();
     }
     public void clearInputFraction(){
@@ -117,7 +123,7 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
         questionNum = 0;
         fractionQuestions = new ArrayList<>();
         for(int i = 0; i < getItems_size(); i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.SUBTRACTING_DISSIMILAR);
+            fractionQuestion = new FractionQuestion(FractionQuestion.SUBTRACTING_SIMILAR);
             fractionQuestions.add(fractionQuestion);
         }
     }
@@ -192,12 +198,12 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
                 long endingTime = System.currentTimeMillis();
                 enableBtnChoices(false);
                 setTimeSpent(endingTime - startingTime);
-                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, SubtractingDissimilarSeatWork.this);
+                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, SubtractingSimilarSeatWork.this);
                 seatWorkStatDialog.show();
                 seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        Intent intent = new Intent(SubtractingDissimilarSeatWork.this,
+                        Intent intent = new Intent(SubtractingSimilarSeatWork.this,
                                 SeatworkListActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
