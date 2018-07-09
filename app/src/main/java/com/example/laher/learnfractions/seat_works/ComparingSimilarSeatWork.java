@@ -4,26 +4,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.SeatworkListActivity;
+import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.model.Student;
-import com.example.laher.learnfractions.service.SeatWorkStatService;
-import com.example.laher.learnfractions.service.Service;
-import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
-import com.example.laher.learnfractions.util.Util;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -67,7 +60,7 @@ public class ComparingSimilarSeatWork extends SeatWork {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ComparingSimilarSeatWork.this,
-                        SeatworkListActivity.class);
+                        SeatWorkListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
@@ -157,7 +150,7 @@ public class ComparingSimilarSeatWork extends SeatWork {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         Intent intent = new Intent(ComparingSimilarSeatWork.this,
-                                SeatworkListActivity.class);
+                                SeatWorkListActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }

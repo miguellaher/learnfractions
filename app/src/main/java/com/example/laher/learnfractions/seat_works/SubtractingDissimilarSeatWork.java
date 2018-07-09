@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.SeatworkListActivity;
+import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.model.SeatWork;
@@ -61,7 +61,7 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SubtractingDissimilarSeatWork.this,
-                        SeatworkListActivity.class);
+                        SeatWorkListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
@@ -212,7 +212,7 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         Intent intent = new Intent(SubtractingDissimilarSeatWork.this,
-                                SeatworkListActivity.class);
+                                SeatWorkListActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }

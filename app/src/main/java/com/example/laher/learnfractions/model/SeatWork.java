@@ -13,17 +13,28 @@ public class SeatWork extends AppCompatActivity {
     private int wrong;
     private long timeSpent;
     private int currentItemNum;
+    private boolean answered;
 
     public SeatWork(String topicName, int seatWorkNum) {
         super();
         this.topicName = topicName;
         this.seatWorkNum = seatWorkNum;
         setItems_size(AppConstants.DEFAULT_ITEMS_NUM);
+        setAnswered(false);
     }
 
     public SeatWork() {
         setCurrentItemNum(AppConstants.STARTING_NUM);
         setItems_size(AppConstants.DEFAULT_ITEMS_NUM);
+        setAnswered(false);
+    }
+
+    public boolean isAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
     }
 
     public int getSeatWorkNum() {

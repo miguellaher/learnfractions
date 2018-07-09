@@ -30,6 +30,7 @@ import com.example.laher.learnfractions.seat_works.OrderingSimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.SubtractingDissimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.SubtractingSimilarSeatWork;
 import com.example.laher.learnfractions.service.SeatWorkService;
+import com.example.laher.learnfractions.service.SeatWorkStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
@@ -42,7 +43,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SeatworkListActivity extends AppCompatActivity {
+public class SeatWorkListActivity extends AppCompatActivity {
     private static final String TAG = "SW_LIST";
     Context mContext = this;
     ListView seatWorkListView;
@@ -109,7 +110,7 @@ public class SeatworkListActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SeatworkListActivity.this,
+                Intent intent = new Intent(SeatWorkListActivity.this,
                         StudentMainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -117,6 +118,7 @@ public class SeatworkListActivity extends AppCompatActivity {
             }
         });
         final Student student = new Student();
+        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
         student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
         Service service = new Service("Loading seat works...", mContext, new ServiceResponse() {
             @Override
@@ -125,12 +127,12 @@ public class SeatworkListActivity extends AppCompatActivity {
                     int item_count = Integer.valueOf(response.optString("item_count"));
                     ArrayList<SeatWork> seatWorks2 = new ArrayList<>();
                     for (int i = 1; i <= item_count; i++) {
-                        SeatWork seatWork = new SeatWork();
-                        seatWork.setTopicName(String.valueOf(response.optString(i + "topic_name")));
-                        Log.d(TAG, seatWork.getTopicName()+":received.");
-                        seatWork.setSeatWorkNum(Integer.valueOf(String.valueOf(response.optString(i + "sw_num"))));
-                        seatWork.setItems_size(Integer.valueOf(String.valueOf(response.optString(i + "item_size"))));
-                        seatWorks2.add(seatWork);
+                        SeatWork seatWork2 = new SeatWork();
+                        seatWork2.setTopicName(String.valueOf(response.optString(i + "topic_name")));
+                        Log.d(TAG, seatWork2.getTopicName()+":received.");
+                        seatWork2.setSeatWorkNum(Integer.valueOf(String.valueOf(response.optString(i + "sw_num"))));
+                        seatWork2.setItems_size(Integer.valueOf(String.valueOf(response.optString(i + "item_size"))));
+                        seatWorks2.add(seatWork2);
                     }
                     for (SeatWork seatWork2 : seatWorks2){
                         int i = 0;
@@ -151,6 +153,46 @@ public class SeatworkListActivity extends AppCompatActivity {
             }
         });
         SeatWorkService.getUpdates(student.getTeacher_code(), service);
+        Service getStatsService = new Service("Getting stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try {
+                    int item_count = Integer.valueOf(response.optString("item_count"));
+                    ArrayList<SeatWork> seatWorks2 = new ArrayList<>();
+                    for (int i = 1; i <= item_count; i++) {
+                        SeatWork seatWork2 = new SeatWork();
+                        seatWork2.setTopicName(String.valueOf(response.optString(i + "topic_name")));
+                        Log.d(TAG, seatWork2.getTopicName()+": stat received.");
+                        seatWork2.setSeatWorkNum(Integer.valueOf(String.valueOf(response.optString(i + "sw_num"))));
+                        seatWork2.setCorrect(Integer.valueOf(String.valueOf(response.optString(i + "score"))));
+                        Long timeSpent = Long.valueOf(String.valueOf(response.optString(i + "time_spent"))) * 1000;
+                        seatWork2.setTimeSpent(timeSpent);
+                        seatWork2.setItems_size(Integer.valueOf(String.valueOf(response.optString(i + "items_size"))));
+                        seatWorks2.add(seatWork2);
+                    }
+                    for(SeatWork seatWork2 : seatWorks2){
+                        int i = 0;
+                        for (SeatWork seatWork1 : seatWorks){
+                            if (seatWork2.getTopicName().equals(seatWork1.getTopicName())){
+                                if(seatWork2.getSeatWorkNum()==seatWork1.getSeatWorkNum()){
+                                    if(seatWork2.getItems_size()==seatWork1.getItems_size()){
+                                        seatWorks.get(i).setAnswered(true);
+                                        seatWorks.get(i).setCorrect(seatWork2.getCorrect());
+                                        seatWorks.get(i).setTimeSpent(seatWork2.getTimeSpent());
+                                        Log.d(TAG, seatWorks.get(i).getTopicName()+": stat updated");
+                                    }
+                                }
+                            }
+                            i++;
+                        }
+                    }
+                    seatworkListAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        SeatWorkStatService.getStats(student,getStatsService);
 
         seatworkListAdapter = new SeatWorkListAdapter(mContext, R.layout.layout_user_item, seatWorks);
         seatWorkListView.setAdapter(seatworkListAdapter);
@@ -170,7 +212,7 @@ public class SeatworkListActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SeatworkListActivity.this,
+                Intent intent = new Intent(SeatWorkListActivity.this,
                         TeacherMainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

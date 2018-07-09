@@ -175,7 +175,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".student_activities.StudentMainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".SeatworkListActivity"
+        <activity android:name=".SeatWorkListActivity"
             android:screenOrientation="portrait" >
         </activity>
 

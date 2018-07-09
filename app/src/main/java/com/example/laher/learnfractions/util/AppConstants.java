@@ -1,5 +1,7 @@
 package com.example.laher.learnfractions.util;
 
+import android.graphics.Color;
+
 public class AppConstants {
     public static final String METHOD_GET = "METHOD_GET";
     public static final String METHOD_POST = "METHOD_POST";
@@ -50,6 +52,7 @@ public class AppConstants {
     public static final String FINISHED_EXERCISE = "You have finished the exercise. Click next and proceed.";
     public static final String FINISHED_LESSON = "Congratulations, you have finished the lesson.";
     public static final String INVALID_INPUT = "Invalid input.";
+    public static final int BG_DEFAULT_NOT_FINISHED = Color.rgb(169,169,169);
 
 
     public static final String FAILED_CONSECUTIVE(int error){

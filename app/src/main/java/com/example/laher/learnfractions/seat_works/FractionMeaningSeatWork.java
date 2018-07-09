@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.SeatworkListActivity;
+import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.model.Student;
@@ -177,7 +177,7 @@ public class FractionMeaningSeatWork extends SeatWork {
     }
     public void goBack(){
         Intent intent = new Intent(FractionMeaningSeatWork.this,
-                SeatworkListActivity.class);
+                SeatWorkListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

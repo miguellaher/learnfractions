@@ -32,4 +32,13 @@ public class SeatWorkStatService {
         Log.d(TAG, "time_spent: " + time_spent_seconds);
         service.execute();
     }
+    public static void getStats(Student student, Service service){
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("teacher_code", student.getTeacher_code());
+        requestParams.put("student_id", student.getId());
+        Log.d(TAG, "getStats(): teacher_code: " + student.getTeacher_code());
+        Log.d(TAG, "getStats(): student_id: " + student.getId());
+        service.get("http://jabahan.com/learnfractions/sw_stat/getStats.php", requestParams);
+        service.execute();
+    }
 }

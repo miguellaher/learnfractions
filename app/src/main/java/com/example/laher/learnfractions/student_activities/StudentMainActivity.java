@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.SeatworkListActivity;
+import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 
@@ -55,7 +55,7 @@ public class StudentMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StudentMainActivity.this,
-                        SeatworkListActivity.class);
+                        SeatWorkListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }

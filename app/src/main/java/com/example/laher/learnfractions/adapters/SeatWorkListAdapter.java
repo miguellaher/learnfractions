@@ -58,8 +58,23 @@ public class SeatWorkListAdapter extends ArrayAdapter<SeatWork> {
                 textView3.setText(String.valueOf(getItem(position).getItems_size()));
             }
         } else {
-            textView2.setText("Score: " + getItem(position).getCorrect() + " / " + getItem(position).getItems_size());
-            textView3.setText("Time spent: " + minutes + "m" + seconds + "s");
+            textView2.setText("Score: ");
+            if(getItem(position).isAnswered()) {
+                textView2.setText(textView2.getText().toString() + getItem(position).getCorrect() + " / " + getItem(position).getItems_size());
+            } else {
+                textView2.setText(textView2.getText().toString() + "__ / " + getItem(position).getItems_size());
+                convertView.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
+            }
+            textView3.setText("Time spent: ");
+            if (minutes>0){
+                textView3.setText(textView3.getText().toString() + minutes + "m");
+            }
+            if (seconds>0) {
+                textView3.setText(textView3.getText().toString() + seconds + "s");
+            }
+            if (minutes<1&&seconds<1){
+                textView3.setText(textView3.getText().toString() + "__m__s");
+            }
         }
 
 
