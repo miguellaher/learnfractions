@@ -15,7 +15,9 @@ import com.example.laher.learnfractions.SeatworkListActivity;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -50,7 +52,8 @@ public class ComparingDissimilarSeatWork extends SeatWork {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comparing_dissimilar_exercise2);
-
+        setTopicName(AppConstants.COMPARING_DISSIMILAR_FRACTIONS);
+        setSeatWorkNum(1);
 
         //TOOLBAR
         btnBack = findViewById(R.id.btnBack);
@@ -173,7 +176,10 @@ public class ComparingDissimilarSeatWork extends SeatWork {
             long endingTime = System.currentTimeMillis();
             enableBtnCompareSign(false);
             setTimeSpent(endingTime-startingTime);
-            SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, ComparingDissimilarSeatWork.this);
+            Student student = new Student();
+            student.setId(Storage.load(mContext,Storage.STUDENT_ID));
+            student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
+            SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, ComparingDissimilarSeatWork.this, student);
             seatWorkStatDialog.show();
             seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override

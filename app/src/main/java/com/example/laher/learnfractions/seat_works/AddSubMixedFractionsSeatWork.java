@@ -14,6 +14,9 @@ import com.example.laher.learnfractions.SeatworkListActivity;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,6 +51,8 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mixed_fraction_equation);
+        setTopicName(AppConstants.ADDING_SUBTRACTING_MIXED);
+        setSeatWorkNum(1);
 
         //TOOLBAR
         btnBack = findViewById(R.id.btnBack);
@@ -211,7 +216,10 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
                 long endingTime = System.currentTimeMillis();
                 enableBtnChoices(false);
                 setTimeSpent(endingTime - startingTime);
-                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, AddSubMixedFractionsSeatWork.this);
+                Student student = new Student();
+                student.setId(Storage.load(mContext,Storage.STUDENT_ID));
+                student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
+                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, AddSubMixedFractionsSeatWork.this, student);
                 seatWorkStatDialog.show();
                 seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override

@@ -17,6 +17,9 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatworkListActivity;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,14 +54,17 @@ public class FractionMeaningSeatWork extends SeatWork {
         super();
     }
 
-    public FractionMeaningSeatWork(String topicName, int seatworkNum) {
-        super(topicName, seatworkNum);
+    public FractionMeaningSeatWork(String topicName, int seatWorkNum) {
+        super(topicName, seatWorkNum);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_meaning_exercise2);
+        setTopicName(AppConstants.FRACTION_MEANING);
+        setSeatWorkNum(1);
+
         //TOOLBAR
         btnBack = findViewById(R.id.btnBack);
         btnNext = findViewById(R.id.btnNext);
@@ -203,7 +209,10 @@ public class FractionMeaningSeatWork extends SeatWork {
                         btnChoice3.setEnabled(false);
                         btnChoice4.setEnabled(false);
                         setTimeSpent(endingTime - startingTime);
-                        SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, FractionMeaningSeatWork.this);
+                        Student student = new Student();
+                        student.setId(Storage.load(mContext,Storage.STUDENT_ID));
+                        student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
+                        SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, FractionMeaningSeatWork.this, student);
                         seatWorkStatDialog.show();
                         seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override

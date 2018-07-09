@@ -16,7 +16,9 @@ import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
 
 
 import java.util.ArrayList;
@@ -53,6 +55,8 @@ public class OrderingSimilarSeatWork extends SeatWork {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ordering_similar_exercise2);
+        setTopicName(AppConstants.ORDERING_SIMILAR);
+        setSeatWorkNum(1);
 
         //TOOLBAR
         btnBack = findViewById(R.id.btnBack);
@@ -143,7 +147,10 @@ public class OrderingSimilarSeatWork extends SeatWork {
         if (getCurrentItemNum()>getItems_size()){
             long endingTime = System.currentTimeMillis();
             setTimeSpent(endingTime-startingTime);
-            SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingSimilarSeatWork.this);
+            Student student = new Student();
+            student.setId(Storage.load(mContext,Storage.STUDENT_ID));
+            student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
+            SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingSimilarSeatWork.this, student);
             seatWorkStatDialog.show();
             seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override

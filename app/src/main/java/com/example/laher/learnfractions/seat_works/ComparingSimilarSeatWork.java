@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,12 +15,21 @@ import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.service.SeatWorkStatService;
+import com.example.laher.learnfractions.service.Service;
+import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Util;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class ComparingSimilarSeatWork extends SeatWork {
+    public static final String TAG = "CS_SW1";
     Context mContext = this;
 
     //TOOLBAR
@@ -37,8 +47,8 @@ public class ComparingSimilarSeatWork extends SeatWork {
     String strAnswer;
     long startingTime;
 
-    public ComparingSimilarSeatWork(String topicName, int seatworkNum) {
-        super(topicName, seatworkNum);
+    public ComparingSimilarSeatWork(String topicName, int seatWorkNum) {
+        super(topicName, seatWorkNum);
     }
 
     public ComparingSimilarSeatWork() {
@@ -48,6 +58,8 @@ public class ComparingSimilarSeatWork extends SeatWork {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comparing_similar_exercise2);
+        setTopicName(AppConstants.COMPARING_SIMILAR_FRACTIONS);
+        setSeatWorkNum(1);
 
         //TOOLBAR
         btnBack = findViewById(R.id.btnBack);
@@ -136,7 +148,10 @@ public class ComparingSimilarSeatWork extends SeatWork {
                 enableButtons(false);
                 long endingTime = System.currentTimeMillis();
                 setTimeSpent(endingTime-startingTime);
-                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, ComparingSimilarSeatWork.this);
+                Student student = new Student();
+                student.setId(Storage.load(mContext,Storage.STUDENT_ID));
+                student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
+                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, ComparingSimilarSeatWork.this, student);
                 seatWorkStatDialog.show();
                 seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override

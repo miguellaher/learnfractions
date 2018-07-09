@@ -104,6 +104,9 @@ public class Storage {
         if (identifier.equals(TEACHER_ID)){
             out = getStringValue(tokens, TEACHER_ID);
         }
+        if (identifier.equals(STUDENT_ID)){
+            out = getStringValue(tokens, STUDENT_ID);
+        }
         if (identifier.equals(TEACHER_CODE)){
             out = getStringValue(tokens, TEACHER_CODE);
         }
