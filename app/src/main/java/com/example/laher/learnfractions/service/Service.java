@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Util;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
@@ -14,7 +13,6 @@ import com.loopj.android.http.SyncHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 
