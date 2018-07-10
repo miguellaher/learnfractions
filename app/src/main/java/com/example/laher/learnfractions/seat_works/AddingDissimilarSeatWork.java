@@ -15,6 +15,7 @@ import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class AddingDissimilarSeatWork extends SeatWork {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_equation);
+        setTopicName(AppConstants.ADDING_DISSIMILAR);
+        setSeatWorkNum(1);
 
         //TOOLBAR
         btnBack = findViewById(R.id.btnBack);

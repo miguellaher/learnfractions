@@ -23,6 +23,7 @@ public class AppConstants {
     public static final String EXERCISES = "Exercises";
     public static final String LESSONS = "Lessons";
     public static final String STUDENT_MAIN = "Student Main";
+    public static final String SW_PROGRESSES = "Seat Work Data";
 
 
     //LESSONS
@@ -52,7 +53,6 @@ public class AppConstants {
     public static final String FINISHED_EXERCISE = "You have finished the exercise. Click next and proceed.";
     public static final String FINISHED_LESSON = "Congratulations, you have finished the lesson.";
     public static final String INVALID_INPUT = "Invalid input.";
-    public static final int BG_DEFAULT_NOT_FINISHED = Color.rgb(169,169,169);
 
 
     public static final String FAILED_CONSECUTIVE(int error){
@@ -82,4 +82,8 @@ public class AppConstants {
 
     //INSTRUCTIONS
     public static final String I_COMPARE = "Compare the two fractions";
+
+
+    //COLORS
+    public static final int BG_DEFAULT_NOT_FINISHED = Color.rgb(169,169,169);
 }

@@ -33,8 +33,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".TopicsMenuActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".lessons.non_visual_fraction.NonVisualVideoActivity"
             android:screenOrientation="portrait" />
@@ -173,42 +172,55 @@
         <activity
             android:name=".teacher_activities.ExercisesListActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".student_activities.StudentMainActivity"
+        <activity
+            android:name=".student_activities.StudentMainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".SeatWorkListActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-
-        <activity android:name=".seat_works.FractionMeaningSeatWork"
+        <activity
+            android:name=".SeatWorkListActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".seat_works.FractionMeaningSeatWork"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".model.SeatWork"
+        <activity
+            android:name=".model.SeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.ComparingSimilarSeatWork"
+        <activity
+            android:name=".seat_works.ComparingSimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.ComparingDissimilarSeatWork"
+        <activity
+            android:name=".seat_works.ComparingDissimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.OrderingSimilarSeatWork"
+        <activity
+            android:name=".seat_works.OrderingSimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.OrderingDissimilarSeatWork"
+        <activity
+            android:name=".seat_works.OrderingDissimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.AddingSimilarSeatWork"
+        <activity
+            android:name=".seat_works.AddingSimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.AddingDissimilarSeatWork"
+        <activity
+            android:name=".seat_works.AddingDissimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.SubtractingSimilarSeatWork"
+        <activity
+            android:name=".seat_works.SubtractingSimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.SubtractingDissimilarSeatWork"
+        <activity
+            android:name=".seat_works.SubtractingDissimilarSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.MultiplyingFractionsSeatWork"
+        <activity
+            android:name=".seat_works.MultiplyingFractionsSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.DividingFractionsSeatWork"
+        <activity
+            android:name=".seat_works.DividingFractionsSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.AddSubMixedFractionsSeatWork"
+        <activity
+            android:name=".seat_works.AddSubMixedFractionsSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".seat_works.MultiplyDivideMixedFractionsSeatWork"
+        <activity
+            android:name=".seat_works.MultiplyDivideMixedFractionsSeatWork"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".teacher_activities.StudentSWProgressActivity"></activity>
     </application>
 
 </manifest>

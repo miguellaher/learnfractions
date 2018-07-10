@@ -41,4 +41,10 @@ public class SeatWorkStatService {
         service.get("http://jabahan.com/learnfractions/sw_stat/getStats.php", requestParams);
         service.execute();
     }
+    public static void getAllStats(String teacher_code, Service service){
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("teacher_code", teacher_code);
+        service.get("http://jabahan.com/learnfractions/sw_stat/getAllStats.php", requestParams);
+        service.execute();
+    }
 }

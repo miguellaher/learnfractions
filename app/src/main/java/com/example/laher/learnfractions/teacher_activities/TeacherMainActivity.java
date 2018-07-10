@@ -13,7 +13,7 @@ import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 
 public class TeacherMainActivity extends AppCompatActivity {
-    Button btnManageExercises, btnManageSeatWorks;
+    Button btnManageExercises, btnManageSeatWorks, btnCheckSWProgress;
     Button btnBack, btnNext;
     TextView txtTitle;
     @Override
@@ -53,6 +53,16 @@ public class TeacherMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(TeacherMainActivity.this,
                         SeatWorkListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+        btnCheckSWProgress = findViewById(R.id.teacher_main_btnCheckSWProgress);
+        btnCheckSWProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TeacherMainActivity.this,
+                        StudentSWProgressActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
