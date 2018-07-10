@@ -14,8 +14,10 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExerciseService;
+import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -31,6 +33,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     private static final String TAG = "FM_E1";
     Context mContext = this;
     Exercise exercise;
+    ExerciseStat mExerciseStat;
     //GUI
     ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
     Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
@@ -50,6 +53,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     int maxErrors;
     boolean correctsShouldBeConsecutive;
     boolean errorsShouldBeConsecutive;
+    long startingTime, endingTime;
 
     private final int EXERCISE_NUM = 1;
     final Handler handler = new Handler();
@@ -90,9 +94,11 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         error = 0;
 
         exercise = LessonArchive.getLesson(AppConstants.FRACTION_MEANING).getExercises().get(EXERCISE_NUM - 1);
+        mExerciseStat = (ExerciseStat) exercise;
         setAttributes(exercise);
         checkUpdate();
 
+        startingTime = System.currentTimeMillis();
         go();
     }
 
@@ -212,6 +218,32 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         btnChoice3.setEnabled(false);
         btnChoice4.setEnabled(false);
         btnNext.setEnabled(true);
+        setFinalAttributes();
+    }
+
+    private void setFinalAttributes(){
+        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try{
+                    Log.d(TAG, "post execute");
+                    Log.d(TAG, "message: " + response.optString("message"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mExerciseStat.setDone(true);
+        mExerciseStat.setTime_spent(endingTime-startingTime);
+        Student student = new Student();
+        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
+        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
+        mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done:" + mExerciseStat.isDone() +
+        "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
+        mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors" +
+        mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
+        ExerciseStatService.postStats(student,mExerciseStat,service);
     }
 
     public void showScore(){
@@ -237,6 +269,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
                 btnChoice3.setEnabled(false);
                 btnChoice4.setEnabled(false);
                 if (correct >= requiredCorrects) {
+                    endingTime = System.currentTimeMillis();
                     txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
                     finishExercise();
                 } else {
@@ -266,6 +299,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
                     correct = 0;
                 }
                 error++;
+                mExerciseStat.incrementError();
                 txtInstruction.setText(AppConstants.ERROR);
                 showScore();
                 btnChoice1.setEnabled(false);

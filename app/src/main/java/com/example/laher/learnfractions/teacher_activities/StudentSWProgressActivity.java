@@ -14,9 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.model.StatAverage;
 import com.example.laher.learnfractions.model.Student_SW_Progress;
 import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.model.Teacher;
+import com.example.laher.learnfractions.service.SeatWorkService;
 import com.example.laher.learnfractions.service.SeatWorkStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
@@ -29,6 +32,8 @@ import com.example.laher.learnfractions.util.Util;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
 
 public class StudentSWProgressActivity extends AppCompatActivity {
     Context mContext = this;
@@ -39,11 +44,12 @@ public class StudentSWProgressActivity extends AppCompatActivity {
     ListView studentSWProgressListView;
     ArrayList<StatAverage> mStatAverages;
     ArrayList<Student_SW_Progress> mStudent_sw_progresses;
-    Animation animation;
+    ArrayList<SeatWork> mSeatWorks;
 
     //TOOLBAR
     TextView txtTitle;
     Button btnBack, btnNext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,10 +74,9 @@ public class StudentSWProgressActivity extends AppCompatActivity {
         //ACTIVITY
         studentSWProgressListView = findViewById(R.id.student_swprogress_listSeatWork);
         mStatAverages = new ArrayList<>();
-        animation = AnimationUtils.loadAnimation(mContext,R.anim.fade_in);
 
         Log.d(TAG, ":pre service.");
-        getAllStudentStats();
+        getLatestSeatWorks();
     }
 
     private void getAllStudentStats(){
@@ -104,16 +109,28 @@ public class StudentSWProgressActivity extends AppCompatActivity {
                         for (StatAverage statAverage : mStatAverages){
                             if (student_sw_progress.getTopicName().equals(statAverage.getTopicName())){
                                 if (student_sw_progress.getSeatWorkNum()==statAverage.getSeatWorkNum()){
-                                    mStatAverages.get(i).addStats(student_sw_progress);
-                                    contains = true;
+                                    if (checkSWProgIfLatest(student_sw_progress)) {
+                                        mStatAverages.get(i).addStats(student_sw_progress);
+                                        contains = true;
+                                    }
                                 }
                             }
                             i++;
                         }
                         if (!contains){
-                            StatAverage statAverage = new StatAverage(student_sw_progress.getTopicName(), student_sw_progress.getSeatWorkNum());
-                            statAverage.addStats(student_sw_progress);
-                            mStatAverages.add(statAverage);
+                            for (SeatWork seatWork : mSeatWorks){
+                                if (student_sw_progress.getTopicName().equals(seatWork.getTopicName())){
+                                    if(student_sw_progress.getSeatWorkNum()==seatWork.getSeatWorkNum()){
+                                        if (student_sw_progress.getItems_size()==seatWork.getItems_size()){
+                                            if (checkSWProgIfLatest(student_sw_progress)) {
+                                                StatAverage statAverage = new StatAverage(student_sw_progress.getTopicName(), student_sw_progress.getSeatWorkNum());
+                                                statAverage.addStats(student_sw_progress);
+                                                mStatAverages.add(statAverage);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     for(StatAverage statAverage : mStatAverages){
@@ -127,6 +144,7 @@ public class StudentSWProgressActivity extends AppCompatActivity {
                         Log.d(TAG, "avg = " + avg);
 
                     }
+                    Collections.sort(mStatAverages);
                     setListViewAdapter();
                     Log.d(TAG, "setAdapter()");
                 } catch (Exception e) {
@@ -136,12 +154,28 @@ public class StudentSWProgressActivity extends AppCompatActivity {
         });
         SeatWorkStatService.getAllStats(Storage.load(mContext,Storage.TEACHER_CODE),service);
     }
+    private boolean checkSWProgIfLatest(Student_SW_Progress student_sw_progress){
+        for (SeatWork seatWork : mSeatWorks){
+            if (student_sw_progress.getTopicName().equals(seatWork.getTopicName())){
+                if(student_sw_progress.getSeatWorkNum()==seatWork.getSeatWorkNum()){
+                    if (student_sw_progress.getItems_size()==seatWork.getItems_size()){
+                        Log.d(TAG, "student_sw_progress item size: " + student_sw_progress.getItems_size() +
+                                "; seatWork item size: " + seatWork.getItems_size());
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
     public void showStudents(String topicName, int swNum){
         ArrayList<Student_SW_Progress> student_sw_progresses = new ArrayList<>();
         for (Student_SW_Progress student_sw_progress : mStudent_sw_progresses){
             if (topicName.equals(student_sw_progress.getTopicName())){
                 if (swNum == student_sw_progress.getSeatWorkNum()){
-                    student_sw_progresses.add(student_sw_progress);
+                    if (checkSWProgIfLatest(student_sw_progress)) {
+                        student_sw_progresses.add(student_sw_progress);
+                    }
                 }
             }
         }
@@ -153,8 +187,6 @@ public class StudentSWProgressActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setListViewAdapter();
                 txtTitle.setText(AppConstants.SW_PROGRESSES);
-                txtTitle.setAnimation(animation);
-                txtTitle.animate();
             }
         });
     }
@@ -181,9 +213,7 @@ public class StudentSWProgressActivity extends AppCompatActivity {
                 String topic_name = mStatAverages.get(position).getTopicName();
                 int sw_num = mStatAverages.get(position).getSeatWorkNum();
                 showStudents(topic_name,sw_num);
-                txtTitle.setText(studentSWProgressAdapter.getItem(position).getTopicName());
-                txtTitle.setAnimation(animation);
-                txtTitle.animate();
+                txtTitle.setText(Objects.requireNonNull(studentSWProgressAdapter.getItem(position)).getTopicName());
             }
         });
     }
@@ -191,5 +221,32 @@ public class StudentSWProgressActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         btnBack.performClick();
+    }
+
+    private void getLatestSeatWorks(){
+        final Teacher teacher = new Teacher();
+        teacher.setId(Storage.load(mContext,Storage.TEACHER_ID));
+        teacher.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
+        Service service = new Service("Getting updated seat works...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try {
+                    int item_count = Integer.valueOf(response.optString("item_count"));
+                    mSeatWorks = new ArrayList<>();
+                    for (int i = 1; i <= item_count; i++) {
+                        SeatWork seatWork = new SeatWork();
+                        seatWork.setTopicName(String.valueOf(response.optString(i + "topic_name")));
+                        seatWork.setSeatWorkNum(Integer.valueOf(String.valueOf(response.optString(i + "sw_num"))));
+                        seatWork.setItems_size(Integer.valueOf(String.valueOf(response.optString(i + "item_size"))));
+                        Log.d(TAG, seatWork.getTopicName()+" w/ item size " + seatWork.getItems_size() + ": received");
+                        mSeatWorks.add(seatWork);
+                    }
+                    getAllStudentStats();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        SeatWorkService.getUpdates(teacher.getTeacher_code(), service);
     }
 }

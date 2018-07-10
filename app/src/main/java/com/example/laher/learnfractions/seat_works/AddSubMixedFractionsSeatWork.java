@@ -20,6 +20,7 @@ import com.example.laher.learnfractions.util.Storage;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class AddSubMixedFractionsSeatWork extends SeatWork {
     Context mContext = this;
@@ -91,6 +92,11 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
         btnChoice3.setOnClickListener(new BtnChoiceListener());
         btnChoice4.setOnClickListener(new BtnChoiceListener());
 
+        int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
+        if (item_size != 0){
+            setItems_size(item_size);
+            updateItemIndicator(txtIndicator);
+        }
         disableInputFraction();
         startingTime = System.currentTimeMillis();
         go();

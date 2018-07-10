@@ -2,6 +2,7 @@ package com.example.laher.learnfractions.model;
 
 public class Exercise {
     String topicName;
+
     int exerciseNum;
     int requiredCorrects;
     boolean rc_consecutive;

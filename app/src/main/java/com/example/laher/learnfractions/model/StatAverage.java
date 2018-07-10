@@ -1,10 +1,14 @@
 package com.example.laher.learnfractions.model;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.util.Util;
 
-public class StatAverage extends SeatWork {
+import java.util.Comparator;
+
+public class StatAverage extends SeatWork implements Comparable<StatAverage>{
     private static final String TAG = "StatAverage";
     private double score_average;
     private long time_spent_average;
@@ -51,5 +55,28 @@ public class StatAverage extends SeatWork {
         students_answered = students_answered + 1;
         setScore_average();
         setTime_spent_average();
+    }
+
+    @Override
+    public int compareTo(@NonNull StatAverage o) {
+        int o1Position = 0;
+        int o2Position = 0;
+        int i = 0;
+        for (Lesson lesson : LessonArchive.getAllLessons()){
+            if (o.getTopicName().equals(lesson.getTitle())){
+                o1Position = i;
+            }
+            if (this.getTopicName().equals(lesson.getTitle())){
+                o2Position = i;
+            }
+            i++;
+        }
+        if (o1Position>o2Position){
+            return -1;
+        }
+        if (o1Position<o2Position){
+            return 1;
+        }
+        return 0;
     }
 }
