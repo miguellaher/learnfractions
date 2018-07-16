@@ -7,7 +7,9 @@ import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,15 +29,13 @@ import com.example.laher.learnfractions.service.TeacherService;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
 import com.example.laher.learnfractions.teacher_activities.TeacherMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Encryptor;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
-import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
-    Context context = this;
+    Context mContext = this;
     public final String TAG = "LOGIN_ACTIVITY";
 
     TextView txtError, txtRegister;
@@ -50,9 +50,19 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         if (!isNetworkAvailable()){
+            Storage.logout(mContext);
             Intent intent = new Intent(LoginActivity.this,
                     TopicsMenuActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        if (Storage.load(mContext,Storage.STUDENT_ID)!=null){
+            Intent intent = new Intent(LoginActivity.this,
+                    StudentMainActivity.class);
+            startActivity(intent);
+        }
+        if (Storage.load(mContext,Storage.TEACHER_ID)!=null){
+            Intent intent = new Intent(LoginActivity.this,
+                    TeacherMainActivity.class);
             startActivity(intent);
         }
         txtError = findViewById(R.id.txtError);
@@ -61,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         spinnerUserType = findViewById(R.id.spinnerUserType);
         inputUsername = findViewById(R.id.inputUserName);
         inputPassword = findViewById(R.id.inputPassword);
+        inputPassword.setOnEditorActionListener(new InputPasswordOnEditorActionListener());
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new BtnLoginListener());
         txtError.setVisibility(TextView.INVISIBLE);
@@ -83,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void login(String userType){
         if (userType.trim().matches(AppConstants.ADMIN)){
-            Service service = new Service("Signing in...", context, new ServiceResponse() {
+            Service service = new Service("Signing in...", mContext, new ServiceResponse() {
                 @Override
                 public void postExecute(JSONObject response) {
                     try {
@@ -108,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (userType.trim().matches(AppConstants.TEACHER)){
-            Service service = new Service("Signing in...", context, new ServiceResponse() {
+            Service service = new Service("Signing in...", mContext, new ServiceResponse() {
                 @Override
                 public void postExecute(JSONObject response) {
                     try{
@@ -118,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                             final Teacher teacher = new Teacher();
                             teacher.setId(response.optString("id"));
                             teacher.setTeacher_code(response.optString("teacher_code"));
-                            Storage.save(context, teacher);
+                            Storage.save(mContext, teacher);
                             Intent intent = new Intent(LoginActivity.this,
                                     TeacherMainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -136,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (userType.trim().matches(AppConstants.STUDENT)){
-            Service service = new Service("Signing in...", context, new ServiceResponse() {
+            Service service = new Service("Signing in...", mContext, new ServiceResponse() {
                 @Override
                 public void postExecute(JSONObject response) {
                     try{
@@ -148,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, response.optString("id"));
                             student.setTeacher_code(response.optString("teacher_code"));
                             Log.d(TAG, response.optString("teacher_code"));
-                            Storage.save(context, student);
+                            Storage.save(mContext, student);
                             Intent intent = new Intent(LoginActivity.this,
                                     StudentMainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -205,5 +216,14 @@ public class LoginActivity extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+    private class InputPasswordOnEditorActionListener implements TextView.OnEditorActionListener{
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId== EditorInfo.IME_ACTION_DONE){
+                btnLogin.performClick();
+            }
+            return false;
+        }
     }
 }

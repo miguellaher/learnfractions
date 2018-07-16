@@ -3,7 +3,9 @@ package com.example.laher.learnfractions.dialog_layout;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -52,6 +54,7 @@ public class LcmDialog extends Dialog {
         txtNum2 = findViewById(R.id.lcm_txtNum2);
         txtNum3 = findViewById(R.id.lcm_txtNum3);
         inputLcm = findViewById(R.id.lcm_inputLcm);
+        inputLcm.setOnEditorActionListener(new InputListener());
         btnCheck = findViewById(R.id.lcm_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
         resetVars();
@@ -82,5 +85,14 @@ public class LcmDialog extends Dialog {
     public void setOnDismissListener(@Nullable OnDismissListener listener) {
         super.setOnDismissListener(listener);
         inputLcm.setText("");
+    }
+    private class InputListener implements TextView.OnEditorActionListener{
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId== EditorInfo.IME_ACTION_DONE){
+                btnCheck.performClick();
+            }
+            return false;
+        }
     }
 }

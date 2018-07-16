@@ -5,28 +5,34 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.TouchDelegate;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
-import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExerciseService;
+import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
-import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -34,8 +40,10 @@ import java.util.ArrayList;
 
 public class AddingDissimilarExerciseActivity extends AppCompatActivity {
     Context mContext = this;
+    private static final String TAG = "AD_E1";
 
     Exercise exercise;
+    ExerciseStat mExerciseStat;
     final int EXERCISE_NUM = 1;
 
     //TOOLBAR
@@ -60,7 +68,6 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
     EditText diagEdInputAnswer;
     Button diagEdBtnCheck;
     //VARIABLES
-    Fraction fraction;
     FractionQuestion fractionQuestion;
     ArrayList<FractionQuestion> fractionQuestions;
     int questionNum;
@@ -69,6 +76,9 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
     int maxErrors;
     boolean correctsShouldBeConsecutive;
     boolean errorsShouldBeConsecutive;
+
+    long startingTime, endingTime;
+
     ArrayList<Integer> viewIds;
     final Handler handler = new Handler();
     ColorStateList defaultColor;
@@ -79,7 +89,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
         exercise = LessonArchive.getLesson(AppConstants.ADDING_DISSIMILAR).getExercises().get(EXERCISE_NUM-1);
 
         //TOOLBAR
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +99,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +111,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
         btnNext.setText(AppConstants.DONE);
@@ -116,52 +126,65 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
         txtDenom4 = findViewById(R.id.adsm_txtDenom4);
         txtEquation1 = findViewById(R.id.adsm_txtEquation1);
         txtEquation2 = findViewById(R.id.adsm_txtEquation2);
+        setClickAreas();
         txtScore = findViewById(R.id.adsm_txtScore);
         setTxtScore();
         txtInstruction = findViewById(R.id.adsm_txtInstruction);
         inputNum = findViewById(R.id.adsm_inputNum);
         inputDenom = findViewById(R.id.adsm_inputDenom);
+        inputDenom.setOnEditorActionListener(new InputListener());
         btnCheck = findViewById(R.id.adsm_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
         //LCM DIALOG
         lcmView = getLayoutInflater().inflate(R.layout.layout_dialog_lcm, null);
         lcmDialog = new Dialog(AddingDissimilarExerciseActivity.this);
+        lcmDialog.setOnShowListener(new DialogListener());
         lcmDialog.setOnDismissListener(new DialogListener());
         lcmDialog.setTitle("Getting the LCD");
         lcmDialog.setContentView(lcmView);
-        diagLcmtxtNum1 = (TextView) lcmView.findViewById(R.id.lcm_txtNum1);
-        diagLcmtxtNum2 = (TextView) lcmView.findViewById(R.id.lcm_txtNum2);
-        diagLcmtxtNum3 = (TextView) lcmView.findViewById(R.id.lcm_txtNum3);
-        diagLcmInputLcm = (EditText) lcmView.findViewById(R.id.lcm_inputLcm);
-        diagLcmBtnCheck = (Button) lcmView.findViewById(R.id.lcm_btnCheck);
+        diagLcmtxtNum1 = lcmView.findViewById(R.id.lcm_txtNum1);
+        diagLcmtxtNum2 = lcmView.findViewById(R.id.lcm_txtNum2);
+        diagLcmtxtNum3 = lcmView.findViewById(R.id.lcm_txtNum3);
+        diagLcmInputLcm = lcmView.findViewById(R.id.lcm_inputLcm);
+        diagLcmInputLcm.setOnEditorActionListener(new InputListener());
+        diagLcmBtnCheck = lcmView.findViewById(R.id.lcm_btnCheck);
         diagLcmBtnCheck.setOnClickListener(new DiagLcmBtnCheckListener());
         //EQUATION DIALOG
         edView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         equationDialog = new Dialog(AddingDissimilarExerciseActivity.this);
+        equationDialog.setOnShowListener(new DialogListener());
         equationDialog.setOnDismissListener(new DialogListener());
         equationDialog.setTitle("Division Equation");
         equationDialog.setContentView(edView);
-        diagEdTxtNum1 = (TextView) edView.findViewById(R.id.md_txtMultiplicand);
-        diagEdTxtNum2 = (TextView) edView.findViewById(R.id.md_txtMultiplier);
-        diagEdTxtSign = (TextView) edView.findViewById(R.id.md_txtSign);
-        diagEdInputAnswer = (EditText) edView.findViewById(R.id.md_inputProduct);
-        diagEdBtnCheck = (Button) edView.findViewById(R.id.md_btnCheck);
+        diagEdTxtNum1 = edView.findViewById(R.id.md_txtMultiplicand);
+        diagEdTxtNum2 = edView.findViewById(R.id.md_txtMultiplier);
+        diagEdTxtSign = edView.findViewById(R.id.md_txtSign);
+        diagEdInputAnswer = edView.findViewById(R.id.md_inputProduct);
+        diagEdInputAnswer.setOnEditorActionListener(new InputListener());
+        diagEdBtnCheck = edView.findViewById(R.id.md_btnCheck);
         diagEdBtnCheck.setOnClickListener(new DiagEdBtnCheckListener());
 
         defaultColor = txtNum1.getTextColors();
         viewIds = new ArrayList<>();
 
-        setAttributes(exercise);
-        checkUpdate();
+        setAttributes((ExerciseStat) exercise);
+        if (!Storage.isEmpty()) {
+            checkUpdate();
+        }
+        startingTime = System.currentTimeMillis();
 
         go();
     }
 
-    public void setAttributes(Exercise exerciseAtt){
+    public void setAttributes(ExerciseStat exerciseAtt){
+        Log.d(TAG, "set attributes");
         requiredCorrects = exerciseAtt.getRequiredCorrects();
         maxErrors = exerciseAtt.getMaxErrors();
         correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
         errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
+        mExerciseStat = exerciseAtt;
+        mExerciseStat.setTopicName(exercise.getTopicName());
+        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
         setTxtScore();
     }
     public void checkUpdate(){
@@ -170,24 +193,21 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
                 @Override
                 public void postExecute(JSONObject response) {
                     try {
-                        if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
+                        Exercise updatedExercise = new ExerciseStat();
+                        updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
+                        if (response.optString("rc_consecutive").equals("1")) {
+                            updatedExercise.setRc_consecutive(true);
                         } else {
-                            Util.toast(mContext,"Exercise updated.");
-                            Exercise updatedExercise = new Exercise();
-                            updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
-                            if (response.optString("rc_consecutive").equals("1")) {
-                                updatedExercise.setRc_consecutive(true);
-                            } else {
-                                updatedExercise.setRc_consecutive(false);
-                            }
-                            updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
-                            if (response.optString("me_consecutive").equals("1")) {
-                                updatedExercise.setMe_consecutive(true);
-                            } else {
-                                updatedExercise.setMe_consecutive(false);
-                            }
-                            setAttributes(updatedExercise);
+                            updatedExercise.setRc_consecutive(false);
                         }
+                        updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
+                        if (response.optString("me_consecutive").equals("1")) {
+                            updatedExercise.setMe_consecutive(true);
+                        } else {
+                            updatedExercise.setMe_consecutive(false);
+                        }
+                        setAttributes((ExerciseStat) updatedExercise);
+                        startingTime = System.currentTimeMillis();
                     } catch (Exception e){e.printStackTrace();}
                 }
             });
@@ -214,6 +234,10 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
         inputDenom.setEnabled(false);
         btnCheck.setEnabled(false);
         if (correct >= requiredCorrects){
+            endingTime = System.currentTimeMillis();
+            if (!Storage.isEmpty()) {
+                setFinalAttributes();
+            }
             txtInstruction.setText(AppConstants.FINISHED_LESSON);
             btnNext.setEnabled(true);
         } else {
@@ -233,6 +257,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
     }
     public void wrong(){
         error++;
+        mExerciseStat.incrementError();
         if (correctsShouldBeConsecutive) {
             correct = 0;
         }
@@ -275,6 +300,30 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
                 }
             }, 3000);
         }
+    }
+    private void setFinalAttributes(){
+        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try{
+                    Log.d(TAG, "post execute");
+                    Log.d(TAG, "message: " + response.optString("message"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mExerciseStat.setDone(true);
+        mExerciseStat.setTime_spent(endingTime-startingTime);
+        Student student = new Student();
+        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
+        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
+                mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
+                "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
+                mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
+                mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
+        ExerciseStatService.postStats(student,mExerciseStat,service);
     }
     public void setQuestions() {
         fractionQuestions = new ArrayList<>();
@@ -479,8 +528,8 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
         public void onClick(View v) {
             if (Integer.valueOf(String.valueOf(diagLcmInputLcm.getText())).equals(fractionQuestions.get(questionNum)
                     .getFractionAnswer().getDenominator())){
-                txtDenom3.setText(""+fractionQuestions.get(questionNum).getFractionAnswer().getDenominator());
-                txtDenom4.setText(""+fractionQuestions.get(questionNum).getFractionAnswer().getDenominator());
+                txtDenom3.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionAnswer().getDenominator()));
+                txtDenom4.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionAnswer().getDenominator()));
                 setLcmListeners(false);
                 setFractionSet2DenomVisibility(true);
                 setDivisionListeners(true);
@@ -492,13 +541,37 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
             }
         }
     }
-    private class DialogListener implements DialogInterface.OnDismissListener {
+    private class DialogListener implements DialogInterface.OnDismissListener, DialogInterface.OnShowListener {
         @Override
         public void onDismiss(DialogInterface dialog) {
             resetColors();
             viewIds.clear();
             diagEdInputAnswer.setText("");
             diagLcmInputLcm.setText("");
+            if (dialog.equals(equationDialog)){
+                if(diagEdTxtSign.getText().toString().matches("x")){
+                    if (txtNum3.getVisibility()==TextView.VISIBLE &&
+                            txtNum4.getVisibility()==TextView.VISIBLE) {
+                        if (questionNum>0) {
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onShow(DialogInterface dialog) {
+            if (dialog.equals(lcmDialog)) {
+                diagLcmInputLcm.requestFocus();
+            } else if (dialog.equals(equationDialog)){
+                diagEdInputAnswer.requestFocus();
+            }
+            if (questionNum>0) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+            }
         }
     }
     private class DiagEdBtnCheckListener implements View.OnClickListener {
@@ -587,5 +660,47 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
                 Styles.shakeAnimate(inputNum);
             }
         }
+    }
+    private class InputListener implements TextView.OnEditorActionListener{
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId== EditorInfo.IME_ACTION_DONE){
+                if (v.getId()==diagLcmInputLcm.getId()){
+                    diagLcmBtnCheck.performClick();
+                } else if (v.getId()==diagEdInputAnswer.getId()){
+                    diagEdBtnCheck.performClick();
+                } else if (v.getId()==inputDenom.getId()){
+                    btnCheck.performClick();
+                }
+            }
+            return false;
+        }
+    }
+    private void setClickAreas(){
+        setLargerClickArea(txtNum1);
+        setLargerClickArea(txtNum2);
+        setLargerClickArea(txtNum3);
+        setLargerClickArea(txtNum4);
+        setLargerClickArea(txtDenom1);
+        setLargerClickArea(txtDenom2);
+        setLargerClickArea(txtDenom3);
+        setLargerClickArea(txtDenom4);
+        setLargerClickArea(txtEquation1);
+        setLargerClickArea(txtEquation2);
+    }
+
+    private void setLargerClickArea(final TextView textView){
+        final View parent = (View) textView.getParent();  // button: the view you want to enlarge hit area
+        parent.post( new Runnable() {
+            public void run() {
+                final Rect rect = new Rect();
+                textView.getHitRect(rect);
+                rect.top -= 100;    // increase top hit area
+                rect.left -= 100;   // increase left hit area
+                rect.bottom += 100; // increase bottom hit area
+                rect.right += 100;  // increase right hit area
+                parent.setTouchDelegate( new TouchDelegate( rect , textView));
+            }
+        });
     }
 }

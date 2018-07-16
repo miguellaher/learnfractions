@@ -9,7 +9,12 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,8 +23,10 @@ import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExerciseService;
+import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -32,8 +39,10 @@ import java.util.ArrayList;
 
 public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
     Context mContext = this;
+    private static final String TAG = "CD_E1";
 
     Exercise exercise;
+    ExerciseStat mExerciseStat;
     final int EXERCISE_NUM = 1;
 
     //TOOLBAR
@@ -55,6 +64,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
     final Handler handler = new Handler();
 
     int requiredCorrects;
+    long startingTime, endingTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +72,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
         exercise = LessonArchive.getLesson(AppConstants.COMPARING_DISSIMILAR_FRACTIONS).getExercises().get(EXERCISE_NUM-1);
 
         //TOOLBAR
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +82,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,30 +94,32 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         //MULTIPLICATION DIALOG
         mdView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         multiplicationDialog = new Dialog(ComparingDissimilarExerciseActivity.this);
         multiplicationDialog.setOnDismissListener(new DiagMultiplicationListener());
+        multiplicationDialog.setOnShowListener(new DiagMultiplicationListener());
         multiplicationDialog.setTitle("Multiplication Equation");
         multiplicationDialog.setContentView(mdView);
-        diagTxtMultiplicand = (TextView) mdView.findViewById(R.id.md_txtMultiplicand);
-        diagTxtMultiplier = (TextView) mdView.findViewById(R.id.md_txtMultiplier);
-        diagInputProduct = (EditText) mdView.findViewById(R.id.md_inputProduct);
-        dialogBtnCheck = (Button) mdView.findViewById(R.id.md_btnCheck);
+        diagTxtMultiplicand = mdView.findViewById(R.id.md_txtMultiplicand);
+        diagTxtMultiplier = mdView.findViewById(R.id.md_txtMultiplier);
+        diagInputProduct = mdView.findViewById(R.id.md_inputProduct);
+        diagInputProduct.setOnEditorActionListener(new InputListener());
+        dialogBtnCheck = mdView.findViewById(R.id.md_btnCheck);
         dialogBtnCheck.setOnClickListener(new DiagBtnCheckListener());
         //GUI
-        txtScore = (TextView) findViewById(R.id.d1_txtScore);
+        txtScore = findViewById(R.id.d1_txtScore);
         setTxtScore();
-        txtProduct1 = (TextView) findViewById(R.id.d1_txtProduct1);
-        txtProduct2 = (TextView) findViewById(R.id.d1_txtProduct2);
-        txtNum1 = (TextView) findViewById(R.id.d1_txtNum1);
-        txtNum2 = (TextView) findViewById(R.id.d1_txtNum2);
-        txtDenom1 = (TextView) findViewById(R.id.d1_txtDenom1);
-        txtDenom2 = (TextView) findViewById(R.id.d1_txtDenom2);
+        txtProduct1 = findViewById(R.id.d1_txtProduct1);
+        txtProduct2 = findViewById(R.id.d1_txtProduct2);
+        txtNum1 = findViewById(R.id.d1_txtNum1);
+        txtNum2 = findViewById(R.id.d1_txtNum2);
+        txtDenom1 = findViewById(R.id.d1_txtDenom1);
+        txtDenom2 = findViewById(R.id.d1_txtDenom2);
         resetTxtFractionsColor();
-        txtInstruction = (TextView) findViewById(R.id.d1_txtInstruction);
+        txtInstruction = findViewById(R.id.d1_txtInstruction);
         stepsIdList = new ArrayList<>();
         //VARIABLES
         fractionOne = new Fraction();
@@ -115,14 +127,21 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
 
 
 
-        setAttributes(exercise);
-        checkUpdate();
+        setAttributes((ExerciseStat) exercise);
+        if (!Storage.isEmpty()) {
+            checkUpdate();
+        }
+        startingTime = System.currentTimeMillis();
 
         go();
     }
 
-    public void setAttributes(Exercise exerciseAtt){
+    public void setAttributes(ExerciseStat exerciseAtt){
+        Log.d(TAG, "set attributes");
         requiredCorrects = exerciseAtt.getRequiredCorrects();
+        mExerciseStat = exerciseAtt;
+        mExerciseStat.setTopicName(exercise.getTopicName());
+        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
         setTxtScore();
     }
     public void checkUpdate(){
@@ -131,13 +150,11 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                 @Override
                 public void postExecute(JSONObject response) {
                     try {
-                        if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
-                        } else {
-                            Util.toast(mContext,"Exercise updated.");
-                            Exercise updatedExercise = new Exercise();
-                            updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
-                            setAttributes(updatedExercise);
-                        }
+                        Util.toast(mContext,"Exercise updated.");
+                        Exercise updatedExercise = new ExerciseStat();
+                        updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
+                        setAttributes((ExerciseStat) updatedExercise);
+                        startingTime = System.currentTimeMillis();
                     } catch (Exception e){e.printStackTrace();}
                 }
             });
@@ -209,6 +226,10 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
         txtInstruction.setText(AppConstants.CORRECT);
 
         if (correct >= requiredCorrects) {
+            endingTime = System.currentTimeMillis();
+            if (!Storage.isEmpty()) {
+                setFinalAttributes();
+            }
             btnNext.setEnabled(true);
             txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
         } else {
@@ -219,6 +240,30 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                 }
             }, 2000);
         }
+    }
+    private void setFinalAttributes(){
+        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try{
+                    Log.d(TAG, "post execute");
+                    Log.d(TAG, "message: " + response.optString("message"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mExerciseStat.setDone(true);
+        mExerciseStat.setTime_spent(endingTime-startingTime);
+        Student student = new Student();
+        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
+        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
+                mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
+                "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
+                mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
+                mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
+        ExerciseStatService.postStats(student,mExerciseStat,service);
     }
     public class TxtFractionListener implements TextView.OnClickListener {
         @Override
@@ -347,7 +392,7 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
             }
         }
     }
-    public class DiagMultiplicationListener implements Dialog.OnDismissListener{
+    public class DiagMultiplicationListener implements Dialog.OnDismissListener, DialogInterface.OnShowListener{
         @Override
         public void onDismiss(DialogInterface dialog) {
             resetTxtFractionsColor();
@@ -364,6 +409,28 @@ public class ComparingDissimilarExerciseActivity extends AppCompatActivity {
                     stepsIdList.remove(stepsIdList.size()-1);
                 }
             }
+        }
+
+        @Override
+        public void onShow(DialogInterface dialog) {
+            diagInputProduct.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
+        }
+    }
+
+    public class InputListener implements TextView.OnEditorActionListener{
+        int product = Integer.valueOf((String) diagTxtMultiplicand.getText())
+                * Integer.valueOf((String) diagTxtMultiplier.getText());
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId== EditorInfo.IME_ACTION_DONE){
+                dialogBtnCheck.performClick();
+                if (Integer.valueOf(String.valueOf(diagInputProduct.getText())) != product) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

@@ -18,11 +18,22 @@ import java.io.InputStreamReader;
 public class Storage {
     private static FileOutputStream fos;
     private static String FILENAME = "storage";
+    private static boolean empty;
 
     public static final String TEACHER_ID="TEACHER_ID=";
     public static final String STUDENT_ID="STUDENT_ID=";
     public static final String TEACHER_CODE="TEACHER_CODE=";
     public static final String USER_TYPE="USER_TYPE=";
+
+    public static boolean isEmpty() {
+        return empty;
+    }
+
+    public static void setEmpty(boolean empty) {
+        Storage.empty = empty;
+    }
+
+
     public static void save(Context context, Teacher teacher) {
 
         try {
@@ -34,6 +45,7 @@ public class Storage {
             String teacher_code = TEACHER_CODE + teacher.getTeacher_code();
             write(teacher_code);
             fos.close();
+            empty = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,6 +62,7 @@ public class Storage {
             String teacher_code = TEACHER_CODE + student.getTeacher_code();
             write(teacher_code);
             fos.close();
+            empty = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,7 +126,21 @@ public class Storage {
         if (identifier.equals(USER_TYPE)){
             out = getStringValue(tokens, USER_TYPE);
         }
-        out = out.trim();
+        if (out!=null) {
+            out = out.trim();
+        }
         return out;
+    }
+
+    public static void logout(Context context) {
+
+        try {
+            FileOutputStream fos = context.getApplicationContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            fos.write("".getBytes());
+            fos.close();
+            empty = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

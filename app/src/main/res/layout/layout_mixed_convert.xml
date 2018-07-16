@@ -96,17 +96,21 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
         android:text="99 + 99 ="
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/mcn_txtNum2"
-        app:layout_constraintEnd_toEndOf="@+id/mcn_txtNum2" />
+        app:layout_constraintEnd_toEndOf="@+id/mcn_txtNum2"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/mcn_btnConvert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
         android:text="CONVERT"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/mcn_txtDenom2"
         app:layout_constraintStart_toStartOf="@+id/mcn_txtDenom2"
         app:layout_constraintTop_toBottomOf="@+id/mcn_txtDenom2" />

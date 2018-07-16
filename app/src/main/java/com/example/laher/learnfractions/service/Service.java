@@ -47,7 +47,7 @@ public class Service extends AsyncTask<Void, Void, Void>{
     @Override
     protected void onPreExecute() {
         progressBar = new ProgressDialog(this.context);
-        progressBar.setCancelable(true);
+        progressBar.setCancelable(false);
         progressBar.setMessage(this.loadingTitle);
         progressBar.show();
 

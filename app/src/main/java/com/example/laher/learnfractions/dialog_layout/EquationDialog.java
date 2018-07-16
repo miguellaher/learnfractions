@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -75,6 +76,7 @@ public class EquationDialog extends Dialog {
         txtNum2 = findViewById(R.id.md_txtMultiplier);
         txtSign = findViewById(R.id.md_txtSign);
         inputAns = findViewById(R.id.md_inputProduct);
+        inputAns.setOnEditorActionListener(new InputListener());
         inputAns.setOnKeyListener(new InputListener());
         btnCheck = findViewById(R.id.md_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
@@ -109,10 +111,18 @@ public class EquationDialog extends Dialog {
     }
 
 
-    private class InputListener implements EditText.OnKeyListener{
+    private class InputListener implements EditText.OnKeyListener, TextView.OnEditorActionListener{
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             Styles.paintBlack(inputAns);
+            return false;
+        }
+
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId== EditorInfo.IME_ACTION_DONE){
+                btnCheck.performClick();
+            }
             return false;
         }
     }

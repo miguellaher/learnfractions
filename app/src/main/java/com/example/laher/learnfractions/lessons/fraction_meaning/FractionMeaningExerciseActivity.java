@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class FractionMeaningExerciseActivity extends AppCompatActivity {
     private static final String TAG = "FM_E1";
@@ -43,7 +45,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     TextView txtTitle;
     public final String TITLE = "Fraction Meaning";
 
-    //VARIBALES
+    //VARIABLES
     ArrayList<String> instructions;
     String strCorrectAns;
     int num, denom, correct, error;
@@ -55,7 +57,6 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     boolean errorsShouldBeConsecutive;
     long startingTime, endingTime;
 
-    private final int EXERCISE_NUM = 1;
     final Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,27 +88,32 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
 
-        instructions = new ArrayList<String>();
+        instructions = new ArrayList<>();
         instructions.add(INSTRUCTION_DENOM);
         instructions.add(INSTRUCTION_NUM);
         correct = 0;
         error = 0;
 
+        int EXERCISE_NUM = 1;
         exercise = LessonArchive.getLesson(AppConstants.FRACTION_MEANING).getExercises().get(EXERCISE_NUM - 1);
-        mExerciseStat = (ExerciseStat) exercise;
-        setAttributes(exercise);
-        checkUpdate();
+        setAttributes((ExerciseStat) exercise);
+        if (!Storage.isEmpty()) {
+            checkUpdate();
+        }
 
         startingTime = System.currentTimeMillis();
         go();
     }
 
-    public void setAttributes(Exercise exerciseAtt){
+    public void setAttributes(ExerciseStat exerciseAtt){
         Log.d(TAG, "set attributes");
         requiredCorrects = exerciseAtt.getRequiredCorrects();
         maxErrors = exerciseAtt.getMaxErrors();
         correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
         errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
+        mExerciseStat = exerciseAtt;
+        mExerciseStat.setTopicName(exercise.getTopicName());
+        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
         showScore();
     }
     public void checkUpdate(){
@@ -116,29 +122,26 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
                 @Override
                 public void postExecute(JSONObject response) {
                     try {
-                        if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
+                        Log.d(TAG, "*service post execute");
+                        Exercise updatedExercise = new ExerciseStat();
+                        Log.d(TAG, "rc:" + response.optString("required_corrects"));
+                        Log.d(TAG, "rcc:" + response.optString("rc_consecutive"));
+                        Log.d(TAG, "me:" + response.optString("max_errors"));
+                        Log.d(TAG, "mec:" + response.optString("me_consecutive"));
+                        updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
+                        if (response.optString("rc_consecutive").equals("1")) {
+                            updatedExercise.setRc_consecutive(true);
                         } else {
-                            Util.toast(mContext,"Exercise updated.");
-                            Log.d(TAG, "*service post execute");
-                            Exercise updatedExercise = new Exercise();
-                            Log.d(TAG, "rc:" + response.optString("required_corrects"));
-                            Log.d(TAG, "rcc:" + response.optString("rc_consecutive"));
-                            Log.d(TAG, "me:" + response.optString("max_errors"));
-                            Log.d(TAG, "mec:" + response.optString("me_consecutive"));
-                            updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
-                            if (response.optString("rc_consecutive").equals("1")) {
-                                updatedExercise.setRc_consecutive(true);
-                            } else {
-                                updatedExercise.setRc_consecutive(false);
-                            }
-                            updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
-                            if (response.optString("me_consecutive").equals("1")) {
-                                updatedExercise.setMe_consecutive(true);
-                            } else {
-                                updatedExercise.setMe_consecutive(false);
-                            }
-                            setAttributes(updatedExercise);
+                            updatedExercise.setRc_consecutive(false);
                         }
+                        updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
+                        if (response.optString("me_consecutive").equals("1")) {
+                            updatedExercise.setMe_consecutive(true);
+                        } else {
+                            updatedExercise.setMe_consecutive(false);
+                        }
+                        setAttributes((ExerciseStat) updatedExercise);
+                        startingTime = System.currentTimeMillis();
                     } catch (Exception e){e.printStackTrace();}
                 }
             });
@@ -212,39 +215,31 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
             denom = (int) (Math.random() * 9 + 1);
         }
     }
-    public void finishExercise(){
-        btnChoice1.setEnabled(false);
-        btnChoice2.setEnabled(false);
-        btnChoice3.setEnabled(false);
-        btnChoice4.setEnabled(false);
-        btnNext.setEnabled(true);
-        setFinalAttributes();
-    }
 
-    private void setFinalAttributes(){
-        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
-            @Override
-            public void postExecute(JSONObject response) {
-                try{
-                    Log.d(TAG, "post execute");
-                    Log.d(TAG, "message: " + response.optString("message"));
-                } catch (Exception e) {
-                    e.printStackTrace();
+        private void setFinalAttributes(){
+            Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
+                @Override
+                public void postExecute(JSONObject response) {
+                    try{
+                        Log.d(TAG, "post execute");
+                        Log.d(TAG, "message: " + response.optString("message"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
-        mExerciseStat.setDone(true);
-        mExerciseStat.setTime_spent(endingTime-startingTime);
-        Student student = new Student();
-        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
-        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
-        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
-        mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done:" + mExerciseStat.isDone() +
-        "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
-        mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors" +
-        mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
-        ExerciseStatService.postStats(student,mExerciseStat,service);
-    }
+            });
+            mExerciseStat.setDone(true);
+            mExerciseStat.setTime_spent(endingTime-startingTime);
+            Student student = new Student();
+            student.setId(Storage.load(mContext, Storage.STUDENT_ID));
+            student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+            Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
+            mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
+            "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
+            mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
+            mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
+            ExerciseStatService.postStats(student,mExerciseStat,service);
+        }
 
     public void showScore(){
         Log.d(TAG, "c:"+correct);
@@ -270,8 +265,11 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
                 btnChoice4.setEnabled(false);
                 if (correct >= requiredCorrects) {
                     endingTime = System.currentTimeMillis();
+                    if (!Storage.isEmpty()) {
+                        setFinalAttributes();
+                    }
                     txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
-                    finishExercise();
+                    btnNext.setEnabled(true);
                 } else {
                     handler.postDelayed(new Runnable() {
                         @Override

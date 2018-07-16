@@ -5,11 +5,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.TouchDelegate;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,15 +26,15 @@ import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExerciseService;
+import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
-import com.example.laher.learnfractions.dialog_layout.EquationDialog;
-import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -40,8 +46,10 @@ import static android.content.DialogInterface.OnShowListener;
 
 public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
     Context mContext = this;
+    private static final String TAG = "SM2_E1";
 
     Exercise exercise;
+    ExerciseStat mExerciseStat;
     final int EXERCISE_NUM = 1;
 
     //TOOLBAR
@@ -60,7 +68,6 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
     TextView mcD_txtWholeNum, mcD_txtNum1, mcD_txtNum2, mcD_txtDenom1, mcD_txtDenom2, mcD_txtEquation;
     Button mcD_btnConvert;
     //EQUATION DIALOG
-    EquationDialog dialogEquation;
     Dialog equationDialog;
     View edView;
     TextView eDTxtNum1, eDTxtNum2, eDTxtSign;
@@ -76,6 +83,9 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
     int maxErrors;
     boolean correctsShouldBeConsecutive;
     boolean errorsShouldBeConsecutive;
+
+    long startingTime, endingTime;
+
     final Handler handler = new Handler();
     ColorStateList defaultColor;
     int clicks;
@@ -90,7 +100,7 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
         exercise = LessonArchive.getLesson(AppConstants.MULTIPLYING_DIVIDING_MIXED).getExercises().get(EXERCISE_NUM-1);
 
         //TOOLBAR
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +110,7 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +146,7 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
         txtInstruction = findViewById(R.id.fem_txtInstruction);
         inputNum = findViewById(R.id.fem_inputNum);
         inputDenom = findViewById(R.id.fem_inputDenom);
+        inputDenom.setOnEditorActionListener(new InputListener());
         btnCheck = findViewById(R.id.fem_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
         clFraction1 = findViewById(R.id.fem_clFraction1);
@@ -160,28 +171,38 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
         equationDialog.setOnShowListener(new DialogEquationListener());
         equationDialog.setTitle("Division Equation");
         equationDialog.setContentView(edView);
-        eDTxtNum1 = (TextView) edView.findViewById(R.id.md_txtMultiplicand);
-        eDTxtNum2 = (TextView) edView.findViewById(R.id.md_txtMultiplier);
-        eDTxtSign = (TextView) edView.findViewById(R.id.md_txtSign);
-        eDInputAnswer = (EditText) edView.findViewById(R.id.md_inputProduct);
-        eDBtnCheck = (Button) edView.findViewById(R.id.md_btnCheck);
+        eDTxtNum1 = edView.findViewById(R.id.md_txtMultiplicand);
+        eDTxtNum2 = edView.findViewById(R.id.md_txtMultiplier);
+        eDTxtSign = edView.findViewById(R.id.md_txtSign);
+        eDInputAnswer = edView.findViewById(R.id.md_inputProduct);
+        eDInputAnswer.setOnEditorActionListener(new InputListener());
+        eDBtnCheck = edView.findViewById(R.id.md_btnCheck);
         eDBtnCheck.setOnClickListener(new EDBtnCheckListener());
         defaultColor = txtNum1.getTextColors();
         stepsListId = new ArrayList<>();
 
+        setClickAreas();
+
         context = this;
 
-        setAttributes(exercise);
-        checkUpdate();
+        setAttributes((ExerciseStat) exercise);
+        if (!Storage.isEmpty()) {
+            checkUpdate();
+        }
+        startingTime = System.currentTimeMillis();
 
         go();
     }
 
-    public void setAttributes(Exercise exerciseAtt){
+    public void setAttributes(ExerciseStat exerciseAtt){
+        Log.d(TAG, "set attributes");
         requiredCorrects = exerciseAtt.getRequiredCorrects();
         maxErrors = exerciseAtt.getMaxErrors();
         correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
         errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
+        mExerciseStat = exerciseAtt;
+        mExerciseStat.setTopicName(exercise.getTopicName());
+        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
         setTxtScore();
     }
     public void checkUpdate(){
@@ -190,24 +211,21 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
                 @Override
                 public void postExecute(JSONObject response) {
                     try {
-                        if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
+                        Exercise updatedExercise = new ExerciseStat();
+                        updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
+                        if (response.optString("rc_consecutive").equals("1")) {
+                            updatedExercise.setRc_consecutive(true);
                         } else {
-                            Util.toast(mContext,"Exercise updated.");
-                            Exercise updatedExercise = new Exercise();
-                            updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
-                            if (response.optString("rc_consecutive").equals("1")) {
-                                updatedExercise.setRc_consecutive(true);
-                            } else {
-                                updatedExercise.setRc_consecutive(false);
-                            }
-                            updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
-                            if (response.optString("me_consecutive").equals("1")) {
-                                updatedExercise.setMe_consecutive(true);
-                            } else {
-                                updatedExercise.setMe_consecutive(false);
-                            }
-                            setAttributes(updatedExercise);
+                            updatedExercise.setRc_consecutive(false);
                         }
+                        updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
+                        if (response.optString("me_consecutive").equals("1")) {
+                            updatedExercise.setMe_consecutive(true);
+                        } else {
+                            updatedExercise.setMe_consecutive(false);
+                        }
+                        setAttributes((ExerciseStat) updatedExercise);
+                        startingTime = System.currentTimeMillis();
                     } catch (Exception e){e.printStackTrace();}
                 }
             });
@@ -231,6 +249,10 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
         }
         answered();
         if (correct >= requiredCorrects){
+            endingTime = System.currentTimeMillis();
+            if (!Storage.isEmpty()) {
+                setFinalAttributes();
+            }
             txtInstruction.setText(AppConstants.FINISHED_LESSON);
             btnNext.setEnabled(true);
         } else {
@@ -250,6 +272,7 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
     }
     public void wrong(){
         error++;
+        mExerciseStat.incrementError();
         if (correctsShouldBeConsecutive) {
             correct = 0;
         }
@@ -277,9 +300,9 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
                     if (correctsShouldBeConsecutive) {
                         go();
                     } else {
-                        if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.MULTIPLYING_WITH_MIXED){
+                        if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.MULTIPLYING_WITH_MIXED)){
                             fractionQuestion = new FractionQuestion(FractionQuestion.MULTIPLYING_WITH_MIXED);
-                        } else if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.DIVIDING_WITH_MIXED){
+                        } else if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.DIVIDING_WITH_MIXED)){
                             fractionQuestion = new FractionQuestion(FractionQuestion.DIVIDING_WITH_MIXED);
                         }
                         fractionQuestions.add(fractionQuestion);
@@ -288,6 +311,30 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
                 }
             }, 2000);
         }
+    }
+    private void setFinalAttributes(){
+        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try{
+                    Log.d(TAG, "post execute");
+                    Log.d(TAG, "message: " + response.optString("message"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mExerciseStat.setDone(true);
+        mExerciseStat.setTime_spent(endingTime-startingTime);
+        Student student = new Student();
+        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
+        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
+                mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
+                "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
+                mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
+                mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
+        ExerciseStatService.postStats(student,mExerciseStat,service);
     }
     public void answered(){
         setTxtScore();
@@ -325,22 +372,22 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
         Collections.shuffle(fractionQuestions);
     }
     public void setFractionGui(){
-        if (fractionQuestions.get(questionNum).getFractionOne().getContext()== Fraction.MIXED){
+        if (fractionQuestions.get(questionNum).getFractionOne().getContext().equals(Fraction.MIXED)){
             txtWholeNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getWholeNum()));
             clFraction1.setOnClickListener(new ClFractionListener());
         } else {
             txtWholeNum1.setText("");
         }
-        if (fractionQuestions.get(questionNum).getFractionTwo().getContext()== Fraction.MIXED){
+        if (fractionQuestions.get(questionNum).getFractionTwo().getContext().equals(Fraction.MIXED)){
             txtWholeNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getWholeNum()));
             clFraction2.setOnClickListener(new ClFractionListener());
         } else {
             txtWholeNum2.setText("");
         }
-        if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.MULTIPLYING_WITH_MIXED){
+        if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.MULTIPLYING_WITH_MIXED)){
             txtSign1.setText("x");
             txtSign2.setText("x");
-        } else if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.DIVIDING_WITH_MIXED){
+        } else if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.DIVIDING_WITH_MIXED)){
             txtSign1.setText("÷");
             txtSign2.setText("");
         }
@@ -504,7 +551,7 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
                     } else {
                         Styles.shakeAnimate(eDInputAnswer);
                     }
-                } else if (String.valueOf(eDTxtSign.getText()) == "+") {
+                } else if (String.valueOf(eDTxtSign.getText()).equals("+")) {
                     if (Integer.valueOf(String.valueOf(eDTxtNum1.getText())) +
                             Integer.valueOf(String.valueOf(eDTxtNum2.getText())) ==
                             Integer.valueOf(String.valueOf(eDInputAnswer.getText()))) {
@@ -536,11 +583,13 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
         public void onShow(DialogInterface dialog) {
             if (Integer.valueOf(String.valueOf(eDTxtNum1.getText()))>10 ||
                     Integer.valueOf(String.valueOf(eDTxtNum2.getText()))>10){
-                if (String.valueOf(eDTxtSign.getText())=="x"){
+                if (String.valueOf(eDTxtSign.getText()).equals("x")){
                     eDInputAnswer.setHint(String.valueOf(Integer.valueOf(String.valueOf(eDTxtNum1.getText()))*
                             Integer.valueOf(String.valueOf(eDTxtNum2.getText()))));
                 }
             }
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         }
     }
     private class McDBtnConvertListener implements View.OnClickListener {
@@ -565,7 +614,7 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
             }
             if (txtWholeNum1.getText().toString().matches("") &&
                 txtWholeNum2.getText().toString().matches("")){
-                if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.MULTIPLYING_WITH_MIXED){
+                if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.MULTIPLYING_WITH_MIXED)){
                     txtNum3.setText(String.valueOf(txtNum1.getText()));
                     txtDenom3.setText(String.valueOf(txtDenom1.getText()));
                     txtNum4.setText(String.valueOf(txtNum2.getText()));
@@ -574,8 +623,10 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
                     inputDenom.setEnabled(true);
                     btnCheck.setEnabled(true);
                     inputNum.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
                     setHint();
-                } else if (fractionQuestions.get(questionNum).getContext()==FractionQuestion.DIVIDING_WITH_MIXED){
+                } else if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.DIVIDING_WITH_MIXED)){
                     txtNum3.setText(String.valueOf(txtNum1.getText()));
                     txtDenom3.setText(String.valueOf(txtDenom1.getText()));
                     randomizeContainer();
@@ -614,6 +665,8 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
                 inputDenom.setEnabled(true);
                 btnCheck.setEnabled(true);
                 inputNum.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
                 setHint();
             }
         }
@@ -638,6 +691,42 @@ public class SolvingMixed2ExerciseActivity extends AppCompatActivity {
                     Styles.shakeAnimate(inputDenom);
                 }
             }
+        }
+    }
+    private void setClickAreas(){
+        setClickArea(mcD_txtDenom1, 0,0,100,50);
+        setClickArea(mcD_txtWholeNum, 0,100,0,0);
+        setClickArea(mcD_txtEquation, 100,100,100,100);
+        setClickArea(txtDenom1,0,50,100,50);
+        setClickArea(txtDenom2,0,50,100,50);
+        setClickArea(txtNum1,100,50,0,100);
+
+    }
+    private void setClickArea(final TextView textView, final int t, final int l, final int b, final int r){
+        final View parent = (View) textView.getParent();  // button: the view you want to enlarge hit area
+        parent.post( new Runnable() {
+            public void run() {
+                final Rect rect = new Rect();
+                textView.getHitRect(rect);
+                rect.top -= t;    // increase top hit area
+                rect.left -= l;   // increase left hit area
+                rect.bottom += b; // increase bottom hit area
+                rect.right += r;  // increase right hit area
+                parent.setTouchDelegate( new TouchDelegate( rect , textView));
+            }
+        });
+    }
+    private class InputListener implements TextView.OnEditorActionListener{
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId== EditorInfo.IME_ACTION_DONE){
+                if (v.getId()==eDInputAnswer.getId()){
+                    eDBtnCheck.performClick();
+                } else if (v.getId()==inputDenom.getId()) {
+                    btnCheck.performClick();
+                }
+            }
+            return false;
         }
     }
 }

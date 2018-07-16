@@ -79,9 +79,11 @@
         android:id="@+id/lcm_btnCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
         android:layout_marginStart="8dp"
         android:text="CHECK"
         app:layout_constraintBottom_toBottomOf="@+id/lcm_inputLcm"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/lcm_inputLcm"
         app:layout_constraintTop_toTopOf="@+id/lcm_inputLcm" />
 </android.support.constraint.ConstraintLayout>

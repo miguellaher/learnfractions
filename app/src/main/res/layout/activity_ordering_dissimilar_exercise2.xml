@@ -304,6 +304,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="99x99="
+            android:textSize="25sp"
             app:layout_constraintBottom_toTopOf="@+id/od_fraction4"
             app:layout_constraintStart_toStartOf="@+id/od_fraction4" />
 
@@ -312,6 +313,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="99x99="
+            android:textSize="25sp"
             app:layout_constraintBottom_toTopOf="@+id/od_fraction5"
             app:layout_constraintStart_toStartOf="@+id/od_fraction5" />
 
@@ -320,6 +322,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="99x99="
+            android:textSize="25sp"
             app:layout_constraintBottom_toTopOf="@+id/od_fraction6"
             app:layout_constraintStart_toStartOf="@+id/od_fraction6" />
     </android.support.constraint.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,14 +24,15 @@ import com.example.laher.learnfractions.util.Util;
 import org.json.JSONObject;
 
 public class ExerciseUpdateDialog extends Dialog {
-    Context mContext;
-    TextView txtTopicName, txtExerciseNum;
-    EditText inputRequiredCorrects, inputMaxErrors;
-    CheckBox chk_RC_consecutive, chk_ME_consecutive;
-    Button btnUpdate;
+    private Context mContext;
+    private static final String TAG = "E_Update_D";
+    private TextView txtTopicName, txtExerciseNum, txtLabel2;
+    private EditText inputRequiredCorrects, inputMaxErrors;
+    private CheckBox chk_RC_consecutive, chk_ME_consecutive;
+    private Button btnUpdate;
 
-    Exercise mExercise;
-    Teacher mTeacher;
+    private Exercise mExercise;
+    private Teacher mTeacher;
 
     public ExerciseUpdateDialog(@NonNull Context context, Exercise exercise, Teacher teacher) {
         super(context);
@@ -48,41 +50,83 @@ public class ExerciseUpdateDialog extends Dialog {
         setContentView(R.layout.layout_exercise_update);
         txtTopicName = findViewById(R.id.exercise_update_txtTopicName);
         txtExerciseNum = findViewById(R.id.exercise_update_txtExerciseNum);
+        txtLabel2 = findViewById(R.id.exercise_update_txtLabel2);
         inputRequiredCorrects = findViewById(R.id.exercise_update_inputRequiredCorrects);
         inputMaxErrors = findViewById(R.id.exercise_update_inputMaxErrors);
         chk_RC_consecutive = findViewById(R.id.exercise_update_chk_RC_consecutive);
         chk_ME_consecutive = findViewById(R.id.exercise_update_chk_ME_consecutive);
         btnUpdate = findViewById(R.id.exercise_update_btnUpdate);
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkErrors()){
-                    Service service = new Service("Posting exercise...", mContext, new ServiceResponse() {
-                        @Override
-                        public void postExecute(JSONObject response) {
-                            Util.toast(mContext, response.optString("message"));
-                            dismiss();
-                        }
-                    });
-                    Exercise exercise = new Exercise();
-                    exercise.setTopicName(mExercise.getTopicName());
-                    exercise.setExerciseNum(mExercise.getExerciseNum());
-                    exercise.setRequiredCorrects(Integer.valueOf(String.valueOf(inputRequiredCorrects.getText())));
-                    if (chk_RC_consecutive.isChecked()) {
-                        exercise.setRc_consecutive(true);
+
+        if (exerciseHasNoME()){
+            hideViews();
+            btnUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!inputRequiredCorrects.getText().toString().trim().equals("")){
+                        Service service = new Service("Posting exercise...", mContext, new ServiceResponse() {
+                            @Override
+                            public void postExecute(JSONObject response) {
+                                Util.toast(mContext, response.optString("message"));
+                                dismiss();
+                            }
+                        });
+                        Exercise exercise = new Exercise();
+                        exercise.setTopicName(mExercise.getTopicName());
+                        exercise.setExerciseNum(mExercise.getExerciseNum());
+                        exercise.setRequiredCorrects(Integer.valueOf(String.valueOf(inputRequiredCorrects.getText())));
+                        ExerciseService.create(mTeacher, exercise, service);
+                        Log.d(TAG, "required corrects: " + exercise.getRequiredCorrects() + ", consecutive: " + exercise.isRc_consecutive() +
+                                "; max errors: " + exercise.getMaxErrors() + ", consecutive: " + exercise.isMe_consecutive());
                     } else {
-                        exercise.setRc_consecutive(false);
+                        Styles.shakeAnimate(inputRequiredCorrects);
                     }
-                    exercise.setMaxErrors(Integer.valueOf(String.valueOf(inputMaxErrors.getText())));
-                    if (chk_ME_consecutive.isChecked()) {
-                        exercise.setMe_consecutive(true);
-                    } else {
-                        exercise.setMe_consecutive(false);
-                    }
-                    ExerciseService.create(mTeacher, exercise, service);
                 }
-            }
-        });
+            });
+        } else {
+            btnUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (checkErrors()) {
+                        Service service = new Service("Posting exercise...", mContext, new ServiceResponse() {
+                            @Override
+                            public void postExecute(JSONObject response) {
+                                Util.toast(mContext, response.optString("message"));
+                                dismiss();
+                            }
+                        });
+                        Exercise exercise = new Exercise();
+                        exercise.setTopicName(mExercise.getTopicName());
+                        exercise.setExerciseNum(mExercise.getExerciseNum());
+                        exercise.setRequiredCorrects(Integer.valueOf(String.valueOf(inputRequiredCorrects.getText())));
+                        if (chk_RC_consecutive.isChecked()) {
+                            exercise.setRc_consecutive(true);
+                        } else {
+                            exercise.setRc_consecutive(false);
+                        }
+                        exercise.setMaxErrors(Integer.valueOf(String.valueOf(inputMaxErrors.getText())));
+                        if (chk_ME_consecutive.isChecked()) {
+                            exercise.setMe_consecutive(true);
+                        } else {
+                            exercise.setMe_consecutive(false);
+                        }
+                        Log.d(TAG, "required corrects: " + exercise.getRequiredCorrects() + ", consecutive: " + exercise.isRc_consecutive() +
+                        "; max errors: " + exercise.getMaxErrors() + ", consecutive: " + exercise.isMe_consecutive());
+                        ExerciseService.create(mTeacher, exercise, service);
+                    }
+                }
+            });
+        }
+    }
+
+    private boolean exerciseHasNoME(){
+        return mExercise.getMaxErrors() < 1;
+    }
+
+    private void hideViews(){
+        chk_RC_consecutive.setVisibility(View.INVISIBLE);
+        txtLabel2.setVisibility(View.INVISIBLE);
+        inputMaxErrors.setVisibility(View.INVISIBLE);
+        chk_ME_consecutive.setVisibility(View.INVISIBLE);
     }
 
     private boolean checkErrors(){
@@ -92,13 +136,6 @@ public class ExerciseUpdateDialog extends Dialog {
         }
         if (inputMaxErrors.getText().toString().trim().equals("")){
             Styles.shakeAnimate(inputMaxErrors);
-            return false;
-        }
-        if (Integer.valueOf(String.valueOf(inputMaxErrors.getText()))>=Integer.valueOf(String.valueOf(
-                inputRequiredCorrects.getText()
-        ))){
-            Styles.shakeAnimate(inputMaxErrors);
-            Util.toast(mContext, "Max errors should be less than required corrects.");
             return false;
         }
         if (Integer.valueOf(String.valueOf(inputMaxErrors.getText())) < 1){

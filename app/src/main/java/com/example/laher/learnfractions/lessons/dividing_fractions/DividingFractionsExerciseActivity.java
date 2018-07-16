@@ -4,10 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.TouchDelegate;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,7 +29,6 @@ import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
-import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -64,7 +68,7 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
         exercise = LessonArchive.getLesson(AppConstants.DIVIDING_FRACTIONS).getExercises().get(EXERCISE_NUM-1);
 
         //TOOLBAR
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +78,7 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +90,7 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
         btnNext.setText(AppConstants.DONE);
@@ -103,11 +107,13 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
         txtEquation2 = findViewById(R.id.adsm_txtEquation2);
         txtEquation1.setVisibility(TextView.INVISIBLE);
         txtEquation2.setVisibility(TextView.INVISIBLE);
+        setClickAreas();
         txtScore = findViewById(R.id.adsm_txtScore);
         setTxtScore();
         txtInstruction = findViewById(R.id.adsm_txtInstruction);
         inputNum = findViewById(R.id.adsm_inputNum);
         inputDenom = findViewById(R.id.adsm_inputDenom);
+        inputDenom.setOnEditorActionListener(new InputListener());
         btnCheck = findViewById(R.id.adsm_btnCheck);
         txtSign1 = findViewById(R.id.adsm_txtSign1);
         txtSign2 = findViewById(R.id.adsm_txtSign2);
@@ -135,24 +141,20 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
                 @Override
                 public void postExecute(JSONObject response) {
                     try {
-                        if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
+                        Exercise updatedExercise = new Exercise();
+                        updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
+                        if (response.optString("rc_consecutive").equals("1")) {
+                            updatedExercise.setRc_consecutive(true);
                         } else {
-                            Util.toast(mContext,"Exercise updated.");
-                            Exercise updatedExercise = new Exercise();
-                            updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
-                            if (response.optString("rc_consecutive").equals("1")) {
-                                updatedExercise.setRc_consecutive(true);
-                            } else {
-                                updatedExercise.setRc_consecutive(false);
-                            }
-                            updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
-                            if (response.optString("me_consecutive").equals("1")) {
-                                updatedExercise.setMe_consecutive(true);
-                            } else {
-                                updatedExercise.setMe_consecutive(false);
-                            }
-                            setAttributes(updatedExercise);
+                            updatedExercise.setRc_consecutive(false);
                         }
+                        updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
+                        if (response.optString("me_consecutive").equals("1")) {
+                            updatedExercise.setMe_consecutive(true);
+                        } else {
+                            updatedExercise.setMe_consecutive(false);
+                        }
+                        setAttributes(updatedExercise);
                     } catch (Exception e){e.printStackTrace();}
                 }
             });
@@ -312,6 +314,10 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
                 btnCheck.setEnabled(true);
                 inputNum.requestFocus();
                 txtInstruction.setText("Solve the equation.");
+                if (questionNum>0) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+                }
             }
         }catch (NumberFormatException e){}
     }
@@ -354,5 +360,32 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
                 Styles.shakeAnimate(inputNum);
             }
         }
+    }
+    private class InputListener implements TextView.OnEditorActionListener{
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId== EditorInfo.IME_ACTION_DONE){
+                btnCheck.performClick();
+            }
+            return false;
+        }
+    }
+    private void setClickAreas(){
+        setLargerClickArea(txtNum2,100,0);
+        setLargerClickArea(txtDenom2,0,100);
+    }
+    private void setLargerClickArea(final TextView textView, final int top, final int bottom){
+        final View parent = (View) textView.getParent();  // button: the view you want to enlarge hit area
+        parent.post( new Runnable() {
+            public void run() {
+                final Rect rect = new Rect();
+                textView.getHitRect(rect);
+                rect.top -= top;    // increase top hit area
+                rect.left -= 50;   // increase left hit area
+                rect.bottom += bottom; // increase bottom hit area
+                rect.right += 50;  // increase right hit area
+                parent.setTouchDelegate( new TouchDelegate( rect , textView));
+            }
+        });
     }
 }

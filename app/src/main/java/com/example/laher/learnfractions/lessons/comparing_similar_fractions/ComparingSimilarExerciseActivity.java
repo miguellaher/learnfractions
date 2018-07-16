@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,8 +13,10 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExerciseService;
+import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -24,8 +27,10 @@ import org.json.JSONObject;
 
 public class ComparingSimilarExerciseActivity extends AppCompatActivity {
     Context mContext = this;
+    private static final String TAG = "CS_E1";
 
     Exercise exercise;
+    ExerciseStat mExerciseStat;
     final int EXERCISE_NUM = 1;
     //TOOLBAR
     Button btnBack, btnNext;
@@ -43,6 +48,9 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
 
     int requiredCorrects;
     int maxErrors;
+
+    long startingTime, endingTime;
+
     boolean correctsShouldBeConsecutive;
     boolean errorsShouldBeConsecutive;
     @Override
@@ -52,7 +60,7 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
         exercise = LessonArchive.getLesson(AppConstants.COMPARING_SIMILAR_FRACTIONS).getExercises().get(EXERCISE_NUM-1);
 
         //TOOLBAR
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +70,7 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,38 +81,46 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
         //GUI
-        txtNum1 = (TextView) findViewById(R.id.c1_txtNum1);
-        txtNum2 = (TextView) findViewById(R.id.c1_txtNum2);
-        txtCompareSign = (TextView) findViewById(R.id.c1_txtCompareSign);
-        txtScore = (TextView) findViewById(R.id.c1_txtScore);
+        txtNum1 = findViewById(R.id.c1_txtNum1);
+        txtNum2 = findViewById(R.id.c1_txtNum2);
+        txtCompareSign = findViewById(R.id.c1_txtCompareSign);
+        txtScore = findViewById(R.id.c1_txtScore);
         setTxtScore();
-        txtInstruction = (TextView) findViewById(R.id.c1_txtInstruction);
+        txtInstruction = findViewById(R.id.c1_txtInstruction);
 
-        btnGreater = (Button) findViewById(R.id.c1_btnGreater);
-        btnEquals = (Button) findViewById(R.id.c1_btnEquals);
-        btnLess = (Button) findViewById(R.id.c1_btnLess);
+        btnGreater = findViewById(R.id.c1_btnGreater);
+        btnEquals = findViewById(R.id.c1_btnEquals);
+        btnLess = findViewById(R.id.c1_btnLess);
         btnGreater.setOnClickListener(new BtnListener());
         btnEquals.setOnClickListener(new BtnListener());
         btnLess.setOnClickListener(new BtnListener());
 
 
-        setAttributes(exercise);
-        checkUpdate();
+        setAttributes((ExerciseStat) exercise);
+        if (!Storage.isEmpty()) {
+            checkUpdate();
+        }
 
+        startingTime = System.currentTimeMillis();
         go();
     }
 
-    public void setAttributes(Exercise exerciseAtt){
+    public void setAttributes(ExerciseStat exerciseAtt){
+        Log.d(TAG, "set attributes");
         requiredCorrects = exerciseAtt.getRequiredCorrects();
         maxErrors = exerciseAtt.getMaxErrors();
         correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
         errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
+        mExerciseStat = exerciseAtt;
+        mExerciseStat.setTopicName(exercise.getTopicName());
+        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
         setTxtScore();
     }
+
     public void checkUpdate(){
         if (Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)){
             Service service = new Service("Checking for updates...", mContext, new ServiceResponse() {
@@ -113,8 +129,7 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
                     try {
                         if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
                         } else {
-                            Util.toast(mContext,"Exercise updated.");
-                            Exercise updatedExercise = new Exercise();
+                            Exercise updatedExercise = new ExerciseStat();
                             updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
                             if (response.optString("rc_consecutive").equals("1")) {
                                 updatedExercise.setRc_consecutive(true);
@@ -127,7 +142,8 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
                             } else {
                                 updatedExercise.setMe_consecutive(false);
                             }
-                            setAttributes(updatedExercise);
+                            setAttributes((ExerciseStat) updatedExercise);
+                            startingTime = System.currentTimeMillis();
                         }
                     } catch (Exception e){e.printStackTrace();}
                 }
@@ -169,21 +185,21 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
         }
     }
     public void check(String compareSign){
-        if (compareSign == GREATER_THAN){
+        if (compareSign.equals(GREATER_THAN)){
             if (num1 > num2){
                 correct();
             } else {
                 wrong();
             }
         }
-        if (compareSign == EQUAL_TO){
+        if (compareSign.equals(EQUAL_TO)){
             if (num1 == num2){
                 correct();
             } else {
                 wrong();
             }
         }
-        if (compareSign == LESS_THAN){
+        if (compareSign.equals(LESS_THAN)){
             if (num1 < num2){
                 correct();
             } else {
@@ -205,6 +221,10 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
         btnLess.setEnabled(false);
         txtInstruction.setText(AppConstants.CORRECT);
         if (correct >= requiredCorrects){
+            endingTime = System.currentTimeMillis();
+            if (!Storage.isEmpty()) {
+                setFinalAttributes();
+            }
             btnNext.setEnabled(true);
             txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
         } else {
@@ -221,6 +241,7 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
     }
     public void wrong(){
         error++;
+        mExerciseStat.incrementError();
         if (correctsShouldBeConsecutive) {
             correct = 0;
         }
@@ -256,6 +277,32 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
                 }
             }, 2000);
         }
+    }
+
+    private void setFinalAttributes(){//COPY
+        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try{
+                    Log.d(TAG, "post execute");
+                    Log.d(TAG, "message: " + response.optString("message"));
+                    btnNext.setEnabled(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mExerciseStat.setDone(true);
+        mExerciseStat.setTime_spent(endingTime-startingTime);
+        Student student = new Student();
+        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
+        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
+                mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
+                "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
+                mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
+                mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
+        ExerciseStatService.postStats(student,mExerciseStat,service);
     }
 
 }

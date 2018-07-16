@@ -113,18 +113,19 @@ public class FractionQuestion {
         }
         if (context.equals(ORDERING_DISSIMILAR)){
             fractionThree = new Fraction();
-            while(((fractionOne.getNumerator()==fractionTwo.getNumerator()||
-                    fractionTwo.getNumerator()==fractionThree.getNumerator()||
-                    fractionOne.getNumerator()==fractionThree.getNumerator())||
-                    fractionOne.getDenominator()==fractionTwo.getDenominator()||
-                    fractionTwo.getDenominator()==fractionThree.getDenominator()||
-                    fractionOne.getDenominator()==fractionThree.getDenominator())
-                    ||
-                    (
-                            fractionOne.getValue().equals(fractionTwo.getValue()) ||
-                            fractionTwo.getValue().equals(fractionThree.getValue()) ||
-                            fractionOne.getValue().equals(fractionThree.getValue()))
-                    ){
+            while (((fractionOne.getNumerator()==fractionTwo.getNumerator()||
+                        fractionTwo.getNumerator()==fractionThree.getNumerator()||
+                        fractionOne.getNumerator()==fractionThree.getNumerator())||
+                        fractionOne.getDenominator()==fractionTwo.getDenominator()||
+                        fractionTwo.getDenominator()==fractionThree.getDenominator()||
+                        fractionOne.getDenominator()==fractionThree.getDenominator())
+                        ||
+                        (
+                                fractionOne.getValue().equals(fractionTwo.getValue()) ||
+                                fractionTwo.getValue().equals(fractionThree.getValue()) ||
+                                fractionOne.getValue().equals(fractionThree.getValue())))
+            {
+                fractionOne = new Fraction();
                 fractionTwo = new Fraction();
                 fractionThree = new Fraction();
             }

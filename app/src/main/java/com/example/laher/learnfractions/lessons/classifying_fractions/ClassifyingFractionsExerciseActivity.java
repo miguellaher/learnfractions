@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,13 +15,14 @@ import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExerciseService;
+import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
-import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -29,8 +31,10 @@ import java.util.Collections;
 
 public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
     Context mContext = this;
+    private static final String TAG = "CF_E1";
 
     Exercise exercise;
+    ExerciseStat mExerciseStat;
     final int EXERCISE_NUM = 1;
 
     //TOOLBAR
@@ -49,6 +53,9 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
     int maxErrors;
     boolean correctsShouldBeConsecutive;
     boolean errorsShouldBeConsecutive;
+
+    long startingTime, endingTime;
+
     final Handler handler = new Handler();
 
     @Override
@@ -58,7 +65,7 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
         exercise = LessonArchive.getLesson(AppConstants.CLASSIFYING_FRACTIONS).getExercises().get(EXERCISE_NUM-1);
 
         //TOOLBAR
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +75,7 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,34 +87,41 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
         btnNext.setText(AppConstants.DONE);
         //GUI
-        txtNum = (TextView) findViewById(R.id.clF_txtNum);
-        txtDenom = (TextView) findViewById(R.id.clF_txtDenom);
-        txtWholeNum = (TextView) findViewById(R.id.clF_txtWholeNum);
-        txtScore = (TextView) findViewById(R.id.clF_txtScore);
-        txtInstruction = (TextView) findViewById(R.id.clF_txtInstruction);
-        btnProper = (Button) findViewById(R.id.clF_btnProper);
-        btnImproper = (Button) findViewById(R.id.clF_btnImproper);
-        btnMixed = (Button) findViewById(R.id.clF_btnMixed);
+        txtNum = findViewById(R.id.clF_txtNum);
+        txtDenom = findViewById(R.id.clF_txtDenom);
+        txtWholeNum = findViewById(R.id.clF_txtWholeNum);
+        txtScore = findViewById(R.id.clF_txtScore);
+        txtInstruction = findViewById(R.id.clF_txtInstruction);
+        btnProper = findViewById(R.id.clF_btnProper);
+        btnImproper = findViewById(R.id.clF_btnImproper);
+        btnMixed = findViewById(R.id.clF_btnMixed);
         btnProper.setOnClickListener(new BtnAnswerListener());
         btnImproper.setOnClickListener(new BtnAnswerListener());
         btnMixed.setOnClickListener(new BtnAnswerListener());
 
-        setAttributes(exercise);
-        checkUpdate();
+        setAttributes((ExerciseStat) exercise);
+        if (!Storage.isEmpty()) {
+            checkUpdate();
+        }
+        startingTime = System.currentTimeMillis();
 
         go();
     }
 
-    public void setAttributes(Exercise exerciseAtt){
+    public void setAttributes(ExerciseStat exerciseAtt){
+        Log.d(TAG, "set attributes");
         requiredCorrects = exerciseAtt.getRequiredCorrects();
         maxErrors = exerciseAtt.getMaxErrors();
         correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
         errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
+        mExerciseStat = exerciseAtt;
+        mExerciseStat.setTopicName(exercise.getTopicName());
+        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
         setTxtScore();
     }
     public void checkUpdate(){
@@ -118,8 +132,7 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
                     try {
                         if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
                         } else {
-                            Util.toast(mContext,"Exercise updated.");
-                            Exercise updatedExercise = new Exercise();
+                            Exercise updatedExercise = new ExerciseStat();
                             updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
                             if (response.optString("rc_consecutive").equals("1")) {
                                 updatedExercise.setRc_consecutive(true);
@@ -132,7 +145,8 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
                             } else {
                                 updatedExercise.setMe_consecutive(false);
                             }
-                            setAttributes(updatedExercise);
+                            setAttributes((ExerciseStat) updatedExercise);
+                            startingTime = System.currentTimeMillis();
                         }
                     } catch (Exception e){e.printStackTrace();}
                 }
@@ -158,6 +172,10 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
         setTxtScore();
         enableButtons(false);
         if (correct >=requiredCorrects){
+            endingTime = System.currentTimeMillis();
+            if (!Storage.isEmpty()) {
+                setFinalAttributes();
+            }
             txtInstruction.setText(AppConstants.FINISHED_LESSON);
             btnNext.setEnabled(true);
         } else {
@@ -174,9 +192,11 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
         enableButtons(true);
         questionNum++;
         setGuiFraction();
+        txtInstruction.setText("Classify the fraction.");
     }
     public void wrong(){
         error++;
+        mExerciseStat.incrementError();
         if (correctsShouldBeConsecutive) {
             correct = 0;
         }
@@ -206,11 +226,11 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
                     if (correctsShouldBeConsecutive) {
                         go();
                     } else {
-                        if (fractions.get(questionNum).getContext()==Fraction.PROPER){
+                        if (fractions.get(questionNum).getContext().equals(Fraction.PROPER)){
                             fraction = new Fraction(Fraction.PROPER);
-                        } else if (fractions.get(questionNum).getContext()==Fraction.IMPROPER){
+                        } else if (fractions.get(questionNum).getContext().equals(Fraction.IMPROPER)){
                             fraction = new Fraction(Fraction.IMPROPER);
-                        } else if (fractions.get(questionNum).getContext()==Fraction.MIXED){
+                        } else if (fractions.get(questionNum).getContext().equals(Fraction.MIXED)){
                             fraction = new Fraction(Fraction.MIXED);
                         }
                         fractions.add(fraction);
@@ -219,6 +239,30 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
                 }
             },2000);
         }
+    }
+    private void setFinalAttributes(){
+        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try{
+                    Log.d(TAG, "post execute");
+                    Log.d(TAG, "message: " + response.optString("message"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mExerciseStat.setDone(true);
+        mExerciseStat.setTime_spent(endingTime-startingTime);
+        Student student = new Student();
+        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
+        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
+                mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
+                "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
+                mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
+                mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
+        ExerciseStatService.postStats(student,mExerciseStat,service);
     }
     public void startUp(){
         setTxtScore();
@@ -244,7 +288,7 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
         Collections.shuffle(fractions);
     }
     public void setGuiFraction(){
-        if (Fraction.MIXED == fractions.get(questionNum).getContext()){
+        if (Fraction.MIXED.equals(fractions.get(questionNum).getContext())){
             txtWholeNum.setText(String.valueOf(fractions.get(questionNum).getWholeNum()));
         } else {
             txtWholeNum.setText("");
@@ -253,7 +297,7 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
         txtDenom.setText(String.valueOf(fractions.get(questionNum).getDenominator()));
     }
     public void check(String context){
-        if (context == fractions.get(questionNum).getContext()){
+        if (context.equals(fractions.get(questionNum).getContext())){
             correct();
         } else {
             wrong();

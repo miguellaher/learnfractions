@@ -8,13 +8,13 @@ public class Lesson {
     Class startingActivity;
     boolean enabled;
 
-    ArrayList<Exercise> exercises;
+    ArrayList<ExerciseStat> exercises;
 
-    public ArrayList<Exercise> getExercises() {
+    public ArrayList<ExerciseStat> getExercises() {
         return exercises;
     }
 
-    public void setExercises(ArrayList<Exercise> exercises) {
+    public void setExercises(ArrayList<ExerciseStat> exercises) {
         this.exercises = exercises;
     }
 

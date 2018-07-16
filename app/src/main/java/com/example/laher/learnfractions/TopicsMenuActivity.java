@@ -26,6 +26,7 @@ import java.util.ArrayList;
 public class TopicsMenuActivity extends AppCompatActivity {
     Context mContext = this;
     private static final String TAG = "TopicsMenuActivity";
+    private static boolean openedOnce = false;
 
     //vars
     private ArrayList<String> mNames = new ArrayList<>();
@@ -41,14 +42,22 @@ public class TopicsMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topics_menu);
         Log.d(TAG, "onCreate: started.");
-        if (!isNetworkAvailable()){
-            MessageDialog messageDialog = new MessageDialog(mContext, "Go online to login/register.");
-            messageDialog.show();
-        }
 
         btnBack = findViewById(R.id.btnBack);
+        if (!isNetworkAvailable()&&!TopicsMenuActivity.openedOnce){
+            TopicsMenuActivity.openedOnce = true;
+            final MessageDialog messageDialog = new MessageDialog(mContext, "Go online to login/register.");
+            messageDialog.show();
+            btnBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    messageDialog.show();
+                }
+            });
+        } else {
+            btnBack.setOnClickListener(new BtnBackListener());
+        }
         btnNext = findViewById(R.id.btnNext);
-        btnBack.setOnClickListener(new BtnBackListener());
         txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(AppConstants.LESSONS);
 
@@ -80,11 +89,15 @@ public class TopicsMenuActivity extends AppCompatActivity {
     public class BtnBackListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            if(Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)){
-                Intent intent = new Intent(TopicsMenuActivity.this,
-                        StudentMainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+            if (!Storage.isEmpty()) {
+                if (Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)) {
+                    Intent intent = new Intent(TopicsMenuActivity.this,
+                            StudentMainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                } else {
+                    finish();
+                }
             } else {
                 finish();
             }

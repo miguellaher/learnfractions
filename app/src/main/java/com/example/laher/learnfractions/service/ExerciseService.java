@@ -18,16 +18,18 @@ public class ExerciseService {
         requestParams.put("topic_name", exercise.getTopicName());
         requestParams.put("exercise_num", exercise.getExerciseNum());
         requestParams.put("required_corrects", exercise.getRequiredCorrects());
-        if (exercise.isRc_consecutive()){
-            requestParams.put("rc_consecutive", "1");
-        } else {
-            requestParams.put("rc_consecutive", "0");
-        }
-        requestParams.put("max_errors", exercise.getMaxErrors());
-        if (exercise.isMe_consecutive()){
-            requestParams.put("me_consecutive", "1");
-        } else {
-            requestParams.put("me_consecutive", "0");
+        if(exercise.getMaxErrors() > 0) {
+            if (exercise.isRc_consecutive()) {
+                requestParams.put("rc_consecutive", "1");
+            } else {
+                requestParams.put("rc_consecutive", "0");
+            }
+            requestParams.put("max_errors", exercise.getMaxErrors());
+            if (exercise.isMe_consecutive()) {
+                requestParams.put("me_consecutive", "1");
+            } else {
+                requestParams.put("me_consecutive", "0");
+            }
         }
         service.post("http://jabahan.com/learnfractions/exercise/create.php", requestParams);
         service.execute();

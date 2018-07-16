@@ -9,7 +9,12 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,14 +24,15 @@ import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExerciseService;
+import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
-import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -34,8 +40,10 @@ import java.util.ArrayList;
 
 public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
     Context mContext = this;
+    private static final String TAG = "CF_E2";
 
     Exercise exercise;
+    ExerciseStat mExerciseStat;
     final int EXERCISE_NUM = 2;
 
     //TOOLBAR
@@ -58,6 +66,9 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
     int questionNum;
     int correct;
     int requiredCorrects;
+
+    long startingTime, endingTime;
+
     ArrayList<Integer> viewId;
     final Handler handler = new Handler();
     ColorStateList defaultColor;
@@ -69,7 +80,7 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
         requiredCorrects = exercise.getRequiredCorrects();
 
         //TOOLBAR
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +90,7 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,22 +102,23 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
         txtTitle.setTextSize(14);
         btnNext.setText(AppConstants.DONE);
         //GUI
-        txtWholeNum = (TextView) findViewById(R.id.cvt2_txtWholeNum);
-        txtNum1 = (TextView) findViewById(R.id.cvt2_txtNum);
-        txtNum2 = (TextView) findViewById(R.id.cvt2_txtNum2);
+        txtWholeNum = findViewById(R.id.cvt2_txtWholeNum);
+        txtNum1 = findViewById(R.id.cvt2_txtNum);
+        txtNum2 = findViewById(R.id.cvt2_txtNum2);
         txtNum2.setTextColor(Color.rgb(0,0,0));
-        txtDenom1 = (TextView) findViewById(R.id.cvt2_txtDenom);
-        txtEquation = (TextView) findViewById(R.id.cvt2_txtEquation);
-        txtScore = (TextView) findViewById(R.id.cvt2_txtScore);
+        txtDenom1 = findViewById(R.id.cvt2_txtDenom);
+        txtEquation = findViewById(R.id.cvt2_txtEquation);
+        txtScore = findViewById(R.id.cvt2_txtScore);
         txtScore.setText(correct + " / " + requiredCorrects);
-        txtInstruction = (TextView) findViewById(R.id.cvt2_txtInstruction);
-        inputDenom = (EditText) findViewById(R.id.cvt2_inputDenom);
-        btnCheck = (Button) findViewById(R.id.cvt2_btnCheck);
+        txtInstruction = findViewById(R.id.cvt2_txtInstruction);
+        inputDenom = findViewById(R.id.cvt2_inputDenom);
+        inputDenom.setOnEditorActionListener(new InputListener());
+        btnCheck = findViewById(R.id.cvt2_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
         //EQUATION DIALOG
         edView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
@@ -115,24 +127,35 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
         equationDialog.setOnShowListener(new EquationDialogListener());
         equationDialog.setTitle("Division Equation");
         equationDialog.setContentView(edView);
-        diagEdTxtNum1 = (TextView) edView.findViewById(R.id.md_txtMultiplicand);
-        diagEdTxtNum2 = (TextView) edView.findViewById(R.id.md_txtMultiplier);
-        diagEdTxtSign = (TextView) edView.findViewById(R.id.md_txtSign);
-        diagEdInputAnswer = (EditText) edView.findViewById(R.id.md_inputProduct);
-        diagEdBtnCheck = (Button) edView.findViewById(R.id.md_btnCheck);
+        diagEdTxtNum1 = edView.findViewById(R.id.md_txtMultiplicand);
+        diagEdTxtNum2 = edView.findViewById(R.id.md_txtMultiplier);
+        diagEdTxtSign = edView.findViewById(R.id.md_txtSign);
+        diagEdInputAnswer = edView.findViewById(R.id.md_inputProduct);
+        diagEdInputAnswer.setOnEditorActionListener(new DialogInputListener());
+        diagEdBtnCheck = edView.findViewById(R.id.md_btnCheck);
         diagEdBtnCheck.setOnClickListener(new DiagEdBtnCheckListener());
 
         defaultColor = txtDenom1.getTextColors();
         viewId = new ArrayList<>();
 
-        setAttributes(exercise);
-        checkUpdate();
+        if (!Storage.isEmpty()) {
+            checkUpdate();
+        }
+        startingTime = System.currentTimeMillis();
 
         go();
     }
 
-    public void setAttributes(Exercise exerciseAtt){
+    public void setAttributes(ExerciseStat exerciseAtt){
+        Log.d(TAG, "set attributes");
         requiredCorrects = exerciseAtt.getRequiredCorrects();
+        mExerciseStat = exerciseAtt;
+        mExerciseStat.setTopicName(exercise.getTopicName());
+        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
+        setTxtScore();
+    }
+    public void setTxtScore(){
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
     }
     public void checkUpdate(){
         if (Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)){
@@ -142,10 +165,10 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
                     try {
                         if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
                         } else {
-                            Util.toast(mContext,"Exercise updated.");
-                            Exercise updatedExercise = new Exercise();
+                            Exercise updatedExercise = new ExerciseStat();
                             updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
-                            setAttributes(updatedExercise);
+                            setAttributes((ExerciseStat) updatedExercise);
+                            startingTime = System.currentTimeMillis();
                         }
                     } catch (Exception e){e.printStackTrace();}
                 }
@@ -162,10 +185,14 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
     }
     public void correct(){
         correct++;
-        txtScore.setText(correct + " / " + requiredCorrects);
+        setTxtScore();
         inputDenom.setEnabled(false);
         btnCheck.setEnabled(false);
         if (correct >= requiredCorrects){
+            endingTime = System.currentTimeMillis();
+            if (!Storage.isEmpty()) {
+                setFinalAttributes();
+            }
             txtInstruction.setText(AppConstants.FINISHED_LESSON);
             btnNext.setEnabled(true);
         } else {
@@ -180,6 +207,30 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
                 }
             }, 2000);
         }
+    }
+    private void setFinalAttributes(){
+        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try{
+                    Log.d(TAG, "post execute");
+                    Log.d(TAG, "message: " + response.optString("message"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mExerciseStat.setDone(true);
+        mExerciseStat.setTime_spent(endingTime-startingTime);
+        Student student = new Student();
+        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
+        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
+                mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
+                "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
+                mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
+                mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
+        ExerciseStatService.postStats(student,mExerciseStat,service);
     }
     public void setQuestions(){
         questionNum = 0;
@@ -285,16 +336,18 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
                                 + " =");
                         setAddTxtListeners(false);
                         setInputEnabled(true);
-                        inputDenom.requestFocus();
                         btnCheck.setEnabled(true);
                         txtNum2.setText(String.valueOf(diagEdInputAnswer.getText().toString().trim()));
                         fractions.get(questionNum).toImproper();
                         equationDialog.dismiss();
                         txtInstruction.setText("The new denominator remains the same.");
+                        inputDenom.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
                     } else {
                         Styles.shakeAnimate(diagEdInputAnswer);
                     }
-                } else if (String.valueOf(diagEdTxtSign.getText())=="x"){
+                } else if (String.valueOf(diagEdTxtSign.getText()).equals("x")){
                     if (fractions.get(questionNum).getDenominator() * fractions.get(questionNum).getWholeNum()
                             == Integer.valueOf(String.valueOf(diagEdInputAnswer.getText().toString().trim()))) {
                         txtEquation.setText(String.valueOf(diagEdInputAnswer.getText()));
@@ -322,6 +375,8 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
         public void onShow(DialogInterface dialog) {
             diagEdInputAnswer.setText("");
             viewId.clear();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
         }
     }
     public class BtnCheckListener implements Button.OnClickListener{
@@ -337,6 +392,24 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
             } else {
                 Styles.shakeAnimate(inputDenom);
             }
+        }
+    }
+    private class DialogInputListener implements TextView.OnEditorActionListener{
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId== EditorInfo.IME_ACTION_DONE){
+                diagEdBtnCheck.performClick();
+            }
+            return false;
+        }
+    }
+    private class InputListener implements TextView.OnEditorActionListener{
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId== EditorInfo.IME_ACTION_DONE){
+                btnCheck.performClick();
+            }
+            return false;
         }
     }
 }

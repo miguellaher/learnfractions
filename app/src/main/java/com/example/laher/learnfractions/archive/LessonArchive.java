@@ -1,10 +1,10 @@
 package com.example.laher.learnfractions.archive;
 
 
-import com.example.laher.learnfractions.lessons.fraction_meaning.FractionMeaningExerciseActivity;
-import com.example.laher.learnfractions.lessons.non_visual_fraction.NonVisualExerciseActivity;
+import com.example.laher.learnfractions.lessons.converting_fractions.ConvertingFractionsVideoActivity;
 import com.example.laher.learnfractions.lessons.non_visual_fraction.NonVisualVideoActivity;
-import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.lessons.ordering_dissimilar.OrderingDissimilarExercise2Activity;
+import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Lesson;
 import com.example.laher.learnfractions.lessons.adding_dissimilar.AddingDissimilarVideoActivity;
 import com.example.laher.learnfractions.lessons.adding_similar.AddingSimilarVideoActivity;
@@ -12,11 +12,9 @@ import com.example.laher.learnfractions.lessons.classifying_fractions.Classifyin
 import com.example.laher.learnfractions.lessons.comparing_dissimilar_fractions.ComparingDissimilarVideoActivity;
 import com.example.laher.learnfractions.lessons.comparing_fractions.ComparingFractionsVideoActivity;
 import com.example.laher.learnfractions.lessons.comparing_similar_fractions.ComparingSimilarVideoActivity;
-import com.example.laher.learnfractions.lessons.converting_fractions.ConvertingFractionsVideoActivity;
 import com.example.laher.learnfractions.lessons.dividing_fractions.DividingFractionsVideoActivity;
 import com.example.laher.learnfractions.lessons.fraction_meaning.FractionMeaningVideoActivity;
 import com.example.laher.learnfractions.lessons.multiplying_fractions.MultiplyingFractionsVideoActivity;
-import com.example.laher.learnfractions.lessons.ordering_dissimilar.OrderingDissimilarVideoActivity;
 import com.example.laher.learnfractions.lessons.ordering_similar.OrderingSimilarVideoActivity;
 import com.example.laher.learnfractions.lessons.solving_mixed.SolvingMixedVideoActivity;
 import com.example.laher.learnfractions.lessons.solving_mixed2.SolvingMixed2VideoActivity;
@@ -35,7 +33,7 @@ public abstract class LessonArchive {
     private static final Lesson comparingFractions = new Lesson(AppConstants.COMPARING_FRACTIONS, ComparingFractionsVideoActivity.class);
 
     private static final Lesson orderingSimilarFractions = new Lesson(AppConstants.ORDERING_SIMILAR, OrderingSimilarVideoActivity.class);
-    private static final Lesson orderingDissimilarFractions = new Lesson(AppConstants.ORDERING_DISSIMILAR, OrderingDissimilarVideoActivity.class);
+    private static final Lesson orderingDissimilarFractions = new Lesson(AppConstants.ORDERING_DISSIMILAR, OrderingDissimilarExercise2Activity.class);
     private static final Lesson classifyingFractions = new Lesson(AppConstants.CLASSIFYING_FRACTIONS, ClassifyingFractionsVideoActivity.class);
     private static final Lesson convertingFractions = new Lesson(AppConstants.CONVERTING_FRACTIONS, ConvertingFractionsVideoActivity.class);
     private static final Lesson addingSimilarFractions = new Lesson(AppConstants.ADDING_SIMILAR, AddingSimilarVideoActivity.class);
@@ -51,37 +49,37 @@ public abstract class LessonArchive {
 
     public static Lesson getLesson(String lessonTitle){
         if (fractionMeaning.getTitle().equals(lessonTitle)){
-            fractionMeaning.setExercises(new ArrayList<Exercise>());
+            fractionMeaning.setExercises(new ArrayList<ExerciseStat>());
             fractionMeaning.getExercises().add(
-                    new Exercise(fractionMeaning.getTitle(),1,6,
+                    new ExerciseStat(fractionMeaning.getTitle(),1,6,
                             true,3,true));
             fractionMeaning.getExercises().add(
-                    new Exercise(fractionMeaning.getTitle(),2,5,
+                    new ExerciseStat(fractionMeaning.getTitle(),2,5,
                             true,2,true));
             return fractionMeaning;
         }
         if (nonVisualFraction.getTitle().equals(lessonTitle)){
-            nonVisualFraction.setExercises(new ArrayList<Exercise>());
-            nonVisualFraction.getExercises().add(new Exercise(nonVisualFraction.getTitle(),
+            nonVisualFraction.setExercises(new ArrayList<ExerciseStat>());
+            nonVisualFraction.getExercises().add(new ExerciseStat(nonVisualFraction.getTitle(),
                     1, 8, true, 4, true));
-            nonVisualFraction.getExercises().add(new Exercise(nonVisualFraction.getTitle(),
+            nonVisualFraction.getExercises().add(new ExerciseStat(nonVisualFraction.getTitle(),
                     2, 8, true, 4, true));
             return nonVisualFraction;
         }
         if (comparingSimilarFractions.getTitle().equals(lessonTitle)){
-            comparingSimilarFractions.setExercises(new ArrayList<Exercise>());
-            comparingSimilarFractions.getExercises().add(new Exercise(comparingSimilarFractions.getTitle(),
+            comparingSimilarFractions.setExercises(new ArrayList<ExerciseStat>());
+            comparingSimilarFractions.getExercises().add(new ExerciseStat(comparingSimilarFractions.getTitle(),
                     1, 5, true, 3, true));
-            comparingSimilarFractions.getExercises().add(new Exercise(comparingSimilarFractions.getTitle(),
+            comparingSimilarFractions.getExercises().add(new ExerciseStat(comparingSimilarFractions.getTitle(),
                     2,8 , true, 4, true));
             return comparingSimilarFractions;
         }
         if (comparingDissimilarFractions.getTitle().equals(lessonTitle)){
-            comparingDissimilarFractions.setExercises(new ArrayList<Exercise>());
-            comparingDissimilarFractions.getExercises().add(new Exercise(comparingDissimilarFractions.getTitle(),
+            comparingDissimilarFractions.setExercises(new ArrayList<ExerciseStat>());
+            comparingDissimilarFractions.getExercises().add(new ExerciseStat(comparingDissimilarFractions.getTitle(),
                     1,8));
             comparingDissimilarFractions.getExercises().add(
-                    new Exercise(comparingDissimilarFractions.getTitle(),
+                    new ExerciseStat(comparingDissimilarFractions.getTitle(),
                             2,
                             5,
                             true,
@@ -90,9 +88,9 @@ public abstract class LessonArchive {
             return comparingDissimilarFractions;
         }
         if (comparingFractions.getTitle().equals(lessonTitle)){
-            comparingFractions.setExercises(new ArrayList<Exercise>());
+            comparingFractions.setExercises(new ArrayList<ExerciseStat>());
             comparingFractions.getExercises().add(
-                    new Exercise(comparingFractions.getTitle()
+                    new ExerciseStat(comparingFractions.getTitle()
                             ,1
                             ,10
                             ,true
@@ -100,7 +98,7 @@ public abstract class LessonArchive {
                             ,true
                     ));
             comparingFractions.getExercises().add(
-                    new Exercise(comparingFractions.getTitle()
+                    new ExerciseStat(comparingFractions.getTitle()
                             ,2
                             ,10
                             ,true
@@ -110,9 +108,9 @@ public abstract class LessonArchive {
             return comparingFractions;
         }
         if (orderingSimilarFractions.getTitle().equals(lessonTitle)){
-            orderingSimilarFractions.setExercises(new ArrayList<Exercise>());
+            orderingSimilarFractions.setExercises(new ArrayList<ExerciseStat>());
             orderingSimilarFractions.getExercises().add(
-                    new Exercise(orderingSimilarFractions.getTitle()
+                    new ExerciseStat(orderingSimilarFractions.getTitle()
                             ,1
                             ,10
                             ,true
@@ -120,7 +118,7 @@ public abstract class LessonArchive {
                             ,true
                     ));
             orderingSimilarFractions.getExercises().add(
-                    new Exercise(orderingSimilarFractions.getTitle()
+                    new ExerciseStat(orderingSimilarFractions.getTitle()
                             ,2
                             ,10
                             ,true
@@ -130,9 +128,9 @@ public abstract class LessonArchive {
             return orderingSimilarFractions;
         }
         if (orderingDissimilarFractions.getTitle().equals(lessonTitle)){
-            orderingDissimilarFractions.setExercises(new ArrayList<Exercise>());
+            orderingDissimilarFractions.setExercises(new ArrayList<ExerciseStat>());
             orderingDissimilarFractions.getExercises().add(
-                    new Exercise(orderingDissimilarFractions.getTitle()
+                    new ExerciseStat(orderingDissimilarFractions.getTitle()
                             ,1
                             ,10
                             ,true
@@ -140,7 +138,7 @@ public abstract class LessonArchive {
                             ,true
                     ));
             orderingDissimilarFractions.getExercises().add(
-                    new Exercise(orderingDissimilarFractions.getTitle()
+                    new ExerciseStat(orderingDissimilarFractions.getTitle()
                             ,2
                             ,10
                             ,true
@@ -150,9 +148,9 @@ public abstract class LessonArchive {
             return orderingDissimilarFractions;
         }
         if (classifyingFractions.getTitle().equals(lessonTitle)){
-            classifyingFractions.setExercises(new ArrayList<Exercise>());
+            classifyingFractions.setExercises(new ArrayList<ExerciseStat>());
             classifyingFractions.getExercises().add(
-                    new Exercise(classifyingFractions.getTitle()
+                    new ExerciseStat(classifyingFractions.getTitle()
                             ,1
                             ,10
                             ,true
@@ -162,23 +160,23 @@ public abstract class LessonArchive {
             return classifyingFractions;
         }
         if (convertingFractions.getTitle().equals(lessonTitle)){
-            convertingFractions.setExercises(new ArrayList<Exercise>());
+            convertingFractions.setExercises(new ArrayList<ExerciseStat>());
             convertingFractions.getExercises().add(
-                    new Exercise(convertingFractions.getTitle()
+                    new ExerciseStat(convertingFractions.getTitle()
                             ,1
                             ,10
                     ));
             convertingFractions.getExercises().add(
-                    new Exercise(convertingFractions.getTitle()
+                    new ExerciseStat(convertingFractions.getTitle()
                             ,2
                             ,10
                     ));
             return convertingFractions;
         }
         if (addingSimilarFractions.getTitle().equals(lessonTitle)){
-            addingSimilarFractions.setExercises(new ArrayList<Exercise>());
+            addingSimilarFractions.setExercises(new ArrayList<ExerciseStat>());
             addingSimilarFractions.getExercises().add(
-                    new Exercise(addingSimilarFractions
+                    new ExerciseStat(addingSimilarFractions
                             .getTitle()
                             ,1
                             ,10
@@ -189,9 +187,9 @@ public abstract class LessonArchive {
             return addingSimilarFractions;
         }
         if (addingDissimilarFractions.getTitle().equals(lessonTitle)){
-            addingDissimilarFractions.setExercises(new ArrayList<Exercise>());
+            addingDissimilarFractions.setExercises(new ArrayList<ExerciseStat>());
             addingDissimilarFractions.getExercises().add(
-                    new Exercise(addingDissimilarFractions
+                    new ExerciseStat(addingDissimilarFractions
                             .getTitle()
                     ,1
                     ,10
@@ -202,9 +200,9 @@ public abstract class LessonArchive {
             return addingDissimilarFractions;
         }
         if (subtractingSimilarFractions.getTitle().equals(lessonTitle)){
-            subtractingSimilarFractions.setExercises(new ArrayList<Exercise>());
+            subtractingSimilarFractions.setExercises(new ArrayList<ExerciseStat>());
             subtractingSimilarFractions.getExercises().add(
-                    new Exercise(subtractingSimilarFractions
+                    new ExerciseStat(subtractingSimilarFractions
                             .getTitle()
                     ,1
                     ,10
@@ -215,9 +213,9 @@ public abstract class LessonArchive {
             return subtractingSimilarFractions;
         }
         if (subtractingDissimilarFractions.getTitle().equals(lessonTitle)){
-            subtractingDissimilarFractions.setExercises(new ArrayList<Exercise>());
+            subtractingDissimilarFractions.setExercises(new ArrayList<ExerciseStat>());
             subtractingDissimilarFractions.getExercises().add(
-                    new Exercise(subtractingDissimilarFractions
+                    new ExerciseStat(subtractingDissimilarFractions
                             .getTitle()
                     ,1
                     ,10
@@ -228,9 +226,9 @@ public abstract class LessonArchive {
             return subtractingDissimilarFractions;
         }
         if (multiplyingFractions.getTitle().equals(lessonTitle)){
-            multiplyingFractions.setExercises(new ArrayList<Exercise>());
+            multiplyingFractions.setExercises(new ArrayList<ExerciseStat>());
             multiplyingFractions.getExercises().add(
-                    new Exercise(multiplyingFractions
+                    new ExerciseStat(multiplyingFractions
                             .getTitle()
                     ,1
                     ,10
@@ -241,9 +239,9 @@ public abstract class LessonArchive {
             return multiplyingFractions;
         }
         if (dividingFractions.getTitle().equals(lessonTitle)){
-            dividingFractions.setExercises(new ArrayList<Exercise>());
+            dividingFractions.setExercises(new ArrayList<ExerciseStat>());
             dividingFractions.getExercises().add(
-                    new Exercise(dividingFractions
+                    new ExerciseStat(dividingFractions
                             .getTitle()
                     ,1
                     ,10
@@ -254,9 +252,9 @@ public abstract class LessonArchive {
             return dividingFractions;
         }
         if (solvingWithMixed1.getTitle().equals(lessonTitle)){
-            solvingWithMixed1.setExercises(new ArrayList<Exercise>());
+            solvingWithMixed1.setExercises(new ArrayList<ExerciseStat>());
             solvingWithMixed1.getExercises().add(
-                    new Exercise(solvingWithMixed1
+                    new ExerciseStat(solvingWithMixed1
                             .getTitle()
                     ,1
                     ,10
@@ -267,9 +265,9 @@ public abstract class LessonArchive {
             return solvingWithMixed1;
         }
         if (solvingWithMixed2.getTitle().equals(lessonTitle)){
-            solvingWithMixed2.setExercises(new ArrayList<Exercise>());
+            solvingWithMixed2.setExercises(new ArrayList<ExerciseStat>());
             solvingWithMixed2.getExercises().add(
-                    new Exercise(solvingWithMixed2
+                    new ExerciseStat(solvingWithMixed2
                             .getTitle()
                     ,1
                     ,10

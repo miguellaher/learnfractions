@@ -8,7 +8,10 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,8 +21,10 @@ import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExerciseService;
+import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -35,6 +40,7 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
     Context mContext = this;
 
     Exercise exercise;
+    ExerciseStat mExerciseStat;
     final int EXERCISE_NUM = 1;
 
     //TOOLBAR
@@ -57,6 +63,7 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
     boolean errorsShouldBeConsecutive;
     final Handler handler = new Handler();
 
+    long startingTime, endingTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,22 +107,30 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
         txtInstruction = findViewById(R.id.fe_txtInstruction);
         inputNum = findViewById(R.id.fe_inputNum);
         inputDenom = findViewById(R.id.fe_inputDenom);
+        inputDenom.setOnEditorActionListener(new InputListener());
         btnCheck = findViewById(R.id.fe_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
         clChoices = findViewById(R.id.fe_clChoices);
         clChoices.setVisibility(View.INVISIBLE);
 
-        setAttributes(exercise);
-        checkUpdate();
+        setAttributes((ExerciseStat) exercise);
+        if (!Storage.isEmpty()) {
+            checkUpdate();
+        }
+        startingTime = System.currentTimeMillis();
 
         go();
     }
 
-    public void setAttributes(Exercise exerciseAtt){
+    public void setAttributes(ExerciseStat exerciseAtt){
+        Log.d(TAG, "set attributes");
         requiredCorrects = exerciseAtt.getRequiredCorrects();
         maxErrors = exerciseAtt.getMaxErrors();
         correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
         errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
+        mExerciseStat = exerciseAtt;
+        mExerciseStat.setTopicName(exercise.getTopicName());
+        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
         setTxtScore();
     }
     public void checkUpdate(){
@@ -128,7 +143,7 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
                         Log.d(TAG, response.optString("message"));
                         if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
                         } else {
-                            Exercise updatedExercise = new Exercise();
+                            Exercise updatedExercise = new ExerciseStat();
                             updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
                             Log.d(TAG, "finished setRequiredCorrects()");
                             if (response.optString("rc_consecutive").equals("1")) {
@@ -145,9 +160,9 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
                                 updatedExercise.setMe_consecutive(false);
                             }
                             Log.d(TAG, "finished setMe_consecutive()");
-                            setAttributes(updatedExercise);
+                            setAttributes((ExerciseStat) updatedExercise);
+                            startingTime = System.currentTimeMillis();
                             Log.d(TAG, "finished setAttributes()");
-                            Util.toast(mContext,"Exercise updated.");
                         }
                     } catch (Exception e) {
                         Log.d(TAG, "exception handled");
@@ -177,6 +192,10 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
         disableInputFraction();
         btnCheck.setEnabled(false);
         if (correct >= requiredCorrects){
+            endingTime = System.currentTimeMillis();
+            if (!Storage.isEmpty()) {
+                setFinalAttributes();
+            }
             txtInstruction.setText(AppConstants.FINISHED_LESSON);
             btnNext.setEnabled(true);
         } else {
@@ -198,6 +217,7 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
     }
     public void wrong(){
         error++;
+        mExerciseStat.incrementError();
         if (correctsShouldBeConsecutive) {
             correct = 0;
         }
@@ -236,6 +256,30 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
             }, 2000);
         }
     }
+    private void setFinalAttributes(){
+        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try{
+                    Log.d(TAG, "post execute");
+                    Log.d(TAG, "message: " + response.optString("message"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mExerciseStat.setDone(true);
+        mExerciseStat.setTime_spent(endingTime-startingTime);
+        Student student = new Student();
+        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
+        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
+                mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
+                "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
+                mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
+                mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
+        ExerciseStatService.postStats(student,mExerciseStat,service);
+    }
     public void startUp(){
         setTxtScore();
         txtInstruction.setText("Add the two numerators for the new numerator and copy the similar denominator for the new denominator.");
@@ -245,6 +289,10 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
         inputNum.setText("");
         inputDenom.setText("");
         inputNum.requestFocus();
+        if (questionNum>0) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+        }
     }
     public void setQuestions(){
         questionNum = 0;
@@ -299,6 +347,15 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
             } else {
                 shakeInputFraction();
             }
+        }
+    }
+    private class InputListener implements TextView.OnEditorActionListener{
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId== EditorInfo.IME_ACTION_DONE){
+                btnCheck.performClick();
+            }
+            return false;
         }
     }
 }

@@ -14,8 +14,10 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.model.Exercise;
+import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExerciseService;
+import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -28,9 +30,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class NonVisualExerciseActivity extends AppCompatActivity {
+    private static final String TAG = "NV_E1";
     Context mContext = this;
 
     Exercise exercise;
+    ExerciseStat mExerciseStat;
     final int EXERCISE_NUM = 1;
 
     Button btnBack, btnNext;
@@ -46,6 +50,9 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
 
     int requiredCorrects;
     int maxErrors;
+
+    long startingTime, endingTime;
+
     boolean correctsShouldBeConsecutive;
     boolean errorsShouldBeConsecutive;
     @Override
@@ -55,7 +62,7 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
         exercise = LessonArchive.getLesson(AppConstants.NON_VISUAL_FRACTION).getExercises().get(EXERCISE_NUM-1);
 
 
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +71,7 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,31 +82,37 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(TITLE);
 
-        txtNumerator = (TextView) findViewById(R.id.b1_txtNumerator);
-        txtDenominator = (TextView) findViewById(R.id.b1_txtDenominator);
-        txtInstruction = (TextView) findViewById(R.id.b1_txtInstruction);
+        txtNumerator = findViewById(R.id.b1_txtNumerator);
+        txtDenominator = findViewById(R.id.b1_txtDenominator);
+        txtInstruction = findViewById(R.id.b1_txtInstruction);
         txtNumerator.setOnClickListener(new TxtFractionListener());
         txtDenominator.setOnClickListener(new TxtFractionListener());
-        txtScore = (TextView) findViewById(R.id.b1_txtScore);
+        txtScore = findViewById(R.id.b1_txtScore);
         setTxtScore();
 
         instructions = new ArrayList<>();
         instructions.add(INSTRUCTION_NUM);
         instructions.add(INSTRUCTION_DENOM);
-        setAttributes(exercise);
-        checkUpdate();
+        setAttributes((ExerciseStat) exercise);
+        if (!Storage.isEmpty()) {
+            checkUpdate();
+        }
 
+        startingTime = System.currentTimeMillis();
         go();
     }
 
-    public void setAttributes(Exercise exerciseAtt){
+    public void setAttributes(ExerciseStat exerciseAtt){
         requiredCorrects = exerciseAtt.getRequiredCorrects();
         maxErrors = exerciseAtt.getMaxErrors();
         correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
         errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
+        mExerciseStat = exerciseAtt;
+        mExerciseStat.setTopicName(exercise.getTopicName());
+        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
         setTxtScore();
     }
     public void checkUpdate(){
@@ -110,8 +123,12 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
                     try {
                         if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
                         } else {
-                            Util.toast(mContext,"Exercise updated.");
-                            Exercise updatedExercise = new Exercise();
+                            Log.d(TAG, "*service post execute");
+                            Exercise updatedExercise = new ExerciseStat();
+                            Log.d(TAG, "rc:" + response.optString("required_corrects"));
+                            Log.d(TAG, "rcc:" + response.optString("rc_consecutive"));
+                            Log.d(TAG, "me:" + response.optString("max_errors"));
+                            Log.d(TAG, "mec:" + response.optString("me_consecutive"));
                             updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
                             if (response.optString("rc_consecutive").equals("1")) {
                                 updatedExercise.setRc_consecutive(true);
@@ -124,7 +141,8 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
                             } else {
                                 updatedExercise.setMe_consecutive(false);
                             }
-                            setAttributes(updatedExercise);
+                            setAttributes((ExerciseStat) updatedExercise);
+                            startingTime = System.currentTimeMillis();
                         }
                     } catch (Exception e){e.printStackTrace();}
                 }
@@ -166,6 +184,10 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
         txtNumerator.setOnClickListener(null);
         txtDenominator.setOnClickListener(null);
         if (correct == requiredCorrects){
+            endingTime = System.currentTimeMillis();
+            if (!Storage.isEmpty()) {
+                setFinalAttributes();
+            }
             txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
 
             btnNext.setEnabled(true);
@@ -190,6 +212,7 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
             correct = 0;
         }
         error++;
+        mExerciseStat.incrementError();
         setTxtScore();
         txtNumerator.setOnClickListener(null);
         txtDenominator.setOnClickListener(null);
@@ -244,5 +267,30 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+    private void setFinalAttributes(){//COPY
+        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try{
+                    Log.d(TAG, "post execute");
+                    Log.d(TAG, "message: " + response.optString("message"));
+                    btnNext.setEnabled(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mExerciseStat.setDone(true);
+        mExerciseStat.setTime_spent(endingTime-startingTime);
+        Student student = new Student();
+        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
+        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
+        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
+                mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
+                "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
+                mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
+                mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
+        ExerciseStatService.postStats(student,mExerciseStat,service);
     }
 }
