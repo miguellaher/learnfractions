@@ -1,20 +1,17 @@
 package com.example.laher.learnfractions.model;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.util.Util;
 
-import java.util.Comparator;
-
-public class StatAverage extends SeatWork implements Comparable<StatAverage>{
-    private static final String TAG = "StatAverage";
+public class SW_StatAverage extends SeatWork implements Comparable<SW_StatAverage>{
+    private static final String TAG = "SW_StatAverage";
     private double score_average;
     private long time_spent_average;
     private int students_answered;
 
-    public StatAverage(String topicName, int seatWorkNum) {
+    public SW_StatAverage(String topicName, int seatWorkNum) {
         super(topicName, seatWorkNum);
     }
 
@@ -58,7 +55,7 @@ public class StatAverage extends SeatWork implements Comparable<StatAverage>{
     }
 
     @Override
-    public int compareTo(@NonNull StatAverage o) {
+    public int compareTo(@NonNull SW_StatAverage o) {
         int o1Position = 0;
         int o2Position = 0;
         int i = 0;

@@ -1,13 +1,43 @@
 package com.example.laher.learnfractions.model;
 
 public class Exercise {
-    String topicName;
+    private String topicName;
 
-    int exerciseNum;
-    int requiredCorrects;
-    boolean rc_consecutive;
-    int maxErrors;
-    boolean me_consecutive;
+    private int exerciseNum;
+    private int requiredCorrects;
+    private boolean rc_consecutive;
+    private int maxErrors;
+    private boolean me_consecutive;
+    private boolean done;
+    private long time_spent;
+    private int errors;
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    public long getTime_spent() {
+        return time_spent;
+    }
+
+    public void setTime_spent(long time_spent) {
+        if (time_spent >= 1000) {
+            time_spent = time_spent / 1000;
+        }
+        this.time_spent = time_spent;
+    }
+
+    public int getErrors() {
+        return errors;
+    }
+
+    public void setErrors(int errors) {
+        this.errors = errors;
+    }
 
     public Exercise(String topicName, int exerciseNum, int requiredCorrects, boolean rc_consecutive, int maxErrors, boolean me_consecutive) {
         this.topicName = topicName;
@@ -25,6 +55,11 @@ public class Exercise {
     }
 
     public Exercise(){}
+
+    public Exercise(String topicName, int exerciseNum) {
+        this.topicName = topicName;
+        this.exerciseNum = exerciseNum;
+    }
 
     public String getTopicName() {
         return topicName;

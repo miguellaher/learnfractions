@@ -33,7 +33,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".TopicsMenuActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".lessons.non_visual_fraction.NonVisualVideoActivity"
             android:screenOrientation="portrait" />
@@ -177,7 +177,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".SeatWorkListActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".seat_works.FractionMeaningSeatWork"
             android:screenOrientation="portrait" />
@@ -220,7 +220,8 @@
         <activity
             android:name=".seat_works.MultiplyDivideMixedFractionsSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".teacher_activities.StudentSWProgressActivity"></activity>
+        <activity android:name=".teacher_activities.StudentSWProgressActivity" />
+        <activity android:name=".teacher_activities.StudentEProgressActivity"></activity>
     </application>
 
 </manifest>

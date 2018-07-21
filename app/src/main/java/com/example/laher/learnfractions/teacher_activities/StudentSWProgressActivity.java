@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -15,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.model.SeatWork;
-import com.example.laher.learnfractions.model.StatAverage;
+import com.example.laher.learnfractions.model.SW_StatAverage;
 import com.example.laher.learnfractions.model.Student_SW_Progress;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.model.Teacher;
@@ -42,7 +40,7 @@ public class StudentSWProgressActivity extends AppCompatActivity {
 
     //ACTIVITY
     ListView studentSWProgressListView;
-    ArrayList<StatAverage> mStatAverages;
+    ArrayList<SW_StatAverage> mStatAverages;
     ArrayList<Student_SW_Progress> mStudent_sw_progresses;
     ArrayList<SeatWork> mSeatWorks;
 
@@ -106,7 +104,7 @@ public class StudentSWProgressActivity extends AppCompatActivity {
                     for (Student_SW_Progress student_sw_progress : mStudent_sw_progresses){
                         boolean contains = false;
                         int i = 0;
-                        for (StatAverage statAverage : mStatAverages){
+                        for (SW_StatAverage statAverage : mStatAverages){
                             if (student_sw_progress.getTopicName().equals(statAverage.getTopicName())){
                                 if (student_sw_progress.getSeatWorkNum()==statAverage.getSeatWorkNum()){
                                     if (checkSWProgIfLatest(student_sw_progress)) {
@@ -118,22 +116,14 @@ public class StudentSWProgressActivity extends AppCompatActivity {
                             i++;
                         }
                         if (!contains){
-                            for (SeatWork seatWork : mSeatWorks){
-                                if (student_sw_progress.getTopicName().equals(seatWork.getTopicName())){
-                                    if(student_sw_progress.getSeatWorkNum()==seatWork.getSeatWorkNum()){
-                                        if (student_sw_progress.getItems_size()==seatWork.getItems_size()){
-                                            if (checkSWProgIfLatest(student_sw_progress)) {
-                                                StatAverage statAverage = new StatAverage(student_sw_progress.getTopicName(), student_sw_progress.getSeatWorkNum());
-                                                statAverage.addStats(student_sw_progress);
-                                                mStatAverages.add(statAverage);
-                                            }
-                                        }
-                                    }
-                                }
+                            if (checkSWProgIfLatest(student_sw_progress)) {
+                                SW_StatAverage statAverage = new SW_StatAverage(student_sw_progress.getTopicName(), student_sw_progress.getSeatWorkNum());
+                                statAverage.addStats(student_sw_progress);
+                                mStatAverages.add(statAverage);
                             }
                         }
                     }
-                    for(StatAverage statAverage : mStatAverages){
+                    for(SW_StatAverage statAverage : mStatAverages){
                         Log.d(TAG, "topic name: " + statAverage.getTopicName() + "; average_score: " + statAverage.getScore_average() +
                         "; average_time_spent: " + statAverage.getTime_spent_average() + "; students_answered: " + statAverage.getStudents_answered()
                         +       "; items_size: " + statAverage.getItems_size() + "; total_score: " + statAverage.getCorrect());

@@ -12,13 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.model.SW_StatAverage;
+import com.example.laher.learnfractions.model.E_StatAverage;
 
 import java.util.ArrayList;
 
-public class StudentSWProgressAdapter extends ArrayAdapter<SW_StatAverage> {
+public class StudentEProgressAdapter extends ArrayAdapter<E_StatAverage> {
     private Context mContext;
-    private static final String TAG = "SSWP_ADAPTER";
+    private static final String TAG = "SEP_ADAPTER";
     private int mResource;
 
     static class ViewHolder {
@@ -28,7 +28,7 @@ public class StudentSWProgressAdapter extends ArrayAdapter<SW_StatAverage> {
         TextView textView4;
     }
 
-    public StudentSWProgressAdapter(@NonNull Context context, int resource, ArrayList<SW_StatAverage> statAverages) {
+    public StudentEProgressAdapter(@NonNull Context context, int resource, ArrayList<E_StatAverage> statAverages) {
         super(context, resource, statAverages);
         mContext = context;
         mResource = resource;
@@ -38,7 +38,7 @@ public class StudentSWProgressAdapter extends ArrayAdapter<SW_StatAverage> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         int students_answered = getItem(position).getStudents_answered();
-        double average_score = getItem(position).getScore_average();
+        double average_error = getItem(position).getError_average();
         long average_time_spent = getItem(position).getTime_spent_average();
 
         final View result;
@@ -68,14 +68,14 @@ public class StudentSWProgressAdapter extends ArrayAdapter<SW_StatAverage> {
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.fade_in);
         result.startAnimation(animation);
 
-        holder.textView1.setText(getItem(position).getTopicName());
+        holder.textView1.setText(getItem(position).getTopicName() + " " + getItem(position).getExerciseNum());
         holder.textView2.setText(String.valueOf(students_answered));
         if (students_answered<2){
             holder.textView2.setText(holder.textView2.getText().toString() + " Student");
         } else {
             holder.textView2.setText(holder.textView2.getText().toString() + " Students");
         }
-        holder.textView3.setText("Avg Score: " + average_score + "%");
+        holder.textView3.setText("Avg Errors: " + average_error);
         holder.textView4.setText("Avg Time: ");
         if (minutes>0){
             holder.textView4.setText(holder.textView4.getText().toString() + minutes + "m");
