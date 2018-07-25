@@ -30,11 +30,11 @@ import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
-import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class FractionMeaningExercise2Activity extends AppCompatActivity {
     Context mContext = this;
@@ -43,7 +43,6 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
     Exercise exercise;
     //COPY
     ExerciseStat mExerciseStat;
-    final int EXERCISE_NUM = 2;
 
     ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
     EditText inputNum, inputDenom;
@@ -115,6 +114,7 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
         btnNext.setText(AppConstants.DONE);
 
 
+        int EXERCISE_NUM = 2;
         exercise = LessonArchive.getLesson(AppConstants.FRACTION_MEANING).getExercises().get(EXERCISE_NUM - 1);
         //REPLACE
         setAttributes((ExerciseStat) exercise);
@@ -240,72 +240,74 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
     public class BtnOkListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
-            if ((Integer.parseInt(String.valueOf(inputNum.getText())) == num) &&
-                    (Integer.parseInt(String.valueOf(inputDenom.getText())) == denom)){
-                if (errorsShouldBeConsecutive) {
-                    error = 0;
-                }
-                correct++;
-                setTxtScore();
-                txtInstruction.setText(AppConstants.CORRECT);
-                inputNum.setEnabled(false);
-                inputDenom.setEnabled(false);
-                btnOK.setEnabled(false);
-                if (correct >= requiredCorrects){
-                    //COPY
-                    endingTime = System.currentTimeMillis();
-                    if (!Storage.isEmpty()) {
-                        setFinalAttributes();
-                    }
-                    finishExercise();
-                } else {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            inputNum.setEnabled(true);
-                            inputDenom.setEnabled(true);
-                            reset();
-                        }
-                    }, 2000);
-                }
-            } else {
-                if (correctsShouldBeConsecutive) {
-                    correct = 0;
-                }
-                error++;
-                //COPY
-                mExerciseStat.incrementError();
-                setTxtScore();
-                txtInstruction.setText(AppConstants.ERROR);
-                inputNum.setEnabled(false);
-                inputDenom.setEnabled(false);
-                btnOK.setEnabled(false);
-                if (error >= maxErrors){
+            try {
+                if ((Integer.parseInt(String.valueOf(inputNum.getText())) == num) &&
+                        (Integer.parseInt(String.valueOf(inputDenom.getText())) == denom)) {
                     if (errorsShouldBeConsecutive) {
-                        txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
-                    } else {
-                        txtInstruction.setText(AppConstants.FAILED(error));
+                        error = 0;
                     }
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(FractionMeaningExercise2Activity.this,
-                                    FractionMeaningExerciseActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                    correct++;
+                    setTxtScore();
+                    txtInstruction.setText(AppConstants.CORRECT);
+                    inputNum.setEnabled(false);
+                    inputDenom.setEnabled(false);
+                    btnOK.setEnabled(false);
+                    if (correct >= requiredCorrects) {
+                        //COPY
+                        endingTime = System.currentTimeMillis();
+                        if (!Storage.isEmpty()) {
+                            setFinalAttributes();
                         }
-                    }, 3000);
+                        finishExercise();
+                    } else {
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                inputNum.setEnabled(true);
+                                inputDenom.setEnabled(true);
+                                reset();
+                            }
+                        }, 2000);
+                    }
                 } else {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            inputNum.setEnabled(true);
-                            inputDenom.setEnabled(true);
-                            reset();
+                    if (correctsShouldBeConsecutive) {
+                        correct = 0;
+                    }
+                    error++;
+                    //COPY
+                    mExerciseStat.incrementError();
+                    setTxtScore();
+                    txtInstruction.setText(AppConstants.ERROR);
+                    inputNum.setEnabled(false);
+                    inputDenom.setEnabled(false);
+                    btnOK.setEnabled(false);
+                    if (error >= maxErrors) {
+                        if (errorsShouldBeConsecutive) {
+                            txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
+                        } else {
+                            txtInstruction.setText(AppConstants.FAILED(error));
                         }
-                    }, 2000);
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(FractionMeaningExercise2Activity.this,
+                                        FractionMeaningExerciseActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
+                        }, 3000);
+                    } else {
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                inputNum.setEnabled(true);
+                                inputDenom.setEnabled(true);
+                                reset();
+                            }
+                        }, 2000);
+                    }
                 }
-            }
+            } catch (Exception e) { e.printStackTrace(); }
         }
     }
     //COPY

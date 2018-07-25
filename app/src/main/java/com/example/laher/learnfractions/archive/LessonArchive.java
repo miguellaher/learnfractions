@@ -52,13 +52,7 @@ public abstract class LessonArchive {
 
     public static Lesson getLesson(String lessonTitle){
         if (fractionMeaning.getTitle().equals(lessonTitle)){
-            ArrayList<ExerciseStat> exerciseStats = new ArrayList<>();
-            exerciseStats.add(new ExerciseStat(fractionMeaning.getTitle(),1,6,
-                            true,3,true));
-            exerciseStats.add(new ExerciseStat(fractionMeaning.getTitle(),2,5,
-                            true,2,true));
-            fractionMeaning.setExercises(exerciseStats);
-            /*fractionMeaning.setExercises(new ArrayList<ExerciseStat>());
+            fractionMeaning.setExercises(new ArrayList<ExerciseStat>());
             fractionMeaning.getExercises().add(
                     new ExerciseStat(fractionMeaning.getTitle(),1,6,
                             true,3,true));
@@ -69,7 +63,6 @@ public abstract class LessonArchive {
                             true,2,true));
             Log.d(TAG, fractionMeaning.getExercises().get(1).getTopicName() + " : " +
                     fractionMeaning.getExercises().get(1).getExerciseNum());
-                    */
             return fractionMeaning;
         }
         if (nonVisualFraction.getTitle().equals(lessonTitle)){
