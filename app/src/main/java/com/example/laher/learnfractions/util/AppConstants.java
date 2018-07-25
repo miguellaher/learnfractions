@@ -20,7 +20,7 @@ public class AppConstants {
     public static final String LOG_OUT = "Log out";
     public static final String SEAT_WORKS = "Seat Works";
     public static final String TEACHER_MAIN = "Teacher Main";
-    public static final String EXERCISES = "Exercises";
+    public static final String E_PROGRESSES = "Exercise Data";
     public static final String LESSONS = "Lessons";
     public static final String STUDENT_MAIN = "Student Main";
     public static final String SW_PROGRESSES = "Seat Work Data";

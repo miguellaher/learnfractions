@@ -50,7 +50,7 @@ public class ExercisesListActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
         txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(AppConstants.EXERCISES);
+        txtTitle.setText(AppConstants.E_PROGRESSES);
         //ACTIVITY
         exerciseListView = findViewById(R.id.exercise_list);
         exercises = new ArrayList<>();

@@ -3,12 +3,11 @@ package com.example.laher.learnfractions.model;
 import java.util.ArrayList;
 
 public class Lesson {
-    String id;
-    String title;
-    Class startingActivity;
-    boolean enabled;
-
-    ArrayList<ExerciseStat> exercises;
+    private String id;
+    private String title;
+    private Class startingActivity;
+    private boolean enabled;
+    private ArrayList<ExerciseStat> exercises;
 
     public ArrayList<ExerciseStat> getExercises() {
         return exercises;

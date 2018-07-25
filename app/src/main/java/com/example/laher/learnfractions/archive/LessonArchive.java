@@ -1,6 +1,8 @@
 package com.example.laher.learnfractions.archive;
 
 
+import android.util.Log;
+
 import com.example.laher.learnfractions.lessons.converting_fractions.ConvertingFractionsVideoActivity;
 import com.example.laher.learnfractions.lessons.non_visual_fraction.NonVisualVideoActivity;
 import com.example.laher.learnfractions.lessons.ordering_dissimilar.OrderingDissimilarExercise2Activity;
@@ -25,6 +27,7 @@ import com.example.laher.learnfractions.util.AppConstants;
 import java.util.ArrayList;
 
 public abstract class LessonArchive {
+    private static final String TAG = "L_ARV";
     //CHANGE STARTING ACTIVITIES
     private static final Lesson fractionMeaning = new Lesson(AppConstants.FRACTION_MEANING, FractionMeaningVideoActivity.class);
     private static final Lesson nonVisualFraction = new Lesson(AppConstants.NON_VISUAL_FRACTION, NonVisualVideoActivity.class);
@@ -49,13 +52,24 @@ public abstract class LessonArchive {
 
     public static Lesson getLesson(String lessonTitle){
         if (fractionMeaning.getTitle().equals(lessonTitle)){
-            fractionMeaning.setExercises(new ArrayList<ExerciseStat>());
+            ArrayList<ExerciseStat> exerciseStats = new ArrayList<>();
+            exerciseStats.add(new ExerciseStat(fractionMeaning.getTitle(),1,6,
+                            true,3,true));
+            exerciseStats.add(new ExerciseStat(fractionMeaning.getTitle(),2,5,
+                            true,2,true));
+            fractionMeaning.setExercises(exerciseStats);
+            /*fractionMeaning.setExercises(new ArrayList<ExerciseStat>());
             fractionMeaning.getExercises().add(
                     new ExerciseStat(fractionMeaning.getTitle(),1,6,
                             true,3,true));
+            Log.d(TAG, fractionMeaning.getExercises().get(0).getTopicName() + " : " +
+                    fractionMeaning.getExercises().get(0).getExerciseNum());
             fractionMeaning.getExercises().add(
                     new ExerciseStat(fractionMeaning.getTitle(),2,5,
                             true,2,true));
+            Log.d(TAG, fractionMeaning.getExercises().get(1).getTopicName() + " : " +
+                    fractionMeaning.getExercises().get(1).getExerciseNum());
+                    */
             return fractionMeaning;
         }
         if (nonVisualFraction.getTitle().equals(lessonTitle)){

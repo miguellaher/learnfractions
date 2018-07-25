@@ -6,22 +6,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.model.E_StatAverage;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
+import com.example.laher.learnfractions.model.Lesson;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.model.Teacher;
 import com.example.laher.learnfractions.service.ExerciseService;
 import com.example.laher.learnfractions.service.ExerciseStatService;
-import com.example.laher.learnfractions.service.SeatWorkService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.teacher_activities.list_adapters.StudentEProgressAdapter;
+import com.example.laher.learnfractions.teacher_activities.list_adapters.StudentEProgressAdapter2;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 
@@ -29,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class StudentEProgressActivity extends AppCompatActivity {
     private static final String TAG = "STUDENT_E_LIST";
@@ -60,7 +64,7 @@ public class StudentEProgressActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
         txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(AppConstants.EXERCISES);
+        txtTitle.setText(AppConstants.E_PROGRESSES);
         //ACTIVITY
         mExerciseListView = findViewById(R.id.exercise_list);
         getLatestExercises();
@@ -178,6 +182,29 @@ public class StudentEProgressActivity extends AppCompatActivity {
                         }
                         mExercises.add(exercise);
                     }
+                    ArrayList<Lesson> lessons = LessonArchive.getAllLessons();
+                    for(Lesson lesson : lessons){
+                        ArrayList<ExerciseStat> exerciseStats = lesson.getExercises();
+                        try {
+                            for (ExerciseStat lessonExercise : exerciseStats) {
+                                boolean contains = false;
+                                for (Exercise exercise : mExercises) {
+                                    if (!contains) {
+                                        if (exercise.getTopicName().equals(lessonExercise.getTopicName())) {
+                                            if (exercise.getExerciseNum() == lessonExercise.getExerciseNum()) {
+                                                contains = true;
+                                                Log.d(TAG, "exercise contains lesson exercise");
+                                            }
+                                        }
+                                    }
+                                }
+                                if (!contains) {
+                                    mExercises.add(lessonExercise);
+                                    Log.d(TAG, "exercise does not contain lesson exercise");
+                                }
+                            }
+                        } catch (Exception e) { e.printStackTrace(); }
+                    }
                     getAllStudentStats();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -189,16 +216,48 @@ public class StudentEProgressActivity extends AppCompatActivity {
     private void setListViewAdapter(){
         studentEProgressAdapter = new StudentEProgressAdapter(mContext,R.layout.layout_seat_work_item, mExerciseStatsAverage);
         mExerciseListView.setAdapter(studentEProgressAdapter);
-        /*setListViewOnClickListener();
+        setListViewOnClickListener();
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StudentSWProgressActivity.this,
+                Intent intent = new Intent(StudentEProgressActivity.this,
                         TeacherMainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
-        */
+    }
+    private void setListViewOnClickListener(){
+        mExerciseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                String topic_name = mExerciseStatsAverage.get(position).getTopicName();
+                int e_num = mExerciseStatsAverage.get(position).getExerciseNum();
+                showStudents(topic_name,e_num);
+                txtTitle.setText(Objects.requireNonNull(studentEProgressAdapter.getItem(position)).getTopicName());
+            }
+        });
+    }
+    public void showStudents(String topicName, int eNum){
+        ArrayList<ExerciseStat> exerciseStats = new ArrayList<>();
+        for (ExerciseStat exerciseStat : mExerciseStats){
+            if (topicName.equals(exerciseStat.getTopicName())){
+                if (eNum == exerciseStat.getExerciseNum()){
+                    if (isUpdated(exerciseStat)) {
+                        exerciseStats.add(exerciseStat);
+                    }
+                }
+            }
+        }
+        StudentEProgressAdapter2 studentEProgressAdapter2 = new StudentEProgressAdapter2(mContext,R.layout.layout_user_item2,exerciseStats);
+        mExerciseListView.setAdapter(studentEProgressAdapter2);
+        mExerciseListView.setOnItemClickListener(null);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setListViewAdapter();
+                txtTitle.setText(AppConstants.E_PROGRESSES);
+            }
+        });
     }
 }

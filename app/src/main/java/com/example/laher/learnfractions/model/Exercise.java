@@ -21,13 +21,13 @@ public class Exercise {
     }
 
     public long getTime_spent() {
+        if (time_spent >= 1000) {
+            return time_spent / 1000;
+        }
         return time_spent;
     }
 
     public void setTime_spent(long time_spent) {
-        if (time_spent >= 1000) {
-            time_spent = time_spent / 1000;
-        }
         this.time_spent = time_spent;
     }
 
