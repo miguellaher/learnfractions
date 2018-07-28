@@ -65,7 +65,7 @@ public class SeatWorkListAdapter extends ArrayAdapter<SeatWork> {
                 textView2.setText(textView2.getText().toString() + "__ / " + getItem(position).getItems_size());
                 convertView.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
             }
-            textView3.setText("Time spent: ");
+            textView3.setText("Time spent:\n");
             if (minutes>0){
                 textView3.setText(textView3.getText().toString() + minutes + "m");
             }

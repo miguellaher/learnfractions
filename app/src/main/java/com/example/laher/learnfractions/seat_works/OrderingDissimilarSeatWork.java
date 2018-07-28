@@ -11,13 +11,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.ChapterExamListActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
+import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 
@@ -25,8 +28,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class OrderingDissimilarSeatWork extends SeatWork {
+    private static final String TAG = "OD_SW1";
     Context mContext = this;
-    private static final String TAG = "ODSW";
 
     //TOOLBAR
     Button btnBack, btnNext;
@@ -36,6 +39,9 @@ public class OrderingDissimilarSeatWork extends SeatWork {
     TextView txtNum1, txtNum2, txtNum3, txtDenom1, txtDenom2, txtDenom3, txtItemIndicator, txtInstruction;
     ConstraintLayout clFraction1, clFraction2, clFraction3;
     //VARIABLES
+    private String TYPE;
+    boolean shouldAllowBack;
+
     Fraction fraction1, fraction2, fraction3;
     FractionQuestion fractionQuestion;
     ArrayList<FractionQuestion> fractionQuestions;
@@ -47,6 +53,10 @@ public class OrderingDissimilarSeatWork extends SeatWork {
 
     public OrderingDissimilarSeatWork(String topicName, int seatworkNum) {
         super(topicName, seatworkNum);
+    }
+
+    public OrderingDissimilarSeatWork(int size) {
+        super(size);
     }
 
     public OrderingDissimilarSeatWork() {
@@ -90,15 +100,46 @@ public class OrderingDissimilarSeatWork extends SeatWork {
         clFraction2 = findViewById(R.id.os2_clFraction2);
         clFraction3 = findViewById(R.id.os2_clFraction3);
 
-        int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
-        Log.d(TAG, "item_size received from intent:"+item_size);
-        if (item_size != 0){
-            setItems_size(item_size);
-            Log.d(TAG, "item_size set to:"+getItems_size());
-            updateItemIndicator(txtItemIndicator);
+        shouldAllowBack = true;
+
+        try {
+            int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
+            if (item_size != 0) {
+                setItems_size(item_size);
+                updateItemIndicator(txtItemIndicator);
+            }
+            TYPE = Objects.requireNonNull(getIntent().getExtras()).getString("type");
+            assert TYPE != null;
+            if (TYPE.equals(AppConstants.CHAPTER_EXAM)){
+                String title = AppCache.getChapterExam().getExamTitle();
+                txtTitle.setText(title);
+                shouldAllowBack = false;
+                btnBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext,"Are you sure you want to exit exam?");
+                        confirmationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                if (confirmationDialog.isConfirmed()){
+                                    Intent intent = new Intent(OrderingDissimilarSeatWork.this,
+                                            ChapterExamListActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                        confirmationDialog.show();
+                    }
+                });
+                Log.d(TAG, "chapter exam setup done");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, e.getMessage());
         }
-        startingTime = System.currentTimeMillis();
         go();
+        startingTime = System.currentTimeMillis();
     }
 
     public void go(){
@@ -150,20 +191,32 @@ public class OrderingDissimilarSeatWork extends SeatWork {
         if (getCurrentItemNum()>getItems_size()){
             long endingTime = System.currentTimeMillis();
             setTimeSpent(endingTime-startingTime);
-            Student student = new Student();
-            student.setId(Storage.load(mContext,Storage.STUDENT_ID));
-            student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
-            SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingDissimilarSeatWork.this, student);
-            seatWorkStatDialog.show();
-            seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    Intent intent = new Intent(OrderingDissimilarSeatWork.this,
-                            SeatWorkListActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
-            });
+            if (TYPE.equals(AppConstants.CHAPTER_EXAM)){
+                AppCache.postSeatWorkStat(OrderingDissimilarSeatWork.this);
+                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingDissimilarSeatWork.this);
+                seatWorkStatDialog.show();
+                seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        finish();
+                    }
+                });
+            } else {
+                Student student = new Student();
+                student.setId(Storage.load(mContext,Storage.STUDENT_ID));
+                student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
+                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingDissimilarSeatWork.this, student);
+                seatWorkStatDialog.show();
+                seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        Intent intent = new Intent(OrderingDissimilarSeatWork.this,
+                                SeatWorkListActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+                });
+            }
         } else {
             wrong = false;
             updateItemIndicator(txtItemIndicator);
@@ -207,6 +260,12 @@ public class OrderingDissimilarSeatWork extends SeatWork {
         public void setTextColor(int r, int g, int b){
             num.setTextColor(Color.rgb(r, g, b));
             denom.setTextColor(Color.rgb(r, g, b));
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        if (shouldAllowBack){
+            super.onBackPressed();
         }
     }
 }

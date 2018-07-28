@@ -9,17 +9,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.ChapterExamListActivity;
 import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.adapters.ChapterExamListAdapter;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 
 public class StudentMainActivity extends AppCompatActivity {
     Context mContext = this;
-    Button btnLessons, btnSeatWorks;
+    Button btnLessons, btnSeatWorks, btnChapterExam;
 
     //TOOLBAR
     TextView txtTitle;
@@ -71,6 +73,17 @@ public class StudentMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(StudentMainActivity.this,
                         SeatWorkListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+
+        btnChapterExam = findViewById(R.id.student_main_btnChapterExam);
+        btnChapterExam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StudentMainActivity.this,
+                        ChapterExamListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }

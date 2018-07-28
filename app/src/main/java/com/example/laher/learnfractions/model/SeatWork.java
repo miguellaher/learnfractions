@@ -29,6 +29,11 @@ public class SeatWork extends AppCompatActivity {
         setAnswered(false);
     }
 
+    public SeatWork(int size){
+        super();
+        this.items_size = size;
+    }
+
     public boolean isAnswered() {
         return answered;
     }

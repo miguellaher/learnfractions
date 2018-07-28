@@ -57,7 +57,7 @@ public class SeatWorkListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_seatwork_list);
+        setContentView(R.layout.activity_list_template);
         seatWorkListView = findViewById(R.id.seatwork_list);
         //TOOLBAR
         txtTitle = findViewById(R.id.txtTitle);

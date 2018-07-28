@@ -27,7 +27,7 @@ import java.util.Objects;
 
 public class FractionMeaningSeatWork extends SeatWork {
     Context mContext = this;
-    private static final String TAG = "FM_E2";
+    private static final String TAG = "FM_S";
 
     //TOOLBAR
     Button btnBack, btnNext;
@@ -56,6 +56,10 @@ public class FractionMeaningSeatWork extends SeatWork {
 
     public FractionMeaningSeatWork(String topicName, int seatWorkNum) {
         super(topicName, seatWorkNum);
+    }
+
+    public FractionMeaningSeatWork(int size) {
+        super(size);
     }
 
     @Override

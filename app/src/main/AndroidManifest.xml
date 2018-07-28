@@ -222,6 +222,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".teacher_activities.StudentSWProgressActivity" />
         <activity android:name=".teacher_activities.StudentEProgressActivity"></activity>
+        <activity android:name=".ChapterExamListActivity" />
+        <activity android:name=".chapter_exam.ChapterExam" />
     </application>
 
 </manifest>

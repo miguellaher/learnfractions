@@ -47,6 +47,25 @@ public class SeatWorkStatDialog extends Dialog {
         setCancelable(false);
         setCanceledOnTouchOutside(false);
     }
+
+    public SeatWorkStatDialog(@NonNull Context context, SeatWork seatWork) {
+        super(context);
+        mContext = context;
+        this.mSeatWork = seatWork;
+
+        setGui();
+
+        long seconds = seatWork.getTimeSpent()/1000;
+        long minutes = seconds/60;
+        seconds = (minutes*60) - seconds;
+        seconds = Math.abs(seconds);
+
+        txtScore.setText("Score: "+seatWork.getCorrect()+" / " + seatWork.getItems_size());
+        txtTimeSpent.setText("Time Spent: " + minutes + "m" + seconds + "s");
+        setCancelable(false);
+        setCanceledOnTouchOutside(false);
+    }
+
     private void setGui(){
         setContentView(R.layout.layout_dialog_seatwork_stats);
         txtScore = findViewById(R.id.seatwork_stats_txtScore);
