@@ -165,4 +165,10 @@ public class ChapterExamListActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getStudentStats();
+    }
 }
