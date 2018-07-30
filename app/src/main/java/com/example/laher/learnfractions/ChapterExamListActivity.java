@@ -142,6 +142,7 @@ public class ChapterExamListActivity extends AppCompatActivity {
             int i = 0;
             for (ChapterExam chapterExam : mChapterExams) {
                 if (updatedChapterExam.getExamTitle().equals(chapterExam.getExamTitle())){
+                    updatedChapterExam.setSeatWorks(chapterExam.getSeatWorks());
                     mChapterExams.set(i, updatedChapterExam);
                 }
                 i++;
