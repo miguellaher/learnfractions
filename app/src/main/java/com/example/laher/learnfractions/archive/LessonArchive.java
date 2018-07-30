@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.example.laher.learnfractions.lessons.converting_fractions.ConvertingFractionsVideoActivity;
 import com.example.laher.learnfractions.lessons.non_visual_fraction.NonVisualVideoActivity;
-import com.example.laher.learnfractions.lessons.ordering_dissimilar.OrderingDissimilarExercise2Activity;
+import com.example.laher.learnfractions.lessons.ordering_dissimilar.OrderingDissimilarVideoActivity;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Lesson;
 import com.example.laher.learnfractions.lessons.adding_dissimilar.AddingDissimilarVideoActivity;
@@ -36,7 +36,7 @@ public abstract class LessonArchive {
     private static final Lesson comparingFractions = new Lesson(AppConstants.COMPARING_FRACTIONS, ComparingFractionsVideoActivity.class);
 
     private static final Lesson orderingSimilarFractions = new Lesson(AppConstants.ORDERING_SIMILAR, OrderingSimilarVideoActivity.class);
-    private static final Lesson orderingDissimilarFractions = new Lesson(AppConstants.ORDERING_DISSIMILAR, OrderingDissimilarExercise2Activity.class);
+    private static final Lesson orderingDissimilarFractions = new Lesson(AppConstants.ORDERING_DISSIMILAR, OrderingDissimilarVideoActivity.class);
     private static final Lesson classifyingFractions = new Lesson(AppConstants.CLASSIFYING_FRACTIONS, ClassifyingFractionsVideoActivity.class);
     private static final Lesson convertingFractions = new Lesson(AppConstants.CONVERTING_FRACTIONS, ConvertingFractionsVideoActivity.class);
     private static final Lesson addingSimilarFractions = new Lesson(AppConstants.ADDING_SIMILAR, AddingSimilarVideoActivity.class);

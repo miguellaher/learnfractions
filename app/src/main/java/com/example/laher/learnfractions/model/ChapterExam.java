@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.chapter_exam;
+package com.example.laher.learnfractions.model;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,8 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.example.laher.learnfractions.model.SeatWork;
-import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExamStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;

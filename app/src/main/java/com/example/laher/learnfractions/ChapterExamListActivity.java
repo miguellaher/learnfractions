@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -12,8 +13,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.adapters.ChapterExamListAdapter;
-import com.example.laher.learnfractions.chapter_exam.ChapterExam;
+import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.seat_works.AddSubMixedFractionsSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingDissimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingSimilarSeatWork;
@@ -26,9 +28,15 @@ import com.example.laher.learnfractions.seat_works.OrderingDissimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.OrderingSimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.SubtractingDissimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.SubtractingSimilarSeatWork;
+import com.example.laher.learnfractions.service.ExamStatService;
+import com.example.laher.learnfractions.service.Service;
+import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -36,7 +44,7 @@ public class ChapterExamListActivity extends AppCompatActivity {
     private static final String TAG = "CHAPTER_EXAM_ACTIVITY";
     Context mContext = this;
     ListView examListView;
-    ArrayList<ChapterExam> chapterExams;
+    ArrayList<ChapterExam> mChapterExams;
 
     //TOOLBAR
     TextView txtTitle;
@@ -84,30 +92,77 @@ public class ChapterExamListActivity extends AppCompatActivity {
         chapterExam6.addSeatWork(new AddSubMixedFractionsSeatWork(3));
         chapterExam6.addSeatWork(new MultiplyDivideMixedFractionsSeatWork(3));
 
-        chapterExams = new ArrayList<>();
-        chapterExams.add(chapterExam1);
-        chapterExams.add(chapterExam2);
-        chapterExams.add(chapterExam3);
-        chapterExams.add(chapterExam4);
-        chapterExams.add(chapterExam5);
-        chapterExams.add(chapterExam6);
+        mChapterExams = new ArrayList<>();
+        mChapterExams.add(chapterExam1);
+        mChapterExams.add(chapterExam2);
+        mChapterExams.add(chapterExam3);
+        mChapterExams.add(chapterExam4);
+        mChapterExams.add(chapterExam5);
+        mChapterExams.add(chapterExam6);
 
-        ChapterExamListAdapter chapterExamListAdapter = new ChapterExamListAdapter(mContext, R.layout.layout_user_item, chapterExams);
+        setExamListView();
+
+        getStudentStats();
+    }
+    private void getStudentStats(){
+        Service service = new Service("Loading student stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try {
+                    int item_count = Integer.valueOf(response.optString("item_count"));
+                    ArrayList<ChapterExam> onlineChapterExams = new ArrayList<>();
+                    Log.d(TAG, "Student id: " + Storage.load(mContext, Storage.STUDENT_ID));
+                    for (int i = 1; i <= item_count; i++) {
+                        ChapterExam chapterExam = new ChapterExam();
+                        chapterExam.setExamTitle(String.valueOf(response.optString(i + "exam_title")));
+                        Log.d(TAG, "Exam title: " + chapterExam.getExamTitle());
+                        chapterExam.setTotalScore(Integer.valueOf(String.valueOf(response.optString(i + "score"))));
+                        chapterExam.setTotalItems(Integer.valueOf(String.valueOf(response.optString(i + "item_size"))));
+                        chapterExam.setTimeSpent(Long.valueOf(String.valueOf(response.optString(i + "time_spent"))));
+                        Log.d(TAG, "Score / Total Items, Time Spent: " + chapterExam.getTotalScore() + " / " + chapterExam.getTotalItems() +
+                                ", " + chapterExam.getTimeSpent());
+                        Log.d(TAG, "------------------------");
+                        chapterExam.setAnswered(true);
+                        onlineChapterExams.add(chapterExam);
+                    }
+                    rewriteChapterExams(onlineChapterExams);
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        Student student = new Student();
+        student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
+        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
+        ExamStatService.getStudentStats(service, student);
+    }
+    private void rewriteChapterExams(ArrayList<ChapterExam> updatedChapterExams){
+        for (ChapterExam updatedChapterExam : updatedChapterExams) {
+            int i = 0;
+            for (ChapterExam chapterExam : mChapterExams) {
+                if (updatedChapterExam.getExamTitle().equals(chapterExam.getExamTitle())){
+                    mChapterExams.set(i, updatedChapterExam);
+                }
+                i++;
+            }
+        }
+        setExamListView();
+    }
+    private void setExamListView(){
+        ChapterExamListAdapter chapterExamListAdapter = new ChapterExamListAdapter(mContext, R.layout.layout_user_item, mChapterExams);
         examListView.setAdapter(chapterExamListAdapter);
 
         examListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Class ce_class = chapterExams.get(position).getClass();
-                ArrayList<SeatWork> seatWorks = chapterExams.get(position).getSeatWorks();
+                Class ce_class = mChapterExams.get(position).getClass();
+                ArrayList<SeatWork> seatWorks = mChapterExams.get(position).getSeatWorks();
                 AppCache.setSeatWorks(seatWorks);
-                AppCache.setChapterExam(chapterExams.get(position));
+                AppCache.setChapterExam(mChapterExams.get(position));
                 Intent intent = new Intent(mContext, ce_class);
                 startActivity(intent);
             }
         });
-
-
-
     }
 }

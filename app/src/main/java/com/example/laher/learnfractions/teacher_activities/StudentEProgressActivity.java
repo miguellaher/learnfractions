@@ -81,6 +81,7 @@ public class StudentEProgressActivity extends AppCompatActivity {
                         exerciseStat.setStudent(new Student());
                         exerciseStat.getStudent().setUsername(String.valueOf(response.optString(i + "student_username")));
                         Log.d(TAG, exerciseStat.getStudent().getUsername()+":received user.");
+                        Log.d(TAG, "");
                         exerciseStat.setTopicName(String.valueOf(response.optString(i + "topic_name")));
                         Log.d(TAG, exerciseStat.getTopicName()+":received.");
                         exerciseStat.setExerciseNum(Integer.valueOf(String.valueOf(response.optString(i + "exercise_num"))));
@@ -105,6 +106,7 @@ public class StudentEProgressActivity extends AppCompatActivity {
                             exerciseStat.setMe_consecutive(false);
                         }
                         Log.d(TAG, exerciseStat.getTopicName()+" me_consecutive:" + exerciseStat.isMe_consecutive());
+                        Log.d(TAG, "---------------------------------------");
                         mExerciseStats.add(exerciseStat);
                     }
                     mExerciseStatsAverage = new ArrayList<>();
@@ -164,22 +166,30 @@ public class StudentEProgressActivity extends AppCompatActivity {
                 try {
                     int item_count = Integer.valueOf(response.optString("item_count"));
                     mExercises = new ArrayList<>();
+                    Log.d(TAG, "getLatestExercises()");
                     for (int i = 1; i <= item_count; i++) {
                         Exercise exercise = new Exercise();
                         exercise.setTopicName(String.valueOf(response.optString(i + "topic_name")));
                         exercise.setExerciseNum(Integer.valueOf(String.valueOf(response.optString(i + "exercise_num"))));
+                        Log.d(TAG, "Topic name: " + exercise.getTopicName());
+                        Log.d(TAG, "Exercise # " + exercise.getExerciseNum());
                         exercise.setRequiredCorrects(Integer.valueOf(String.valueOf(response.optString(i + "required_corrects"))));
+                        Log.d(TAG, "Required corrects: " + exercise.getRequiredCorrects());
                         if (response.optString(i + "rc_consecutive").equals("1")) {
                             exercise.setRc_consecutive(true);
                         } else {
                             exercise.setRc_consecutive(false);
                         }
+                        Log.d(TAG, "Rc consecutive: " + exercise.isRc_consecutive());
                         exercise.setMaxErrors(Integer.valueOf(String.valueOf(response.optString(i + "max_errors"))));
+                        Log.d(TAG, "Max errors: " + exercise.getMaxErrors());
                         if (response.optString(i + "me_consecutive").equals("1")) {
                             exercise.setMe_consecutive(true);
                         } else {
                             exercise.setMe_consecutive(false);
                         }
+                        Log.d(TAG, "Me consecutive: " + exercise.isMe_consecutive());
+                        Log.d(TAG, "---------------------------------------");
                         mExercises.add(exercise);
                     }
                     ArrayList<Lesson> lessons = LessonArchive.getAllLessons();

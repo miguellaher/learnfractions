@@ -2,7 +2,7 @@ package com.example.laher.learnfractions.service;
 
 import android.util.Log;
 
-import com.example.laher.learnfractions.chapter_exam.ChapterExam;
+import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.Util;
@@ -50,6 +50,14 @@ public class ExamStatService {
                 + "; string_seatWorks: " + string_seatWorks
                 + "; string_seatWorksStats: " + string_seatWorksStats);
         service.post("http://jabahan.com/learnfractions/exam_stat/create.php", requestParams);
+        service.execute();
+    }
+
+    public static void getStudentStats(Service service, Student student){
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("teacher_code", student.getTeacher_code());
+        requestParams.put("student_id", student.getId());
+        service.get("http://jabahan.com/learnfractions/exam_stat/getStats.php", requestParams);
         service.execute();
     }
 }

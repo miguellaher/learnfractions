@@ -20,7 +20,8 @@ public class E_StatAverage extends Exercise implements Comparable<E_StatAverage>
     }
 
     private void setErrorAverage() {
-        double avg = getErrors() / getStudents_answered();
+        double students = ((double) students_answered);
+        double avg = getErrors() / students;
         avg = Util.round(avg, 2);
         this.error_average = avg;
     }

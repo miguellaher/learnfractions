@@ -10,12 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.chapter_exam.ChapterExam;
+import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
 
 public class ChapterExamListAdapter extends ArrayAdapter<ChapterExam> {
+    //private final String TAG = "ChapterExamListAdapter";
     private Context mContext;
     private int mResource;
 

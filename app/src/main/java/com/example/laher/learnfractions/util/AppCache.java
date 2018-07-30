@@ -1,6 +1,6 @@
 package com.example.laher.learnfractions.util;
 
-import com.example.laher.learnfractions.chapter_exam.ChapterExam;
+import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.model.SeatWork;
 
 import java.util.ArrayList;
