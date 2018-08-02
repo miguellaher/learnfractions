@@ -18,7 +18,7 @@ import com.example.laher.learnfractions.util.Storage;
 
 public class TeacherMainActivity extends AppCompatActivity {
     Context mContext = this;
-    Button btnManageExercises, btnManageSeatWorks, btnCheckSWProgress, btnCheckEProgress;
+    Button btnManageExercises, btnManageSeatWorks, btnCheckSWProgress, btnCheckEProgress, btnCheckExamProgress;
     Button btnBack, btnNext;
     TextView txtTitle;
     @Override
@@ -88,6 +88,17 @@ public class TeacherMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(TeacherMainActivity.this,
                         StudentEProgressActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+
+        btnCheckExamProgress = findViewById(R.id.teacher_main_btnCheckExamProgress);
+        btnCheckExamProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TeacherMainActivity.this,
+                        StudentExamProgressActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
