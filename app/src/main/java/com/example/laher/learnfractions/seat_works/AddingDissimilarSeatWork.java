@@ -55,9 +55,13 @@ public class AddingDissimilarSeatWork extends SeatWork {
 
     public AddingDissimilarSeatWork(int size) {
         super(size);
+        setTopicName(AppConstants.ADDING_DISSIMILAR);
+        setSeatWorkNum(1);
     }
 
     public AddingDissimilarSeatWork() {
+        setTopicName(AppConstants.ADDING_DISSIMILAR);
+        setSeatWorkNum(1);
     }
 
     @Override

@@ -52,6 +52,8 @@ public class FractionMeaningSeatWork extends SeatWork {
 
     public FractionMeaningSeatWork() {
         super();
+        setTopicName(AppConstants.FRACTION_MEANING);
+        setSeatWorkNum(1);
     }
 
     public FractionMeaningSeatWork(String topicName, int seatWorkNum) {
@@ -60,6 +62,8 @@ public class FractionMeaningSeatWork extends SeatWork {
 
     public FractionMeaningSeatWork(int size) {
         super(size);
+        setTopicName(AppConstants.FRACTION_MEANING);
+        setSeatWorkNum(1);
     }
 
     @Override

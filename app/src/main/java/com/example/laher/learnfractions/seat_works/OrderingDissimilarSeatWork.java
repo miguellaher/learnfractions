@@ -57,9 +57,13 @@ public class OrderingDissimilarSeatWork extends SeatWork {
 
     public OrderingDissimilarSeatWork(int size) {
         super(size);
+        setTopicName(AppConstants.ORDERING_DISSIMILAR);
+        setSeatWorkNum(1);
     }
 
     public OrderingDissimilarSeatWork() {
+        setTopicName(AppConstants.ORDERING_DISSIMILAR);
+        setSeatWorkNum(1);
     }
 
     @Override

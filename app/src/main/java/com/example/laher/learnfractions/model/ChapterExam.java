@@ -92,10 +92,24 @@ public class ChapterExam extends AppCompatActivity {
 
     public void setSeatWorks(ArrayList<SeatWork> seatWorks) {
         this.seatWorks = seatWorks;
+        setTotalItems(0);
+        for (SeatWork seatWork : seatWorks){
+            int items_size = getTotalItems();
+            items_size = items_size + seatWork.getItems_size();
+            setTotalItems(items_size);
+            Log.d(TAG, "seat work added; size = " + seatWorks.size());
+            Intent intent = new Intent(mContext, seatWork.getClass());
+            intent.putExtra("item_size", seatWork.getItems_size());
+            intent.putExtra("type", AppConstants.CHAPTER_EXAM);
+            intents.add(intent);
+        }
     }
 
     public void addSeatWork(SeatWork seatWork){
         seatWorks.add(seatWork);
+        int items_size = getTotalItems();
+        items_size = items_size + seatWork.getItems_size();
+        setTotalItems(items_size);
         Log.d(TAG, "seat work added; size = " + seatWorks.size());
         Intent intent = new Intent(mContext, seatWork.getClass());
         intent.putExtra("item_size", seatWork.getItems_size());

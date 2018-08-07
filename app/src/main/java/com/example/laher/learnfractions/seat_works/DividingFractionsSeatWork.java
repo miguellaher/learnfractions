@@ -55,9 +55,13 @@ public class DividingFractionsSeatWork extends SeatWork {
 
     public DividingFractionsSeatWork(int size) {
         super(size);
+        setTopicName(AppConstants.DIVIDING_FRACTIONS);
+        setSeatWorkNum(1);
     }
 
     public DividingFractionsSeatWork() {
+        setTopicName(AppConstants.DIVIDING_FRACTIONS);
+        setSeatWorkNum(1);
     }
 
     @Override

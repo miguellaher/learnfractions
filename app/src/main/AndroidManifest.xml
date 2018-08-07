@@ -225,6 +225,7 @@
         <activity android:name=".ChapterExamListActivity" />
         <activity android:name=".model.ChapterExam" />
         <activity android:name=".teacher_activities.StudentExamProgressActivity" />
+        <activity android:name=".teacher_activities.ManageExamsActivity" />
     </application>
 
 </manifest>

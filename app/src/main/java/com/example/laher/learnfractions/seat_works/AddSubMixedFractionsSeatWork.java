@@ -55,9 +55,13 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
 
     public AddSubMixedFractionsSeatWork(int size) {
         super(size);
+        setTopicName(AppConstants.ADDING_SUBTRACTING_MIXED);
+        setSeatWorkNum(1);
     }
 
     public AddSubMixedFractionsSeatWork() {
+        setTopicName(AppConstants.ADDING_SUBTRACTING_MIXED);
+        setSeatWorkNum(1);
     }
 
     @Override

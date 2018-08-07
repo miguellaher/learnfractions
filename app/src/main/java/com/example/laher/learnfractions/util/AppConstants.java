@@ -26,6 +26,14 @@ public class AppConstants {
     public static final String LESSONS = "Lessons";
     public static final String STUDENT_MAIN = "Student Main";
     public static final String SW_PROGRESSES = "Seat Work Data";
+    public static final String SAVE = "Save";
+
+    public static final String C_EXAM1 = "Chapter Exam 1";
+    public static final String C_EXAM2 = "Chapter Exam 2";
+    public static final String C_EXAM3 = "Chapter Exam 3";
+    public static final String C_EXAM4 = "Chapter Exam 4";
+    public static final String C_EXAM5 = "Chapter Exam 5";
+    public static final String C_EXAM6 = "Chapter Exam 6";
 
     public static final String NUMERATOR = "Numerator";
     public static final String DENOMINATOR = "Denominator";
@@ -59,6 +67,7 @@ public class AppConstants {
     public static final String FINISHED_LESSON = "Congratulations, you have finished the lesson.";
     public static final String INVALID_INPUT = "Invalid input.";
     public static final String LOGOUT_CONFIRMATION = "Are you sure you want to Logout?";
+
 
 
     public static final String FAILED_CONSECUTIVE(int error){

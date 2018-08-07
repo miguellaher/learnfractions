@@ -55,9 +55,13 @@ public class SubtractingSimilarSeatWork extends SeatWork {
 
     public SubtractingSimilarSeatWork(int size) {
         super(size);
+        setTopicName(AppConstants.SUBTRACTING_SIMILAR);
+        setSeatWorkNum(1);
     }
 
     public SubtractingSimilarSeatWork() {
+        setTopicName(AppConstants.SUBTRACTING_SIMILAR);
+        setSeatWorkNum(1);
     }
 
     @Override

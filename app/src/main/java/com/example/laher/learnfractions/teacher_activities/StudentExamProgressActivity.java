@@ -12,20 +12,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.model.E_StatAverage;
+import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.model.ExamStat;
 import com.example.laher.learnfractions.model.ExamStatAverage;
 import com.example.laher.learnfractions.model.Exercise;
-import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.model.Teacher;
+import com.example.laher.learnfractions.service.ExamService;
 import com.example.laher.learnfractions.service.ExamStatService;
-import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.teacher_activities.dialogs.StudentExamStatDialog;
-import com.example.laher.learnfractions.teacher_activities.list_adapters.StudentEProgressAdapter;
 import com.example.laher.learnfractions.teacher_activities.list_adapters.StudentExamProgressAdapter;
 import com.example.laher.learnfractions.teacher_activities.list_adapters.StudentExamProgressAdapter2;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -40,15 +38,14 @@ public class StudentExamProgressActivity extends AppCompatActivity {
     private static final String TAG = "STUDENT_EXAM_LIST";
     Context mContext = this;
     ListView mExamListView;
+    ArrayList<ChapterExam> mOnlineChapterExams;
     ArrayList<ExamStat> mExamStats;
     ArrayList<ExamStatAverage> mExamStatAverages;
 
 
 
+
     ArrayList<Exercise> mExercises;
-    ArrayList<ExerciseStat> mExerciseStats;
-    ArrayList<E_StatAverage> mExerciseStatsAverage;
-    StudentEProgressAdapter studentEProgressAdapter;
 
     StudentExamProgressAdapter studentExamProgressAdapter;
     //TOOLBAR
@@ -76,94 +73,7 @@ public class StudentExamProgressActivity extends AppCompatActivity {
         txtTitle.setText(AppConstants.EXAM_PROGRESSES);
         //ACTIVITY
         mExamListView = findViewById(R.id.exercise_list);
-        getExamStats();
-    }
-    private void getAllStudentStats(){
-        Service service = new Service("Loading student stats...", mContext, new ServiceResponse() {
-            @Override
-            public void postExecute(JSONObject response) {
-                try {
-                    int item_count = Integer.valueOf(response.optString("item_count"));
-                    mExerciseStats = new ArrayList<>();
-                    for (int i = 1; i <= item_count; i++) {
-                        ExerciseStat exerciseStat = new ExerciseStat();
-                        exerciseStat.setStudent(new Student());
-                        exerciseStat.getStudent().setUsername(String.valueOf(response.optString(i + "student_username")));
-                        Log.d(TAG, exerciseStat.getStudent().getUsername()+":received user.");
-                        Log.d(TAG, "");
-                        exerciseStat.setTopicName(String.valueOf(response.optString(i + "topic_name")));
-                        Log.d(TAG, exerciseStat.getTopicName()+":received.");
-                        exerciseStat.setExerciseNum(Integer.valueOf(String.valueOf(response.optString(i + "exercise_num"))));
-                        Log.d(TAG, exerciseStat.getTopicName()+" exercise_num:" + exerciseStat.getExerciseNum());
-                        exerciseStat.setTime_spent(Integer.valueOf(String.valueOf(response.optString(i + "time_spent"))));
-                        Log.d(TAG, exerciseStat.getTopicName()+" time_spent:" + exerciseStat.getTime_spent());
-                        exerciseStat.setErrors(Integer.valueOf(String.valueOf(response.optString(i + "errors"))));
-                        Log.d(TAG, exerciseStat.getTopicName()+" errors:" + exerciseStat.getErrors());
-                        exerciseStat.setRequiredCorrects(Integer.valueOf(String.valueOf(response.optString(i + "required_corrects"))));
-                        Log.d(TAG, exerciseStat.getTopicName()+" item size:" + exerciseStat.getRequiredCorrects());
-                        if (response.optString(i + "rc_consecutive").equals("1")){
-                            exerciseStat.setRc_consecutive(true);
-                        } else {
-                            exerciseStat.setRc_consecutive(false);
-                        }
-                        Log.d(TAG, exerciseStat.getTopicName()+" item size:" + exerciseStat.isRc_consecutive());
-                        exerciseStat.setMaxErrors(Integer.valueOf(String.valueOf(response.optString(i + "max_errors"))));
-                        Log.d(TAG, exerciseStat.getTopicName()+" max_errors:" + exerciseStat.getMaxErrors());
-                        if (response.optString(i + "me_consecutive").equals("1")){
-                            exerciseStat.setMe_consecutive(true);
-                        } else {
-                            exerciseStat.setMe_consecutive(false);
-                        }
-                        Log.d(TAG, exerciseStat.getTopicName()+" me_consecutive:" + exerciseStat.isMe_consecutive());
-                        Log.d(TAG, "---------------------------------------");
-                        mExerciseStats.add(exerciseStat);
-                    }
-                    mExerciseStatsAverage = new ArrayList<>();
-                    for (ExerciseStat exerciseStat : mExerciseStats){
-                        boolean contains = false;
-                        int i = 0;
-                        for (E_StatAverage statAverage : mExerciseStatsAverage){
-                            if (exerciseStat.getTopicName().equals(statAverage.getTopicName())){
-                                if (exerciseStat.getExerciseNum()==statAverage.getExerciseNum()){
-                                    if (isUpdated(exerciseStat)) {
-                                        mExerciseStatsAverage.get(i).addStats(exerciseStat);
-                                        contains = true;
-                                    }
-                                }
-                            }
-                            i++;
-                        }
-                        if (!contains){
-                            if (isUpdated(exerciseStat)) {
-                                E_StatAverage statAverage = new E_StatAverage(exerciseStat.getTopicName(), exerciseStat.getExerciseNum());
-                                statAverage.addStats(exerciseStat);
-                                mExerciseStatsAverage.add(statAverage);
-                            }
-                        }
-                    }
-                    Collections.sort(mExerciseStatsAverage);
-                    setListViewAdapter();
-                    Log.d(TAG, "setAdapter()");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        ExerciseStatService.getAllStats(Storage.load(mContext,Storage.TEACHER_CODE),service);
-    }
-    private boolean isUpdated(ExerciseStat exerciseStat) {
-        for (Exercise exercise : mExercises) {
-            if (exerciseStat.getRequiredCorrects() == exercise.getRequiredCorrects()) {
-                if (exerciseStat.isRc_consecutive() == exercise.isRc_consecutive()) {
-                    if (exerciseStat.getMaxErrors() == exercise.getMaxErrors()) {
-                        if (exerciseStat.isMe_consecutive() == exercise.isMe_consecutive()) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
+        updateExams();
     }
     private void getExamStats(){
         final Teacher teacher = new Teacher();
@@ -238,6 +148,48 @@ public class StudentExamProgressActivity extends AppCompatActivity {
                         examStat.setSeatWorks(seatWorks);
                         mExamStats.add(examStat);
                     }
+                    ArrayList<ExamStat> toRemove = new ArrayList<>();
+                    for (ChapterExam chapterExam : mOnlineChapterExams){ // removing exam stats that isn't updated
+                        for (ExamStat examStat : mExamStats){
+                            if (chapterExam.getExamTitle().equals(examStat.getExamTitle())) {
+                                boolean hasDifferentSeatWorks = false;
+                                if (chapterExam.getSeatWorks().size() == examStat.getSeatWorks().size()) {
+                                    boolean hasDifference;
+                                    for (SeatWork ce_seatWork : chapterExam.getSeatWorks()) {
+                                        boolean hasSameSeatWorkTopicName = false;
+                                        boolean hasSameSeatWorkNum = false;
+                                        boolean hasSameSeatWork = false;
+                                        for (SeatWork es_seatWork : examStat.getSeatWorks()) {
+                                            if (ce_seatWork.getTopicName().equals(es_seatWork.getTopicName())) {
+                                                hasSameSeatWorkTopicName = true;
+                                            }
+                                            if (hasSameSeatWorkTopicName) {
+                                                if (ce_seatWork.getSeatWorkNum() == es_seatWork.getSeatWorkNum()) {
+                                                    hasSameSeatWorkNum = true;
+                                                }
+                                                if (hasSameSeatWorkNum) {
+                                                    if (ce_seatWork.getItems_size() == es_seatWork.getItems_size()) {
+                                                        hasSameSeatWork = true;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        hasDifference = !hasSameSeatWork;
+                                        if (hasDifference){
+                                            hasDifferentSeatWorks = true;
+                                        }
+                                    }
+                                } else {
+                                    hasDifferentSeatWorks = true;
+                                }
+                                if (hasDifferentSeatWorks) {
+                                    toRemove.add(examStat);
+                                }
+                            }
+                        }
+                    }
+                    mExamStats.removeAll(toRemove);
+
                     mExamStatAverages = new ArrayList<>();
                     for (ExamStat examStat : mExamStats){
                         boolean contains = false;
@@ -261,6 +213,7 @@ public class StudentExamProgressActivity extends AppCompatActivity {
                     //getAllStudentStats();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.d(TAG, e.toString());
                 }
             }
         });
@@ -315,5 +268,45 @@ public class StudentExamProgressActivity extends AppCompatActivity {
                 txtTitle.setText(AppConstants.EXAM_PROGRESSES);
             }
         });
+    }
+    private void updateExams(){
+        Service service = new Service("Getting exams...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try{
+                    int item_count = Integer.valueOf(response.optString("item_count"));
+                    mOnlineChapterExams = new ArrayList<>();
+                    for (int i = 1; i <= item_count; i++) {
+                        ChapterExam chapterExam = new ChapterExam();
+                        String exam_title = response.optString(i + "exam_title");
+                        Log.d(TAG, "Exam title: " + exam_title);
+                        chapterExam.setExamTitle(exam_title);
+                        String seat_works = response.optString(i + "seat_works");
+                        Log.d(TAG, "Seat works: " + seat_works);
+                        String[] sw_tokens = seat_works.split(";");
+                        ArrayList<SeatWork> seatWorks = new ArrayList<>();
+                        for (String token : sw_tokens){
+                            String[] tokens2 = token.split(":");
+                            String topicName = tokens2[0];
+                            int swNum = Integer.valueOf(tokens2[1]);
+                            int item_size = Integer.valueOf(tokens2[2]);
+                            SeatWork seatWork = new SeatWork();
+                            seatWork.setTopicName(topicName);
+                            seatWork.setSeatWorkNum(swNum);
+                            seatWork.setItems_size(item_size);
+                            seatWorks.add(seatWork);
+                        }
+                        chapterExam.setSeatWorks(seatWorks);
+                        mOnlineChapterExams.add(chapterExam);
+                    }
+                    getExamStats();
+                } catch (Exception e){
+                    e.printStackTrace();
+                    Log.d(TAG, e.toString());
+                }
+            }
+        });
+        String teacher_code = Storage.load(mContext,Storage.TEACHER_CODE);
+        ExamService.getExams(service, teacher_code);
     }
 }

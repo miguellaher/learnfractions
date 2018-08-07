@@ -55,9 +55,13 @@ public class MultiplyDivideMixedFractionsSeatWork extends SeatWork {
 
     public MultiplyDivideMixedFractionsSeatWork(int size) {
         super(size);
+        setTopicName(AppConstants.MULTIPLYING_DIVIDING_MIXED);
+        setSeatWorkNum(1);
     }
 
     public MultiplyDivideMixedFractionsSeatWork() {
+        setTopicName(AppConstants.MULTIPLYING_DIVIDING_MIXED);
+        setSeatWorkNum(1);
     }
 
     @Override

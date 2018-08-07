@@ -55,9 +55,13 @@ public class MultiplyingFractionsSeatWork extends SeatWork {
 
     public MultiplyingFractionsSeatWork(int size) {
         super(size);
+        setTopicName(AppConstants.MULTIPLYING_FRACTIONS);
+        setSeatWorkNum(1);
     }
 
     public MultiplyingFractionsSeatWork() {
+        setTopicName(AppConstants.MULTIPLYING_FRACTIONS);
+        setSeatWorkNum(1);
     }
 
     @Override

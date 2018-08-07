@@ -51,7 +51,12 @@ public class TopicsMenuActivity extends AppCompatActivity {
             btnBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    messageDialog.show();
+                    if (isNetworkAvailable()){
+                        btnBack.setOnClickListener(new BtnBackListener());
+                        btnBack.performClick();
+                    } else {
+                        messageDialog.show();
+                    }
                 }
             });
         } else {

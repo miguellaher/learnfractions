@@ -53,9 +53,13 @@ public class ComparingSimilarSeatWork extends SeatWork {
 
     public ComparingSimilarSeatWork(int size) {
         super(size);
+        setTopicName(AppConstants.COMPARING_SIMILAR_FRACTIONS);
+        setSeatWorkNum(1);
     }
 
     public ComparingSimilarSeatWork() {
+        setTopicName(AppConstants.COMPARING_SIMILAR_FRACTIONS);
+        setSeatWorkNum(1);
     }
 
     @Override
