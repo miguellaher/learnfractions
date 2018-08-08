@@ -130,9 +130,6 @@ public class ChapterExam extends AppCompatActivity {
                 int examScore = getTotalScore();
                 examScore = examScore + seatWork.getCorrect();
                 setTotalScore(examScore);
-                int itemSize = getTotalItems();
-                itemSize = itemSize + seatWork.getItems_size();
-                setTotalItems(itemSize);
                 long timeSpent = getTimeSpent();
                 timeSpent = timeSpent + seatWork.getTimeSpent();
                 setTimeSpent(timeSpent);

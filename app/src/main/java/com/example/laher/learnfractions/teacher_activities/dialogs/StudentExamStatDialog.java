@@ -32,6 +32,7 @@ public class StudentExamStatDialog extends Dialog {
 
     private TextView txtUsername, txtExamTitle;
     private ListView statsList;
+    private Button btnSave;
 
     private ExamStat mExamStat;
 
@@ -54,5 +55,7 @@ public class StudentExamStatDialog extends Dialog {
         txtUsername = findViewById(R.id.dialog_student_exam_stat_txtUsername);
         txtExamTitle = findViewById(R.id.dialog_student_exam_stat_txtExamTitle);
         statsList = findViewById(R.id.dialog_student_exam_stat_list);
+        btnSave = findViewById(R.id.dialog_student_exam_stat_btnSave);
+        btnSave.setVisibility(View.INVISIBLE);
     }
 }

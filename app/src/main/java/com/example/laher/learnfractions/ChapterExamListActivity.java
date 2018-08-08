@@ -284,6 +284,7 @@ public class ChapterExamListActivity extends AppCompatActivity {
                             i++;
                         }
                     }
+                    rewriteChapterExams(mChapterExams);
                     getStudentStats();
                 } catch (Exception e){
                     e.printStackTrace();

@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,6 +31,7 @@ public class ExamUpdateDialog extends Dialog {
     //GUI
     private TextView txtMainTitle, txtSubTitle;
     private ListView listSeatWorks;
+    private Button btnSave;
     //VARIABLES
     private Context mContext;
     private ChapterExam mChapterExam;
@@ -43,7 +46,9 @@ public class ExamUpdateDialog extends Dialog {
         setGui();
 
         txtMainTitle.setText(chapterExam.getExamTitle());
-        txtSubTitle.setText(AppConstants.SAVE);
+        txtSubTitle.setVisibility(View.INVISIBLE);
+        btnSave.setText(AppConstants.SAVE);
+
 
         mSeatWorks = chapterExam.getSeatWorks();
         final ExamUpdateAdapter examUpdateAdapter = new ExamUpdateAdapter(mContext,R.layout.layout_user_item,mSeatWorks);
@@ -68,7 +73,7 @@ public class ExamUpdateDialog extends Dialog {
                 examSeatWorkUpdateDialog.show();
             }
         });
-        txtSubTitle.setOnClickListener(new View.OnClickListener() {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 postExam();
@@ -81,6 +86,7 @@ public class ExamUpdateDialog extends Dialog {
         setContentView(R.layout.layout_dialog_student_exam_stat);
         txtMainTitle = findViewById(R.id.dialog_student_exam_stat_txtUsername);
         txtSubTitle = findViewById(R.id.dialog_student_exam_stat_txtExamTitle);
+        btnSave = findViewById(R.id.dialog_student_exam_stat_btnSave);
         listSeatWorks = findViewById(R.id.dialog_student_exam_stat_list);
     }
 
