@@ -45,6 +45,16 @@
             app:layout_constraintStart_toStartOf="@+id/student_main_btnSeatworks"
             app:layout_constraintTop_toBottomOf="@+id/student_main_btnSeatworks" />
 
+        <Button
+            android:id="@+id/student_main_btnClassRanks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="CLASS RANKS"
+            app:layout_constraintEnd_toEndOf="@+id/student_main_btnChapterExam"
+            app:layout_constraintStart_toStartOf="@+id/student_main_btnChapterExam"
+            app:layout_constraintTop_toBottomOf="@+id/student_main_btnChapterExam" />
+
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>

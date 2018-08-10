@@ -6,7 +6,9 @@ import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,6 +32,7 @@ import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Styles;
 
 import org.json.JSONObject;
 
@@ -83,12 +86,12 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
 
         inputNum = findViewById(R.id.a1_numerator);
         inputDenom = findViewById(R.id.a1_denominator);
-        inputNum.setOnKeyListener(new InputListener());
         inputNum.setOnFocusChangeListener(new InputListener());
         inputNum.setOnEditorActionListener(new InputListener());
-        inputDenom.setOnKeyListener(new InputListener());
+        inputNum.addTextChangedListener(new InputListener());
         inputDenom.setOnFocusChangeListener(new InputListener());
         inputDenom.setOnEditorActionListener(new InputListener());
+        inputDenom.addTextChangedListener(new InputListener());
         inputNum.setEnabled(false);
         inputDenom.setEnabled(false);
         inputNum.setFilters(new InputFilter[]{
@@ -307,7 +310,11 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
                         }, 2000);
                     }
                 }
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                Styles.shakeAnimate(inputNum);
+                Styles.shakeAnimate(inputDenom);
+                e.printStackTrace();
+            }
         }
     }
     //COPY
@@ -337,19 +344,7 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
     }
 
 
-    public class InputListener implements View.OnKeyListener, View.OnFocusChangeListener, TextView.OnEditorActionListener{
-
-        @Override
-        public boolean onKey(View view, int i, KeyEvent keyEvent) {
-            if ((inputNum.getText().toString().trim().length() == 0)
-                    || (inputDenom.getText().toString().trim().length() == 0)){
-                btnOK.setEnabled(false);
-            } else {
-                //txtInstruction.setText(inputNum.getText().toString().trim().length() + "/" + inputDenom.getText().toString().trim().length());
-                btnOK.setEnabled(true);
-            }
-            return false;
-        }
+    public class InputListener implements View.OnFocusChangeListener, TextView.OnEditorActionListener, TextWatcher{
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
@@ -364,6 +359,27 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
                 btnOK.performClick();
             }
             return false;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if ((inputNum.getText().toString().trim().length() == 0)
+                    || (inputDenom.getText().toString().trim().length() == 0)){
+                btnOK.setEnabled(false);
+            } else {
+                //txtInstruction.setText(inputNum.getText().toString().trim().length() + "/" + inputDenom.getText().toString().trim().length());
+                btnOK.setEnabled(true);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
         }
     }
 

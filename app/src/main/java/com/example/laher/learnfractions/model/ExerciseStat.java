@@ -1,6 +1,8 @@
 package com.example.laher.learnfractions.model;
 
-public class ExerciseStat extends Exercise {
+import android.support.annotation.NonNull;
+
+public class ExerciseStat extends Exercise implements Comparable<ExerciseStat> {
     private Student student;
     private int students_answered;
 
@@ -36,5 +38,25 @@ public class ExerciseStat extends Exercise {
         int error = getErrors();
         error++;
         setErrors(error);
+    }
+
+    @Override
+    public int compareTo(@NonNull ExerciseStat o) {
+        int errors1 = getErrors();
+        int errors2 = o.getErrors();
+        if (errors1>errors2){
+            return 1;
+        } else if (errors1<errors2){
+            return -1;
+        } else {
+            long time1 = getTime_spent();
+            long time2 = o.getTime_spent();
+            if (time1>time2){
+                return 1;
+            } else if (time1<time2){
+                return -1;
+            }
+        }
+        return 0;
     }
 }

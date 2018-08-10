@@ -38,6 +38,9 @@ public class AppConstants {
     public static final String NUMERATOR = "Numerator";
     public static final String DENOMINATOR = "Denominator";
 
+    public static final String CLASS_RANKS = "Class Ranks";
+    public static final String EXERCISE_RANKS = "Exercise Ranks";
+
 
     //LESSONS
     public static final String FRACTION_MEANING="Fraction Meaning";
@@ -67,7 +70,6 @@ public class AppConstants {
     public static final String FINISHED_LESSON = "Congratulations, you have finished the lesson.";
     public static final String INVALID_INPUT = "Invalid input.";
     public static final String LOGOUT_CONFIRMATION = "Are you sure you want to Logout?";
-
 
 
     public static final String FAILED_CONSECUTIVE(int error){

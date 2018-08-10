@@ -221,11 +221,13 @@
             android:name=".seat_works.MultiplyDivideMixedFractionsSeatWork"
             android:screenOrientation="portrait" />
         <activity android:name=".teacher_activities.StudentSWProgressActivity" />
-        <activity android:name=".teacher_activities.StudentEProgressActivity"></activity>
+        <activity android:name=".teacher_activities.StudentEProgressActivity" />
         <activity android:name=".ChapterExamListActivity" />
         <activity android:name=".model.ChapterExam" />
         <activity android:name=".teacher_activities.StudentExamProgressActivity" />
         <activity android:name=".teacher_activities.ManageExamsActivity" />
+        <activity android:name=".student_activities.ClassRanksActivity"></activity>
+        <activity android:name=".rankings.ClassExerciseRanks" />
     </application>
 
 </manifest>

@@ -21,7 +21,7 @@ import com.example.laher.learnfractions.util.Storage;
 
 public class StudentMainActivity extends AppCompatActivity {
     Context mContext = this;
-    Button btnLessons, btnSeatWorks, btnChapterExam;
+    Button btnLessons, btnSeatWorks, btnChapterExam, btnClassRanks;
 
     //TOOLBAR
     TextView txtTitle;
@@ -77,13 +77,22 @@ public class StudentMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         btnChapterExam = findViewById(R.id.student_main_btnChapterExam);
         btnChapterExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StudentMainActivity.this,
                         ChapterExamListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+        btnClassRanks = findViewById(R.id.student_main_btnClassRanks);
+        btnClassRanks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StudentMainActivity.this,
+                        ClassRanksActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
