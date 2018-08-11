@@ -2,7 +2,7 @@ package com.example.laher.learnfractions.fraction_util.fraction_questions;
 
 import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 
-public class FractionMeaningQuestion extends FractionQuestionClass {
+public class NonVisualQuestion extends FractionQuestionClass {
     private int numerator;
     private int denominator;
 
@@ -24,30 +24,24 @@ public class FractionMeaningQuestion extends FractionQuestionClass {
         setDenominatorAnswer(this.denominator);
     }
 
-    public FractionMeaningQuestion() {
+    public NonVisualQuestion() {
         randomizeFraction();
     }
-    private void randomizeFraction(){
+
+    public void randomizeFraction(){
         int numerator = (int) (Math.random() * 9 + 1);
         int denominator = (int) (Math.random() * 9 + 1);
-        while (denominator<numerator){
-            numerator = (int) (Math.random() * 9 + 1);
-            denominator = (int) (Math.random() * 9 + 1);
-        }
         setNumerator(numerator);
         setDenominator(denominator);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof FractionMeaningQuestion) {
-            FractionMeaningQuestion fmq = (FractionMeaningQuestion) obj;
-            if (fmq.getNumerator() == this.getNumerator()){
-                if (fmq.getDenominator() == this.getDenominator()){
-                    return true;
-                } else {
-                    return false;
-                }
+        if (obj instanceof NonVisualQuestion) {
+            NonVisualQuestion nvq = (NonVisualQuestion) obj;
+            if (nvq.getNumerator()==this.getNumerator()
+                    && nvq.getDenominator()==this.getDenominator()){
+                return true;
             } else {
                 return false;
             }

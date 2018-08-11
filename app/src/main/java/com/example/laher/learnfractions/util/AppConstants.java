@@ -70,6 +70,7 @@ public class AppConstants {
     public static final String FINISHED_LESSON = "Congratulations, you have finished the lesson.";
     public static final String INVALID_INPUT = "Invalid input.";
     public static final String LOGOUT_CONFIRMATION = "Are you sure you want to Logout?";
+    public static final int EQUAL = 0;
 
 
     public static final String FAILED_CONSECUTIVE(int error){

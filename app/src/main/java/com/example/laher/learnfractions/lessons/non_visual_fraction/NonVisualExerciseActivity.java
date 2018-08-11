@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.NonVisualQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -22,7 +23,6 @@ import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
-import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -42,14 +42,18 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
     public final String TITLE = "NON-VISUAL";
 
     TextView txtNumerator, txtDenominator, txtInstruction, txtScore;
-    int num, denom, correct, error;
+    int correct, error;
     ArrayList<String> instructions;
-    public final String INSTRUCTION_NUM = "click the numerator";
-    public final String INSTRUCTION_DENOM = "click the denominator";
+    public final String INSTRUCTION_NUM = "Click the numerator.";
+    public final String INSTRUCTION_DENOM = "Click the denominator.";
     final Handler handler = new Handler();
 
     int requiredCorrects;
     int maxErrors;
+
+    ArrayList<NonVisualQuestion> mNonVisualQuestions;
+    int mQuestionNum;
+
 
     long startingTime, endingTime;
 
@@ -154,20 +158,27 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
     }
     public void go() {
         resetColor();
-        generateFraction();
+        generateFractionQuestions();
         generateInstruction();
     }
-    public void generateFraction(){
-        num = (int) (Math.random() * 9 + 1);
-        denom = (int) (Math.random() * 9 + 1);
-        while (denom<num) {
-            denom = (int) (Math.random() * 9 + 1);
+    private void generateFractionQuestions(){
+        mQuestionNum = 1;
+        mNonVisualQuestions = new ArrayList<>();
+        for (int i = 0; i < requiredCorrects; i++){
+            NonVisualQuestion nonVisualQuestion = new NonVisualQuestion();
+            while (mNonVisualQuestions.contains(nonVisualQuestion)) {
+                nonVisualQuestion = new NonVisualQuestion();
+            }
+            mNonVisualQuestions.add(nonVisualQuestion);
         }
         setTxtFraction();
     }
     public void setTxtFraction(){
+        int num = mNonVisualQuestions.get(mQuestionNum-1).getNumerator();
+        int denom = mNonVisualQuestions.get(mQuestionNum-1).getDenominator();
         txtNumerator.setText(String.valueOf(num));
         txtDenominator.setText(String.valueOf(denom));
+        generateInstruction();
     }
     public void generateInstruction(){
         Collections.shuffle(instructions);
@@ -183,7 +194,7 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
         setTxtScore();
         txtNumerator.setOnClickListener(null);
         txtDenominator.setOnClickListener(null);
-        if (correct == requiredCorrects){
+        if (correct >= requiredCorrects){
             endingTime = System.currentTimeMillis();
             if (!Storage.isEmpty()) {
                 setFinalAttributes();
@@ -195,9 +206,11 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    resetColor();
                     txtNumerator.setOnClickListener(new TxtFractionListener());
                     txtDenominator.setOnClickListener(new TxtFractionListener());
-                    go();
+                    mQuestionNum++;
+                    setTxtFraction();
                 }
             }, 2000);
         }
@@ -237,7 +250,18 @@ public class NonVisualExerciseActivity extends AppCompatActivity {
                 public void run() {
                     txtNumerator.setOnClickListener(new TxtFractionListener());
                     txtDenominator.setOnClickListener(new TxtFractionListener());
-                    go();
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                    } else {
+                        resetColor();
+                        NonVisualQuestion nonVisualQuestion = new NonVisualQuestion();
+                        while (mNonVisualQuestions.contains(nonVisualQuestion)) {
+                            nonVisualQuestion = new NonVisualQuestion();
+                        }
+                        mNonVisualQuestions.add(nonVisualQuestion);
+                        mQuestionNum++;
+                        setTxtFraction();
+                    }
                 }
             }, 2000);
         }

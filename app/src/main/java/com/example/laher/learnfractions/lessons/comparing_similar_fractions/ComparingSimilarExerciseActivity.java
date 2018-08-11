@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.fraction_util.questions.ComparingNumbersQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -21,9 +22,10 @@ import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
-import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ComparingSimilarExerciseActivity extends AppCompatActivity {
     Context mContext = this;
@@ -50,6 +52,10 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
     int maxErrors;
 
     long startingTime, endingTime;
+
+    ArrayList<ComparingNumbersQuestion> mComparingNumbersQuestions;
+    int mQuestionNum;
+
 
     boolean correctsShouldBeConsecutive;
     boolean errorsShouldBeConsecutive;
@@ -155,17 +161,26 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
     }
     public void go(){
         txtCompareSign.setText("_");
-        txtInstruction.setText("compare the two numbers");
+        txtInstruction.setText("Compare the two numbers.");
         generateNumbers();
     }
-    public void generateNumbers(){
-        num1 = (int) (Math.random() * 9 + 1);
-        num2 = (int) (Math.random() * 9 + 1);
+    private void generateNumbers(){
+        mQuestionNum = 1;
+        mComparingNumbersQuestions = new ArrayList<>();
+        for (int i = 0; i > requiredCorrects; i++){
+            ComparingNumbersQuestion comparingNumbers = new ComparingNumbersQuestion();
+            while (mComparingNumbersQuestions.contains(comparingNumbers)){
+                comparingNumbers = new ComparingNumbersQuestion();
+            }
+            mComparingNumbersQuestions.add(comparingNumbers);
+        }
         setNumbers();
     }
     public void setNumbers(){
-        txtNum1.setText(String.valueOf(num1));
-        txtNum2.setText(String.valueOf(num2));
+        int number1 = mComparingNumbersQuestions.get(mQuestionNum-1).getNumber1();
+        int number2 = mComparingNumbersQuestions.get(mQuestionNum-1).getNumber2();
+        txtNum1.setText(String.valueOf(number1));
+        txtNum2.setText(String.valueOf(number2));
     }
     public class BtnListener implements Button.OnClickListener{
         @Override
@@ -185,22 +200,23 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
         }
     }
     public void check(String compareSign){
+        int numberAnswer = mComparingNumbersQuestions.get(mQuestionNum-1).getAnswer();
         if (compareSign.equals(GREATER_THAN)){
-            if (num1 > num2){
+            if (numberAnswer == num1){
                 correct();
             } else {
                 wrong();
             }
         }
         if (compareSign.equals(EQUAL_TO)){
-            if (num1 == num2){
+            if (numberAnswer == -1){
                 correct();
             } else {
                 wrong();
             }
         }
         if (compareSign.equals(LESS_THAN)){
-            if (num1 < num2){
+            if (numberAnswer == num2){
                 correct();
             } else {
                 wrong();
@@ -234,7 +250,8 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
                     btnGreater.setEnabled(true);
                     btnEquals.setEnabled(true);
                     btnLess.setEnabled(true);
-                    go();
+                    mQuestionNum++;
+                    setNumbers();
                 }
             }, 2000);
         }
@@ -273,7 +290,17 @@ public class ComparingSimilarExerciseActivity extends AppCompatActivity {
                     btnGreater.setEnabled(true);
                     btnEquals.setEnabled(true);
                     btnLess.setEnabled(true);
-                    go();
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                    } else {
+                        ComparingNumbersQuestion comparingNumbers = new ComparingNumbersQuestion();
+                        while (mComparingNumbersQuestions.contains(comparingNumbers)){
+                            comparingNumbers = new ComparingNumbersQuestion();
+                        }
+                        mComparingNumbersQuestions.add(comparingNumbers);
+                        mQuestionNum++;
+                        setNumbers();
+                    }
                 }
             }, 2000);
         }

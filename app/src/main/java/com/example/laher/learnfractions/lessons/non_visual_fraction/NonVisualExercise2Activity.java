@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.NonVisualQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -60,6 +61,9 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
 
     int requiredCorrects;
     int maxErrors;
+
+    ArrayList<NonVisualQuestion> mNonVisualQuestions;
+    int mQuestionNum;
 
     long startingTime, endingTime;
 
@@ -179,21 +183,26 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
     }
     public void go(){
         reset();
-        generateFraction();
-        generateInstruction();
+        generateFractionQuestions();
     }
-
-    public void generateFraction(){
-        num = (int) (Math.random() * 9 + 1);
-        denom = (int) (Math.random() * 9 + 1);
-        while (denom==num) {
-            denom = (int) (Math.random() * 9 + 1);
+    private void generateFractionQuestions(){
+        mQuestionNum = 1;
+        mNonVisualQuestions = new ArrayList<>();
+        for (int i = 0; i < requiredCorrects; i++){
+            NonVisualQuestion nonVisualQuestion = new NonVisualQuestion();
+            while (mNonVisualQuestions.contains(nonVisualQuestion)) {
+                nonVisualQuestion = new NonVisualQuestion();
+            }
+            mNonVisualQuestions.add(nonVisualQuestion);
         }
         setTxtFraction();
     }
     public void setTxtFraction(){
-        txtNumerator.setText(String.valueOf(num));
-        txtDenominator.setText(String.valueOf(denom));
+        int numerator = mNonVisualQuestions.get(mQuestionNum).getNumerator();
+        int denominator = mNonVisualQuestions.get(mQuestionNum).getDenominator();
+        txtNumerator.setText(String.valueOf(numerator));
+        txtDenominator.setText(String.valueOf(denominator));
+        generateInstruction();
     }
     public void generateInstruction(){
         Collections.shuffle(instructions);
@@ -230,7 +239,9 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
                 public void run() {
                     inputAnswer.setEnabled(true);
                     btnCheck.setEnabled(true);
-                    go();
+                    mQuestionNum++;
+                    reset();
+                    setTxtFraction();
                 }
             }, 2000);
         }
@@ -268,7 +279,18 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
                 public void run() {
                     inputAnswer.setEnabled(true);
                     btnCheck.setEnabled(true);
-                    go();
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                    } else {
+                        NonVisualQuestion nonVisualQuestion = new NonVisualQuestion();
+                        while (mNonVisualQuestions.contains(nonVisualQuestion)) {
+                            nonVisualQuestion = new NonVisualQuestion();
+                        }
+                        mNonVisualQuestions.add(nonVisualQuestion);
+                        mQuestionNum++;
+                        reset();
+                        setTxtFraction();
+                    }
                 }
             }, 2000);
         }
@@ -302,8 +324,10 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         inputAnswer.getText().clear();
         Styles.paintBlack(inputAnswer);
         btnCheck.setEnabled(false);
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
+        if (mQuestionNum>1) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+        }
     }
 
     public class BtnChkListener implements Button.OnClickListener{

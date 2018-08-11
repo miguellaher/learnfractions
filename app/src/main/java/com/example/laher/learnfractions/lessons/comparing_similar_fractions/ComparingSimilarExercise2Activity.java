@@ -15,6 +15,7 @@ import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.ComparingSimilarQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -46,11 +47,14 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtCompareSign, txtScore, txtInstruction;
     Button btnGreater, btnEquals, btnLess;
     //VARIABLES
-    int questionNum, correct, error;
+    int correct, error;
     final Handler handler = new Handler();
     Fraction fractionOne, fractionTwo;
-    FractionQuestion fractionQuestion;
-    ArrayList<FractionQuestion> fractionQuestions;
+
+    ComparingSimilarQuestion mComparingSimilarQuestion;
+    ArrayList<ComparingSimilarQuestion> mComparingSimilarQuestions;
+    int mQuestionNum;
+
     String strAnswer;
 
     int requiredCorrects;
@@ -113,8 +117,6 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         //VARIABLES
         fractionOne = new Fraction();
         fractionTwo = new Fraction();
-        fractionQuestion = new FractionQuestion();
-        fractionQuestions = new ArrayList<>();
 
         setAttributes((ExerciseStat) exercise);
         if (!Storage.isEmpty()) {
@@ -166,23 +168,30 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         }
     }
     public void go(){
-        setFractionQuestions();
+        generateFractionQuestion();
     }
-    public void setFractionQuestions(){
-        fractionQuestions = new ArrayList<>();
-        questionNum = 0;
-        for(int i = 0; i < requiredCorrects; i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.COMPARING_SIMILAR);
-            fractionQuestions.add(fractionQuestion);
+    private void generateFractionQuestion(){
+        mQuestionNum = 1;
+        mComparingSimilarQuestions = new ArrayList<>();
+        for (int i = 0; i < requiredCorrects; i++){
+            ComparingSimilarQuestion comparingSimilarQuestion = new ComparingSimilarQuestion();
+            while (mComparingSimilarQuestions.contains(comparingSimilarQuestion)){
+                comparingSimilarQuestion = new ComparingSimilarQuestion();
+            }
+            mComparingSimilarQuestions.add(comparingSimilarQuestion);
         }
         setTxtFractions();
     }
     public void setTxtFractions(){
-        txtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()));
-        txtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()));
-        txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
-        txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
-        strAnswer = fractionQuestions.get(questionNum).getAnswer();
+        mComparingSimilarQuestion = mComparingSimilarQuestions.get(mQuestionNum-1);
+        int numerator1 = mComparingSimilarQuestion.getNumerator1();
+        int numerator2 = mComparingSimilarQuestion.getNumerator2();
+        int denominator = mComparingSimilarQuestion.getDenominator();
+        txtNum1.setText(String.valueOf(numerator1));
+        txtNum2.setText(String.valueOf(numerator2));
+        txtDenom1.setText(String.valueOf(denominator));
+        txtDenom2.setText(String.valueOf(denominator));
+        strAnswer = String.valueOf(mComparingSimilarQuestion.getNumeratorAnswer());
         txtInstruction.setText("Compare the two fractions.");
         txtCompareSign.setText("_");
     }
@@ -212,7 +221,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    questionNum++;
+                    mQuestionNum++;
                     setTxtFractions();
                     enableButtons(true);
                 }
@@ -247,8 +256,18 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                    } else {
+                        ComparingSimilarQuestion comparingSimilarQuestion = new ComparingSimilarQuestion();
+                        while (mComparingSimilarQuestions.contains(comparingSimilarQuestion)){
+                            comparingSimilarQuestion = new ComparingSimilarQuestion();
+                        }
+                        mComparingSimilarQuestions.add(comparingSimilarQuestion);
+                        mQuestionNum++;
+                        setTxtFractions();
+                    }
                     enableButtons(true);
-                    go();
                 }
             }, 2000);
         }
@@ -259,7 +278,7 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
             Button b = (Button) v;
             String s = b.getText().toString();
             txtCompareSign.setText(s);
-            if (s.equals(fractionQuestions.get(questionNum).getAnswer())){
+            if (s.equals(strAnswer)){
                 correct();
             } else {
                 wrong();
