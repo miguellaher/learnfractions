@@ -227,7 +227,9 @@
         <activity android:name=".teacher_activities.StudentExamProgressActivity" />
         <activity android:name=".teacher_activities.ManageExamsActivity" />
         <activity android:name=".student_activities.ClassRanksActivity"></activity>
-        <activity android:name=".rankings.ClassExerciseRanks" />
+        <activity android:name=".rankings.ClassExerciseRanksActivity" />
+        <activity android:name=".rankings.ClassExamRanksActivity" />
+        <activity android:name=".rankings.ClassSeatWorkRanksActivity" />
     </application>
 
 </manifest>

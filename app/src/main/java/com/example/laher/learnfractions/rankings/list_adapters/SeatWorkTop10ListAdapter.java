@@ -10,12 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.model.E_StatAverage;
 import com.example.laher.learnfractions.model.ExerciseStat;
+import com.example.laher.learnfractions.model.Student_SW_Progress;
 
 import java.util.ArrayList;
 
-public class ExerciseTop10ListAdapter extends ArrayAdapter<ExerciseStat> {
+public class SeatWorkTop10ListAdapter extends ArrayAdapter<Student_SW_Progress> {
     private Context mContext;
     private int mResource;
 
@@ -23,8 +23,8 @@ public class ExerciseTop10ListAdapter extends ArrayAdapter<ExerciseStat> {
         TextView txtRankNum, txtUserName, txtErrors, txtTime;
     }
 
-    public ExerciseTop10ListAdapter(@NonNull Context context, int resource, ArrayList<ExerciseStat> exerciseStats) {
-        super(context, resource, exerciseStats);
+    public SeatWorkTop10ListAdapter(@NonNull Context context, int resource, ArrayList<Student_SW_Progress> student_sw_progresses) {
+        super(context, resource, student_sw_progresses);
         mContext = context;
         mResource = resource;
     }
@@ -33,8 +33,8 @@ public class ExerciseTop10ListAdapter extends ArrayAdapter<ExerciseStat> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         final View result;
-        int errors = getItem(position).getErrors();
-        long time_spent = getItem(position).getTime_spent();
+        int correct = getItem(position).getCorrect();
+        long time_spent = getItem(position).getTimeSpent();
 
         ViewHolder holder;
         if (convertView==null) {
@@ -56,7 +56,7 @@ public class ExerciseTop10ListAdapter extends ArrayAdapter<ExerciseStat> {
 
         holder.txtRankNum.setText(String.valueOf(position+1));
         holder.txtUserName.setText(getItem(position).getStudent().getUsername());
-        holder.txtErrors.setText("Errors:\n" + errors);
+        holder.txtErrors.setText("Score:\n" + correct + "/" + getItem(position).getItems_size());
         holder.txtTime.setText("Time spent:\n");
         long seconds = time_spent;
         long minutes = seconds/60;

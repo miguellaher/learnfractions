@@ -1,6 +1,8 @@
 package com.example.laher.learnfractions.model;
 
-public class Student_SW_Progress extends SeatWork {
+import android.support.annotation.NonNull;
+
+public class Student_SW_Progress extends SeatWork implements Comparable<Student_SW_Progress>{
     private Student student;
 
     public Student getStudent() {
@@ -9,5 +11,21 @@ public class Student_SW_Progress extends SeatWork {
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+    @Override
+    public int compareTo(@NonNull Student_SW_Progress o) {
+        if (getCorrect()>o.getCorrect()){
+            return -1;
+        } else if (getCorrect()<o.getCorrect()){
+            return 1;
+        } else {
+            if (getTimeSpent()<o.getTimeSpent()){
+                return -1;
+            } else if (getTimeSpent()>o.getTimeSpent()){
+                return 1;
+            }
+        }
+        return 0;
     }
 }

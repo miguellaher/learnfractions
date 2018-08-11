@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -36,7 +37,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class ClassExerciseRanks extends AppCompatActivity {
+public class ClassExerciseRanksActivity extends AppCompatActivity {
+    private static final String TAG = "ClassExerciseRanks";
     Context mContext = this;
     //GUI
     ListView listView;
@@ -226,9 +228,9 @@ public class ClassExerciseRanks extends AppCompatActivity {
             }
         }
         Collections.sort(exerciseStats);
-        exerciseStats.subList(0,9);
         ExerciseTop10ListAdapter exerciseTop10ListAdapter = new ExerciseTop10ListAdapter(mContext, R.layout.exercise_rank_top10, exerciseStats);
         listView.setAdapter(exerciseTop10ListAdapter);
+        Log.d(TAG, "listView.setAdapter(exerciseTop10ListAdapter)");
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

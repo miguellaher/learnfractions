@@ -39,7 +39,7 @@ public class StudentEProgressAdapter2 extends ArrayAdapter<ExerciseStat> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         String username = Objects.requireNonNull(getItem(position)).getStudent().getUsername();
-        double errors = getItem(position).getErrors();
+        int errors = getItem(position).getErrors();
         long time_spent = getItem(position).getTime_spent();
 
         final View result;
