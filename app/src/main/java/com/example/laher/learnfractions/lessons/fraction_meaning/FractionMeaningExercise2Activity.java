@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.FractionMeaningQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -63,6 +64,9 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
 
     boolean correctsShouldBeConsecutive;
     boolean errorsShouldBeConsecutive;
+
+    ArrayList<FractionMeaningQuestion> mFractionMeaningQuestions;
+    int mQuestionNum;
 
     //COPY
     long startingTime, endingTime;
@@ -180,41 +184,46 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
         btnNext.setText(AppConstants.DONE);
         btnNext.setEnabled(false);
 
-        generateFraction();
-        setBoxes(num, denom);
+        generateFractionQuestions();
+        nextQuestion();
+    }
+    public void nextQuestion(){
+        setBoxes();
         inputNum.setEnabled(true);
         inputDenom.setEnabled(true);
         inputNum.setText("");
         inputDenom.setText("");
+        txtInstruction.setText("Fill in the blanks.");
         setTxtScore();
         btnOK.setEnabled(false);
         inputNum.requestFocus();
     }
-    public void reset(){
-        btnOK.setEnabled(false);
-        txtInstruction.setText("Fill in the blanks.");
-        generateFraction();
-        setBoxes(num, denom);
-        inputNum.getText().clear();
-        inputDenom.getText().clear();
-        inputNum.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
-    }
-    public void generateFraction(){
-        num = (int) (Math.random() * 9 + 1);
-        denom = (int) (Math.random() * 9 + 1);
-        while (denom<num) {
-            denom = (int) (Math.random() * 9 + 1);
+    public void generateFractionQuestions(){
+        mFractionMeaningQuestions = new ArrayList<>();
+        mQuestionNum = 1;
+        for (int i = 0; i < requiredCorrects; i++){
+            FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion();
+            while (mFractionMeaningQuestions.contains(fractionMeaningQuestion)){
+                fractionMeaningQuestion = new FractionMeaningQuestion();
+            }
+            mFractionMeaningQuestions.add(fractionMeaningQuestion);
         }
+        for (FractionMeaningQuestion fractionMeaningQuestion : mFractionMeaningQuestions) {
+            Log.d(TAG, "num: " + fractionMeaningQuestion.getNumeratorAnswer());
+            Log.d(TAG, "denom: " + fractionMeaningQuestion.getDenominatorAnswer());
+            Log.d(TAG, "------------------------------------");
+        }
+        Log.d(TAG, "size: " + mFractionMeaningQuestions.size());
     }
-    public void setBoxes(int num, int denom){
-        denom = denom - num;
+    public void setBoxes(){
+        num = mFractionMeaningQuestions.get(mQuestionNum-1).getNumerator();
+        denom = mFractionMeaningQuestions.get(mQuestionNum-1).getDenominator();
+        int prod = denom - num;
         ArrayList<Integer> imageList = new ArrayList<>();
         for (int i = 1; i <= num; i++){
             imageList.add(R.drawable.chocolate);
         }
-        for (int i = 1; i <= denom; i++){
+        for (int i = 1; i <= prod; i++){
             imageList.add(R.drawable.chocosmudge);
         }
         for (int i = imageList.size(); i <= 9; i++){
@@ -229,6 +238,11 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
         imgBox7.setImageResource(imageList.get(6));
         imgBox8.setImageResource(imageList.get(7));
         imgBox9.setImageResource(imageList.get(8));
+    }
+    public void reset(){
+        nextQuestion();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
     }
     public void setTxtScore(){
         txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
@@ -266,8 +280,7 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                inputNum.setEnabled(true);
-                                inputDenom.setEnabled(true);
+                                mQuestionNum++;
                                 reset();
                             }
                         }, 2000);
@@ -303,9 +316,13 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                inputNum.setEnabled(true);
-                                inputDenom.setEnabled(true);
-                                reset();
+                                if (correctsShouldBeConsecutive) {
+                                    generateFractionQuestions();
+                                    nextQuestion();
+                                } else {
+                                    mQuestionNum++;
+                                    reset();
+                                }
                             }
                         }, 2000);
                     }
