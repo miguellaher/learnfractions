@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Fraction;
-import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.OrderingFractionsQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -42,15 +42,14 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Ordering Fractions";
+    public final String TITLE = "Ordering Fraction";
     //GUI
     TextView txtNum1, txtNum2, txtNum3, txtDenom1, txtDenom2, txtDenom3, txtScore, txtInstruction;
     ConstraintLayout clFraction1, clFraction2, clFraction3;
     //VARIABLES
-    Fraction fraction1, fraction2, fraction3;
-    FractionQuestion fractionQuestion;
-    ArrayList<FractionQuestion> fractionQuestions;
-    int questionNum;
+    ArrayList<OrderingFractionsQuestion> mOrderingFractionsQuestions;
+    OrderingFractionsQuestion mOrderingFractionsQuestion;
+    int mQuestionNum;
 
     int correct, error;
     int requiredCorrects;
@@ -165,22 +164,23 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
         setFractionQuestions();
     }
     public void setFractionQuestions(){
-        fractionQuestions = new ArrayList<>();
-        questionNum = 0;
+        mQuestionNum = 1;
+        mOrderingFractionsQuestions = new ArrayList<>();
         for (int i = 0; i < requiredCorrects; i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_SIMILAR);
-            fractionQuestions.add(fractionQuestion);
+            OrderingFractionsQuestion orderingFractionsQuestion = new OrderingFractionsQuestion();
+            while(mOrderingFractionsQuestions.contains(orderingFractionsQuestion)){
+                orderingFractionsQuestion = new OrderingFractionsQuestion();
+            }
+            mOrderingFractionsQuestions.add(orderingFractionsQuestion);
         }
         setGuiFractions();
     }
-    public void setFractions(){
-        fraction1 = fractionQuestions.get(questionNum).getFractionOne();
-        fraction2 = fractionQuestions.get(questionNum).getFractionTwo();
-        fraction3 = fractionQuestions.get(questionNum).getFractionThree();
-    }
     public void setGuiFractions(){
         clicks = 0;
-        setFractions();
+        mOrderingFractionsQuestion = mOrderingFractionsQuestions.get(mQuestionNum-1);
+        Fraction fraction1 = mOrderingFractionsQuestion.getFraction1();
+        Fraction fraction2 = mOrderingFractionsQuestion.getFraction2();
+        Fraction fraction3 = mOrderingFractionsQuestion.getFraction3();
         txtInstruction.setText("Click from least to greatest.");
         txtNum1.setText(String.valueOf(fraction1.getNumerator()));
         txtNum2.setText(String.valueOf(fraction2.getNumerator()));
@@ -231,7 +231,7 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    questionNum++;
+                    mQuestionNum++;
                     setGuiFractions();
                 }
             }, 2000);
@@ -269,9 +269,12 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
                     if (correctsShouldBeConsecutive) {
                         go();
                     } else {
-                        fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_SIMILAR);
-                        fractionQuestions.add(fractionQuestion);
-                        questionNum++;
+                        OrderingFractionsQuestion orderingFractionsQuestion = new OrderingFractionsQuestion();
+                        while(mOrderingFractionsQuestions.contains(orderingFractionsQuestion)){
+                            orderingFractionsQuestion = new OrderingFractionsQuestion();
+                        }
+                        mOrderingFractionsQuestions.add(orderingFractionsQuestion);
+                        mQuestionNum++;
                         setGuiFractions();
                     }
                 }
@@ -306,6 +309,10 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
         TextView num, denom;
         @Override
         public void onClick(View v) {
+            mOrderingFractionsQuestion = mOrderingFractionsQuestions.get(mQuestionNum-1);
+            Fraction fraction1 = mOrderingFractionsQuestion.getFraction1();
+            Fraction fraction2 = mOrderingFractionsQuestion.getFraction2();
+            Fraction fraction3 = mOrderingFractionsQuestion.getFraction3();
             if (v.getId()==clFraction1.getId()){
                 num = txtNum1;
                 denom = txtDenom1;
@@ -326,7 +333,9 @@ public class OrderingSimilarExercise2Activity extends AppCompatActivity {
             }
         }
         public void check(Fraction fraction){
-            if (fraction.equals(fractionQuestions.get(questionNum).getFractions().get(clicks))){
+            ArrayList<Fraction> sortedFraction = mOrderingFractionsQuestion.getSortedFractions();
+            Fraction correctFraction = sortedFraction.get(clicks);
+            if (fraction.equals(correctFraction)){
                 setTextColor(0,255,0);
                 clicks++;
             } else {

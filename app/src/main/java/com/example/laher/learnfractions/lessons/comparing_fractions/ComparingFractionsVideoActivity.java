@@ -17,7 +17,7 @@ import com.example.laher.learnfractions.TopicsMenuActivity;
 public class ComparingFractionsVideoActivity extends AppCompatActivity {
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Comparing Fractions";
+    public final String TITLE = "Comparing Fraction";
 
     VideoView video;
     @Override

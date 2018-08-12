@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.FractionClass;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
@@ -25,7 +26,6 @@ import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
-import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -49,7 +49,6 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
     //VARIABLES
     int correct, error;
     final Handler handler = new Handler();
-    Fraction fractionOne, fractionTwo;
 
     ComparingSimilarQuestion mComparingSimilarQuestion;
     ArrayList<ComparingSimilarQuestion> mComparingSimilarQuestions;
@@ -114,9 +113,6 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
         btnGreater.setOnClickListener(new BtnListener());
         btnEquals.setOnClickListener(new BtnListener());
         btnLess.setOnClickListener(new BtnListener());
-        //VARIABLES
-        fractionOne = new Fraction();
-        fractionTwo = new Fraction();
 
         setAttributes((ExerciseStat) exercise);
         if (!Storage.isEmpty()) {
@@ -184,13 +180,16 @@ public class ComparingSimilarExercise2Activity extends AppCompatActivity {
     }
     public void setTxtFractions(){
         mComparingSimilarQuestion = mComparingSimilarQuestions.get(mQuestionNum-1);
-        int numerator1 = mComparingSimilarQuestion.getNumerator1();
-        int numerator2 = mComparingSimilarQuestion.getNumerator2();
-        int denominator = mComparingSimilarQuestion.getDenominator();
+        Fraction fraction1 = mComparingSimilarQuestion.getFraction1();
+        Fraction fraction2 = mComparingSimilarQuestion.getFraction2();
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
         txtNum1.setText(String.valueOf(numerator1));
         txtNum2.setText(String.valueOf(numerator2));
-        txtDenom1.setText(String.valueOf(denominator));
-        txtDenom2.setText(String.valueOf(denominator));
+        txtDenom1.setText(String.valueOf(denominator1));
+        txtDenom2.setText(String.valueOf(denominator2));
         strAnswer = String.valueOf(mComparingSimilarQuestion.getNumeratorAnswer());
         txtInstruction.setText("Compare the two fractions.");
         txtCompareSign.setText("_");

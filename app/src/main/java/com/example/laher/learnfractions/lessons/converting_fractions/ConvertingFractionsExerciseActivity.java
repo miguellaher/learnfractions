@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
-import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.FractionClass;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
@@ -47,7 +47,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Converting Fractions";
+    public final String TITLE = "Converting Fraction";
     //GUI
     TextView txtNum1, txtDenom1, txtScore, txtInstruction, txtQuotient, txtRemainder, txtR;
     EditText inputNum, inputDenom, inputWholeNum;
@@ -59,8 +59,8 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
     EditText diagDdInputAnswer, diagDdInputRemainder;
     Button diagDdBtnCheck;
     //VARIABLES
-    Fraction fraction;
-    ArrayList<Fraction> fractions;
+    FractionClass fraction;
+    ArrayList<FractionClass> fractions;
     int questionNum;
     int correct;
     int requiredCorrects;
@@ -237,9 +237,9 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         questionNum = 0;
         fractions = new ArrayList<>();
         for (int i = 0; i < requiredCorrects; i++){
-            fraction = new Fraction(Fraction.IMPROPER);
+            fraction = new FractionClass(FractionClass.IMPROPER);
             while (fraction.getNumerator()%fraction.getDenominator()==0){
-                fraction = new Fraction(Fraction.IMPROPER);
+                fraction = new FractionClass(FractionClass.IMPROPER);
             }
             fractions.add(fraction);
         }

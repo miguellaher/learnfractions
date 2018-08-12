@@ -18,7 +18,7 @@ public class FractionMeaningVideoActivity extends AppCompatActivity {
     VideoView video;
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Fraction Meaning";
+    public final String TITLE = "FractionClass Meaning";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

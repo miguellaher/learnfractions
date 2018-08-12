@@ -5,156 +5,73 @@ import android.support.annotation.NonNull;
 public class Fraction implements Comparable<Fraction>{
     private int numerator;
     private int denominator;
-    private int wholeNum;
-    private String context;
-    public final static String MIXED = "MIXED";
-    public final static String IMPROPER = "IMPROPER";
-    public final static String PROPER = "PROPER";
 
-    public Fraction(){
-        generateRandFraction(9);
-        if (getNumerator()>getDenominator()){
-            context = IMPROPER;
-        } else {
-            context = PROPER;
-        }
-    }
-    public Fraction(String context){
-        if (context.equals(MIXED)){
-            generateMixedFraction(9);
-        }
-        if (context.equals(IMPROPER)){
-            generateImproperFraction(9);
-        }
-        if (context.equals(PROPER)){
-            generateProperFraction(9);
-        }
-        this.context = context;
-    }
-
-    public Fraction(int num, int denom) {
-        this.numerator = num;
-        this.denominator = denom;
-    }
     public int getNumerator() {
         return numerator;
     }
-    public int getDenominator() {
-        return denominator;
-    }
-    public int getWholeNum() {
-        return wholeNum;
-    }
-    public String getContext() {
-        return context;
-    }
+
     public void setNumerator(int numerator) {
         this.numerator = numerator;
     }
+
+    public int getDenominator() {
+        return denominator;
+    }
+
     public void setDenominator(int denominator) {
         this.denominator = denominator;
     }
-    public void setWholeNum(int wholeNum) {
-        this.wholeNum = wholeNum;
-    }
-    public void setContext(String context) {
-        this.context = context;
+
+    public Fraction() {
+        generateFraction();
     }
 
-    public void generateRandFraction(int maximum){
-        numerator = (int) (Math.random() * maximum + 1);
-        denominator = (int) (Math.random() * maximum + 1);
+    public void generateFraction(){
+        int numerator = (int) (Math.random() * 9 + 1);
+        int denominator = (int) (Math.random() * 9 + 1);
+        setNumerator(numerator);
+        setDenominator(denominator);
     }
-    public void generateRandFraction(int minimum, int maximum){
-        numerator = (int) (Math.random() * maximum + minimum);
-        denominator = (int) (Math.random() * maximum + minimum);
+
+    public Fraction(int numerator, int denominator) {
+        this.numerator = numerator;
+        this.denominator = denominator;
     }
-    private void generateMixedFraction(int maximum){
-        generateRandFraction(9);
-        while (numerator>=denominator){
-            generateRandFraction(9);
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Fraction){
+            Fraction fraction = (Fraction) obj;
+            if (fraction.getNumerator() == this.getNumerator() &&
+                    fraction.getDenominator() == this.getDenominator()){
+                return true;
+            } else {
+                return false;
+            }
         }
-        wholeNum = (int) (Math.random() * 10 + 1);
+        return super.equals(obj);
     }
-    public void generateMixedFraction(int minimum, int maximum){
-        generateRandFraction(9);
-        while (numerator>=denominator){
-            generateRandFraction(9);
+
+    public int compare(Fraction fraction){
+        int product1 = fraction.getDenominator() * this.getNumerator();
+        int product2 = this.getDenominator() * fraction.getDenominator();
+        if (product1>product2){
+            return 1;
+        } else if (product1<product2){
+            return -1;
+        } else {
+            return 0;
         }
-        wholeNum = (int) (Math.random() * 2 + minimum);
-    }
-    private void generateImproperFraction(int maximum){
-        generateRandFraction(9);
-        while (numerator<=denominator){
-            generateRandFraction(9);
-        }
-    }
-    private void generateProperFraction(int maximum){
-        generateRandFraction(9);
-        while (numerator>=denominator){
-            generateRandFraction(9);
-        }
-    }
-    public void toMixed(){
-        int newNum = numerator%denominator;
-        int newWholeNum = numerator/denominator;
-        if (newWholeNum>0){
-            this.wholeNum = newWholeNum;
-            this.numerator = newNum;
-            this.context = Fraction.MIXED;
-        }
-    }
-    public void toImproper(){
-        if (this.context.equals(Fraction.MIXED)) {
-            int newNum = (denominator * wholeNum) + numerator;
-            this.wholeNum = 0;
-            this.numerator = newNum;
-            this.context = Fraction.IMPROPER;
-        }
-    }
-    public Fraction mixed(){
-        int newNum = numerator%denominator;
-        int newWholeNum = numerator/denominator;
-        if (wholeNum>0) {
-            Fraction newFraction = new Fraction();
-            newFraction.wholeNum = newWholeNum;
-            newFraction.numerator = newNum;
-            newFraction.denominator = denominator;
-            newFraction.setContext(Fraction.MIXED);
-            return newFraction;
-        }
-        return this;
-    }
-    public static Fraction improper(Fraction f){
-        if (f.getContext().equals(MIXED)){
-            return new Fraction((f.getDenominator()*f.getWholeNum())+f.getNumerator(),
-                    f.getDenominator());
-        }
-        return null;
-    }
-    public Double getValue(){
-        Double num = (double) numerator;
-        Double denom = (double) denominator;
-        if (context.equals(MIXED)){
-            Double wholeNum = (double) getWholeNum();
-            return ((denom*wholeNum)+num)/denom;
-        }
-        return num/denom;
-    }
-    public void lcdConvert(int lcd){
-        int q = lcd/this.denominator;
-        int p = q*this.numerator;
-        setNumerator(p);
-        setDenominator(lcd);
     }
 
     @Override
     public int compareTo(@NonNull Fraction o) {
-        if(this.getValue()>o.getValue()){
-            return 1;
-        } else if(this.getValue()<o.getValue()){
+        if (this.compare(o)>0){
             return -1;
+        } else if (this.compare(o)<0){
+            return 1;
+        } else {
+            return 0;
         }
-        return 0;
     }
 }

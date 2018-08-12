@@ -33,7 +33,7 @@ public class SubtractingSimilarSeatWork extends SeatWork {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Subtracting Fractions";
+    public final String TITLE = "Subtracting Fraction";
     //FRACTION EQUATION GUI
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtSign, txtItemIndicator, txtInstruction;
     EditText inputNum, inputDenom;

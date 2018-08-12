@@ -49,7 +49,7 @@ public class SubtractingDissimilarExerciseActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Subtracting Fractions";
+    public final String TITLE = "Subtracting Fraction";
     //GUI
     TextView txtNum1, txtNum2, txtNum3, txtNum4, txtDenom1, txtDenom2, txtDenom3, txtDenom4, txtEquation1, txtEquation2
             , txtScore, txtInstruction, txtSign1, txtSign2;

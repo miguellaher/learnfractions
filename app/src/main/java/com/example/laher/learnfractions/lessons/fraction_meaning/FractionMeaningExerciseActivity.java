@@ -42,7 +42,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Fraction Meaning";
+    public final String TITLE = "FractionClass Meaning";
 
     //VARIABLES
     ArrayList<String> instructions;

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -20,7 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
-import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.FractionClass;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
 import com.example.laher.learnfractions.model.Exercise;
@@ -49,7 +48,7 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Converting Fractions";
+    public final String TITLE = "Converting Fraction";
     //GUI
     TextView txtWholeNum, txtNum1, txtNum2, txtDenom1, txtEquation, txtScore, txtInstruction;
     EditText inputDenom;
@@ -61,8 +60,8 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
     EditText diagEdInputAnswer;
     Button diagEdBtnCheck;
     //VARIABLES
-    Fraction fraction;
-    ArrayList<Fraction> fractions;
+    FractionClass fraction;
+    ArrayList<FractionClass> fractions;
     int questionNum;
     int correct;
     int requiredCorrects;
@@ -236,7 +235,7 @@ public class ConvertingFractionsExercise2Activity extends AppCompatActivity {
         questionNum = 0;
         fractions = new ArrayList<>();
         for (int i = 0; i < requiredCorrects; i++){
-            fraction = new Fraction(Fraction.MIXED);
+            fraction = new FractionClass(FractionClass.MIXED);
             fractions.add(fraction);
         }
     }

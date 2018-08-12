@@ -18,7 +18,7 @@ public class OrderingDissimilarVideoActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Ordering Fractions";
+    public final String TITLE = "Ordering Fraction";
 
     VideoView video;
     @Override

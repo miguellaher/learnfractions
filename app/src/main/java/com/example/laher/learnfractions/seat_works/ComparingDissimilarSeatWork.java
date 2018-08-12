@@ -16,7 +16,7 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
-import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.FractionClass;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppCache;
@@ -42,7 +42,7 @@ public class ComparingDissimilarSeatWork extends SeatWork {
     boolean shouldAllowBack;
 
     ArrayList<Integer> stepsIdList;
-    Fraction fractionOne, fractionTwo;
+    FractionClass fractionOne, fractionTwo;
     long startingTime;
 
     public final String GREATER_THAN = ">";
@@ -109,8 +109,8 @@ public class ComparingDissimilarSeatWork extends SeatWork {
         btnLess.setOnClickListener(new BtnListener());
         //VARIABLES
         shouldAllowBack = true;
-        fractionOne = new Fraction();
-        fractionTwo = new Fraction();
+        fractionOne = new FractionClass();
+        fractionTwo = new FractionClass();
 
         try {
             int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");

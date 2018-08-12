@@ -21,7 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
-import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.FractionClass;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
@@ -75,7 +75,7 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
     TextView eDTxtNum1, eDTxtNum2, eDTxtSign;
     EditText eDInputAnswer;
     Button eDBtnCheck;
-    Fraction eDMixedFraction;
+    FractionClass eDMixedFraction;
     //LCM DIALOG
     LcmDialog dialogLcm;
     //VARIABLES
@@ -385,13 +385,13 @@ public class SolvingMixedExerciseActivity extends AppCompatActivity {
         Collections.shuffle(fractionQuestions);
     }
     public void setFractionGui(){
-        if (fractionQuestions.get(questionNum).getFractionOne().getContext().equals(Fraction.MIXED)){
+        if (fractionQuestions.get(questionNum).getFractionOne().getContext().equals(FractionClass.MIXED)){
             txtWholeNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getWholeNum()));
             clFraction1.setOnClickListener(new ClFractionListener());
         } else {
             txtWholeNum1.setText("");
         }
-        if (fractionQuestions.get(questionNum).getFractionTwo().getContext().equals(Fraction.MIXED)){
+        if (fractionQuestions.get(questionNum).getFractionTwo().getContext().equals(FractionClass.MIXED)){
             txtWholeNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getWholeNum()));
             clFraction2.setOnClickListener(new ClFractionListener());
         } else {

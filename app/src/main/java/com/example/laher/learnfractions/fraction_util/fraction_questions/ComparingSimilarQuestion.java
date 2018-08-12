@@ -1,58 +1,43 @@
 package com.example.laher.learnfractions.fraction_util.fraction_questions;
 
+import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
+import com.example.laher.learnfractions.util.AppConstants;
 
 public class ComparingSimilarQuestion extends FractionQuestionClass {
-    private int numerator1;
-    private int numerator2;
-    private int denominator;
+    private Fraction fraction1;
+    private Fraction fraction2;
 
-    public int getNumerator1() {
-        return numerator1;
+    public Fraction getFraction1() {
+        return fraction1;
     }
 
-    public void setNumerator1(int numerator1) {
-        this.numerator1 = numerator1;
-    }
-
-    public int getNumerator2() {
-        return numerator2;
-    }
-
-    public void setNumerator2(int numerator2) {
-        this.numerator2 = numerator2;
-    }
-
-    public int getDenominator() {
-        return denominator;
-    }
-
-    public void setDenominator(int denominator) {
-        this.denominator = denominator;
-        setDenominatorAnswer(this.denominator);
+    public Fraction getFraction2() {
+        return fraction2;
     }
 
     public ComparingSimilarQuestion() {
-        generateFraction();
+        generateFractions();
     }
 
-    public void generateFraction(){
-        int numerator1 = (int) (Math.random() * 9 + 1);
-        int numerator2 = (int) (Math.random() * 9 + 1);
-        int denominator = (int) (Math.random() * 9 + 1);
-        setNumerator1(numerator1);
-        setNumerator2(numerator2);
-        setDenominator(denominator);
+    private void generateFractions(){
+        this.fraction1 = new Fraction();
+        this.fraction2 = new Fraction();
+        while (this.fraction1.getNumerator()!=this.fraction2.getNumerator() &&
+                this.fraction1.getDenominator()!=this.fraction2.getDenominator()){
+            this.fraction1 = new Fraction();
+            this.fraction2 = new Fraction();
+        }
     }
 
     @Override
-    public int getNumeratorAnswer() {
-        if (this.numerator1>this.numerator2){
-            return this.numerator1;
-        } else if (this.numerator1<this.numerator2){
-            return this.numerator2;
+    public Fraction getFractionAnswer() {
+        if (this.fraction1.compare(fraction2)>0){
+            return this.fraction1;
+        } else if (this.fraction1.compare(fraction2)<0){
+            return this.fraction2;
         } else {
-            return -1;
+            return AppConstants.EQUAL_FRACTIONS;
         }
     }
 
@@ -60,13 +45,8 @@ public class ComparingSimilarQuestion extends FractionQuestionClass {
     public boolean equals(Object obj) {
         if (obj instanceof ComparingSimilarQuestion){
             ComparingSimilarQuestion comparingSimilarQuestion = (ComparingSimilarQuestion) obj;
-            if (comparingSimilarQuestion.getNumerator1()==this.getNumerator1() &&
-                    comparingSimilarQuestion.getNumerator2()==this.getNumerator2() &&
-                    comparingSimilarQuestion.getDenominator()==this.getDenominator()){
-                return true;
-            } else {
-                return false;
-            }
+            return this.fraction1.equals(comparingSimilarQuestion.fraction1) &&
+                    this.fraction2.equals(comparingSimilarQuestion.fraction2);
         }
         return super.equals(obj);
     }

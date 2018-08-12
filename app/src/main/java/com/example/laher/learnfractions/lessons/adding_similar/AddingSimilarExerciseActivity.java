@@ -46,7 +46,7 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Adding Fractions";
+    public final String TITLE = "Adding Fraction";
     //FRACTION EQUATION GUI
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtSign, txtScore, txtInstruction;
     EditText inputNum, inputDenom;

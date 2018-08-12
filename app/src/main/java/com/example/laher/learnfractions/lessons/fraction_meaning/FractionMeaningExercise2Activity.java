@@ -53,7 +53,7 @@ public class FractionMeaningExercise2Activity extends AppCompatActivity {
     TextView txtScore, txtInstruction;
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Fraction Meaning";
+    public final String TITLE = "FractionClass Meaning";
     Button btnOK;
     ConstraintLayout clChoices;
     int num, denom, correct, error;

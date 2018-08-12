@@ -33,7 +33,7 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Adding/Subtracting with Mixed Fractions";
+    public final String TITLE = "Adding/Subtracting with Mixed Fraction";
     //FRACTION EQUATION GUI
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtSign, txtIndicator, txtInstruction;
     TextView txtWholeNum1, txtWholeNum2;

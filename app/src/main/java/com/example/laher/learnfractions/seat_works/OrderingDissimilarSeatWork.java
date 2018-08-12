@@ -16,7 +16,7 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
-import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.FractionClass;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.model.Student;
@@ -34,7 +34,7 @@ public class OrderingDissimilarSeatWork extends SeatWork {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Ordering Fractions";
+    public final String TITLE = "Ordering Fraction";
     //GUI
     TextView txtNum1, txtNum2, txtNum3, txtDenom1, txtDenom2, txtDenom3, txtItemIndicator, txtInstruction;
     ConstraintLayout clFraction1, clFraction2, clFraction3;
@@ -42,7 +42,7 @@ public class OrderingDissimilarSeatWork extends SeatWork {
     private String TYPE;
     boolean shouldAllowBack;
 
-    Fraction fraction1, fraction2, fraction3;
+    FractionClass fraction1, fraction2, fraction3;
     FractionQuestion fractionQuestion;
     ArrayList<FractionQuestion> fractionQuestions;
     int questionNum;
@@ -254,7 +254,7 @@ public class OrderingDissimilarSeatWork extends SeatWork {
                 answered();
             }
         }
-        public void check(Fraction fraction){
+        public void check(FractionClass fraction){
             if (!fraction.equals(fractionQuestions.get(questionNum).getFractions().get(clicks))){
                 wrong = true;
             }

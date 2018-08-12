@@ -1,7 +1,7 @@
 package com.example.laher.learnfractions.fraction_util;
 
 public class FractionProcessor {
-    public Fraction getGreaterFraction(Fraction fraction1, Fraction fraction2){
+    public FractionClass getGreaterFraction(FractionClass fraction1, FractionClass fraction2){
         if ((fraction2.getDenominator()*fraction1.getNumerator())
                 >fraction1.getDenominator()*fraction2.getNumerator()){
             return fraction1;

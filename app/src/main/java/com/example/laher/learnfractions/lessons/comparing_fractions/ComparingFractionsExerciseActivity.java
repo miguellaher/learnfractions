@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.ComparingFractionsQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -25,6 +26,9 @@ import com.example.laher.learnfractions.util.Storage;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class ComparingFractionsExerciseActivity extends AppCompatActivity {
     Context mContext = this;
     private static final String TAG = "CF_E1";
@@ -36,12 +40,14 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Comparing Fractions";
+    public final String TITLE = "Comparing Fraction";
     //GUI
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtScore, txtInstruction;
     Button btnSimilar, btnDissimilar;
     //VARIABLES
-    Fraction fractionOne, fractionTwo;
+    ArrayList<ComparingFractionsQuestion> mComparingFractionsQuestions;
+    ComparingFractionsQuestion mComparingFractionsQuestion;
+    int mQuestionNum;
 
     int correct, error;
     int requiredCorrects;
@@ -97,9 +103,6 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
         btnDissimilar = findViewById(R.id.e1_btnDissimilar);
         btnSimilar.setOnClickListener(new BtnChoiceListener());
         btnDissimilar.setOnClickListener(new BtnChoiceListener());
-        //VARIABLES
-        fractionOne = new Fraction();
-        fractionTwo = new Fraction();
 
         setAttributes((ExerciseStat) exercise);
         if (!Storage.isEmpty()) {
@@ -127,24 +130,22 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
                 @Override
                 public void postExecute(JSONObject response) {
                     try {
-                        if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
+                        Exercise updatedExercise = new ExerciseStat();
+                        updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
+                        if (response.optString("rc_consecutive").equals("1")) {
+                            updatedExercise.setRc_consecutive(true);
                         } else {
-                            Exercise updatedExercise = new ExerciseStat();
-                            updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
-                            if (response.optString("rc_consecutive").equals("1")) {
-                                updatedExercise.setRc_consecutive(true);
-                            } else {
-                                updatedExercise.setRc_consecutive(false);
-                            }
-                            updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
-                            if (response.optString("me_consecutive").equals("1")) {
-                                updatedExercise.setMe_consecutive(true);
-                            } else {
-                                updatedExercise.setMe_consecutive(false);
-                            }
-                            setAttributes((ExerciseStat) updatedExercise);
-                            startingTime = System.currentTimeMillis();
+                            updatedExercise.setRc_consecutive(false);
                         }
+                        updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
+                        if (response.optString("me_consecutive").equals("1")) {
+                            updatedExercise.setMe_consecutive(true);
+                        } else {
+                            updatedExercise.setMe_consecutive(false);
+                        }
+                        setAttributes((ExerciseStat) updatedExercise);
+                        startingTime = System.currentTimeMillis();
+
                     } catch (Exception e){e.printStackTrace();}
                 }
             });
@@ -154,34 +155,44 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
         }
     }
     public void go(){
-        setFractionList();
-        txtInstruction.setText("Determine whether the pair is dissimilar or similar.");
-        btnSimilar.setEnabled(true);
-        btnDissimilar.setEnabled(true);
+        setFractionQuestions();
     }
-    public void setFractionList(){
-        if (Math.random() > 0.5) {
-            fractionOne.generateRandFraction(9);
-            fractionTwo.generateRandFraction(9);
-            while (fractionOne.getDenominator() != fractionTwo.getDenominator() &&
-                    fractionOne.getNumerator() != fractionTwo.getNumerator()){ //SIMILAR
-                fractionOne.generateRandFraction(9);
+    private void setFractionQuestions(){
+        mQuestionNum = 1;
+        mComparingFractionsQuestions = new ArrayList<>();
+        for (int i = 0; i < requiredCorrects; i++){
+            ComparingFractionsQuestion comparingFractionsQuestion;
+            if (i<requiredCorrects/2){
+                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+            } else {
+                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.DISSIMILAR);
             }
-        } else {
-            fractionOne.generateRandFraction(9);
-            fractionTwo.generateRandFraction(9);
-            while (fractionOne.getDenominator() == fractionTwo.getDenominator() ||
-                    fractionOne.getNumerator() == fractionTwo.getNumerator()){ //DISSIMILAR
-                fractionOne.generateRandFraction(9);
+            while (mComparingFractionsQuestions.contains(comparingFractionsQuestion)){
+                if (i<requiredCorrects/2){
+                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                } else {
+                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.DISSIMILAR);
+                }
             }
+            Collections.shuffle(mComparingFractionsQuestions);
         }
         setTxtFraction();
     }
     public void setTxtFraction() {
-        txtNum1.setText(String.valueOf(fractionOne.getNumerator()));
-        txtDenom1.setText(String.valueOf(fractionOne.getDenominator()));
-        txtNum2.setText(String.valueOf(fractionTwo.getNumerator()));
-        txtDenom2.setText(String.valueOf(fractionTwo.getDenominator()));
+        mComparingFractionsQuestion = mComparingFractionsQuestions.get(mQuestionNum-1);
+        Fraction fraction1 = mComparingFractionsQuestion.getFraction1();
+        Fraction fraction2 = mComparingFractionsQuestion.getFraction2();
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        txtNum1.setText(String.valueOf(numerator1));
+        txtDenom1.setText(String.valueOf(denominator1));
+        txtNum2.setText(String.valueOf(numerator2));
+        txtDenom2.setText(String.valueOf(denominator2));
+        txtInstruction.setText("Determine whether the pair is dissimilar or similar.");
+        btnSimilar.setEnabled(true);
+        btnDissimilar.setEnabled(true);
     }
     public void setTxtScore(){
         txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
@@ -204,7 +215,8 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    go();
+                    mQuestionNum++;
+                    setTxtFraction();
                 }
             }, 2000);
         }
@@ -238,7 +250,25 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    go();
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                    } else {
+                        ComparingFractionsQuestion comparingFractionsQuestion = null;
+                        if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.SIMILAR)){
+                            comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                        } else if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.DISSIMILAR)){
+                            comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                        }
+                        while (mComparingFractionsQuestions.contains(comparingFractionsQuestion)){
+                            if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.SIMILAR)){
+                                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                            } else if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.DISSIMILAR)){
+                                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                            }
+                        }
+                        mQuestionNum++;
+                        setTxtFraction();
+                    }
                 }
             }, 2000);
         }
@@ -247,16 +277,14 @@ public class ComparingFractionsExerciseActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.e1_btnSimilar){
-                if (fractionOne.getDenominator() == fractionTwo.getDenominator() ||
-                        fractionOne.getNumerator() == fractionTwo.getNumerator()){
+                if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.SIMILAR)){
                     correct();
                 } else {
                     wrong();
                 }
             }
             if (v.getId() == R.id.e1_btnDissimilar){
-                if (fractionOne.getDenominator() != fractionTwo.getDenominator() &&
-                        fractionOne.getNumerator() != fractionTwo.getNumerator()){
+                if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.DISSIMILAR)){
                     correct();
                 } else {
                     wrong();

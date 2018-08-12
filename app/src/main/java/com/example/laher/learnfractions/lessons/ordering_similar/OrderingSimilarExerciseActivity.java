@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
-import com.example.laher.learnfractions.fraction_util.Question;
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.fraction_util.questions.OrderingNumbersQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -39,13 +39,15 @@ public class OrderingSimilarExerciseActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Ordering Fractions";
+    public final String TITLE = "Ordering Fraction";
     //GUI
     TextView txtNum1, txtNum2, txtNum3, txtScore, txtInstruction;
     //VARIABLES
-    Question question;
-    ArrayList<Question> questions;
-    int questionNum;
+    ArrayList<OrderingNumbersQuestion> mOrderingNumbersQuestions;
+    OrderingNumbersQuestion mOrderingNumbersQuestion;
+    int mQuestionNum;
+
+
     int correct, error;
     int requiredCorrects;
     int maxErrors;
@@ -152,20 +154,27 @@ public class OrderingSimilarExerciseActivity extends AppCompatActivity {
         setQuestions();
     }
     public void setQuestions(){
-        questionNum = 0;
-        questions = new ArrayList<>();
-        for(int i = 0; i < requiredCorrects; i++) {
-            question = new Question(Question.ORDERING_SIMILAR);
-            questions.add(question);
+        mQuestionNum = 1;
+        mOrderingNumbersQuestions = new ArrayList<>();
+        for (int i = 0; i < requiredCorrects; i++){
+            OrderingNumbersQuestion orderingNumbersQuestion = new OrderingNumbersQuestion();
+            while (mOrderingNumbersQuestions.contains(orderingNumbersQuestion)){
+                orderingNumbersQuestion = new OrderingNumbersQuestion();
+            }
+            mOrderingNumbersQuestions.add(orderingNumbersQuestion);
         }
-        setTxtNums();
+        setTxtNumbers();
     }
-    public void setTxtNums(){
+    public void setTxtNumbers(){
+        mOrderingNumbersQuestion = mOrderingNumbersQuestions.get(mQuestionNum-1);
         clicks = 0;
         resetTxtNumsColor();
-        txtNum1.setText(String.valueOf(questions.get(questionNum).getNum1()));
-        txtNum2.setText(String.valueOf(questions.get(questionNum).getNum2()));
-        txtNum3.setText(String.valueOf(questions.get(questionNum).getNum3()));
+        int number1 = mOrderingNumbersQuestion.getNumber1();
+        int number2 = mOrderingNumbersQuestion.getNumber2();
+        int number3 = mOrderingNumbersQuestion.getNumber3();
+        txtNum1.setText(String.valueOf(number1));
+        txtNum2.setText(String.valueOf(number2));
+        txtNum3.setText(String.valueOf(number3));
         setTxtNumsListener();
         txtInstruction.setText("Click from least to greatest.");
     }
@@ -175,9 +184,9 @@ public class OrderingSimilarExerciseActivity extends AppCompatActivity {
         txtNum3.setTextColor(Color.rgb(128,128,128));
     }
     public void setTxtNumsListener(){
-        txtNum1.setOnClickListener(new TxtNumsListener());
-        txtNum2.setOnClickListener(new TxtNumsListener());
-        txtNum3.setOnClickListener(new TxtNumsListener());
+        txtNum1.setOnClickListener(new TxtNumbersListener());
+        txtNum2.setOnClickListener(new TxtNumbersListener());
+        txtNum3.setOnClickListener(new TxtNumbersListener());
     }
     public void removeTxtNumsListener(){
         txtNum1.setOnClickListener(null);
@@ -206,8 +215,8 @@ public class OrderingSimilarExerciseActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    questionNum++;
-                    setTxtNums();
+                    mQuestionNum++;
+                    setTxtNumbers();
                 }
             }, 2000);
         }
@@ -244,10 +253,13 @@ public class OrderingSimilarExerciseActivity extends AppCompatActivity {
                     if (correctsShouldBeConsecutive) {
                         go();
                     } else {
-                        question = new Question(Question.ORDERING_SIMILAR);
-                        questions.add(question);
-                        questionNum++;
-                        setTxtNums();
+                        OrderingNumbersQuestion orderingNumbersQuestion = new OrderingNumbersQuestion();
+                        while (mOrderingNumbersQuestions.contains(orderingNumbersQuestion)){
+                            orderingNumbersQuestion = new OrderingNumbersQuestion();
+                        }
+                        mOrderingNumbersQuestions.add(orderingNumbersQuestion);
+                        mQuestionNum++;
+                        setTxtNumbers();
                     }
                 }
             }, 2000);
@@ -277,13 +289,15 @@ public class OrderingSimilarExerciseActivity extends AppCompatActivity {
                 mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
         ExerciseStatService.postStats(student,mExerciseStat,service);
     }
-    public class TxtNumsListener implements TextView.OnClickListener{
+    public class TxtNumbersListener implements TextView.OnClickListener{
         @Override
         public void onClick(View v) {
             TextView t = (TextView) v;
             t.setTextColor(Color.rgb(0,255,0));
             String s = t.getText().toString();
-            if (s == String.valueOf(questions.get(questionNum).getIntegerNumAt(clicks))){
+            ArrayList<Integer> numbers = mOrderingNumbersQuestion.getSortedNumbers();
+            String correctNumber = String.valueOf(numbers.get(clicks));
+            if (s.equals(correctNumber)){
                 clicks++;
                 if (clicks>=3) {
                     correct();

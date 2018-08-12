@@ -18,7 +18,7 @@ public class SubtractingSimilarVideoActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Subtracting Fractions";
+    public final String TITLE = "Subtracting Fraction";
 
     VideoView video;
     @Override

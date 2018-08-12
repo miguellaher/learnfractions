@@ -8,10 +8,10 @@ import java.util.Collections;
 public class FractionQuestion {
     private static final String TAG = "fraction_question";
 
-    private Fraction fractionOne, fractionTwo, fractionThree, fractionAnswer;
+    private FractionClass fractionOne, fractionTwo, fractionThree, fractionAnswer;
     private String context;
     private String answer;
-    private ArrayList<Fraction> fractions;
+    private ArrayList<FractionClass> fractions;
     public final static String COMPARING_FRACTION = "COMPARING_FRACTION";
     public final static String COMPARING_SIMILAR = "COMPARING_SIMILAR";
     public final static String COMPARING_DISSIMILAR = "COMPARING_DISSIMILAR";
@@ -32,19 +32,19 @@ public class FractionQuestion {
     public final static String ANSWER_EQUAL = "=";
     public final static String ANSWER_LESS = "<";
 
-    public Fraction getFractionOne() {
+    public FractionClass getFractionOne() {
         return fractionOne;
     }
-    public Fraction getFractionTwo() {
+    public FractionClass getFractionTwo() {
         return fractionTwo;
     }
-    public Fraction getFractionThree() {
+    public FractionClass getFractionThree() {
         return fractionThree;
     }
-    public Fraction getFractionAnswer() {
+    public FractionClass getFractionAnswer() {
         return fractionAnswer;
     }
-    public ArrayList<Fraction> getFractions() {
+    public ArrayList<FractionClass> getFractions() {
         return fractions;
     }
     public String getAnswer() {
@@ -54,27 +54,27 @@ public class FractionQuestion {
         return context;
     }
     /*
-    public void setFractionOne(Fraction fractionOne) {
+    public void setFractionOne(FractionClass fractionOne) {
         this.fractionOne = fractionOne;
     }
-    public void setFractionTwo(Fraction fractionTwo) {
+    public void setFractionTwo(FractionClass fractionTwo) {
         this.fractionTwo = fractionTwo;
     }
-    public void setFractionThree(Fraction fractionThree) {
+    public void setFractionThree(FractionClass fractionThree) {
         this.fractionThree = fractionThree;
     }
-    public void setFractionAnswer(Fraction fractionAnswer) {
+    public void setFractionAnswer(FractionClass fractionAnswer) {
         this.fractionAnswer = fractionAnswer;
     }
     */
 
     public FractionQuestion(){
-        fractionOne = new Fraction();
-        fractionTwo = new Fraction();
+        fractionOne = new FractionClass();
+        fractionTwo = new FractionClass();
     }
     public FractionQuestion(String context){
-        fractionOne = new Fraction();
-        fractionTwo = new Fraction();
+        fractionOne = new FractionClass();
+        fractionTwo = new FractionClass();
         this.context = context;
         if (context.equals(COMPARING_FRACTION)){
             compareTwoFractions();
@@ -82,19 +82,19 @@ public class FractionQuestion {
         if (context.equals(COMPARING_SIMILAR)){
             while (fractionOne.getDenominator()!=fractionTwo.getDenominator() &&
                     fractionOne.getNumerator()!=fractionTwo.getNumerator()){
-                fractionTwo = new Fraction();
+                fractionTwo = new FractionClass();
             }
             compareTwoFractions();
         }
         if (context.equals(COMPARING_DISSIMILAR)){
             while (fractionOne.getDenominator()==fractionTwo.getDenominator() ||
                     fractionOne.getNumerator()==fractionTwo.getNumerator()){
-                fractionTwo = new Fraction();
+                fractionTwo = new FractionClass();
             }
             compareTwoFractions();
         }
         if (context.equals(ORDERING_SIMILAR)){
-            fractionThree = new Fraction();
+            fractionThree = new FractionClass();
             while (!(fractionOne.getDenominator()==fractionTwo.getDenominator()
                     &&fractionTwo.getDenominator()==fractionThree.getDenominator()&&
             fractionOne.getNumerator()!=fractionTwo.getNumerator()&&
@@ -105,14 +105,14 @@ public class FractionQuestion {
                             fractionOne.getDenominator()!=fractionTwo.getDenominator()&&
                             fractionTwo.getDenominator()!=fractionThree.getDenominator()&&
                             fractionOne.getDenominator()!=fractionThree.getDenominator())){
-                fractionTwo = new Fraction();
-                fractionThree = new Fraction();
+                fractionTwo = new FractionClass();
+                fractionThree = new FractionClass();
             }
             addAllToFractionList();
             Collections.sort(fractions);
         }
         if (context.equals(ORDERING_DISSIMILAR)){
-            fractionThree = new Fraction();
+            fractionThree = new FractionClass();
             while (((fractionOne.getNumerator()==fractionTwo.getNumerator()||
                         fractionTwo.getNumerator()==fractionThree.getNumerator()||
                         fractionOne.getNumerator()==fractionThree.getNumerator())||
@@ -125,9 +125,9 @@ public class FractionQuestion {
                                 fractionTwo.getValue().equals(fractionThree.getValue()) ||
                                 fractionOne.getValue().equals(fractionThree.getValue())))
             {
-                fractionOne = new Fraction();
-                fractionTwo = new Fraction();
-                fractionThree = new Fraction();
+                fractionOne = new FractionClass();
+                fractionTwo = new FractionClass();
+                fractionThree = new FractionClass();
             }
             addAllToFractionList();
             Collections.sort(fractions);
@@ -145,51 +145,51 @@ public class FractionQuestion {
         }
         if (context.equals(ADDING_SIMILAR)) {
             while (fractionOne.getDenominator() != fractionTwo.getDenominator()){
-                fractionTwo = new Fraction();
+                fractionTwo = new FractionClass();
             }
             int numerator = fractionOne.getNumerator()+fractionTwo.getNumerator();
-            fractionThree = new Fraction(numerator,fractionOne.getDenominator());
+            fractionThree = new FractionClass(numerator,fractionOne.getDenominator());
         }
         if (context.equals(ADDING_DISSIMILAR)) {
             while (fractionOne.getDenominator() == fractionTwo.getDenominator()){
-                fractionTwo = new Fraction();
+                fractionTwo = new FractionClass();
             }
             int [] denominators = {fractionOne.getDenominator(), fractionTwo.getDenominator()};
             int lcd = (int) Question.getLCM(denominators);
             int sumNum = ((lcd/fractionOne.getDenominator())*fractionOne.getNumerator()) +
                     ((lcd/fractionTwo.getDenominator())*fractionTwo.getNumerator());
-            fractionAnswer = new Fraction(sumNum,lcd);
+            fractionAnswer = new FractionClass(sumNum,lcd);
         }
         if (context.equals(SUBTRACTING_SIMILAR)) {
             while (fractionOne.getDenominator() != fractionTwo.getDenominator() ||
                     fractionOne.getNumerator()<=fractionTwo.getNumerator()){
-                fractionOne = new Fraction();
-                fractionTwo = new Fraction();
+                fractionOne = new FractionClass();
+                fractionTwo = new FractionClass();
             }
             int numerator = fractionOne.getNumerator()-fractionTwo.getNumerator();
-            fractionAnswer = new Fraction(numerator,fractionOne.getDenominator());
+            fractionAnswer = new FractionClass(numerator,fractionOne.getDenominator());
         }
         if (context.equals(SUBTRACTING_DISSIMILAR)) {
             while (fractionOne.getDenominator() == fractionTwo.getDenominator() ||
                     fractionOne.getValue() <= fractionTwo.getValue()){
-                fractionOne = new Fraction();
-                fractionTwo = new Fraction();
+                fractionOne = new FractionClass();
+                fractionTwo = new FractionClass();
             }
             int [] denominators = {fractionOne.getDenominator(), fractionTwo.getDenominator()};
             int lcd = (int) Question.getLCM(denominators);
             int difNum = ((lcd/fractionOne.getDenominator())*fractionOne.getNumerator()) -
                     ((lcd/fractionTwo.getDenominator())*fractionTwo.getNumerator());
-            fractionAnswer = new Fraction(difNum,lcd);
+            fractionAnswer = new FractionClass(difNum,lcd);
         }
         if (context.equals(MULTIPLYING_FRACTIONS)){
             int prodNum = fractionOne.getNumerator() * fractionTwo.getNumerator();
             int prodDenom = fractionOne.getDenominator() * fractionTwo.getDenominator();
-            fractionAnswer = new Fraction(prodNum,prodDenom);
+            fractionAnswer = new FractionClass(prodNum,prodDenom);
         }
         if (context.equals(DIVIDING_FRACTIONS)){
             int prodNum = fractionOne.getNumerator() * fractionTwo.getDenominator();
             int prodDenom = fractionOne.getDenominator() * fractionTwo.getNumerator();
-            fractionAnswer = new Fraction(prodNum,prodDenom);
+            fractionAnswer = new FractionClass(prodNum,prodDenom);
         }
         if (context.equals(ADDING_WITH_MIXED)){
             int random = (int) (Math.random() * 3 + 1);
@@ -197,10 +197,10 @@ public class FractionQuestion {
             int num;
             int lcd = 0;
             if (random==1){
-                fractionOne = new Fraction(Fraction.MIXED);
+                fractionOne = new FractionClass(FractionClass.MIXED);
                 num = (fractionOne.getDenominator()*fractionOne.getWholeNum()) + fractionOne.getNumerator();
                 while ((num>10 && fractionTwo.getDenominator()>1)&&(fractionOne.getDenominator()!=fractionTwo.getDenominator())){
-                    fractionOne = new Fraction(Fraction.MIXED);
+                    fractionOne = new FractionClass(FractionClass.MIXED);
                     Log.d(TAG, ADDING_WITH_MIXED + ":first fraction renewed.");
                     num = (fractionOne.getDenominator()*fractionOne.getWholeNum()) + fractionOne.getNumerator();
                 }
@@ -208,27 +208,27 @@ public class FractionQuestion {
                 lcd = (int) Question.getLCM(denominators);
                 sumNum = ((lcd/fractionOne.getDenominator())*num) +
                         ((lcd/fractionTwo.getDenominator())*fractionTwo.getNumerator());
-                fractionAnswer = new Fraction(sumNum,lcd);
+                fractionAnswer = new FractionClass(sumNum,lcd);
             } else if (random==2){
-                fractionTwo = new Fraction(Fraction.MIXED);
+                fractionTwo = new FractionClass(FractionClass.MIXED);
                 num = (fractionTwo.getDenominator()*fractionTwo.getWholeNum()) + fractionTwo.getNumerator();
                 while ((num>10 && fractionOne.getDenominator()>1) && (fractionOne.getDenominator()!=fractionTwo.getDenominator())){
-                    fractionTwo = new Fraction(Fraction.MIXED);
+                    fractionTwo = new FractionClass(FractionClass.MIXED);
                     num = (fractionTwo.getDenominator()*fractionTwo.getWholeNum()) + fractionTwo.getNumerator();
                 }
                 int [] denominators = {fractionOne.getDenominator(), fractionTwo.getDenominator()};
                 lcd = (int) Question.getLCM(denominators);
                 sumNum = ((lcd/fractionOne.getDenominator())*fractionOne.getNumerator()) +
                         ((lcd/fractionTwo.getDenominator())*num);
-                fractionAnswer = new Fraction(sumNum,lcd);
+                fractionAnswer = new FractionClass(sumNum,lcd);
             } else if (random==3){
-                fractionOne = new Fraction(Fraction.MIXED);
-                fractionTwo = new Fraction(Fraction.MIXED);
+                fractionOne = new FractionClass(FractionClass.MIXED);
+                fractionTwo = new FractionClass(FractionClass.MIXED);
                 num = (fractionOne.getDenominator()*fractionOne.getWholeNum()) + fractionOne.getNumerator();
                 int num2 = (fractionTwo.getDenominator()*fractionTwo.getWholeNum()) + fractionTwo.getNumerator();
                 while (((num>10 && fractionTwo.getDenominator()>1)||(num2>10 && fractionOne.getDenominator()>1)) && (fractionOne.getDenominator()!=fractionTwo.getDenominator())){
-                    fractionOne = new Fraction(Fraction.MIXED);
-                    fractionTwo = new Fraction(Fraction.MIXED);
+                    fractionOne = new FractionClass(FractionClass.MIXED);
+                    fractionTwo = new FractionClass(FractionClass.MIXED);
                     num = (fractionOne.getDenominator()*fractionOne.getWholeNum()) + fractionOne.getNumerator();
                     num2 = (fractionTwo.getDenominator()*fractionTwo.getWholeNum()) + fractionTwo.getNumerator();
                 }
@@ -237,7 +237,7 @@ public class FractionQuestion {
                 sumNum = ((lcd/fractionOne.getDenominator())*num) +
                         ((lcd/fractionTwo.getDenominator())*num2);
             }
-            fractionAnswer = new Fraction(sumNum,lcd);
+            fractionAnswer = new FractionClass(sumNum,lcd);
 
         }
         if (context.equals(SUBTRACTING_WITH_MIXED)){
@@ -246,19 +246,19 @@ public class FractionQuestion {
             int newNum;
             int lcd = 0;
             if (random==1){
-                fractionOne = new Fraction(Fraction.MIXED);
+                fractionOne = new FractionClass(FractionClass.MIXED);
                 Log.d(TAG, SUBTRACTING_WITH_MIXED + ":first fraction to mixed");
                 while (fractionOne.getValue()<=fractionTwo.getValue()){
-                    fractionOne = new Fraction(Fraction.MIXED);
-                    fractionTwo = new Fraction();
+                    fractionOne = new FractionClass(FractionClass.MIXED);
+                    fractionTwo = new FractionClass();
                     Log.d(TAG, SUBTRACTING_WITH_MIXED + ":two fractions renewed");
                 }
                 newNum = (fractionOne.getDenominator()*fractionOne.getWholeNum()) + fractionOne.getNumerator();
                 while ((newNum>10 && fractionTwo.getDenominator()>1) && (fractionOne.getDenominator()!=fractionTwo.getDenominator())){
-                    fractionOne = new Fraction(Fraction.MIXED);
+                    fractionOne = new FractionClass(FractionClass.MIXED);
                     while (fractionOne.getValue()<=fractionTwo.getValue()){
-                        fractionOne = new Fraction(Fraction.MIXED);
-                        fractionTwo = new Fraction();
+                        fractionOne = new FractionClass(FractionClass.MIXED);
+                        fractionTwo = new FractionClass();
                     }
                     newNum = (fractionOne.getDenominator()*fractionOne.getWholeNum()) + fractionOne.getNumerator();
                     Log.d(TAG, SUBTRACTING_WITH_MIXED + ":numerator of first fraction renewed");
@@ -268,20 +268,20 @@ public class FractionQuestion {
                 difNum = ((lcd/fractionOne.getDenominator())*newNum) -
                         ((lcd/fractionTwo.getDenominator())*fractionTwo.getNumerator());
             } else if (random==2){
-                fractionOne = new Fraction(Fraction.MIXED);
-                fractionTwo = new Fraction(Fraction.MIXED);
+                fractionOne = new FractionClass(FractionClass.MIXED);
+                fractionTwo = new FractionClass(FractionClass.MIXED);
                 while (fractionOne.getValue()<=fractionTwo.getValue()){
-                    fractionOne = new Fraction(Fraction.MIXED);
-                    fractionTwo = new Fraction(Fraction.MIXED);
+                    fractionOne = new FractionClass(FractionClass.MIXED);
+                    fractionTwo = new FractionClass(FractionClass.MIXED);
                 }
                 newNum = (fractionOne.getDenominator()*fractionOne.getWholeNum()) + fractionOne.getNumerator();
                 int newNum2 = (fractionTwo.getDenominator()*fractionTwo.getWholeNum()) + fractionTwo.getNumerator();
                 while (((newNum>10 && fractionTwo.getDenominator()>1)||(newNum2>10 && fractionOne.getDenominator()>1)) && (fractionOne.getDenominator()!=fractionTwo.getDenominator())){
-                    fractionOne = new Fraction(Fraction.MIXED);
-                    fractionTwo = new Fraction(Fraction.MIXED);
+                    fractionOne = new FractionClass(FractionClass.MIXED);
+                    fractionTwo = new FractionClass(FractionClass.MIXED);
                     while (fractionOne.getValue()<=fractionTwo.getValue()){
-                        fractionOne = new Fraction(Fraction.MIXED);
-                        fractionTwo = new Fraction(Fraction.MIXED);
+                        fractionOne = new FractionClass(FractionClass.MIXED);
+                        fractionTwo = new FractionClass(FractionClass.MIXED);
                     }
                     newNum = (fractionOne.getDenominator()*fractionOne.getWholeNum()) + fractionOne.getNumerator();
                     newNum2 = (fractionTwo.getDenominator()*fractionTwo.getWholeNum()) + fractionTwo.getNumerator();
@@ -291,7 +291,7 @@ public class FractionQuestion {
                 difNum = ((lcd/fractionOne.getDenominator())*newNum) -
                         ((lcd/fractionTwo.getDenominator())*newNum2);
             }
-            fractionAnswer = new Fraction(difNum,lcd);
+            fractionAnswer = new FractionClass(difNum,lcd);
 
         }
         if (context.equals(MULTIPLYING_WITH_MIXED)){
@@ -300,32 +300,32 @@ public class FractionQuestion {
             int prodDenom = 0;
 
             if (random==1){
-                fractionOne = new Fraction(Fraction.MIXED);
-                while (Fraction.improper(fractionOne).getNumerator()>10 && fractionTwo.getNumerator()>1){
-                    fractionOne = new Fraction(Fraction.MIXED);
+                fractionOne = new FractionClass(FractionClass.MIXED);
+                while (FractionClass.improper(fractionOne).getNumerator()>10 && fractionTwo.getNumerator()>1){
+                    fractionOne = new FractionClass(FractionClass.MIXED);
                 }
-                prodNum = Fraction.improper(fractionOne).getNumerator()*fractionTwo.getNumerator();
-                prodDenom = Fraction.improper(fractionOne).getDenominator()*fractionTwo.getDenominator();
+                prodNum = FractionClass.improper(fractionOne).getNumerator()*fractionTwo.getNumerator();
+                prodDenom = FractionClass.improper(fractionOne).getDenominator()*fractionTwo.getDenominator();
             } else if (random==2){
-                fractionTwo = new Fraction(Fraction.MIXED);
-                while (Fraction.improper(fractionTwo).getNumerator()>10 && fractionOne.getNumerator()>1){
-                    fractionTwo = new Fraction(Fraction.MIXED);
+                fractionTwo = new FractionClass(FractionClass.MIXED);
+                while (FractionClass.improper(fractionTwo).getNumerator()>10 && fractionOne.getNumerator()>1){
+                    fractionTwo = new FractionClass(FractionClass.MIXED);
                 }
-                prodNum = Fraction.improper(fractionTwo).getNumerator()*fractionOne.getNumerator();
-                prodDenom = Fraction.improper(fractionTwo).getDenominator()*fractionOne.getDenominator();
+                prodNum = FractionClass.improper(fractionTwo).getNumerator()*fractionOne.getNumerator();
+                prodDenom = FractionClass.improper(fractionTwo).getDenominator()*fractionOne.getDenominator();
             } else if (random==3){
-                fractionOne = new Fraction(Fraction.MIXED);
-                fractionTwo = new Fraction(Fraction.MIXED);
-                while ((Fraction.improper(fractionOne).getNumerator()>10 && Fraction.improper(fractionTwo).getNumerator()>1)||
-                        (Fraction.improper(fractionTwo).getNumerator()>10 && Fraction.improper(fractionOne).getNumerator()>1)){
-                    fractionOne = new Fraction(Fraction.MIXED);
-                    fractionTwo = new Fraction(Fraction.MIXED);
+                fractionOne = new FractionClass(FractionClass.MIXED);
+                fractionTwo = new FractionClass(FractionClass.MIXED);
+                while ((FractionClass.improper(fractionOne).getNumerator()>10 && FractionClass.improper(fractionTwo).getNumerator()>1)||
+                        (FractionClass.improper(fractionTwo).getNumerator()>10 && FractionClass.improper(fractionOne).getNumerator()>1)){
+                    fractionOne = new FractionClass(FractionClass.MIXED);
+                    fractionTwo = new FractionClass(FractionClass.MIXED);
                 }
-                prodNum = Fraction.improper(fractionOne).getNumerator()*Fraction.improper(fractionTwo).getNumerator();
-                prodDenom = Fraction.improper(fractionOne).getDenominator()*Fraction.improper(fractionTwo).getDenominator();
+                prodNum = FractionClass.improper(fractionOne).getNumerator()* FractionClass.improper(fractionTwo).getNumerator();
+                prodDenom = FractionClass.improper(fractionOne).getDenominator()* FractionClass.improper(fractionTwo).getDenominator();
             }
 
-            fractionAnswer = new Fraction(prodNum,prodDenom);
+            fractionAnswer = new FractionClass(prodNum,prodDenom);
         }
         if (context.equals(DIVIDING_WITH_MIXED)){
             int random = (int) (Math.random() * 2 + 1);
@@ -333,35 +333,35 @@ public class FractionQuestion {
             int prodDenom = 0;
 
             if (random==1){
-                fractionOne = new Fraction(Fraction.MIXED);
-                while (Fraction.improper(fractionOne).getNumerator()>10&&fractionTwo.getDenominator()>1){
-                    fractionOne = new Fraction(Fraction.MIXED);
+                fractionOne = new FractionClass(FractionClass.MIXED);
+                while (FractionClass.improper(fractionOne).getNumerator()>10&&fractionTwo.getDenominator()>1){
+                    fractionOne = new FractionClass(FractionClass.MIXED);
                 }
-                prodNum = Fraction.improper(fractionOne).getNumerator()*fractionTwo.getDenominator();
-                prodDenom = Fraction.improper(fractionOne).getDenominator()*fractionTwo.getNumerator();
+                prodNum = FractionClass.improper(fractionOne).getNumerator()*fractionTwo.getDenominator();
+                prodDenom = FractionClass.improper(fractionOne).getDenominator()*fractionTwo.getNumerator();
             } else if (random==2){
-                fractionTwo = new Fraction(Fraction.MIXED);
-                while (Fraction.improper(fractionTwo).getNumerator()>10&&fractionOne.getDenominator()>1){
-                    fractionTwo = new Fraction(Fraction.MIXED);
+                fractionTwo = new FractionClass(FractionClass.MIXED);
+                while (FractionClass.improper(fractionTwo).getNumerator()>10&&fractionOne.getDenominator()>1){
+                    fractionTwo = new FractionClass(FractionClass.MIXED);
                 }
-                prodNum = fractionOne.getNumerator()*Fraction.improper(fractionTwo).getDenominator();
-                prodDenom = fractionOne.getDenominator()*Fraction.improper(fractionTwo).getNumerator();
+                prodNum = fractionOne.getNumerator()* FractionClass.improper(fractionTwo).getDenominator();
+                prodDenom = fractionOne.getDenominator()* FractionClass.improper(fractionTwo).getNumerator();
             } else if (random==3){
-                fractionOne = new Fraction(Fraction.MIXED);
-                fractionTwo = new Fraction(Fraction.MIXED);
-                while ((Fraction.improper(fractionOne).getNumerator()>10&&fractionTwo.getDenominator()>1)||
-                        (Fraction.improper(fractionTwo).getNumerator()>10&&fractionOne.getDenominator()>1)){
-                    fractionOne = new Fraction(Fraction.MIXED);
-                    fractionTwo = new Fraction(Fraction.MIXED);
+                fractionOne = new FractionClass(FractionClass.MIXED);
+                fractionTwo = new FractionClass(FractionClass.MIXED);
+                while ((FractionClass.improper(fractionOne).getNumerator()>10&&fractionTwo.getDenominator()>1)||
+                        (FractionClass.improper(fractionTwo).getNumerator()>10&&fractionOne.getDenominator()>1)){
+                    fractionOne = new FractionClass(FractionClass.MIXED);
+                    fractionTwo = new FractionClass(FractionClass.MIXED);
                 }
-                prodNum = Fraction.improper(fractionOne).getNumerator()*Fraction.improper(fractionTwo).getDenominator();
-                prodDenom = Fraction.improper(fractionOne).getDenominator()*Fraction.improper(fractionTwo).getNumerator();
+                prodNum = FractionClass.improper(fractionOne).getNumerator()* FractionClass.improper(fractionTwo).getDenominator();
+                prodDenom = FractionClass.improper(fractionOne).getDenominator()* FractionClass.improper(fractionTwo).getNumerator();
             }
 
-            fractionAnswer = new Fraction(prodNum,prodDenom);
+            fractionAnswer = new FractionClass(prodNum,prodDenom);
         }
     }
-    public FractionQuestion(Fraction fractionOne, Fraction fractionTwo, String Context){
+    public FractionQuestion(FractionClass fractionOne, FractionClass fractionTwo, String Context){
         this.fractionOne = fractionOne;
         this.fractionTwo = fractionTwo;
         if (Context.equals(COMPARING_FRACTION)){

@@ -1,46 +1,29 @@
 package com.example.laher.learnfractions.fraction_util.fraction_questions;
 
+import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 import com.example.laher.learnfractions.util.AppConstants;
 
 public class ComparingDissimilarQuestion extends FractionQuestionClass {
-    private int numerator1;
-    private int numerator2;
-    private int denominator1;
-    private int denominator2;
+    private Fraction fraction1;
+    private Fraction fraction2;
     private int product1;
     private int product2;
 
-    public int getNumerator1() {
-        return numerator1;
+    public Fraction getFraction1() {
+        return fraction1;
     }
 
-    public void setNumerator1(int numerator1) {
-        this.numerator1 = numerator1;
+    public void setFraction1(Fraction fraction1) {
+        this.fraction1 = fraction1;
     }
 
-    public int getNumerator2() {
-        return numerator2;
+    public Fraction getFraction2() {
+        return fraction2;
     }
 
-    public void setNumerator2(int numerator2) {
-        this.numerator2 = numerator2;
-    }
-
-    public int getDenominator1() {
-        return denominator1;
-    }
-
-    public void setDenominator1(int denominator1) {
-        this.denominator1 = denominator1;
-    }
-
-    public int getDenominator2() {
-        return denominator2;
-    }
-
-    public void setDenominator2(int denominator2) {
-        this.denominator2 = denominator2;
+    public void setFraction2(Fraction fraction2) {
+        this.fraction2 = fraction2;
     }
 
     public ComparingDissimilarQuestion() {
@@ -48,45 +31,29 @@ public class ComparingDissimilarQuestion extends FractionQuestionClass {
     }
 
     public void generateFractions(){
-        int numerator1 = (int) (Math.random() * 9 + 1);
-        int numerator2 = (int) (Math.random() * 9 + 1);
-        while (numerator1==numerator2){
-            numerator1 = (int) (Math.random() * 9 + 1);
-            numerator2 = (int) (Math.random() * 9 + 1);
+        setFraction1(new Fraction());
+        setFraction2(new Fraction());
+        while (getFraction1().getNumerator()==getFraction2().getNumerator() ||
+                getFraction1().getDenominator()==getFraction2().getDenominator()){
+            setFraction1(new Fraction());
+            setFraction2(new Fraction());
         }
-        int denominator1 = (int) (Math.random() * 9 + 1);
-        int denominator2 = (int) (Math.random() * 9 + 1);
-        while (denominator1==denominator2){
-            denominator1 = (int) (Math.random() * 9 + 1);
-            denominator2 = (int) (Math.random() * 9 + 1);
-        }
+        int numerator1 = getFraction1().getNumerator();
+        int numerator2 = getFraction2().getNumerator();
+        int denominator1 = getFraction1().getDenominator();
+        int denominator2 = getFraction2().getDenominator();
         this.product1 = denominator2 * numerator1;
         this.product2 = denominator1 * numerator2;
-        setNumerator1(numerator1);
-        setNumerator2(numerator2);
-        setDenominator1(denominator1);
-        setDenominator2(denominator2);
     }
 
     @Override
-    public int getNumeratorAnswer() {
+    public Fraction getFractionAnswer() {
         if (this.product1>this.product2){
-            return this.numerator1;
+            return fraction1;
         } else if (this.product1<this.product2){
-            return this.numerator2;
+            return fraction2;
         } else {
-            return AppConstants.EQUAL;
-        }
-    }
-
-    @Override
-    public int getDenominatorAnswer() {
-        if (this.product1>this.product2){
-            return this.denominator1;
-        } else if (this.product1<this.product2){
-            return this.denominator2;
-        } else {
-            return AppConstants.EQUAL;
+            return AppConstants.EQUAL_FRACTIONS;
         }
     }
 
@@ -94,14 +61,8 @@ public class ComparingDissimilarQuestion extends FractionQuestionClass {
     public boolean equals(Object obj) {
         if (obj instanceof ComparingDissimilarQuestion){
             ComparingDissimilarQuestion comparingDissimilarQuestion = (ComparingDissimilarQuestion) obj;
-            if (comparingDissimilarQuestion.getNumerator1()==this.getNumerator1()&&
-                    comparingDissimilarQuestion.getNumerator2()==this.getNumerator2()&&
-                    comparingDissimilarQuestion.getDenominator1()==this.getDenominator1()&&
-                    comparingDissimilarQuestion.getDenominator2()==this.getDenominator2()){
-                return true;
-            } else {
-                return false;
-            }
+            return comparingDissimilarQuestion.getFraction1().equals(this.getFraction1()) &&
+                    comparingDissimilarQuestion.getFraction2().equals(this.getFraction2());
         }
         return super.equals(obj);
     }

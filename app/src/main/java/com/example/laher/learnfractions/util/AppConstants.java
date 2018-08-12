@@ -2,6 +2,8 @@ package com.example.laher.learnfractions.util;
 
 import android.graphics.Color;
 
+import com.example.laher.learnfractions.fraction_util.Fraction;
+
 public class AppConstants {
     public static final String METHOD_GET = "METHOD_GET";
     public static final String METHOD_POST = "METHOD_POST";
@@ -43,23 +45,23 @@ public class AppConstants {
 
 
     //LESSONS
-    public static final String FRACTION_MEANING="Fraction Meaning";
-    public static final String NON_VISUAL_FRACTION="Non-Visual Fraction";
-    public static final String COMPARING_SIMILAR_FRACTIONS="Comparing Similar Fractions";
-    public static final String COMPARING_DISSIMILAR_FRACTIONS="Comparing Dissimilar Fractions";
-    public static final String COMPARING_FRACTIONS="Comparing Fractions";
-    public static final String ORDERING_SIMILAR="Ordering Similar Fractions";
-    public static final String ORDERING_DISSIMILAR="Ordering Dissimilar Fractions";
-    public static final String CLASSIFYING_FRACTIONS="Classifying Fractions";
-    public static final String CONVERTING_FRACTIONS="Converting Fractions";
-    public static final String ADDING_SIMILAR="Adding Similar Fractions";
-    public static final String ADDING_DISSIMILAR="Adding Dissimilar Fractions";
-    public static final String SUBTRACTING_SIMILAR="Subtracting Similar Fractions";
-    public static final String SUBTRACTING_DISSIMILAR="Subtracting Dissimilar Fractions";
-    public static final String MULTIPLYING_FRACTIONS="Multiplying Fractions";
-    public static final String DIVIDING_FRACTIONS="Dividing Fractions";
-    public static final String ADDING_SUBTRACTING_MIXED="Adding and Subtracting with Mixed Fractions";
-    public static final String MULTIPLYING_DIVIDING_MIXED="Multiplying and Dividing with Mixed Fractions";
+    public static final String FRACTION_MEANING="FractionClass Meaning";
+    public static final String NON_VISUAL_FRACTION="Non-Visual FractionClass";
+    public static final String COMPARING_SIMILAR_FRACTIONS="Comparing Similar Fraction";
+    public static final String COMPARING_DISSIMILAR_FRACTIONS="Comparing Dissimilar Fraction";
+    public static final String COMPARING_FRACTIONS="Comparing Fraction";
+    public static final String ORDERING_SIMILAR="Ordering Similar Fraction";
+    public static final String ORDERING_DISSIMILAR="Ordering Dissimilar Fraction";
+    public static final String CLASSIFYING_FRACTIONS="Classifying Fraction";
+    public static final String CONVERTING_FRACTIONS="Converting Fraction";
+    public static final String ADDING_SIMILAR="Adding Similar Fraction";
+    public static final String ADDING_DISSIMILAR="Adding Dissimilar Fraction";
+    public static final String SUBTRACTING_SIMILAR="Subtracting Similar Fraction";
+    public static final String SUBTRACTING_DISSIMILAR="Subtracting Dissimilar Fraction";
+    public static final String MULTIPLYING_FRACTIONS="Multiplying Fraction";
+    public static final String DIVIDING_FRACTIONS="Dividing Fraction";
+    public static final String ADDING_SUBTRACTING_MIXED="Adding and Subtracting with Mixed Fraction";
+    public static final String MULTIPLYING_DIVIDING_MIXED="Multiplying and Dividing with Mixed Fraction";
 
 
     //MESSAGES
@@ -70,7 +72,14 @@ public class AppConstants {
     public static final String FINISHED_LESSON = "Congratulations, you have finished the lesson.";
     public static final String INVALID_INPUT = "Invalid input.";
     public static final String LOGOUT_CONFIRMATION = "Are you sure you want to Logout?";
+
+
+    public static final String GREATER_THAN = ">";
+    public static final String LESS_THAN = "<";
+    public static final String EQUAL_TO = "=";
+
     public static final int EQUAL = 0;
+    public static final Fraction EQUAL_FRACTIONS = new Fraction(0,0);
 
 
     public static final String FAILED_CONSECUTIVE(int error){

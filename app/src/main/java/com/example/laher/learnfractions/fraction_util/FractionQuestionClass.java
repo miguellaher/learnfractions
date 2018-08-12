@@ -4,6 +4,15 @@ public class FractionQuestionClass {
     private int numeratorAnswer;
     private int denominatorAnswer;
     private double numberAnswer;
+    private Fraction fractionAnswer;
+
+    public Fraction getFractionAnswer() {
+        return fractionAnswer;
+    }
+
+    public void setFractionAnswer(Fraction fractionAnswer) {
+        this.fractionAnswer = fractionAnswer;
+    }
 
     public double getNumberAnswer() {
         return numberAnswer;

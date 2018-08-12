@@ -40,7 +40,7 @@ public class MultiplyingFractionsExerciseActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Multiplying Fractions";
+    public final String TITLE = "Multiplying Fraction";
     //FRACTION EQUATION GUI
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtSign, txtScore, txtInstruction;
     EditText inputNum, inputDenom;

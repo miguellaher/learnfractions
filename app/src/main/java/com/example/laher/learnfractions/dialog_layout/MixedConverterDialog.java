@@ -5,22 +5,22 @@ import android.content.Context;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.FractionClass;
 import com.example.laher.learnfractions.R;
 
 public class MixedConverterDialog extends Dialog {
     TextView txtWholeNum, txtNum1, txtNum2, txtDenom1, txtDenom2, txtEquation;
     Button btnConvert;
-    Fraction mixedFraction;
+    FractionClass mixedFraction;
 
 
     public MixedConverterDialog(Context context){
         super(context);
         setGui();
     }
-    public MixedConverterDialog(Context context, Fraction mixedFraction){
+    public MixedConverterDialog(Context context, FractionClass mixedFraction){
         super(context);
-        if (mixedFraction.getContext()==Fraction.MIXED){
+        if (mixedFraction.getContext()== FractionClass.MIXED){
             setGui();
 
             txtWholeNum.setText(String.valueOf(mixedFraction.getWholeNum()));

@@ -18,7 +18,7 @@ public class ConvertingFractionsVideoActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Converting Fractions";
+    public final String TITLE = "Converting Fraction";
 
     VideoView video;
     @Override

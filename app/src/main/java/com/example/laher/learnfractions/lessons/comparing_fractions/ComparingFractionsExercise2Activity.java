@@ -22,6 +22,7 @@ import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.ComparingFractionsQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -49,7 +50,7 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Comparing Fractions";
+    public final String TITLE = "Comparing Fraction";
     //GUI
     TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtProduct1, txtProduct2, txtCompareSign, txtScore, txtInstruction;
     Button btnGreater, btnEqual, btnLess;
@@ -60,15 +61,15 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
     EditText diagInputProduct;
     Button dialogBtnCheck;
     //VARIABLES
-    Fraction fractionOne, fractionTwo;
-    FractionQuestion fractionQuestion;
-    ArrayList<FractionQuestion> fractionQuestions;
+    ArrayList<ComparingFractionsQuestion> mComparingFractionsQuestions;
+    ComparingFractionsQuestion mComparingFractionsQuestion;
+    int mQuestionNum;
+
     ArrayList<Integer> crossMultiplicationStepList;
     String strAnswer;
     final Handler handler = new Handler();
 
 
-    int questionNum;
     int correct, error;
     int requiredCorrects;
     int maxErrors;
@@ -148,9 +149,7 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         dialogBtnCheck = mdView.findViewById(R.id.md_btnCheck);
         dialogBtnCheck.setOnClickListener(new DiagBtnCheckListener());
         //VARIABLES
-        fractionOne = new Fraction();
-        fractionTwo = new Fraction();
-        fractionQuestion = new FractionQuestion(fractionOne, fractionTwo, FractionQuestion.COMPARING_FRACTION);
+
         crossMultiplicationStepList = new ArrayList<>();
 
         setAttributes((ExerciseStat) exercise);
@@ -213,20 +212,26 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         txtInstruction.setText("Compare the two fractions.");
         crossMultiplicationStepList.clear();
     }
-    public void setFractionQuestions(){
-        fractionQuestions = new ArrayList<>();
-        questionNum = 0;
-        for(int i = 0; i < requiredCorrects; i++){
-            if (i < (requiredCorrects /2)){
-                fractionQuestion = new FractionQuestion(FractionQuestion.COMPARING_SIMILAR);
-                fractionQuestions.add(fractionQuestion);
+    private void setFractionQuestions(){
+        mQuestionNum = 1;
+        mComparingFractionsQuestions = new ArrayList<>();
+        for (int i = 0; i < requiredCorrects; i++){
+            ComparingFractionsQuestion comparingFractionsQuestion;
+            if (i<requiredCorrects/2){
+                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
             } else {
-                fractionQuestion = new FractionQuestion(FractionQuestion.COMPARING_DISSIMILAR);
-                fractionQuestions.add(fractionQuestion);
+                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.DISSIMILAR);
             }
+            while (mComparingFractionsQuestions.contains(comparingFractionsQuestion)){
+                if (i<requiredCorrects/2){
+                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                } else {
+                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.DISSIMILAR);
+                }
+            }
+            Collections.shuffle(mComparingFractionsQuestions);
         }
-        Collections.shuffle(fractionQuestions);
-        setTxtFractions();
+        setTxtFraction();
     }
     public void resetTxtFractionsColor(){
         txtNum1.setTextColor(Color.rgb(128,128,128));
@@ -234,12 +239,25 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         txtDenom1.setTextColor(Color.rgb(128,128,128));
         txtDenom2.setTextColor(Color.rgb(128,128,128));
     }
-    public void setTxtFractions(){
-        txtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()));
-        txtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()));
-        txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
-        txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
-        strAnswer = fractionQuestions.get(questionNum).getAnswer();
+    public void setTxtFraction() {
+        mComparingFractionsQuestion = mComparingFractionsQuestions.get(mQuestionNum-1);
+        Fraction fraction1 = mComparingFractionsQuestion.getFraction1();
+        Fraction fraction2 = mComparingFractionsQuestion.getFraction2();
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        txtNum1.setText(String.valueOf(numerator1));
+        txtDenom1.setText(String.valueOf(denominator1));
+        txtNum2.setText(String.valueOf(numerator2));
+        txtDenom2.setText(String.valueOf(denominator2));
+        if (fraction1.compare(fraction2)>0){
+            strAnswer = AppConstants.GREATER_THAN;
+        } else if (fraction1.compare(fraction2)<0){
+            strAnswer = AppConstants.LESS_THAN;
+        } else if (fraction1.compare(fraction2)==0){
+            strAnswer = AppConstants.EQUAL_TO;
+        }
     }
     public void setTxtScore(){
         txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
@@ -261,8 +279,8 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    questionNum++;
-                    setTxtFractions();
+                    mQuestionNum++;
+                    setTxtFraction();
                     setup();
                     enableBtnAnswers(true);
                 }
@@ -300,15 +318,21 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
                     if (correctsShouldBeConsecutive) {
                         go();
                     } else {
-                        if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.COMPARING_SIMILAR)){
-                            fractionQuestion = new FractionQuestion(FractionQuestion.COMPARING_SIMILAR);
-                            fractionQuestions.add(fractionQuestion);
-                        } else if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.COMPARING_DISSIMILAR)){
-                            fractionQuestion = new FractionQuestion(FractionQuestion.COMPARING_DISSIMILAR);
-                            fractionQuestions.add(fractionQuestion);
+                        ComparingFractionsQuestion comparingFractionsQuestion = null;
+                        if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.SIMILAR)){
+                            comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                        } else if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.DISSIMILAR)){
+                            comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
                         }
-                        questionNum++;
-                        setTxtFractions();
+                        while (mComparingFractionsQuestions.contains(comparingFractionsQuestion)){
+                            if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.SIMILAR)){
+                                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                            } else if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.DISSIMILAR)){
+                                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                            }
+                        }
+                        mQuestionNum++;
+                        setTxtFraction();
                         setup();
                     }
                     enableBtnAnswers(true);
@@ -359,7 +383,7 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
             Button b = (Button) v;
             String s = b.getText().toString();
             txtCompareSign.setText(s);
-            if (s.equals(fractionQuestions.get(questionNum).getAnswer())){
+            if (s.equals(strAnswer)){
                 correct();
             } else {
                 wrong();
@@ -370,7 +394,13 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             crossMultiplicationStepList.add(v.getId());
-            if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.COMPARING_SIMILAR)){
+            Fraction fraction1 = mComparingFractionsQuestion.getFraction1();
+            Fraction fraction2 = mComparingFractionsQuestion.getFraction2();
+            int numerator1 = fraction1.getNumerator();
+            int numerator2 = fraction2.getNumerator();
+            int denominator1 = fraction1.getDenominator();
+            int denominator2 = fraction1.getDenominator();
+            if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.SIMILAR)){
                 crossMultiplicationStepList.clear();
                 txtInstruction.setText("Do not use the cross multiplication technique to similar fractions.");
                 enableBtnAnswers(false);
@@ -398,16 +428,14 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
                 if (crossMultiplicationStepList.get(0) == txtDenom1.getId()){
                     if (crossMultiplicationStepList.get(1) == txtNum2.getId()){
                         txtNum2.setTextColor(Color.rgb(0,255,0));
-                        diagInputProduct(fractionQuestions.get(questionNum).getFractionTwo().getNumerator(),
-                                fractionQuestions.get(questionNum).getFractionOne().getDenominator());
+                        diagInputProduct(numerator2, denominator1);
                     } else {
                         crossMultiplicationStepList.remove(1);
                     }
                 } else if (crossMultiplicationStepList.get(0) == txtDenom2.getId()){
                     if (crossMultiplicationStepList.get(1) == txtNum1.getId()){
                         txtNum1.setTextColor(Color.rgb(0,255,0));
-                        diagInputProduct(fractionQuestions.get(questionNum).getFractionOne().getNumerator(),
-                                fractionQuestions.get(questionNum).getFractionTwo().getDenominator());
+                        diagInputProduct(numerator1, denominator2);
                     } else {
                         crossMultiplicationStepList.remove(1);
                     }
@@ -432,16 +460,14 @@ public class ComparingFractionsExercise2Activity extends AppCompatActivity {
                 if (crossMultiplicationStepList.get(0) == txtDenom1.getId()){
                     if (crossMultiplicationStepList.get(3) == txtNum1.getId()){
                         txtNum1.setTextColor(Color.rgb(0,255,0));
-                        diagInputProduct(fractionQuestions.get(questionNum).getFractionOne().getNumerator(),
-                                fractionQuestions.get(questionNum).getFractionTwo().getDenominator());
+                        diagInputProduct(numerator1, denominator2);
                     } else {
                         crossMultiplicationStepList.remove(2);
                     }
                 } else if (crossMultiplicationStepList.get(0) == txtDenom2.getId()){
                     if (crossMultiplicationStepList.get(3) == txtNum2.getId()){
                         txtNum2.setTextColor(Color.rgb(0,255,0));
-                        diagInputProduct(fractionQuestions.get(questionNum).getFractionTwo().getNumerator(),
-                                fractionQuestions.get(questionNum).getFractionOne().getDenominator());
+                        diagInputProduct(numerator2, denominator1);
                     } else {
                         crossMultiplicationStepList.remove(2);
                     }

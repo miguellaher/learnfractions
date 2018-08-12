@@ -18,7 +18,7 @@ public class AddingSimilarVideoActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Adding Fractions";
+    public final String TITLE = "Adding Fraction";
 
     VideoView video;
     @Override

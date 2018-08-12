@@ -14,7 +14,7 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
-import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.FractionClass;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.model.Student;
@@ -41,7 +41,7 @@ public class ComparingSimilarSeatWork extends SeatWork {
     boolean shouldAllowBack;
 
     int questionNum;
-    Fraction fractionOne, fractionTwo;
+    FractionClass fractionOne, fractionTwo;
     FractionQuestion fractionQuestion;
     ArrayList<FractionQuestion> fractionQuestions;
     String strAnswer;
@@ -105,8 +105,8 @@ public class ComparingSimilarSeatWork extends SeatWork {
         btnLess.setOnClickListener(new BtnListener());
         //VARIABLES
         shouldAllowBack = true;
-        fractionOne = new Fraction();
-        fractionTwo = new Fraction();
+        fractionOne = new FractionClass();
+        fractionTwo = new FractionClass();
         fractionQuestion = new FractionQuestion();
         fractionQuestions = new ArrayList<>();
 

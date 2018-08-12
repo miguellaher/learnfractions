@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -19,8 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
-import com.example.laher.learnfractions.fraction_util.Question;
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.fraction_util.questions.GettingLcmQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -47,7 +46,7 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Ordering Fractions";
+    public final String TITLE = "Ordering Fraction";
     //LCM DIALOG
     Dialog lcmDialog;
     View lcmView;
@@ -57,9 +56,11 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
     //GUI
     TextView txtNum1,txtNum2, txtNum3, txtScore, txtInstruction;
     //VARIABLES
-    Question question;
-    ArrayList<Question> questions;
-    int questionNum;
+    ArrayList<GettingLcmQuestion> mGettingLcmQuestions;
+    GettingLcmQuestion mGettingLcmQuestion;
+    int mQuestionNum;
+
+
     int correct, error;
     int requiredCorrects;
     int maxErrors;
@@ -179,33 +180,34 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         }
     }
     public void go(){
-        setup();
         setQuestions();
-        setGuiNums();
+        setup();
     }
     public void setup(){
         clicks = 0;
         resetTxtColors();
         setTxtListeners();
     }
-    public void addQuestion(){
-        question = new Question(Question.GETTING_LCD);
-        while (Integer.valueOf(question.getAnswer())>100){
-            question = new Question(Question.GETTING_LCD);
-        }
-        questions.add(question);
-    }
     public void setQuestions(){
-        questionNum = 0;
-        questions = new ArrayList<>();
-        for(int i = 0; i < requiredCorrects; i++){
-            addQuestion();
+        mQuestionNum = 1;
+        mGettingLcmQuestions = new ArrayList<>();
+        for (int i = 0; i < requiredCorrects; i++){
+            GettingLcmQuestion gettingLcmQuestion = new GettingLcmQuestion();
+            while (mGettingLcmQuestions.contains(gettingLcmQuestion)){
+                gettingLcmQuestion = new GettingLcmQuestion();
+            }
+            mGettingLcmQuestions.add(gettingLcmQuestion);
         }
+        setGuiNumbers();
     }
-    public void setGuiNums(){
-        txtNum1.setText(String.valueOf(questions.get(questionNum).getNum1()));
-        txtNum2.setText(String.valueOf(questions.get(questionNum).getNum2()));
-        txtNum3.setText(String.valueOf(questions.get(questionNum).getNum3()));
+    public void setGuiNumbers(){
+        mGettingLcmQuestion = mGettingLcmQuestions.get(mQuestionNum-1);
+        int number1 = mGettingLcmQuestion.getNumber1();
+        int number2 = mGettingLcmQuestion.getNumber2();
+        int number3 = mGettingLcmQuestion.getNumber3();
+        txtNum1.setText(String.valueOf(number1));
+        txtNum2.setText(String.valueOf(number2));
+        txtNum3.setText(String.valueOf(number3));
         txtInstruction.setText("Click all numbers.");
     }
     public void setTxtListeners(){
@@ -247,9 +249,9 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         }
     }
     public void nextQuestion(){
+        mQuestionNum++;
+        setGuiNumbers();
         setup();
-        questionNum++;
-        setGuiNums();
     }
     public void wrong(){
         error++;
@@ -284,7 +286,11 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
                     if (correctsShouldBeConsecutive) {
                         go();
                     } else {
-                        addQuestion();
+                        GettingLcmQuestion gettingLcmQuestion = new GettingLcmQuestion();
+                        while (mGettingLcmQuestions.contains(gettingLcmQuestion)){
+                            gettingLcmQuestion = new GettingLcmQuestion();
+                        }
+                        mGettingLcmQuestions.add(gettingLcmQuestion);
                         nextQuestion();
                     }
                 }
@@ -316,9 +322,13 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
         ExerciseStatService.postStats(student,mExerciseStat,service);
     }
     public void diagInputLcm(){
-        diagLcmtxtNum1.setText(String.valueOf(questions.get(questionNum).getNum1()));
-        diagLcmtxtNum2.setText(String.valueOf(questions.get(questionNum).getNum2()));
-        diagLcmtxtNum3.setText(String.valueOf(questions.get(questionNum).getNum3()));
+        mGettingLcmQuestion = mGettingLcmQuestions.get(mQuestionNum-1);
+        int number1 = mGettingLcmQuestion.getNumber1();
+        int number2 = mGettingLcmQuestion.getNumber2();
+        int number3 = mGettingLcmQuestion.getNumber3();
+        diagLcmtxtNum1.setText(String.valueOf(number1));
+        diagLcmtxtNum2.setText(String.valueOf(number2));
+        diagLcmtxtNum3.setText(String.valueOf(number3));
         lcmDialog.show();
         txtInstruction.setText("Get the lcm.");
     }
@@ -343,7 +353,10 @@ public class OrderingDissimilarExerciseActivity extends AppCompatActivity {
     public class DiagLcmBtnCheckListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            if (String.valueOf(diagLcmInputLcm.getText()).matches(questions.get(questionNum).getAnswer())){
+            mGettingLcmQuestion = mGettingLcmQuestions.get(mQuestionNum-1);
+            int lcm = mGettingLcmQuestion.getLcm();
+            String strLcm = String.valueOf(lcm);
+            if (String.valueOf(diagLcmInputLcm.getText()).equals(strLcm)){
                 lcmDialog.dismiss();
                 correct();
             } else {

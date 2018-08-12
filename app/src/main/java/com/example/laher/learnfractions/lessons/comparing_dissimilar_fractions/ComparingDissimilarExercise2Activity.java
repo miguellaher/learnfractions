@@ -19,9 +19,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
-import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.ComparingDissimilarQuestion;
 import com.example.laher.learnfractions.lessons.comparing_similar_fractions.ComparingSimilarExerciseActivity;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
@@ -59,7 +60,11 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
     Button btnGreater, btnEquals, btnLess;
     //VARIABLES
     ArrayList<Integer> stepsIdList;
-    Fraction fractionOne, fractionTwo;
+
+    ArrayList<ComparingDissimilarQuestion> mComparingDissimilarQuestions;
+    ComparingDissimilarQuestion mComparingDissimilarQuestion;
+    int mQuestionNum;
+
     int correct, error;
     final Handler handler = new Handler();
 
@@ -139,9 +144,6 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
         btnGreater.setOnClickListener(new BtnListener());
         btnEquals.setOnClickListener(new BtnListener());
         btnLess.setOnClickListener(new BtnListener());
-        //VARIABLES
-        fractionOne = new Fraction();
-        fractionTwo = new Fraction();
 
         setAttributes((ExerciseStat) exercise);
         if (!Storage.isEmpty()) {
@@ -197,32 +199,42 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
     }
     public void go(){
         setup();
+        generateFractionQuestions();
     }
     public void setup(){
         enableBtnCompareSign(false);
-        setFractions();
         txtCompareSign.setText("_");
         txtInstruction.setText("Click a denominator.");
+    }
+    private void generateFractionQuestions(){
+        mQuestionNum = 1;
+        mComparingDissimilarQuestions = new ArrayList<>();
+        for (int i = 0; i > requiredCorrects; i++){
+            ComparingDissimilarQuestion comparingDissimilarQuestion = new ComparingDissimilarQuestion();
+            while (mComparingDissimilarQuestions.contains(comparingDissimilarQuestion)){
+                comparingDissimilarQuestion = new ComparingDissimilarQuestion();
+            }
+            mComparingDissimilarQuestions.add(comparingDissimilarQuestion);
+        }
+        setGuiFractions();
     }
     public void enableBtnCompareSign(boolean bool){
         btnGreater.setEnabled(bool);
         btnEquals.setEnabled(bool);
         btnLess.setEnabled(bool);
     }
-    public void setFractions(){
-        fractionOne.generateRandFraction(9);
-        fractionTwo.generateRandFraction(9);
-        while (fractionOne.getDenominator()==fractionTwo.getDenominator() ||
-                fractionOne.getNumerator()==fractionTwo.getNumerator()){
-            fractionTwo.generateRandFraction(9);
-        }
-        setGuiFractions();
-    }
     public void setGuiFractions(){
-        txtNum1.setText(String.valueOf(fractionOne.getNumerator()));
-        txtDenom1.setText(String.valueOf(fractionOne.getDenominator()));
-        txtNum2.setText(String.valueOf(fractionTwo.getNumerator()));
-        txtDenom2.setText(String.valueOf(fractionTwo.getDenominator()));
+        mComparingDissimilarQuestion = mComparingDissimilarQuestions.get(mQuestionNum-1);
+        Fraction fraction1 = mComparingDissimilarQuestion.getFraction1();
+        Fraction fraction2 = mComparingDissimilarQuestion.getFraction2();
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        txtNum1.setText(String.valueOf(numerator1));
+        txtDenom1.setText(String.valueOf(denominator1));
+        txtNum2.setText(String.valueOf(numerator2));
+        txtDenom2.setText(String.valueOf(denominator2));
         txtNum1.setOnClickListener(new TxtFractionListener());
         txtNum2.setOnClickListener(new TxtFractionListener());
         txtDenom1.setOnClickListener(new TxtFractionListener());
@@ -280,7 +292,9 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    go();
+                    setup();
+                    mQuestionNum++;
+                    setGuiFractions();
                 }
             }, 2000);
         }
@@ -316,7 +330,13 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    go();
+                    if (correctsShouldBeConsecutive) {
+                        go();
+                    } else {
+                        setup();
+                        mQuestionNum++;
+                        setGuiFractions();
+                    }
                 }
             }, 2000);
         }
@@ -347,22 +367,25 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
         ExerciseStatService.postStats(student,mExerciseStat,service);
     }
     public void check(String compareSign){
+        Fraction fraction1 = mComparingDissimilarQuestion.getFraction1();
+        Fraction fraction2 = mComparingDissimilarQuestion.getFraction2();
+        Fraction fractionAnswer = mComparingDissimilarQuestion.getFractionAnswer();
         if (compareSign.equals(GREATER_THAN)){
-            if (Integer.valueOf(String.valueOf(txtProduct1.getText())) > Integer.valueOf(String.valueOf(txtProduct2.getText()))) {
+            if (fractionAnswer.equals(fraction1)) {
                 correct();
             } else {
                 wrong();
             }
         }
         if (compareSign.equals(EQUAL_TO)){
-            if (Integer.valueOf(String.valueOf(txtProduct1.getText())) == Integer.valueOf(String.valueOf(txtProduct2.getText()))) {
+            if (fractionAnswer.equals(AppConstants.EQUAL_FRACTIONS)) {
                 correct();
             } else {
                 wrong();
             }
         }
         if (compareSign.equals(LESS_THAN)){
-            if (Integer.valueOf(String.valueOf(txtProduct1.getText())) < Integer.valueOf(String.valueOf(txtProduct2.getText()))) {
+            if (fractionAnswer.equals(fraction2)) {
                 correct();
             } else {
                 wrong();
@@ -373,6 +396,12 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             stepsIdList.add(v.getId());
+            Fraction fraction1 = mComparingDissimilarQuestion.getFraction1();
+            Fraction fraction2 = mComparingDissimilarQuestion.getFraction2();
+            int numerator1 = fraction1.getNumerator();
+            int numerator2 = fraction2.getNumerator();
+            int denominator1 = fraction1.getDenominator();
+            int denominator2 = fraction2.getDenominator();
             if (stepsIdList.size() == 1){
                 if (stepsIdList.get(0) == txtDenom1.getId()){
                     txtDenom1.setTextColor(Color.rgb(0,255,0));
@@ -393,7 +422,7 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
                         txtNum1.setTextColor(Color.rgb(0, 255, 0));
                         //diagInputProduct(Integer.valueOf((String) txtNum1.getText()),
                         //        Integer.valueOf((String) txtDenom2.getText()));
-                        diagInputProduct(fractionOne.getNumerator(),fractionTwo.getDenominator());
+                        diagInputProduct(numerator1, denominator2);
                     } else {
                         shakeAnimate(txtNum1);
                         stepsIdList.remove(1);
@@ -403,7 +432,7 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
                         txtNum2.setTextColor(Color.rgb(0, 255, 0));
                         //diagInputProduct(Integer.valueOf((String) txtNum2.getText()),
                         //        Integer.valueOf((String) txtDenom1.getText()));
-                        diagInputProduct(fractionTwo.getNumerator(),fractionOne.getDenominator());
+                        diagInputProduct(numerator2, denominator1);
                     } else {
                         shakeAnimate(txtNum2);
                         stepsIdList.remove(1);
@@ -440,7 +469,7 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
                         if (stepsIdList.get(2) == txtDenom2.getId()){
                             if (stepsIdList.get(3) == txtNum1.getId()){
                                 txtNum1.setTextColor(Color.rgb(0, 255, 0));
-                                diagInputProduct(fractionOne.getNumerator(),fractionTwo.getDenominator());
+                                diagInputProduct(numerator1, denominator2);
                             } else {
                                 shakeAnimate(txtNum1);
                                 stepsIdList.remove(3);
@@ -452,7 +481,7 @@ public class ComparingDissimilarExercise2Activity extends AppCompatActivity {
                         if (stepsIdList.get(2) == txtDenom1.getId()){
                             if (stepsIdList.get(3) == txtNum2.getId()){
                                 txtNum2.setTextColor(Color.rgb(0, 255, 0));
-                                diagInputProduct(fractionTwo.getNumerator(),fractionOne.getDenominator());
+                                diagInputProduct(numerator2, denominator1);
                             } else {
                                 shakeAnimate(txtNum2);
                                 stepsIdList.remove(3);

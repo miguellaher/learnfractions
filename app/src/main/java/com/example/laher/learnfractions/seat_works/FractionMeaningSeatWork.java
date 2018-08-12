@@ -32,7 +32,7 @@ public class FractionMeaningSeatWork extends SeatWork {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Fraction Meaning";
+    public final String TITLE = "FractionClass Meaning";
     //GUI
     ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
     EditText inputNum, inputDenom;

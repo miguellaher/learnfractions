@@ -18,7 +18,7 @@ public class MultiplyingFractionsVideoActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "Multiplying Fractions";
+    public final String TITLE = "Multiplying Fraction";
 
     VideoView video;
     @Override
