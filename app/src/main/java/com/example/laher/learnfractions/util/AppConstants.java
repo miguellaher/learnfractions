@@ -45,8 +45,8 @@ public class AppConstants {
 
 
     //LESSONS
-    public static final String FRACTION_MEANING="FractionClass Meaning";
-    public static final String NON_VISUAL_FRACTION="Non-Visual FractionClass";
+    public static final String FRACTION_MEANING="Fraction Meaning";
+    public static final String NON_VISUAL_FRACTION="Non-Visual Fraction";
     public static final String COMPARING_SIMILAR_FRACTIONS="Comparing Similar Fraction";
     public static final String COMPARING_DISSIMILAR_FRACTIONS="Comparing Dissimilar Fraction";
     public static final String COMPARING_FRACTIONS="Comparing Fraction";

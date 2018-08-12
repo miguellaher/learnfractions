@@ -42,7 +42,7 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     //TOOLBAR
     Button btnBack, btnNext;
     TextView txtTitle;
-    public final String TITLE = "FractionClass Meaning";
+    public final String TITLE = "Fraction Meaning";
 
     //VARIABLES
     ArrayList<String> instructions;
@@ -160,12 +160,13 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     public void generateFractionQuestions(){
         mFractionMeaningQuestions = new ArrayList<>();
         mQuestionNum = 1;
+        int item_size;
         if (requiredCorrects%2!=0){
-            requiredCorrects = requiredCorrects/2+1;
+            item_size = requiredCorrects/2+1;
         } else {
-            requiredCorrects = requiredCorrects/2;
+            item_size = requiredCorrects/2;
         }
-        for (int i = 0; i < requiredCorrects; i++){
+        for (int i = 0; i < item_size; i++){
             FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion();
             while (mFractionMeaningQuestions.contains(fractionMeaningQuestion)){
                 fractionMeaningQuestion = new FractionMeaningQuestion();
