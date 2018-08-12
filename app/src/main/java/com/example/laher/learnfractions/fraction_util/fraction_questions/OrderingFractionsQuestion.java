@@ -66,4 +66,14 @@ public class OrderingFractionsQuestion extends FractionQuestionClass {
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof OrderingFractionsQuestion){
+            OrderingFractionsQuestion orderingFractionsQuestion = (OrderingFractionsQuestion) obj;
+            ArrayList<Fraction> fractions1 = this.getSortedFractions();
+            ArrayList<Fraction> fractions2 = orderingFractionsQuestion.getSortedFractions();
+            return fractions1.equals(fractions2);
+        }
+        return super.equals(obj);
+    }
 }

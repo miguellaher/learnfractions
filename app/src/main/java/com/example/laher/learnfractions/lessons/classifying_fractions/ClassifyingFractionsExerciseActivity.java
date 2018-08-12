@@ -11,9 +11,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionClass;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.fraction_util.MixedFraction;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.ClassifyingFractionQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -45,9 +48,10 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
     TextView txtNum, txtDenom, txtWholeNum, txtScore, txtInstruction;
     Button btnProper, btnImproper, btnMixed;
     //VARIABLES
-    FractionClass fraction;
-    ArrayList<FractionClass> fractions;
-    int questionNum;
+    ArrayList<ClassifyingFractionQuestion> mClassifyingFractionQuestions;
+    ClassifyingFractionQuestion mClassifyingFractionQuestion;
+    int mQuestionNum;
+
     int correct, error;
     int requiredCorrects;
     int maxErrors;
@@ -190,9 +194,8 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
     }
     public void nextQuestion(){
         enableButtons(true);
-        questionNum++;
+        mQuestionNum++;
         setGuiFraction();
-        txtInstruction.setText("Classify the fraction.");
     }
     public void wrong(){
         error++;
@@ -226,14 +229,24 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
                     if (correctsShouldBeConsecutive) {
                         go();
                     } else {
-                        if (fractions.get(questionNum).getContext().equals(FractionClass.PROPER)){
-                            fraction = new FractionClass(FractionClass.PROPER);
-                        } else if (fractions.get(questionNum).getContext().equals(FractionClass.IMPROPER)){
-                            fraction = new FractionClass(FractionClass.IMPROPER);
-                        } else if (fractions.get(questionNum).getContext().equals(FractionClass.MIXED)){
-                            fraction = new FractionClass(FractionClass.MIXED);
+                        mClassifyingFractionQuestion = mClassifyingFractionQuestions.get(mQuestionNum-1);
+                        ClassifyingFractionQuestion classifyingFractionQuestion = new ClassifyingFractionQuestion();
+                        Fraction fraction = mClassifyingFractionQuestion.getFraction();
+                        String modifier = fraction.getModifier();
+                        if (modifier.equals(Fraction.MIXED)){
+                            classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.MIXED);
+                            while (mClassifyingFractionQuestions.contains(classifyingFractionQuestion)){
+                                classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.MIXED);
+                            }
+                            mClassifyingFractionQuestions.add(classifyingFractionQuestion);
+                        } else {
+                            if (modifier.equals(Fraction.PROPER)){
+                                classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.PROPER);
+                            } else if (modifier.equals(Fraction.IMPROPER)){
+                                classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.IMPROPER);
+                            }
+                            mClassifyingFractionQuestions.add(classifyingFractionQuestion);
                         }
-                        fractions.add(fraction);
                         nextQuestion();
                     }
                 }
@@ -273,31 +286,53 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
         btnMixed.setEnabled(bool);
     }
     public void setFractionQuestions(){
-        questionNum = 0;
-        fractions = new ArrayList<>();
+        mQuestionNum = 1;
+        mClassifyingFractionQuestions = new ArrayList<>();
         for (int i = 0; i < requiredCorrects; i++){
-            if (i < (requiredCorrects/3)){
-                fraction = new FractionClass(FractionClass.PROPER);
-            } else if (i < ((requiredCorrects*2)/3)){
-                fraction = new FractionClass(FractionClass.IMPROPER);
+            ClassifyingFractionQuestion classifyingFractionQuestion;
+            if (i >= (requiredCorrects*2)/3){
+                classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.PROPER);
+            } else if (i >= (requiredCorrects/3)){
+                classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.IMPROPER);
             } else {
-                fraction = new FractionClass(FractionClass.MIXED);
+                classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.MIXED);
             }
-            fractions.add(fraction);
+            while (mClassifyingFractionQuestions.contains(classifyingFractionQuestion)){
+                if (i >= (requiredCorrects*2)/3){
+                    classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.PROPER);
+                } else if (i >= (requiredCorrects/3)){
+                    classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.IMPROPER);
+                } else {
+                    classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.MIXED);
+                }
+            }
+            mClassifyingFractionQuestions.add(classifyingFractionQuestion);
         }
-        Collections.shuffle(fractions);
+        setGuiFraction();
     }
     public void setGuiFraction(){
-        if (FractionClass.MIXED.equals(fractions.get(questionNum).getContext())){
-            txtWholeNum.setText(String.valueOf(fractions.get(questionNum).getWholeNum()));
+        txtInstruction.setText("Classify the fraction.");
+        mClassifyingFractionQuestion = mClassifyingFractionQuestions.get(mQuestionNum-1);
+        Fraction fraction = mClassifyingFractionQuestion.getFraction();
+        int numerator = fraction.getNumerator();
+        int denominator = fraction.getDenominator();
+        String modifier = fraction.getModifier();
+        if (modifier.equals(Fraction.MIXED)){
+            MixedFraction mixedFraction = (MixedFraction) fraction;
+            int wholeNumber = mixedFraction.getWholeNumber();
+            String strWholeNumber = String.valueOf(wholeNumber);
+            txtWholeNum.setText(strWholeNumber);
         } else {
             txtWholeNum.setText("");
         }
-        txtNum.setText(String.valueOf(fractions.get(questionNum).getNumerator()));
-        txtDenom.setText(String.valueOf(fractions.get(questionNum).getDenominator()));
+        txtNum.setText(String.valueOf(numerator));
+        txtDenom.setText(String.valueOf(denominator));
     }
-    public void check(String context){
-        if (context.equals(fractions.get(questionNum).getContext())){
+    public void check(String modifier){
+        mClassifyingFractionQuestion = mClassifyingFractionQuestions.get(mQuestionNum-1);
+        Fraction fraction = mClassifyingFractionQuestion.getFraction();
+        String correctModifier = fraction.getModifier();
+        if (modifier.equals(correctModifier)){
             correct();
         } else {
             wrong();
@@ -307,11 +342,11 @@ public class ClassifyingFractionsExerciseActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (v.getId()==btnProper.getId()){
-                check(FractionClass.PROPER);
+                check(Fraction.PROPER);
             } else if (v.getId()==btnImproper.getId()){
-                check(FractionClass.IMPROPER);
+                check(Fraction.IMPROPER);
             } else if (v.getId()==btnMixed.getId()){
-                check(FractionClass.MIXED);
+                check(Fraction.MIXED);
             }
         }
     }

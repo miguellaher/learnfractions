@@ -20,8 +20,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionClass;
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.fraction_util.MixedFraction;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.ConvertingFractionsQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -59,9 +62,11 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
     EditText diagDdInputAnswer, diagDdInputRemainder;
     Button diagDdBtnCheck;
     //VARIABLES
-    FractionClass fraction;
-    ArrayList<FractionClass> fractions;
-    int questionNum;
+    ArrayList<ConvertingFractionsQuestion> mConvertingFractionsQuestions;
+    ConvertingFractionsQuestion mConvertingFractionsQuestion;
+    int mQuestionNum;
+
+
     int correct;
     int requiredCorrects;
     int clicks;
@@ -178,8 +183,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         }
     }
     public void go(){
-        setQuestions();
-        setGuiFraction();
+        setFractionQuestions();
         setUp();
     }
     public void setTxtScore(){
@@ -202,7 +206,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    questionNum++;
+                    mQuestionNum++;
                     setGuiFraction();
                     setUp();
                 }
@@ -233,20 +237,27 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
                 mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
         ExerciseStatService.postStats(student,mExerciseStat,service);
     }
-    public void setQuestions(){
-        questionNum = 0;
-        fractions = new ArrayList<>();
+    private void setFractionQuestions(){
+        mQuestionNum = 1;
+        mConvertingFractionsQuestions = new ArrayList<>();
         for (int i = 0; i < requiredCorrects; i++){
-            fraction = new FractionClass(FractionClass.IMPROPER);
-            while (fraction.getNumerator()%fraction.getDenominator()==0){
-                fraction = new FractionClass(FractionClass.IMPROPER);
+            ConvertingFractionsQuestion convertingFractionsQuestion = new ConvertingFractionsQuestion(ConvertingFractionsQuestion.IMPROPER_TO_MIXED);
+            while (mConvertingFractionsQuestions.contains(convertingFractionsQuestion)){
+                convertingFractionsQuestion = new ConvertingFractionsQuestion(ConvertingFractionsQuestion.IMPROPER_TO_MIXED);
             }
-            fractions.add(fraction);
+            mConvertingFractionsQuestions.add(convertingFractionsQuestion);
         }
+        setGuiFraction();
     }
     public void setGuiFraction(){
-        txtNum1.setText(String.valueOf(fractions.get(questionNum).getNumerator()));
-        txtDenom1.setText(String.valueOf(fractions.get(questionNum).getDenominator()));
+        mConvertingFractionsQuestion = mConvertingFractionsQuestions.get(mQuestionNum-1);
+        Fraction fraction = mConvertingFractionsQuestion.getFraction();
+        int numerator = fraction.getNumerator();
+        int denominator = fraction.getDenominator();
+        String strNumerator = String.valueOf(numerator);
+        String strDenominator = String.valueOf(denominator);
+        txtNum1.setText(strNumerator);
+        txtDenom1.setText(strDenominator);
     }
     public void setUp(){
         txtInstruction.setText("To divide the numerator by the denominator, click the numerator first and the " +
@@ -274,10 +285,14 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         inputDenom.setEnabled(bool);
     }
     public void popUpDivisionDialog(){
-        diagDdTxtNum1.setText(String.valueOf(fractions.get(questionNum).getNumerator()));
-        diagDdTxtNum2.setText(String.valueOf(fractions.get(questionNum).getDenominator()));
-        Log.d(TAG, "Numerator: " + String.valueOf(fractions.get(questionNum).getNumerator()));
-        Log.d(TAG, "Denominator: " + String.valueOf(fractions.get(questionNum).getDenominator()));
+        mConvertingFractionsQuestion = mConvertingFractionsQuestions.get(mQuestionNum-1);
+        Fraction fraction = mConvertingFractionsQuestion.getFraction();
+        int numerator = fraction.getNumerator();
+        int denominator = fraction.getDenominator();
+        String strNumerator = String.valueOf(numerator);
+        String strDenominator = String.valueOf(denominator);
+        diagDdTxtNum1.setText(strNumerator);
+        diagDdTxtNum2.setText(strDenominator);
         divisionDialog.show();
         diagDdInputAnswer.requestFocus();
         txtInstruction.setText("Get the quotient and remainder.");
@@ -327,20 +342,22 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
     public class DiagDdBtnCheckListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
+            mConvertingFractionsQuestion = mConvertingFractionsQuestions.get(mQuestionNum-1);
+            MixedFraction mixedFraction = mConvertingFractionsQuestion.getMixedFraction();
+            int wholeNumber = mixedFraction.getWholeNumber();
+            int numerator = mixedFraction.getNumerator();
             if (!diagDdInputAnswer.getText().toString().matches("") &&
                     !diagDdInputRemainder.getText().toString().matches("")){
                 int quotient = Integer.valueOf(String.valueOf(diagDdInputAnswer.getText()));
                 try {
                     int remainder = Integer.valueOf(String.valueOf(diagDdInputRemainder.getText()));
-                    fractions.get(questionNum).toMixed();
-                    if (quotient != fractions.get(questionNum).getWholeNum()) {
+                    if (quotient != wholeNumber) {
                         shakeAnimate(diagDdInputAnswer);
                     }
-                    if (remainder != fractions.get(questionNum).getNumerator()) {
+                    if (remainder != numerator) {
                         shakeAnimate(diagDdInputRemainder);
                     }
-                    if (quotient == fractions.get(questionNum).getWholeNum() && remainder ==
-                            fractions.get(questionNum).getNumerator()) {
+                    if (quotient == wholeNumber && remainder == numerator) {
                         txtQuotient.setText(String.valueOf(quotient));
                         txtRemainder.setText(String.valueOf(remainder));
                         setAnswerVisibility(true);
@@ -362,23 +379,28 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
     public class BtnCheckListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
+            mConvertingFractionsQuestion = mConvertingFractionsQuestions.get(mQuestionNum-1);
+            MixedFraction mixedFraction = mConvertingFractionsQuestion.getMixedFraction();
+            int wholeNumber = mixedFraction.getWholeNumber();
+            int numerator = mixedFraction.getNumerator();
+            int denominator = mixedFraction.getDenominator();
             if (!inputNum.getText().toString().matches("") && !inputDenom.getText().toString().matches("")
                     && !inputWholeNum.getText().toString().matches("")){
                 int wholeNum = Integer.valueOf(String.valueOf(inputWholeNum.getText()));
                 int num = Integer.valueOf(String.valueOf(inputNum.getText()));
                 int denom = Integer.valueOf(String.valueOf(inputDenom.getText()));
-                if (wholeNum != fractions.get(questionNum).getWholeNum()){
+                if (wholeNum != wholeNumber){
                     shakeAnimate(inputWholeNum);
                 }
-                if (num != fractions.get(questionNum).getNumerator()){
+                if (num != numerator){
                     shakeAnimate(inputNum);
                 }
-                if (denom != fractions.get(questionNum).getDenominator()){
+                if (denom != denominator){
                     shakeAnimate(inputDenom);
                 }
-                if (wholeNum == fractions.get(questionNum).getWholeNum() &&
-                        num == fractions.get(questionNum).getNumerator() &&
-                        denom == fractions.get(questionNum).getDenominator()) {
+                if (wholeNum == wholeNumber &&
+                        num == numerator &&
+                        denom == denominator) {
                     correct();
                 }
             } else {
@@ -393,7 +415,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         public void onDismiss(DialogInterface dialog) {
             txtNum1.setTextColor(defaultColor);
             txtDenom1.setTextColor(defaultColor);
-            if ((txtQuotient.getVisibility()==View.VISIBLE && txtRemainder.getVisibility()==View.VISIBLE)&&questionNum>0) {
+            if ((txtQuotient.getVisibility()==View.VISIBLE && txtRemainder.getVisibility()==View.VISIBLE)&&mQuestionNum>1) {
                 inputWholeNum.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
