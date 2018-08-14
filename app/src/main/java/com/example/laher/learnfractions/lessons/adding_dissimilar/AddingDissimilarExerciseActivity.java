@@ -222,7 +222,6 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
     }
     public void go(){
         setQuestions();
-        setFractionGui();
         startUp();
     }
     public void setTxtScore(){

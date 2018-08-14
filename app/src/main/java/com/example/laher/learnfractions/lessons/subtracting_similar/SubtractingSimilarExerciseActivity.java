@@ -17,9 +17,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
-import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.SubtractingSimilarFractionsQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -52,9 +53,11 @@ public class SubtractingSimilarExerciseActivity extends AppCompatActivity {
     Button btnCheck;
     ConstraintLayout clChoices;
     //VARIABLES
-    FractionQuestion fractionQuestion;
-    ArrayList<FractionQuestion> fractionQuestions;
-    int questionNum;
+    ArrayList<SubtractingSimilarFractionsQuestion> mFractionQuestions;
+    SubtractingSimilarFractionsQuestion mFractionQuestion;
+    int mQuestionNum;
+
+
     int correct, error;
     int requiredCorrects;
     int maxErrors;
@@ -167,7 +170,6 @@ public class SubtractingSimilarExerciseActivity extends AppCompatActivity {
     }
     public void go(){
         setQuestions();
-        setGuiFractions();
         startUp();
     }
     public void setTxtScore(){
@@ -199,12 +201,12 @@ public class SubtractingSimilarExerciseActivity extends AppCompatActivity {
         }
     }
     public void nextQuestion(){
-        questionNum++;
+        mQuestionNum++;
         setGuiFractions();
         clearInputFraction();
         enableInputFraction();
         btnCheck.setEnabled(true);
-        if (questionNum > 0) {
+        if (mQuestionNum>1) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
         }
@@ -243,7 +245,11 @@ public class SubtractingSimilarExerciseActivity extends AppCompatActivity {
                         enableInputFraction();
                         btnCheck.setEnabled(true);
                     } else {
-                        addQuestion();
+                        SubtractingSimilarFractionsQuestion fractionsQuestion = new SubtractingSimilarFractionsQuestion();
+                        while (mFractionQuestions.contains(fractionsQuestion)){
+                            fractionsQuestion = new SubtractingSimilarFractionsQuestion();
+                        }
+                        mFractionQuestions.add(fractionsQuestion);
                         nextQuestion();
                     }
                 }
@@ -286,22 +292,34 @@ public class SubtractingSimilarExerciseActivity extends AppCompatActivity {
         inputNum.requestFocus();
     }
     public void setQuestions(){
-        questionNum = 0;
-        fractionQuestions = new ArrayList<>();
+        mQuestionNum = 1;
+        mFractionQuestions = new ArrayList<>();
         for(int i = 0; i < requiredCorrects; i++){
-            addQuestion();
+            SubtractingSimilarFractionsQuestion fractionsQuestion = new SubtractingSimilarFractionsQuestion();
+            while (mFractionQuestions.contains(fractionsQuestion)){
+                fractionsQuestion = new SubtractingSimilarFractionsQuestion();
+            }
+            mFractionQuestions.add(fractionsQuestion);
         }
-    }
-    public void addQuestion(){
-        fractionQuestion = new FractionQuestion(FractionQuestion.SUBTRACTING_SIMILAR);
-        fractionQuestions.add(fractionQuestion);
+        setGuiFractions();
     }
     public void setGuiFractions(){
+        mFractionQuestion = mFractionQuestions.get(mQuestionNum-1);
+        Fraction fraction1 = mFractionQuestion.getFraction1();
+        Fraction fraction2 = mFractionQuestion.getFraction2();
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        String strNumerator1 = String.valueOf(numerator1);
+        String strNumerator2 = String.valueOf(numerator2);
+        String strDenominator1 = String.valueOf(denominator1);
+        String strDenominator2 = String.valueOf(denominator2);
         txtInstruction.setText("Solve the equation.");
-        txtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()));
-        txtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()));
-        txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
-        txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
+        txtNum1.setText(strNumerator1);
+        txtNum2.setText(strNumerator2);
+        txtDenom1.setText(strDenominator1);
+        txtDenom2.setText(strDenominator2);
     }
     public void shakeAnimate(View view){
         ObjectAnimator.ofFloat(view, "translationX", 0, 25, -25, 25, -25, 15, -15, 6, -6, 0)
@@ -323,13 +341,17 @@ public class SubtractingSimilarExerciseActivity extends AppCompatActivity {
     public class BtnCheckListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-
+            mFractionQuestion = mFractionQuestions.get(mQuestionNum-1);
+            Fraction fractionAnswer = mFractionQuestion.getFractionAnswer();
+            int numeratorAnswer = fractionAnswer.getNumerator();
+            int denominatorAnswer = fractionAnswer.getDenominator();
             if (inputNum.getText().toString().trim().length() != 0 &&
                     inputDenom.getText().toString().trim().length() != 0 ) {
-                if (Integer.valueOf(String.valueOf(inputNum.getText()))
-                        == fractionQuestions.get(questionNum).getFractionAnswer().getNumerator()
-                        && Integer.valueOf(String.valueOf(inputDenom.getText()))
-                        == fractionQuestions.get(questionNum).getFractionAnswer().getDenominator()) {
+                String strInputNum = inputNum.getText().toString().trim();
+                String strInputDenominator = inputDenom.getText().toString().trim();
+                int intInputNumerator = Integer.valueOf(strInputNum);
+                int intInputDenominator = Integer.valueOf(strInputDenominator);
+                if (intInputNumerator==numeratorAnswer && intInputDenominator==denominatorAnswer) {
                     correct();
                 } else {
                     shakeInputFraction();

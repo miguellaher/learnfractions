@@ -181,7 +181,6 @@ public class AddingSimilarExerciseActivity extends AppCompatActivity {
     }
     public void go(){
         setQuestions();
-        setGuiFractions();
         startUp();
     }
     public void setTxtScore(){

@@ -12,18 +12,26 @@ public class FractionUtil {
     public static int getLcm(ArrayList<Integer> numbers){ //method's performance level: low
         int tempLcm = 1;                                  //please be careful on maintaining
         boolean lcmAttained = false;
-        while (!lcmAttained){
-            boolean isDivisible = true;
-            for (Integer number : numbers){
-                if (tempLcm % number != 0) {
-                    isDivisible = false;
-                }
+        int negativeCount = 0;
+        for (Integer number : numbers){
+            if (number<1){
+                negativeCount++;
             }
-            if (isDivisible){
-                lcmAttained = true;
-                return tempLcm;
-            } else {
-                tempLcm++;
+        }
+        if (negativeCount==0) {
+            while (!lcmAttained) {
+                boolean isDivisible = true;
+                for (Integer number : numbers) {
+                    if (tempLcm % number != 0) {
+                        isDivisible = false;
+                    }
+                }
+                if (isDivisible) {
+                    lcmAttained = true;
+                    return tempLcm;
+                } else {
+                    tempLcm++;
+                }
             }
         }
         return 0;
