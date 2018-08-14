@@ -3,6 +3,7 @@ package com.example.laher.learnfractions.archive;
 
 import android.util.Log;
 
+import com.example.laher.learnfractions.lessons.converting_fractions.ConvertingFractionsExercise2Activity;
 import com.example.laher.learnfractions.lessons.converting_fractions.ConvertingFractionsVideoActivity;
 import com.example.laher.learnfractions.lessons.non_visual_fraction.NonVisualVideoActivity;
 import com.example.laher.learnfractions.lessons.ordering_dissimilar.OrderingDissimilarVideoActivity;
@@ -38,7 +39,7 @@ public abstract class LessonArchive {
     private static final Lesson orderingSimilarFractions = new Lesson(AppConstants.ORDERING_SIMILAR, OrderingSimilarVideoActivity.class);
     private static final Lesson orderingDissimilarFractions = new Lesson(AppConstants.ORDERING_DISSIMILAR, OrderingDissimilarVideoActivity.class);
     private static final Lesson classifyingFractions = new Lesson(AppConstants.CLASSIFYING_FRACTIONS, ClassifyingFractionsVideoActivity.class);
-    private static final Lesson convertingFractions = new Lesson(AppConstants.CONVERTING_FRACTIONS, ConvertingFractionsVideoActivity.class);
+    private static final Lesson convertingFractions = new Lesson(AppConstants.CONVERTING_FRACTIONS, ConvertingFractionsExercise2Activity.class);
     private static final Lesson addingSimilarFractions = new Lesson(AppConstants.ADDING_SIMILAR, AddingSimilarVideoActivity.class);
 
     private static final Lesson addingDissimilarFractions = new Lesson(AppConstants.ADDING_DISSIMILAR, AddingDissimilarVideoActivity.class);

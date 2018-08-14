@@ -62,7 +62,7 @@ public class Fraction implements Comparable<Fraction>{
     }
 
     private final void setModifier(){
-        if (numerator>denominator){
+        if (this.numerator>this.denominator){
             this.modifier = IMPROPER;
         } else {
             this.modifier = PROPER;
@@ -102,12 +102,8 @@ public class Fraction implements Comparable<Fraction>{
     public boolean equals(Object obj) {
         if (obj instanceof Fraction){
             Fraction fraction = (Fraction) obj;
-            if (fraction.getNumerator() == this.getNumerator() &&
-                    fraction.getDenominator() == this.getDenominator()){
-                return true;
-            } else {
-                return false;
-            }
+            return fraction.getNumerator() == this.getNumerator() &&
+                    fraction.getDenominator() == this.getDenominator();
         }
         return super.equals(obj);
     }

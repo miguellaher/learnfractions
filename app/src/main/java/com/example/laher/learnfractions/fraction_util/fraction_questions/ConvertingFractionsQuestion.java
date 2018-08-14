@@ -37,6 +37,11 @@ public class ConvertingFractionsQuestion extends FractionQuestionClass {
         fraction = new Fraction(Fraction.IMPROPER);
         int numerator = fraction.getNumerator();
         int denominator = fraction.getDenominator();
+        while (numerator%denominator==0){
+            fraction = new Fraction(Fraction.IMPROPER);
+            numerator = fraction.getNumerator();
+            denominator = fraction.getDenominator();
+        }
         //convert improper to mixed
         int quotient = numerator / denominator; // whole number of mixed fraction
         int product = quotient * denominator;

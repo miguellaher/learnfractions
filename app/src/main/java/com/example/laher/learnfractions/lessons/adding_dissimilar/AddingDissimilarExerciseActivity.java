@@ -20,9 +20,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.AddingDissimilarFractionsQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
@@ -33,6 +35,7 @@ import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
+import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -68,9 +71,10 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
     EditText diagEdInputAnswer;
     Button diagEdBtnCheck;
     //VARIABLES
-    FractionQuestion fractionQuestion;
-    ArrayList<FractionQuestion> fractionQuestions;
-    int questionNum;
+    ArrayList<AddingDissimilarFractionsQuestion> mFractionQuestions;
+    AddingDissimilarFractionsQuestion mFractionQuestion;
+    int mQuestionNum;
+
     int correct, error;
     int requiredCorrects;
     int maxErrors;
@@ -251,7 +255,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
         }
     }
     public void nextQuestion(){
-        questionNum++;
+        mQuestionNum++;
         setFractionGui();
         startUp();
     }
@@ -282,8 +286,14 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
             }, 4000);
         } else {
             txtInstruction.setText(AppConstants.ERROR);
-            inputNum.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionAnswer().getNumerator()));
-            inputDenom.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionAnswer().getDenominator()));
+            mFractionQuestion = mFractionQuestions.get(mQuestionNum-1);
+            Fraction fractionAnswer = mFractionQuestion.getFractionAnswer();
+            int numeratorAnswer = fractionAnswer.getNumerator();
+            int denominatorAnswer = fractionAnswer.getDenominator();
+            String strNumeratorAnswer = String.valueOf(numeratorAnswer);
+            String strDenominatorAnswer = String.valueOf(denominatorAnswer);
+            inputNum.setText(strNumeratorAnswer);
+            inputDenom.setText(strDenominatorAnswer);
             Styles.paintRed(inputNum);
             Styles.paintRed(inputDenom);
             handler.postDelayed(new Runnable() {
@@ -294,7 +304,11 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
                         Styles.paintBlack(inputNum);
                         Styles.paintBlack(inputDenom);
                     } else {
-                        addQuestion();
+                        AddingDissimilarFractionsQuestion fractionQuestion = new AddingDissimilarFractionsQuestion();
+                        while (mFractionQuestions.contains(fractionQuestion)){
+                            fractionQuestion = new AddingDissimilarFractionsQuestion();
+                        }
+                        mFractionQuestions.add(fractionQuestion);
                         nextQuestion();
                     }
                 }
@@ -326,21 +340,33 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
         ExerciseStatService.postStats(student,mExerciseStat,service);
     }
     public void setQuestions() {
-        fractionQuestions = new ArrayList<>();
-        questionNum = 0;
+        mQuestionNum = 1;
+        mFractionQuestions = new ArrayList<>();
         for (int i = 0; i < requiredCorrects; i++){
-            addQuestion();
+            AddingDissimilarFractionsQuestion fractionQuestion = new AddingDissimilarFractionsQuestion();
+            while (mFractionQuestions.contains(fractionQuestion)){
+                fractionQuestion = new AddingDissimilarFractionsQuestion();
+            }
+            mFractionQuestions.add(fractionQuestion);
         }
-    }
-    public void addQuestion(){
-        fractionQuestion = new FractionQuestion(FractionQuestion.ADDING_DISSIMILAR);
-        fractionQuestions.add(fractionQuestion);
+        setFractionGui();
     }
     public void setFractionGui(){
-        txtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()));
-        txtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()));
-        txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
-        txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
+        mFractionQuestion = mFractionQuestions.get(mQuestionNum-1);
+        Fraction fraction1 = mFractionQuestion.getFraction1();
+        Fraction fraction2 = mFractionQuestion.getFraction2();
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        String strNumerator1 = String.valueOf(numerator1);
+        String strNumerator2 = String.valueOf(numerator2);
+        String strDenominator1 = String.valueOf(denominator1);
+        String strDenominator2 = String.valueOf(denominator2);
+        txtNum1.setText(strNumerator1);
+        txtNum2.setText(strNumerator2);
+        txtDenom1.setText(strDenominator1);
+        txtDenom2.setText(strDenominator2);
     }
     public void startUp(){
         txtNum3.setVisibility(TextView.INVISIBLE);
@@ -427,8 +453,15 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
         v2.setClickable(false);
     }
     public void popUpLcmDialog(){
-        diagLcmtxtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
-        diagLcmtxtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
+        mFractionQuestion = mFractionQuestions.get(mQuestionNum-1);
+        Fraction fraction1 = mFractionQuestion.getFraction1();
+        Fraction fraction2 = mFractionQuestion.getFraction2();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        String strDenominator1 = String.valueOf(denominator1);
+        String strDenominator2 = String.valueOf(denominator2);
+        diagLcmtxtNum1.setText(strDenominator1);
+        diagLcmtxtNum2.setText(strDenominator2);
         diagLcmtxtNum3.setText("");
         lcmDialog.show();
     }
@@ -462,6 +495,16 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
     private class TxtDivisionListener implements TextView.OnClickListener{
         @Override
         public void onClick(View v) {
+            mFractionQuestion = mFractionQuestions.get(mQuestionNum-1);
+            Fraction fraction1 = mFractionQuestion.getFraction1();
+            Fraction fraction2 = mFractionQuestion.getFraction2();
+            int denominator1 = fraction1.getDenominator();
+            int denominator2 = fraction2.getDenominator();
+            String strDenominator1 = String.valueOf(denominator1);
+            String strDenominator2 = String.valueOf(denominator2);
+            int lcd = mFractionQuestion.getEquationLcd();
+            String strLcd = String.valueOf(lcd);
+
             TextView t = (TextView) v;
             viewIds.add(t.getId());
             if (viewIds.size()==1){
@@ -476,14 +519,10 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
                         || viewIds.get(0)==txtDenom4.getId() && viewIds.get(1)==txtDenom2.getId()) {
                     Styles.paintGreen(t);
                     if (viewIds.get(1)==txtDenom1.getId()){
-                        popUpEquationDialog(String.valueOf(fractionQuestions.get(questionNum).getFractionAnswer().getDenominator()),
-                                String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()),
-                                "÷");
+                        popUpEquationDialog(strLcd, strDenominator1,"÷");
                     }
                     if (viewIds.get(1)==txtDenom2.getId()){
-                        popUpEquationDialog(String.valueOf(fractionQuestions.get(questionNum).getFractionAnswer().getDenominator()),
-                                String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()),
-                                "÷");
+                        popUpEquationDialog(strLcd, strDenominator2,"÷");
                     }
                 } else {
                     viewIds.remove(viewIds.size() - 1);
@@ -494,6 +533,13 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
     private class TxtMultiplicationListener implements TextView.OnClickListener{
         @Override
         public void onClick(View v) {
+            mFractionQuestion = mFractionQuestions.get(mQuestionNum-1);
+            Fraction fraction1 = mFractionQuestion.getFraction1();
+            Fraction fraction2 = mFractionQuestion.getFraction2();
+            int numerator1 = fraction1.getNumerator();
+            int numerator2 = fraction2.getNumerator();
+            String strNumerator1 = String.valueOf(numerator1);
+            String strNumerator2 = String.valueOf(numerator2);
             TextView t = (TextView) v;
             viewIds.add(t.getId());
             if (viewIds.size()==1){
@@ -508,14 +554,10 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
                         || viewIds.get(0)==txtEquation2.getId() && viewIds.get(1)==txtNum2.getId()) {
                     Styles.paintGreen(t);
                     if (viewIds.get(1)==txtNum1.getId()){
-                        popUpEquationDialog(String.valueOf(txtEquation1.getText()),
-                                String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()),
-                                "x");
+                        popUpEquationDialog(String.valueOf(txtEquation1.getText()),strNumerator1,"x");
                     }
                     if (viewIds.get(1)==txtNum2.getId()){
-                        popUpEquationDialog(String.valueOf(txtEquation2.getText()),
-                                String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()),
-                                "x");
+                        popUpEquationDialog(String.valueOf(txtEquation2.getText()),strNumerator2,"x");
                     }
                 } else {
                     viewIds.remove(viewIds.size() - 1);
@@ -526,10 +568,14 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
     private class DiagLcmBtnCheckListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if (Integer.valueOf(String.valueOf(diagLcmInputLcm.getText())).equals(fractionQuestions.get(questionNum)
-                    .getFractionAnswer().getDenominator())){
-                txtDenom3.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionAnswer().getDenominator()));
-                txtDenom4.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionAnswer().getDenominator()));
+            mFractionQuestion = mFractionQuestions.get(mQuestionNum-1);
+            int lcd = mFractionQuestion.getEquationLcd();
+            String strLcd = String.valueOf(lcd);
+            String strLcdInput = String.valueOf(diagLcmInputLcm.getText());
+            int intLcdInput = Integer.valueOf(strLcdInput);
+            if (intLcdInput==lcd){
+                txtDenom3.setText(strLcd);
+                txtDenom4.setText(strLcd);
                 setLcmListeners(false);
                 setFractionSet2DenomVisibility(true);
                 setDivisionListeners(true);
@@ -552,7 +598,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
                 if(diagEdTxtSign.getText().toString().matches("x")){
                     if (txtNum3.getVisibility()==TextView.VISIBLE &&
                             txtNum4.getVisibility()==TextView.VISIBLE) {
-                        if (questionNum>0) {
+                        if (mQuestionNum>1) {
                             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
                         }
@@ -568,7 +614,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
             } else if (dialog.equals(equationDialog)){
                 diagEdInputAnswer.requestFocus();
             }
-            if (questionNum>0) {
+            if (mQuestionNum>1) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
             }
@@ -643,15 +689,22 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
     private class BtnCheckListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            mFractionQuestion = mFractionQuestions.get(mQuestionNum-1);
+            Fraction fractionAnswer = mFractionQuestion.getFractionAnswer();
+            int numeratorAnswer = fractionAnswer.getNumerator();
+            int denominatorAnswer = fractionAnswer.getDenominator();
             if (!inputNum.getText().toString().matches("")) {
                 if (!inputDenom.getText().toString().matches("")) {
-                    if (String.valueOf(inputNum.getText()).matches(String.valueOf(fractionQuestions.get(questionNum)
-                            .getFractionAnswer().getNumerator())) &&
-                            String.valueOf(inputDenom.getText()).matches(String.valueOf(fractionQuestions.get(questionNum)
-                                    .getFractionAnswer().getDenominator()))) {
-                        correct();
-                    } else {
-                        wrong();
+                    String strInputNumerator = String.valueOf(inputNum.getText());
+                    String strInputDenominator = String.valueOf(inputDenom.getText());
+                    if (Util.isNumeric(strInputNumerator) && Util.isNumeric(strInputDenominator)) {
+                        int intInputNumerator = Integer.valueOf(strInputNumerator);
+                        int intInputDenominator = Integer.valueOf(strInputDenominator);
+                        if (intInputNumerator==numeratorAnswer && intInputDenominator==denominatorAnswer) {
+                            correct();
+                        } else {
+                            wrong();
+                        }
                     }
                 } else {
                     Styles.shakeAnimate(inputDenom);
@@ -659,6 +712,7 @@ public class AddingDissimilarExerciseActivity extends AppCompatActivity {
             } else {
                 Styles.shakeAnimate(inputNum);
             }
+
         }
     }
     private class InputListener implements TextView.OnEditorActionListener{
