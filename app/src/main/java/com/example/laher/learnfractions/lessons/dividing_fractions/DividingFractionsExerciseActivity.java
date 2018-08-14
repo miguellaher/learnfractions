@@ -18,9 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.DividingFractionsQuestion;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExerciseService;
@@ -29,6 +31,7 @@ import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
+import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -50,9 +53,10 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
     EditText inputNum, inputDenom;
     Button btnCheck;
     //VARIABLES
-    FractionQuestion fractionQuestion;
-    ArrayList<FractionQuestion> fractionQuestions;
-    int questionNum;
+    ArrayList<DividingFractionsQuestion> mFractionsQuestions;
+    DividingFractionsQuestion mFractionsQuestion;
+    int mQuestionNum;
+
     int correct, error;
     int requiredCorrects;
     int maxErrors;
@@ -193,7 +197,7 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
         }
     }
     public void nextQuestion(){
-        questionNum++;
+        mQuestionNum++;
         setFractionGui();
         setUp();
     }
@@ -228,7 +232,11 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
                     if (correctsShouldBeConsecutive) {
                         go();
                     } else {
-                        addQuestion();
+                        DividingFractionsQuestion fractionsQuestion = new DividingFractionsQuestion();
+                        while (mFractionsQuestions.contains(fractionsQuestion)){
+                            fractionsQuestion = new DividingFractionsQuestion();
+                        }
+                        mFractionsQuestions.add(fractionsQuestion);
                         nextQuestion();
                     }
                 }
@@ -236,23 +244,34 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
         }
     }
     public void setFractionQuestions(){
-        fractionQuestions = new ArrayList<>();
-        questionNum = 0;
+        mQuestionNum = 1;
+        mFractionsQuestions = new ArrayList<>();
         for (int i = 0; i < requiredCorrects; i++){
-            addQuestion();
+            DividingFractionsQuestion fractionsQuestion = new DividingFractionsQuestion();
+            while (mFractionsQuestions.contains(fractionsQuestion)){
+                fractionsQuestion = new DividingFractionsQuestion();
+            }
+            mFractionsQuestions.add(fractionsQuestion);
         }
     }
-    public void addQuestion(){
-        fractionQuestion = new FractionQuestion(FractionQuestion.DIVIDING_FRACTIONS);
-        fractionQuestions.add(fractionQuestion);
-    }
     public void setFractionGui(){
-        txtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()));
-        txtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()));
-        txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
-        txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
-        txtNum3.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()));
-        txtDenom3.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
+        mFractionsQuestion = mFractionsQuestions.get(mQuestionNum-1);
+        Fraction fraction1 = mFractionsQuestion.getFraction1();
+        Fraction fraction2 = mFractionsQuestion.getFraction2();
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        String strNumerator1 = String.valueOf(numerator1);
+        String strNumerator2 = String.valueOf(numerator2);
+        String strDenominator1 = String.valueOf(denominator1);
+        String strDenominator2 = String.valueOf(denominator2);
+        txtNum1.setText(strNumerator1);
+        txtNum2.setText(strNumerator2);
+        txtDenom1.setText(strDenominator1);
+        txtDenom2.setText(strDenominator2);
+        txtNum3.setText(strNumerator1);
+        txtDenom3.setText(strNumerator2);
     }
     public void setUp(){
         inputNum.setText("");
@@ -304,19 +323,26 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
     }
     public void readyCheck(){
         try {
-            if (Integer.valueOf(String.valueOf(txtDenom4.getText()))
-                    == fractionQuestions.get(questionNum).getFractionTwo().getNumerator()
-                    && Integer.valueOf(String.valueOf(txtNum4.getText()))
-                    == fractionQuestions.get(questionNum).getFractionTwo().getDenominator()) {
-                setTxtFractionListener(false);
-                inputNum.setEnabled(true);
-                inputDenom.setEnabled(true);
-                btnCheck.setEnabled(true);
-                inputNum.requestFocus();
-                txtInstruction.setText("Solve the equation.");
-                if (questionNum>0) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+            mFractionsQuestion = mFractionsQuestions.get(mQuestionNum-1);
+            Fraction fraction2 = mFractionsQuestion.getFraction2();
+            int numerator2 = fraction2.getNumerator();
+            int denominator2 = fraction2.getDenominator();
+            String strTxtNum4 = txtNum4.getText().toString().trim();
+            String strTxtDenominator4 = txtDenom4.getText().toString().trim();
+            if (Util.isNumeric(strTxtDenominator4) && Util.isNumeric(strTxtNum4)) {
+                int intTxtNum4 = Integer.valueOf(strTxtNum4);
+                int intTxtDenominator4 = Integer.valueOf(strTxtDenominator4);
+                if (intTxtDenominator4==numerator2 && intTxtNum4==denominator2) {
+                    setTxtFractionListener(false);
+                    inputNum.setEnabled(true);
+                    inputDenom.setEnabled(true);
+                    btnCheck.setEnabled(true);
+                    inputNum.requestFocus();
+                    txtInstruction.setText("Solve the equation.");
+                    if (mQuestionNum>1) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+                    }
                 }
             }
         }catch (NumberFormatException e){}
@@ -324,14 +350,20 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
     public class TxtFractionListener implements TextView.OnClickListener{
         @Override
         public void onClick(View v) {
+            mFractionsQuestion = mFractionsQuestions.get(mQuestionNum-1);
+            Fraction fraction2 = mFractionsQuestion.getFraction2();
+            int numerator2 = fraction2.getNumerator();
+            int denominator2 = fraction2.getDenominator();
+            String strNumerator2 = String.valueOf(numerator2);
+            String strDenominator2 = String.valueOf(denominator2);
             TextView t = (TextView) v;
             if (txtContainer == txtNum4 && t.getId() == txtDenom2.getId()){
-                txtNum4.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
+                txtNum4.setText(strDenominator2);
                 txtNum4.setBackgroundColor(Color.rgb(255,255,255));
                 paintContainer();
                 readyCheck();
             } else if (txtContainer == txtDenom4 && t.getId() == txtNum2.getId()){
-                txtDenom4.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()));
+                txtDenom4.setText(strNumerator2);
                 txtDenom4.setBackgroundColor(Color.rgb(255,255,255));
                 paintContainer();
                 readyCheck();
@@ -343,15 +375,22 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
     private class BtnCheckListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            mFractionsQuestion = mFractionsQuestions.get(mQuestionNum-1);
+            Fraction fractionAnswer = mFractionsQuestion.getFractionAnswer();
+            int numeratorAnswer = fractionAnswer.getNumerator();
+            int denominatorAnswer = fractionAnswer.getDenominator();
             if (!inputNum.getText().toString().matches("")){
                 if (!inputDenom.getText().toString().matches("")) {
-                    if (Integer.valueOf(String.valueOf(inputNum.getText()))
-                            ==fractionQuestions.get(questionNum).getFractionAnswer().getNumerator()
-                            &&Integer.valueOf(String.valueOf(inputDenom.getText()))
-                            ==fractionQuestions.get(questionNum).getFractionAnswer().getDenominator()){
-                        correct();
-                    } else {
-                        wrong();
+                    String strInputNumerator = inputNum.getText().toString().trim();
+                    String strInputDenominator = inputDenom.getText().toString().trim();
+                    if (Util.isNumeric(strInputNumerator) && Util.isNumeric(strInputDenominator)) {
+                        int intInputNumerator = Integer.valueOf(strInputNumerator);
+                        int intInputDenominator = Integer.valueOf(strInputDenominator);
+                        if (intInputNumerator==numeratorAnswer && intInputDenominator==denominatorAnswer) {
+                            correct();
+                        } else {
+                            wrong();
+                        }
                     }
                 } else {
                     Styles.shakeAnimate(inputDenom);
