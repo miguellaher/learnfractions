@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.teacher2;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -130,8 +131,16 @@ public class LessonExercisesListActivity extends MainFrame {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LessonExercise lessonExercise = lessonExercises.get(position);
-                LessonExerciseUpdateDialog updateDialog = new LessonExerciseUpdateDialog(context,lessonExercise);
+                final LessonExerciseUpdateDialog updateDialog = new LessonExerciseUpdateDialog(context,lessonExercise);
                 updateDialog.show();
+                updateDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if (updateDialog.isUpdated()) {
+                            downloadPostedExercises();
+                        }
+                    }
+                });
             }
         });
 
@@ -189,6 +198,10 @@ public class LessonExercisesListActivity extends MainFrame {
         for (LessonExercise exercise : getLessonExercises()){
             for (LessonExercise downloadedExercise : downloadedExercises){
                 if (exercise.equals(downloadedExercise)){
+                    int maxItemSize = exercise.getMaxItemSize();
+                    boolean rangeEditable = exercise.isRangeEditable();
+                    downloadedExercise.setMaxItemSize(maxItemSize);
+                    downloadedExercise.setRangeEditable(rangeEditable);
                     getLessonExercises().set(i, downloadedExercise);
                 }
             }

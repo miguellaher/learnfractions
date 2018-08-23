@@ -2,6 +2,8 @@ package com.example.laher.learnfractions.fraction_util;
 
 import android.support.annotation.NonNull;
 
+import com.example.laher.learnfractions.classes.Range;
+
 public class Fraction implements Comparable<Fraction>{
     private int numerator;
     private int denominator;
@@ -56,6 +58,20 @@ public class Fraction implements Comparable<Fraction>{
         } else {
             generateFraction();
         }
+    }
+
+    public Fraction(Range range){
+        generateFraction(range);
+    }
+
+    public void generateFraction(Range range){
+        int minimum = range.getMinimum();
+        int maximum = range.getMaximum();
+        int numerator = (int) (Math.random() * maximum + minimum);
+        int denominator = (int) (Math.random() * maximum + minimum);
+        setNumerator(numerator);
+        setDenominator(denominator);
+        setModifier();
     }
 
     public void generateFraction(){

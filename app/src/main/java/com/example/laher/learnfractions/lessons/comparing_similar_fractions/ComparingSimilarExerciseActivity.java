@@ -199,9 +199,7 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
     protected void postWrong() {
         super.postWrong();
         ComparingNumbersQuestion comparingNumbers = new ComparingNumbersQuestion();
-        int questionSize = mComparingNumbersQuestions.size();
-        int maxItemsSize = getMaxItemsSize();
-        while (mComparingNumbersQuestions.contains(comparingNumbers) && questionSize<=maxItemsSize){
+        while (mComparingNumbersQuestions.contains(comparingNumbers)){
             comparingNumbers = new ComparingNumbersQuestion();
         }
         mComparingNumbersQuestions.add(comparingNumbers);

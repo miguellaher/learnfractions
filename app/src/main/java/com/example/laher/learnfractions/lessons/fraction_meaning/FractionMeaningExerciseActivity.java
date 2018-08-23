@@ -57,7 +57,6 @@ public class FractionMeaningExerciseActivity extends LessonExercise {
         super();
         setId(id);
         setExerciseTitle(title);
-        setMaxItemsSize();
     }
 
     /*@Override
@@ -119,9 +118,9 @@ public class FractionMeaningExerciseActivity extends LessonExercise {
             item_size = requiredCorrects/2;
         }
         for (int i = 0; i < item_size; i++){
-            FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion(1,9);
+            FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion();
             while (mFractionMeaningQuestions.contains(fractionMeaningQuestion)){
-                fractionMeaningQuestion = new FractionMeaningQuestion(1,9);
+                fractionMeaningQuestion = new FractionMeaningQuestion();
             }
             mFractionMeaningQuestions.add(fractionMeaningQuestion);
         }
@@ -273,11 +272,9 @@ public class FractionMeaningExerciseActivity extends LessonExercise {
         if (correctsShouldBeConsecutive) {
             generateFractionQuestions();
         } else {
-            FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion(1,9);
-            int questionsSize = mFractionMeaningQuestions.size();
-            int maxSize = getMaxItemsSize();
-            while (mFractionMeaningQuestions.contains(fractionMeaningQuestion) && questionsSize<=maxSize){
-                fractionMeaningQuestion = new FractionMeaningQuestion(1,9);
+            FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion();
+            while (mFractionMeaningQuestions.contains(fractionMeaningQuestion)){
+                fractionMeaningQuestion = new FractionMeaningQuestion();
             }
             mFractionMeaningQuestions.add(fractionMeaningQuestion);
             instructions.remove(0);

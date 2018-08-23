@@ -3,6 +3,7 @@ package com.example.laher.learnfractions.service;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.parent_activities.Lesson;
@@ -19,6 +20,9 @@ public class ExerciseService {
         String teacher_code = Storage.load(context, Storage.TEACHER_CODE);
         int itemsSize = lessonExercise.getItemsSize();
         int maxWrong = lessonExercise.getMaxWrong();
+        Range range = lessonExercise.getRange();
+        int minimum = range.getMinimum();
+        int maximum = range.getMaximum();
         boolean isCorrectsShouldBeConsecutive = lessonExercise.isCorrectsShouldBeConsecutive();
         boolean isWrongsShouldBeConsecutive = lessonExercise.isWrongsShouldBeConsecutive();
         requestParams.put("exercise_id", id);
@@ -26,6 +30,8 @@ public class ExerciseService {
         requestParams.put("title", title);
         requestParams.put("required_corrects", itemsSize);
         requestParams.put("max_errors", maxWrong);
+        requestParams.put("minimum", minimum);
+        requestParams.put("maximum", maximum);
         if (isCorrectsShouldBeConsecutive) {
             requestParams.put("rc_consecutive", "1");
         } else {

@@ -7,7 +7,6 @@ public class FractionMeaningQuestion extends FractionQuestionClass {
     private int denominator;
 
     public FractionMeaningQuestion() {
-        super(1,9);
         randomizeFraction();
     }
 
@@ -29,19 +28,12 @@ public class FractionMeaningQuestion extends FractionQuestionClass {
         setDenominatorAnswer(this.denominator);
     }
 
-    public FractionMeaningQuestion(int minimumNumber, int maximumNumber) {
-        super(minimumNumber, maximumNumber);
-        randomizeFraction();
-    }
-
     private void randomizeFraction(){
-        int minimumNumber = getMinimumNumber();
-        int maximumNumber = getMaximumNumber();
-        int numerator = (int) (Math.random() * maximumNumber + minimumNumber);
-        int denominator = (int) (Math.random() * maximumNumber + minimumNumber);
+        int numerator = (int) (Math.random() * 9 + 1);
+        int denominator = (int) (Math.random() * 9 + 1);
         while (denominator<numerator){
-            numerator = (int) (Math.random() * maximumNumber + minimumNumber);
-            denominator = (int) (Math.random() * maximumNumber + minimumNumber);
+            numerator = (int) (Math.random() * 9 + 1);
+            denominator = (int) (Math.random() * 9 + 1);
         }
         setNumerator(numerator);
         setDenominator(denominator);

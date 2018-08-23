@@ -302,9 +302,7 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
             nextQuestion();
         } else {
             FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion();
-            int questionsSize = mFractionMeaningQuestions.size();
-            int maxSize = getMaxItemsSize();
-            while (mFractionMeaningQuestions.contains(fractionMeaningQuestion) && questionsSize<=maxSize){
+            while (mFractionMeaningQuestions.contains(fractionMeaningQuestion)){
                 fractionMeaningQuestion = new FractionMeaningQuestion();
             }
             mFractionMeaningQuestions.add(fractionMeaningQuestion);

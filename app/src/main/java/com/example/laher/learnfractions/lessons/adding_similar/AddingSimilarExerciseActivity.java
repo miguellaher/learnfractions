@@ -15,11 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.AddingSimilarFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Limit;
 
 import java.util.ArrayList;
 
@@ -50,8 +52,11 @@ public class AddingSimilarExerciseActivity extends LessonExercise {
 
     public AddingSimilarExerciseActivity() {
         super();
+        int product = Limit.rangeUp3(getRange());
+        setMaxItemSize(product);
         setId(id);
         setExerciseTitle(title);
+        setRangeEditable(true);
     }
 
     @Override
@@ -59,6 +64,9 @@ public class AddingSimilarExerciseActivity extends LessonExercise {
         setContentView(R.layout.activity_fraction_equation);
         setId(id);
         setExerciseTitle(title);
+        int product = Limit.rangeUp3(getRange());
+        setMaxItemSize(product);
+        setRangeEditable(true);
         super.onCreate(savedInstanceState);
         //FRACTION EQUATION GUI
         txtNum1 = findViewById(R.id.fe_txtNum1);
@@ -112,10 +120,11 @@ public class AddingSimilarExerciseActivity extends LessonExercise {
         mQuestionNum = 1;
         mFractionsQuestions = new ArrayList<>();
         int requiredCorrects = getItemsSize();
+        Range range = getRange();
         for (int i = 0; i < requiredCorrects; i++){
-            AddingSimilarFractionsQuestion fractionsQuestion = new AddingSimilarFractionsQuestion();
+            AddingSimilarFractionsQuestion fractionsQuestion = new AddingSimilarFractionsQuestion(range);
             while (mFractionsQuestions.contains(fractionsQuestion)){
-                fractionsQuestion = new AddingSimilarFractionsQuestion();
+                fractionsQuestion = new AddingSimilarFractionsQuestion(range);
             }
             mFractionsQuestions.add(fractionsQuestion);
         }
@@ -251,9 +260,9 @@ public class AddingSimilarExerciseActivity extends LessonExercise {
             enableInputFraction();
             btnCheck.setEnabled(true);
         } else {
-            AddingSimilarFractionsQuestion fractionsQuestion = new AddingSimilarFractionsQuestion();
+            AddingSimilarFractionsQuestion fractionsQuestion = new AddingSimilarFractionsQuestion(getRange());
             while (mFractionsQuestions.contains(fractionsQuestion)){
-                fractionsQuestion = new AddingSimilarFractionsQuestion();
+                fractionsQuestion = new AddingSimilarFractionsQuestion(getRange());
             }
             mFractionsQuestions.add(fractionsQuestion);
             nextQuestion();

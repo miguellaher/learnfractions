@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.ExerciseService;
@@ -45,41 +46,38 @@ public class LessonExercise extends AppCompatActivity {
     //GUIDELINES
     private boolean correctsShouldBeConsecutive;
     private boolean wrongsShouldBeConsecutive;
-    private int rangeMinimum;
-    private int rangeMaximum;
-    private int range;
     private int itemsSize;
-    private int maxItemsSize;
     private int maxWrong;
+    private Range range;
+    private int maxItemSize;
     protected final Handler handler = new Handler();
+    //SETTINGS
+    private boolean rangeEditable;
 
-    public int getRange() {
+    public int getMaxItemSize() {
+        return maxItemSize;
+    }
+
+    public void setMaxItemSize(int maxItemSize) {
+        this.maxItemSize = maxItemSize;
+        int itemSize = getItemsSize();
+        setItemsSize(itemSize);
+    }
+
+    public boolean isRangeEditable() {
+        return rangeEditable;
+    }
+
+    public void setRangeEditable(boolean rangeEditable) {
+        this.rangeEditable = rangeEditable;
+    }
+
+    public Range getRange() {
         return range;
     }
 
-    public void setRange(int range) {
+    public void setRange(Range range) {
         this.range = range;
-    }
-
-    public void setRange(int minimum, int maximum){
-        if (maximum>minimum && maximum>=0 && minimum>=0){
-            this.rangeMinimum = minimum;
-            this.rangeMaximum = maximum;
-            int difference = maximum - maximum;
-            this.range = difference + 1;
-        }
-    }
-
-    public int getMaxItemsSize() {
-        return maxItemsSize;
-    }
-
-    /*public void setMaxItemsSize(int maxItemsSize) {
-        this.maxItemsSize = maxItemsSize;
-    }*/
-
-    protected void setMaxItemsSize(){
-
     }
 
     public int getTotalWrongs() {
@@ -157,11 +155,9 @@ public class LessonExercise extends AppCompatActivity {
     public void setItemsSize(int itemsSize) {
         String tag = "Lesson Exercise Class";
         Log.d(tag, "setItemsSize()");
-        Log.d(tag, "max items size: " + getMaxItemsSize());
         Log.d(tag, "items size: " + itemsSize);
-        int maxItemsSize = getMaxItemsSize();
-        if (itemsSize>maxItemsSize && maxItemsSize!=0){
-            itemsSize = maxItemsSize;
+        if (itemsSize>maxItemSize && maxItemSize!=0){
+            itemsSize = maxItemSize;
         }
         this.itemsSize = itemsSize;
     }
@@ -214,7 +210,6 @@ public class LessonExercise extends AppCompatActivity {
     protected void setToolBarGui(){
         String tag = "Lesson Exercise Class";
         Log.d(tag, "setToolBarGui()");
-        Log.d(tag, "max items size: " + getMaxItemsSize());
         buttonBack = findViewById(R.id.btnBack);
         buttonBack.setOnClickListener(new ButtonBackListener());
         buttonNext = findViewById(R.id.btnNext);
@@ -222,6 +217,9 @@ public class LessonExercise extends AppCompatActivity {
         buttonNext.setOnClickListener(new ButtonNextListener());
         txtTitle = findViewById(R.id.txtTitle);
         defaultAttributes();
+        if (!Storage.isEmpty()&&isNetworkAvailable()) {
+            updateExercise();
+        }
     }
 
     protected void defaultAttributes(){
@@ -232,9 +230,6 @@ public class LessonExercise extends AppCompatActivity {
         String exerciseTitle = getExerciseTitle();
         lessonExercise.setExerciseTitle(exerciseTitle);
         setAttributes(lessonExercise);
-        if (!Storage.isEmpty()&&isNetworkAvailable()) {
-            updateExercise();
-        }
     }
 
     @Override
@@ -258,20 +253,21 @@ public class LessonExercise extends AppCompatActivity {
 
     public void setAttributes(LessonExercise lessonExercise){
         String title = lessonExercise.getExerciseTitle();
-        int range = lessonExercise.getRange();
         int requiredCorrects = lessonExercise.getItemsSize();
         int maxErrors = lessonExercise.getMaxWrong();
         boolean correctsShouldBeConsecutive = lessonExercise.isCorrectsShouldBeConsecutive();
         boolean errorsShouldBeConsecutive = lessonExercise.isWrongsShouldBeConsecutive();
-        setRange(range);
-        setTxtTitle(title);
+        try {
+            setTxtTitle(title); // if there is a toolbar
+        } catch (Exception e){
+            setExerciseTitle(title);
+        }
         setItemsSize(requiredCorrects);
         setMaxWrong(maxErrors);
         setCorrectsShouldBeConsecutive(correctsShouldBeConsecutive);
         setWrongsShouldBeConsecutive(errorsShouldBeConsecutive);
         String tag = "Lesson Exercise Class";
         Log.d(tag, "setAttributes()");
-        Log.d(tag, "max items size: " + getMaxItemsSize());
     }
 
     public void incrementCorrect(){
@@ -328,7 +324,6 @@ public class LessonExercise extends AppCompatActivity {
                 }
             }
         });
-
         ExerciseService.getUpdate(context, this, service);
     }
 
@@ -369,7 +364,8 @@ public class LessonExercise extends AppCompatActivity {
 
     public LessonExercise() {
         //DEFAULT
-        setRange(1,9);
+        Range range = new Range(1,9);
+        setRange(range);
         setItemsSize(3);
         setMaxWrong(3);
         setCorrectsShouldBeConsecutive(false);

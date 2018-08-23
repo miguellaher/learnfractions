@@ -252,9 +252,7 @@ public class NonVisualExercise2Activity extends LessonExercise {
     protected void postWrong() {
         super.postWrong();
         NonVisualQuestion nonVisualQuestion = new NonVisualQuestion();
-        int questionsSize = mNonVisualQuestions.size();
-        int maxItemsSize = getMaxItemsSize();
-        while (mNonVisualQuestions.contains(nonVisualQuestion) && questionsSize<=maxItemsSize) {
+        while (mNonVisualQuestions.contains(nonVisualQuestion)) {
             nonVisualQuestion = new NonVisualQuestion();
         }
         mNonVisualQuestions.add(nonVisualQuestion);

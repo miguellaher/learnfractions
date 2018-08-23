@@ -216,9 +216,7 @@ public class ComparingSimilarExercise2Activity extends LessonExercise {
             generateFractionQuestion();
         } else {
             ComparingSimilarQuestion comparingSimilarQuestion = new ComparingSimilarQuestion();
-            int questionSize = mComparingSimilarQuestions.size();
-            int maxItemsSize = getMaxItemsSize();
-            while (mComparingSimilarQuestions.contains(comparingSimilarQuestion) && questionSize<=maxItemsSize){
+            while (mComparingSimilarQuestions.contains(comparingSimilarQuestion)){
                 comparingSimilarQuestion = new ComparingSimilarQuestion();
             }
             mComparingSimilarQuestions.add(comparingSimilarQuestion);

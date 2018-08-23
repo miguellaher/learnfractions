@@ -170,8 +170,8 @@ public class LessonsMenuActivity extends AppCompatActivity {
 
         Lesson addingSimilarLesson = new Lesson("Adding Similar Fractions");
         addingSimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
-        addingSimilarLesson.addActivity(new AddingSimilarVideoActivity());
         addingSimilarLesson.addActivity(new AddingSimilarExerciseActivity());
+        addingSimilarLesson.addActivity(new AddingSimilarVideoActivity());
 
         Lesson addingDissimilarLesson = new Lesson("Adding Dissimilar Fractions");
         addingDissimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");

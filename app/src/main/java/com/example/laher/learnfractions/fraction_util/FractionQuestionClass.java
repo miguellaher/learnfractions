@@ -1,29 +1,17 @@
 package com.example.laher.learnfractions.fraction_util;
 
+import com.example.laher.learnfractions.classes.Range;
+
 public class FractionQuestionClass {
     private int numeratorAnswer;
     private int denominatorAnswer;
     private double numberAnswer;
     private Fraction fractionAnswer;
     private String stringEquation;
+    private Range range;
 
-    private int minimumNumber;
-    private int maximumNumber;
-
-    public int getMinimumNumber() {
-        return minimumNumber;
-    }
-
-    public void setMinimumNumber(int minimumNumber) {
-        this.minimumNumber = minimumNumber;
-    }
-
-    public int getMaximumNumber() {
-        return maximumNumber;
-    }
-
-    public void setMaximumNumber(int maximumNumber) {
-        this.maximumNumber = maximumNumber;
+    public void setRange(Range range) {
+        this.range = range;
     }
 
     public String getStringEquation() {
@@ -68,12 +56,11 @@ public class FractionQuestionClass {
         this.fractionAnswer = new Fraction(getNumeratorAnswer(), this.denominatorAnswer);
     }
 
-    public FractionQuestionClass(int minimumNumber, int maximumNumber) {
-        this.minimumNumber = minimumNumber;
-        this.maximumNumber = maximumNumber;
+    public FractionQuestionClass() { // TEMPORARY!
     }
 
-    public FractionQuestionClass() { // TEMPORARY!
+    public FractionQuestionClass(Range range) {
+        this.range = range;
     }
 
     @Override

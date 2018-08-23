@@ -179,9 +179,7 @@ public class NonVisualExerciseActivity extends LessonExercise {
         } else {
             resetColor();
             NonVisualQuestion nonVisualQuestion = new NonVisualQuestion();
-            int questionsSize = mNonVisualQuestions.size();
-            int maxItemsSize = getMaxItemsSize();
-            while (mNonVisualQuestions.contains(nonVisualQuestion) && questionsSize<=maxItemsSize) {
+            while (mNonVisualQuestions.contains(nonVisualQuestion)) {
                 nonVisualQuestion = new NonVisualQuestion();
             }
             mNonVisualQuestions.add(nonVisualQuestion);
