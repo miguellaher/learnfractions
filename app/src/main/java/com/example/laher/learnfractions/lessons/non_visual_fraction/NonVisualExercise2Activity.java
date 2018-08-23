@@ -1,9 +1,6 @@
 package com.example.laher.learnfractions.lessons.non_visual_fraction;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,102 +12,60 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.TopicsMenuActivity;
-import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.NonVisualQuestion;
-import com.example.laher.learnfractions.model.Exercise;
-import com.example.laher.learnfractions.model.ExerciseStat;
-import com.example.laher.learnfractions.model.Student;
-import com.example.laher.learnfractions.service.ExerciseService;
-import com.example.laher.learnfractions.service.ExerciseStatService;
-import com.example.laher.learnfractions.service.Service;
-import com.example.laher.learnfractions.service.ServiceResponse;
+import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Styles;
-import com.example.laher.learnfractions.util.Util;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class NonVisualExercise2Activity extends AppCompatActivity {
-    Context mContext = this;
-    private static final String TAG = "NV_E2";
-
-    Exercise exercise;
-    ExerciseStat mExerciseStat;
-    final int EXERCISE_NUM = 2;
-
-    Button btnBack, btnNext;
-    TextView txtTitle;
-
+public class NonVisualExercise2Activity extends LessonExercise {
+    private static final String TAG = "NVE2";
     Button btnCheck;
-    TextView txtNumerator, txtDenominator, txtInstruction, txtInstruction2, txtScore;
+    TextView txtNumerator;
+    TextView txtDenominator;
+    TextView txtInstruction;
+    TextView txtInstruction2;
+    TextView txtScore;
     EditText inputAnswer;
-    int num, denom, correct, error;
-    ArrayList<String> instructions;
-    public final String INSTRUCTION_NUM = "Type the numerator.";
-    public final String INSTRUCTION_DENOM = "Type the denominator.";
-    public final String TITLE = "NON-VISUAL";
-    final Handler handler = new Handler();
+    ImageView imgLine;
 
-    int requiredCorrects;
-    int maxErrors;
+    public String title = "Non-Visual Fractions\nex.1";
+    String id = AppIDs.NVE2_ID;
+
+    ArrayList<String> instructions;
+    public final String INSTRUCTION_NUMERATOR = "Type the numerator.";
+    public final String INSTRUCTION_DENOMINATOR = "Type the denominator.";
+    public final String TITLE = "NON-VISUAL";
 
     ArrayList<NonVisualQuestion> mNonVisualQuestions;
     int mQuestionNum;
 
-    long startingTime, endingTime;
+    public NonVisualExercise2Activity() {
+        super();
+        setId(id);
+        setExerciseTitle(title);
+    }
 
-    boolean correctsShouldBeConsecutive;
-    boolean errorsShouldBeConsecutive;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_non_visual_exercise2);
-        exercise = LessonArchive.getLesson(AppConstants.NON_VISUAL_FRACTION).getExercises().get(EXERCISE_NUM-1);
-        requiredCorrects = exercise.getRequiredCorrects();
-        maxErrors = exercise.getMaxErrors();
-        correctsShouldBeConsecutive = exercise.isRc_consecutive();
-        errorsShouldBeConsecutive = exercise.isMe_consecutive();
-
-
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NonVisualExercise2Activity.this,
-                        NonVisualExerciseActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnNext = findViewById(R.id.btnNext);
-        btnNext.setEnabled(false);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // CHANGE INTENT PARAMS
-                Intent intent = new Intent(NonVisualExercise2Activity.this, TopicsMenuActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(TITLE);
-        btnNext.setText(AppConstants.DONE);
+        setId(id);
+        setExerciseTitle(title);
+        super.onCreate(savedInstanceState);
 
         txtNumerator = findViewById(R.id.b2_txtNumerator);
         txtDenominator = findViewById(R.id.b2_txtDenominator);
         txtInstruction = findViewById(R.id.b2_txtInstruction);
         txtInstruction2 = findViewById(R.id.b2_txtInstruction2);
         txtScore = findViewById(R.id.b2_txtScore);
-        setTxtScore();
         inputAnswer = findViewById(R.id.b2_inputAnswer);
         inputAnswer.getText().clear();
         inputAnswer.setOnFocusChangeListener(new InputAnswerListener());
@@ -119,75 +74,19 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         btnCheck = findViewById(R.id.b2_btnCheck);
         btnCheck.setOnClickListener(new BtnChkListener());
         btnCheck.setEnabled(false);
+        imgLine = findViewById(R.id.nve2_imgLine);
+        imgLine.setImageResource(R.drawable.line);
 
         instructions = new ArrayList<>();
-        instructions.add(INSTRUCTION_NUM);
-        instructions.add(INSTRUCTION_DENOM);
+        instructions.add(INSTRUCTION_NUMERATOR);
+        instructions.add(INSTRUCTION_DENOMINATOR);
 
-
-
-        setAttributes((ExerciseStat) exercise);
-        if (!Storage.isEmpty()) {
-            checkUpdate();
-        }
-
-        startingTime = System.currentTimeMillis();
-        go();
-    }
-
-    public void setAttributes(ExerciseStat exerciseAtt){//REPLACE
-        requiredCorrects = exerciseAtt.getRequiredCorrects();
-        maxErrors = exerciseAtt.getMaxErrors();
-        correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
-        errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
-        mExerciseStat = exerciseAtt;
-        mExerciseStat.setTopicName(exercise.getTopicName());
-        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
-        setTxtScore();
-    }
-    public void checkUpdate(){
-        if (Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)){
-            Service service = new Service("Checking for updates...", mContext, new ServiceResponse() {
-                @Override
-                public void postExecute(JSONObject response) {
-                    try {
-                        if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
-                        } else {
-                            Exercise updatedExercise = new ExerciseStat();
-                            Log.d(TAG, "rc:" + response.optString("required_corrects"));
-                            Log.d(TAG, "rcc:" + response.optString("rc_consecutive"));
-                            Log.d(TAG, "me:" + response.optString("max_errors"));
-                            Log.d(TAG, "mec:" + response.optString("me_consecutive"));
-                            updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
-                            if (response.optString("rc_consecutive").equals("1")) {
-                                updatedExercise.setRc_consecutive(true);
-                            } else {
-                                updatedExercise.setRc_consecutive(false);
-                            }
-                            updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
-                            if (response.optString("me_consecutive").equals("1")) {
-                                updatedExercise.setMe_consecutive(true);
-                            } else {
-                                updatedExercise.setMe_consecutive(false);
-                            }
-                            setAttributes((ExerciseStat) updatedExercise);
-                            startingTime = System.currentTimeMillis();
-                        }
-                    } catch (Exception e){e.printStackTrace();}
-                }
-            });
-            Student student = new Student();
-            student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
-            ExerciseService.getUpdate(exercise, student, service);
-        }
-    }
-    public void go(){
-        reset();
-        generateFractionQuestions();
+        startExercise();
     }
     private void generateFractionQuestions(){
         mQuestionNum = 1;
         mNonVisualQuestions = new ArrayList<>();
+        int requiredCorrects = getItemsSize();
         for (int i = 0; i < requiredCorrects; i++){
             NonVisualQuestion nonVisualQuestion = new NonVisualQuestion();
             while (mNonVisualQuestions.contains(nonVisualQuestion)) {
@@ -198,8 +97,8 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         setTxtFraction();
     }
     public void setTxtFraction(){
-        int numerator = mNonVisualQuestions.get(mQuestionNum).getNumerator();
-        int denominator = mNonVisualQuestions.get(mQuestionNum).getDenominator();
+        int numerator = mNonVisualQuestions.get(mQuestionNum-1).getNumerator();
+        int denominator = mNonVisualQuestions.get(mQuestionNum-1).getDenominator();
         txtNumerator.setText(String.valueOf(numerator));
         txtDenominator.setText(String.valueOf(denominator));
         generateInstruction();
@@ -207,118 +106,11 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
     public void generateInstruction(){
         Collections.shuffle(instructions);
         txtInstruction.setText(instructions.get(0));
-        if (txtInstruction.getText().toString().equals(INSTRUCTION_NUM)){
+        if (txtInstruction.getText().toString().equals(INSTRUCTION_NUMERATOR)){
             txtInstruction2.setText(AppConstants.NUMERATOR);
         } else {
             txtInstruction2.setText(AppConstants.DENOMINATOR);
         }
-    }
-    public void setTxtScore(){
-        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
-    }
-    public void correct(){
-        correct++;
-        if (errorsShouldBeConsecutive) {
-            error = 0;
-        }
-        setTxtScore();
-        inputAnswer.setEnabled(false);
-        btnCheck.setEnabled(false);
-        txtInstruction.setText(AppConstants.CORRECT);
-        if (correct >= requiredCorrects){
-            endingTime = System.currentTimeMillis();
-            if (!Storage.isEmpty()) {
-                setFinalAttributes();
-            }
-            txtInstruction.setText(AppConstants.FINISHED_LESSON);
-            inputAnswer.getText().clear();
-            btnNext.setEnabled(true);
-        } else {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    inputAnswer.setEnabled(true);
-                    btnCheck.setEnabled(true);
-                    mQuestionNum++;
-                    reset();
-                    setTxtFraction();
-                }
-            }, 2000);
-        }
-    }
-    public void wrong(){
-        error++;
-        mExerciseStat.incrementError();
-        if (correctsShouldBeConsecutive) {
-            correct = 0;
-        }
-        setTxtScore();
-        inputAnswer.setEnabled(false);
-        btnCheck.setEnabled(false);
-        txtInstruction.setText(AppConstants.ERROR);
-        if (error >= maxErrors){
-            if (errorsShouldBeConsecutive) {
-                txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
-            } else {
-                txtInstruction.setText(AppConstants.FAILED(error));
-            }
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(NonVisualExercise2Activity.this,
-                            NonVisualExerciseActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
-            }, 3000);
-        } else {
-            Styles.shakeAnimate(inputAnswer);
-            Styles.paintRed(inputAnswer);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    inputAnswer.setEnabled(true);
-                    btnCheck.setEnabled(true);
-                    if (correctsShouldBeConsecutive) {
-                        go();
-                    } else {
-                        NonVisualQuestion nonVisualQuestion = new NonVisualQuestion();
-                        while (mNonVisualQuestions.contains(nonVisualQuestion)) {
-                            nonVisualQuestion = new NonVisualQuestion();
-                        }
-                        mNonVisualQuestions.add(nonVisualQuestion);
-                        mQuestionNum++;
-                        reset();
-                        setTxtFraction();
-                    }
-                }
-            }, 2000);
-        }
-    }
-    private void setFinalAttributes(){//COPY
-        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
-            @Override
-            public void postExecute(JSONObject response) {
-                try{
-                    Log.d(TAG, "post execute");
-                    Log.d(TAG, "message: " + response.optString("message"));
-                    btnNext.setEnabled(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        mExerciseStat.setDone(true);
-        mExerciseStat.setTime_spent(endingTime-startingTime);
-        Student student = new Student();
-        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
-        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
-        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
-                mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
-                "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
-                mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
-                mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
-        ExerciseStatService.postStats(student,mExerciseStat,service);
     }
     public void reset(){
         inputAnswer.getText().clear();
@@ -326,6 +118,7 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         btnCheck.setEnabled(false);
         if (mQuestionNum>1) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
             imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         }
     }
@@ -333,19 +126,25 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
     public class BtnChkListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
+            NonVisualQuestion nonVisualQuestion = mNonVisualQuestions.get(mQuestionNum-1);
+            Fraction fraction = nonVisualQuestion.getFractionAnswer();
+            int numeratorAnswer = fraction.getNumerator();
+            int denominatorAnswer = fraction.getDenominator();
             if (inputAnswer.getText().toString().trim().length() != 0) {
-                if (instructions.get(0).equals(INSTRUCTION_NUM)) {
+                if (instructions.get(0).equals(INSTRUCTION_NUMERATOR)) {
                     //if(inputAnswer.getText() == txtNumerator.getText()){
-                    if (Integer.parseInt(String.valueOf(inputAnswer.getText())) == num) {
+                    if (Integer.parseInt(String.valueOf(inputAnswer.getText())) == numeratorAnswer) {
                         correct();
                     } else {
                         wrong();
+                        Log.d(TAG, "correct numerator: " + numeratorAnswer);
                     }
-                } else if (instructions.get(0).equals(INSTRUCTION_DENOM)) {
-                    if (Integer.parseInt(String.valueOf(inputAnswer.getText())) == denom) {
+                } else if (instructions.get(0).equals(INSTRUCTION_DENOMINATOR)) {
+                    if (Integer.parseInt(String.valueOf(inputAnswer.getText())) == denominatorAnswer) {
                         correct();
                     } else {
                         wrong();
+                        Log.d(TAG, "correct denominator: " + denominatorAnswer);
                     }
                 }
             }
@@ -356,7 +155,9 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus){
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                if (mQuestionNum>1) {
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
             }
         }
 
@@ -387,5 +188,90 @@ public class NonVisualExercise2Activity extends AppCompatActivity {
         public void afterTextChanged(Editable s) {
 
         }
+    }
+
+    @Override
+    public void showScore(){
+        super.showScore();
+        int correct = getCorrect();
+        int requiredCorrects = getItemsSize();
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
+
+    @Override
+    protected void startExercise() {
+        super.startExercise();
+        reset();
+        generateFractionQuestions();
+    }
+
+    @Override
+    protected void preAnswered() {
+        super.preAnswered();
+        inputAnswer.setEnabled(false);
+        btnCheck.setEnabled(false);
+    }
+
+    @Override
+    protected void postAnswered() {
+        super.postAnswered();
+        inputAnswer.setEnabled(true);
+        btnCheck.setEnabled(true);
+    }
+
+    @Override
+    protected void preCorrect() {
+        super.preCorrect();
+        txtInstruction.setText(AppConstants.CORRECT);
+    }
+
+    @Override
+    protected void postCorrect() {
+        super.postCorrect();
+        mQuestionNum++;
+        reset();
+        setTxtFraction();
+    }
+
+    @Override
+    protected void preFinished() {
+        super.preFinished();
+        txtInstruction.setText(AppConstants.FINISHED_LESSON);
+        inputAnswer.getText().clear();
+    }
+
+    @Override
+    protected void preWrong() {
+        super.preWrong();
+        txtInstruction.setText(AppConstants.ERROR);
+        Styles.shakeAnimate(inputAnswer);
+        Styles.paintRed(inputAnswer);
+    }
+
+    @Override
+    protected void postWrong() {
+        super.postWrong();
+        NonVisualQuestion nonVisualQuestion = new NonVisualQuestion();
+        int questionsSize = mNonVisualQuestions.size();
+        int maxItemsSize = getMaxItemsSize();
+        while (mNonVisualQuestions.contains(nonVisualQuestion) && questionsSize<=maxItemsSize) {
+            nonVisualQuestion = new NonVisualQuestion();
+        }
+        mNonVisualQuestions.add(nonVisualQuestion);
+        mQuestionNum++;
+        reset();
+        setTxtFraction();
+    }
+
+    @Override
+    protected void preFailWrongsAreConsecutive() {
+        super.preFailWrongsAreConsecutive();
+        txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(getWrong()));
+    }
+
+    @Override
+    protected void preFailWrongsAreNotConsecutive() {
+        super.preFailWrongsAreNotConsecutive();
+        txtInstruction.setText(AppConstants.FAILED(getWrong()));
     }
 }

@@ -38,4 +38,8 @@ public class Styles {
         paintRed(v);
         shakeAnimate(v);
     }
+
+    public static int getColor(int r, int g, int b){
+        return Color.rgb(r,g,b);
+    }
 }

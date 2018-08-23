@@ -14,13 +14,17 @@ public class Fraction implements Comparable<Fraction>{
         return modifier;
     }
 
-    public final void setModifier(String modifier){
-        if (modifier.equals(PROPER)){
-            this.modifier = PROPER;
-        } else if (modifier.equals(IMPROPER)){
-            this.modifier = IMPROPER;
-        } else if (modifier.equals(MIXED)){
-            this.modifier = MIXED;
+    final void setModifier(String modifier){
+        switch (modifier) {
+            case PROPER:
+                this.modifier = modifier;
+                break;
+            case IMPROPER:
+                this.modifier = modifier;
+                break;
+            case MIXED:
+                this.modifier = modifier;
+                break;
         }
     }
 
@@ -49,27 +53,38 @@ public class Fraction implements Comparable<Fraction>{
             generateProperFraction();
         } else if (modifier.equals(IMPROPER)){
             generateImproperFraction();
+        } else {
+            generateFraction();
         }
-        generateFraction();
     }
 
     public void generateFraction(){
         int numerator = (int) (Math.random() * 9 + 1);
         int denominator = (int) (Math.random() * 9 + 1);
-        setModifier();
         setNumerator(numerator);
         setDenominator(denominator);
+        setModifier();
     }
 
-    private final void setModifier(){
-        if (this.numerator>this.denominator){
-            this.modifier = IMPROPER;
+    private void setModifier(){
+        if (this.numerator!=0 && this.denominator!=0) {
+            if (this.numerator > this.denominator) {
+                this.modifier = IMPROPER;
+            } else {
+                this.modifier = PROPER;
+            }
         } else {
-            this.modifier = PROPER;
+            this.modifier = null;
         }
     }
 
-    public final void generateProperFraction(){
+    public double toDouble(){
+        double numerator = (double) getNumerator();
+        double denominator = (double) getDenominator();
+        return numerator/denominator;
+    }
+
+    private void generateProperFraction(){
         int numerator = (int) (Math.random() * 9 + 1);
         int denominator = (int) (Math.random() * 9 + 1);
         while (denominator>numerator){
@@ -80,7 +95,7 @@ public class Fraction implements Comparable<Fraction>{
         setNumerator(numerator);
         setDenominator(denominator);
     }
-    public final void generateImproperFraction(){
+    private void generateImproperFraction(){
         int numerator = (int) (Math.random() * 9 + 1);
         int denominator = (int) (Math.random() * 9 + 1);
         while (numerator<=denominator){
@@ -110,24 +125,21 @@ public class Fraction implements Comparable<Fraction>{
 
     public final int compare(Fraction fraction){
         int product1 = fraction.getDenominator() * this.getNumerator();
-        int product2 = this.getDenominator() * fraction.getDenominator();
-        if (product1>product2){
-            return 1;
-        } else if (product1<product2){
-            return -1;
-        } else {
-            return 0;
-        }
+        int product2 = this.getDenominator() * fraction.getNumerator();
+        return Integer.compare(product1, product2);
+    }
+
+    public String toString(){
+        int numerator = getNumerator();
+        int denominator = getDenominator();
+        String strNumerator = String.valueOf(numerator);
+        String strDenominator = String.valueOf(denominator);
+
+        return strNumerator + "/" + strDenominator;
     }
 
     @Override
     public final int compareTo(@NonNull Fraction o) {
-        if (this.compare(o)>0){
-            return -1;
-        } else if (this.compare(o)<0){
-            return 1;
-        } else {
-            return 0;
-        }
+        return Integer.compare(0, this.compare(o));
     }
 }

@@ -24,6 +24,7 @@ public class SubtractingDissimilarFractionsQuestion extends FractionQuestionClas
     }
 
     public SubtractingDissimilarFractionsQuestion() {
+        generateFractions();
     }
 
     private void generateFractions(){
@@ -37,7 +38,7 @@ public class SubtractingDissimilarFractionsQuestion extends FractionQuestionClas
         int lcd = FractionUtil.getLcd(fractions);
         int quotient1 = lcd / denominator1;
         int quotient2 = lcd / denominator2;
-        while (denominator1==denominator2 && (quotient1>10||quotient2>10) && fraction1.compare(fraction2)<0){
+        while (denominator1==denominator2 || (quotient1>10||quotient2>10) || fraction1.compare(fraction2)<1){
             //while fraction1 is less than fraction2
             fraction1 = new Fraction();
             fraction2 = new Fraction();
@@ -52,7 +53,7 @@ public class SubtractingDissimilarFractionsQuestion extends FractionQuestionClas
         }
         setFractionAnswer();
     }
-    private final void setFractionAnswer(){ //exclusive method for generateFractions()
+    private void setFractionAnswer(){ //exclusive method for generateFractions()
         ArrayList<Fraction> fractions = new ArrayList<>();
         fractions.add(fraction1);
         fractions.add(fraction2);
@@ -67,8 +68,7 @@ public class SubtractingDissimilarFractionsQuestion extends FractionQuestionClas
         int quotient2 = lcd / denominator2;
         int newNumerator2 = quotient2 * numerator2;
         int numeratorAnswer = newNumerator1 - newNumerator2;
-        int denominatorAnswer = lcd;
-        Fraction fractionAnswer = new Fraction(numeratorAnswer, denominatorAnswer);
+        Fraction fractionAnswer = new Fraction(numeratorAnswer, lcd);
         setFractionAnswer(fractionAnswer);
     }
 
@@ -80,7 +80,7 @@ public class SubtractingDissimilarFractionsQuestion extends FractionQuestionClas
             Fraction thisFraction2 = this.getFraction2();
             Fraction objFraction1 = fractionsQuestion.getFraction1();
             Fraction objFraction2 = fractionsQuestion.getFraction2();
-            return thisFraction1==objFraction1 && thisFraction2==objFraction2;
+            return thisFraction1.equals(objFraction1) && thisFraction2.equals(objFraction2);
         }
         return super.equals(obj);
     }

@@ -4,11 +4,10 @@ package com.example.laher.learnfractions.archive;
 import android.util.Log;
 
 import com.example.laher.learnfractions.lessons.converting_fractions.ConvertingFractionsExercise2Activity;
-import com.example.laher.learnfractions.lessons.converting_fractions.ConvertingFractionsVideoActivity;
 import com.example.laher.learnfractions.lessons.non_visual_fraction.NonVisualVideoActivity;
 import com.example.laher.learnfractions.lessons.ordering_dissimilar.OrderingDissimilarVideoActivity;
 import com.example.laher.learnfractions.model.ExerciseStat;
-import com.example.laher.learnfractions.model.Lesson;
+import com.example.laher.learnfractions.model.LessonClass;
 import com.example.laher.learnfractions.lessons.adding_dissimilar.AddingDissimilarVideoActivity;
 import com.example.laher.learnfractions.lessons.adding_similar.AddingSimilarVideoActivity;
 import com.example.laher.learnfractions.lessons.classifying_fractions.ClassifyingFractionsVideoActivity;
@@ -30,28 +29,28 @@ import java.util.ArrayList;
 public abstract class LessonArchive {
     private static final String TAG = "L_ARV";
     //CHANGE STARTING ACTIVITIES
-    private static final Lesson fractionMeaning = new Lesson(AppConstants.FRACTION_MEANING, FractionMeaningVideoActivity.class);
-    private static final Lesson nonVisualFraction = new Lesson(AppConstants.NON_VISUAL_FRACTION, NonVisualVideoActivity.class);
-    private static final Lesson comparingSimilarFractions = new Lesson(AppConstants.COMPARING_SIMILAR_FRACTIONS, ComparingSimilarVideoActivity.class);
-    private static final Lesson comparingDissimilarFractions = new Lesson(AppConstants.COMPARING_DISSIMILAR_FRACTIONS, ComparingDissimilarVideoActivity.class);
-    private static final Lesson comparingFractions = new Lesson(AppConstants.COMPARING_FRACTIONS, ComparingFractionsVideoActivity.class);
+    private static final LessonClass fractionMeaning = new LessonClass(AppConstants.FRACTION_MEANING, FractionMeaningVideoActivity.class);
+    private static final LessonClass nonVisualFraction = new LessonClass(AppConstants.NON_VISUAL_FRACTION, NonVisualVideoActivity.class);
+    private static final LessonClass comparingSimilarFractions = new LessonClass(AppConstants.COMPARING_SIMILAR_FRACTIONS, ComparingSimilarVideoActivity.class);
+    private static final LessonClass comparingDissimilarFractions = new LessonClass(AppConstants.COMPARING_DISSIMILAR_FRACTIONS, ComparingDissimilarVideoActivity.class);
+    private static final LessonClass comparingFractions = new LessonClass(AppConstants.COMPARING_FRACTIONS, ComparingFractionsVideoActivity.class);
 
-    private static final Lesson orderingSimilarFractions = new Lesson(AppConstants.ORDERING_SIMILAR, OrderingSimilarVideoActivity.class);
-    private static final Lesson orderingDissimilarFractions = new Lesson(AppConstants.ORDERING_DISSIMILAR, OrderingDissimilarVideoActivity.class);
-    private static final Lesson classifyingFractions = new Lesson(AppConstants.CLASSIFYING_FRACTIONS, ClassifyingFractionsVideoActivity.class);
-    private static final Lesson convertingFractions = new Lesson(AppConstants.CONVERTING_FRACTIONS, ConvertingFractionsExercise2Activity.class);
-    private static final Lesson addingSimilarFractions = new Lesson(AppConstants.ADDING_SIMILAR, AddingSimilarVideoActivity.class);
+    private static final LessonClass orderingSimilarFractions = new LessonClass(AppConstants.ORDERING_SIMILAR, OrderingSimilarVideoActivity.class);
+    private static final LessonClass orderingDissimilarFractions = new LessonClass(AppConstants.ORDERING_DISSIMILAR, OrderingDissimilarVideoActivity.class);
+    private static final LessonClass classifyingFractions = new LessonClass(AppConstants.CLASSIFYING_FRACTIONS, ClassifyingFractionsVideoActivity.class);
+    private static final LessonClass convertingFractions = new LessonClass(AppConstants.CONVERTING_FRACTIONS, ConvertingFractionsExercise2Activity.class);
+    private static final LessonClass addingSimilarFractions = new LessonClass(AppConstants.ADDING_SIMILAR, AddingSimilarVideoActivity.class);
 
-    private static final Lesson addingDissimilarFractions = new Lesson(AppConstants.ADDING_DISSIMILAR, AddingDissimilarVideoActivity.class);
-    private static final Lesson subtractingSimilarFractions = new Lesson(AppConstants.SUBTRACTING_SIMILAR, SubtractingSimilarVideoActivity.class);
-    private static final Lesson subtractingDissimilarFractions = new Lesson(AppConstants.SUBTRACTING_DISSIMILAR, SubtractingDissimilarVideoActivity.class);
-    private static final Lesson multiplyingFractions = new Lesson(AppConstants.MULTIPLYING_FRACTIONS, MultiplyingFractionsVideoActivity.class);
-    private static final Lesson dividingFractions = new Lesson(AppConstants.DIVIDING_FRACTIONS, DividingFractionsVideoActivity.class);
+    private static final LessonClass addingDissimilarFractions = new LessonClass(AppConstants.ADDING_DISSIMILAR, AddingDissimilarVideoActivity.class);
+    private static final LessonClass subtractingSimilarFractions = new LessonClass(AppConstants.SUBTRACTING_SIMILAR, SubtractingSimilarVideoActivity.class);
+    private static final LessonClass subtractingDissimilarFractions = new LessonClass(AppConstants.SUBTRACTING_DISSIMILAR, SubtractingDissimilarVideoActivity.class);
+    private static final LessonClass multiplyingFractions = new LessonClass(AppConstants.MULTIPLYING_FRACTIONS, MultiplyingFractionsVideoActivity.class);
+    private static final LessonClass dividingFractions = new LessonClass(AppConstants.DIVIDING_FRACTIONS, DividingFractionsVideoActivity.class);
 
-    private static final Lesson solvingWithMixed1 = new Lesson(AppConstants.ADDING_SUBTRACTING_MIXED, SolvingMixedVideoActivity.class);
-    private static final Lesson solvingWithMixed2 = new Lesson(AppConstants.MULTIPLYING_DIVIDING_MIXED, SolvingMixed2VideoActivity.class);
+    private static final LessonClass solvingWithMixed1 = new LessonClass(AppConstants.ADDING_SUBTRACTING_MIXED, SolvingMixedVideoActivity.class);
+    private static final LessonClass solvingWithMixed2 = new LessonClass(AppConstants.MULTIPLYING_DIVIDING_MIXED, SolvingMixed2VideoActivity.class);
 
-    public static Lesson getLesson(String lessonTitle){
+    public static LessonClass getLesson(String lessonTitle){
         if (fractionMeaning.getTitle().equals(lessonTitle)){
             fractionMeaning.setExercises(new ArrayList<ExerciseStat>());
             fractionMeaning.getExercises().add(
@@ -288,8 +287,8 @@ public abstract class LessonArchive {
 
         return null;
     }
-    public static ArrayList<Lesson> getAllLessons(){
-        ArrayList<Lesson> lessons = new ArrayList<>();
+    public static ArrayList<LessonClass> getAllLessons(){
+        ArrayList<LessonClass> lessons = new ArrayList<>();
         lessons.add(getLesson(fractionMeaning.getTitle()));
         lessons.add(getLesson(nonVisualFraction.getTitle()));
         lessons.add(getLesson(comparingSimilarFractions.getTitle()));

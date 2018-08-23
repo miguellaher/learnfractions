@@ -6,6 +6,7 @@ import com.example.laher.learnfractions.util.FractionUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class OrderingDissimilarQuestion extends FractionQuestionClass {
     private Fraction fraction1;
@@ -55,10 +56,16 @@ public class OrderingDissimilarQuestion extends FractionQuestionClass {
         fractions.add(fraction2);
         fractions.add(fraction3);
         sortedFractions = fractions;
+        double doubleFraction1 = fraction1.toDouble();
+        double doubleFraction2 = fraction2.toDouble();
+        double doubleFraction3 = fraction3.toDouble();
         while ((fraction1.equals(fraction2) ||
                 fraction1.equals(fraction3) ||
                 fraction2.equals(fraction3)) ||
-                limitLcd(this.quotientLimit, fractions)){
+                limitLcd(this.quotientLimit, fractions) ||
+                doubleFraction1 == doubleFraction2 ||
+                doubleFraction1 == doubleFraction3 ||
+                doubleFraction2 == doubleFraction3){
             fraction1 = new Fraction();
             fraction2 = new Fraction();
             fraction3 = new Fraction();
@@ -67,10 +74,12 @@ public class OrderingDissimilarQuestion extends FractionQuestionClass {
             fractions.add(fraction2);
             fractions.add(fraction3);
             sortedFractions = fractions;
+            doubleFraction1 = fraction1.toDouble();
+            doubleFraction2 = fraction2.toDouble();
+            doubleFraction3 = fraction3.toDouble();
         }
-        int lcd = FractionUtil.getLcd(fractions);
-        this.lcd = lcd;
-        Collections.sort(sortedFractions);
+        this.lcd = FractionUtil.getLcd(fractions);
+        Collections.sort(sortedFractions, new SortFraction());
     }
 
     private boolean limitLcd(int quotientLimit, ArrayList<Fraction> fractions){
@@ -93,5 +102,18 @@ public class OrderingDissimilarQuestion extends FractionQuestionClass {
             return this.sortedFractions.equals(orderingDissimilarQuestion.sortedFractions);
         }
         return super.equals(obj);
+    }
+
+    private class SortFraction implements Comparator<Fraction>{
+        @Override
+        public int compare(Fraction o1, Fraction o2) {
+            if (o1.compare(o2)>0){
+                return 1;
+            } else if (o1.compare(o2)<0){
+                return -1;
+            } else {
+                return 0;
+            }
+        }
     }
 }

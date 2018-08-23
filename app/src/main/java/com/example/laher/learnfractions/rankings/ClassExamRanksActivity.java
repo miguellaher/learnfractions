@@ -25,10 +25,8 @@ import com.example.laher.learnfractions.service.ExamStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.student_activities.ClassRanksActivity;
-import com.example.laher.learnfractions.teacher_activities.TeacherMainActivity;
-import com.example.laher.learnfractions.teacher_activities.dialogs.StudentExamStatDialog;
-import com.example.laher.learnfractions.teacher_activities.list_adapters.StudentExamProgressAdapter;
-import com.example.laher.learnfractions.teacher_activities.list_adapters.StudentExamProgressAdapter2;
+import com.example.laher.learnfractions.teacher.TeacherMainActivity;
+import com.example.laher.learnfractions.teacher.dialogs.StudentExamStatDialog;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 
@@ -217,7 +215,7 @@ public class ClassExamRanksActivity extends AppCompatActivity {
         ExamStatService.getAllStats(teacher.getTeacher_code(), service);
     }
     private void setListViewAdapter(){
-        mExamRankListAdapter = new ExamRankListAdapter(mContext, R.layout.exercise_rank_item, mExamStatAverages);
+        mExamRankListAdapter = new ExamRankListAdapter(mContext, R.layout.exercise_list_item, mExamStatAverages);
         mExamListView.setAdapter(mExamRankListAdapter);
         setListViewOnClickListener();
         btnBack.setOnClickListener(new View.OnClickListener() {

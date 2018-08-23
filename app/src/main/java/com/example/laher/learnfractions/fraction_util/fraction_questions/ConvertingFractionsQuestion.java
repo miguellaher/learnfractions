@@ -25,10 +25,10 @@ public class ConvertingFractionsQuestion extends FractionQuestionClass {
 
     public ConvertingFractionsQuestion(String modifier) {
         if (modifier.equals(IMPROPER_TO_MIXED)){
-            this.modifier = IMPROPER_TO_MIXED;
+            this.modifier = modifier;
             generateImproperFraction();
         } else if (modifier.equals(MIXED_TO_IMPROPER)){
-            this.modifier = MIXED_TO_IMPROPER;
+            this.modifier = modifier;
             generateMixedFraction();
         }
     }

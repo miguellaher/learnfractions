@@ -35,8 +35,10 @@ public class ComparingNumbersQuestion {
     }
 
     private void generateNumbers(){
-        int number1 = (int) (Math.random() * 9 + 1);
-        int number2 = (int) (Math.random() * 9 + 1);
+        int minimum = 1;
+        int maximum = 9;
+        int number1 = (int) (Math.random() * maximum + minimum);
+        int number2 = (int) (Math.random() * maximum + minimum);
         setNumber1(number1);
         setNumber2(number2);
     }

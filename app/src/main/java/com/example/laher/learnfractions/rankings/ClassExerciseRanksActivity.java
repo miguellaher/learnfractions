@@ -3,7 +3,6 @@ package com.example.laher.learnfractions.rankings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,7 +17,7 @@ import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.model.E_StatAverage;
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.ExerciseStat;
-import com.example.laher.learnfractions.model.Lesson;
+import com.example.laher.learnfractions.model.LessonClass;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.model.Teacher;
 import com.example.laher.learnfractions.rankings.list_adapters.ExerciseRankListAdapter;
@@ -35,7 +34,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class ClassExerciseRanksActivity extends AppCompatActivity {
     private static final String TAG = "ClassExerciseRanks";
@@ -166,8 +164,8 @@ public class ClassExerciseRanksActivity extends AppCompatActivity {
                         }
                         mExercises.add(exercise);
                     }
-                    ArrayList<Lesson> lessons = LessonArchive.getAllLessons();
-                    for(Lesson lesson : lessons){
+                    ArrayList<LessonClass> lessons = LessonArchive.getAllLessons();
+                    for(LessonClass lesson : lessons){
                         ArrayList<ExerciseStat> exerciseStats = lesson.getExercises();
                         try {
                             for (ExerciseStat lessonExercise : exerciseStats) {
@@ -196,7 +194,7 @@ public class ClassExerciseRanksActivity extends AppCompatActivity {
         ExerciseService.getUpdates(teacher.getTeacher_code(), service);
     }
     private void setListView(){
-        ExerciseRankListAdapter exerciseListAdapter = new ExerciseRankListAdapter(mContext, R.layout.exercise_rank_item, mExerciseStatsAverage);
+        ExerciseRankListAdapter exerciseListAdapter = new ExerciseRankListAdapter(mContext, R.layout.exercise_list_item, mExerciseStatsAverage);
         listView.setAdapter(exerciseListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

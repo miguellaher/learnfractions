@@ -1,5 +1,7 @@
 package com.example.laher.learnfractions.fraction_util.fraction_questions;
 
+import android.util.Log;
+
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -32,9 +34,9 @@ public class ComparingSimilarQuestion extends FractionQuestionClass {
 
     @Override
     public Fraction getFractionAnswer() {
-        if (this.fraction1.compare(fraction2)>0){
+        if (this.fraction1.compare(this.fraction2)>0){
             return this.fraction1;
-        } else if (this.fraction1.compare(fraction2)<0){
+        } else if (this.fraction1.compare(this.fraction2)<0){
             return this.fraction2;
         } else {
             return AppConstants.EQUAL_FRACTIONS;

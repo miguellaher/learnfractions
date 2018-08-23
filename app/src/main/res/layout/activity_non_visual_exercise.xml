@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/nve_imgLine"
             android:layout_width="100dp"
             android:layout_height="25dp"
             app:layout_constraintBottom_toTopOf="@+id/imgAvatar"
@@ -53,9 +53,9 @@
             android:layout_marginBottom="8dp"
             android:text="99"
             android:textSize="80sp"
-            app:layout_constraintBottom_toTopOf="@+id/imageView4"
-            app:layout_constraintEnd_toEndOf="@+id/imageView4"
-            app:layout_constraintStart_toStartOf="@+id/imageView4" />
+            app:layout_constraintBottom_toTopOf="@+id/nve_imgLine"
+            app:layout_constraintEnd_toEndOf="@+id/nve_imgLine"
+            app:layout_constraintStart_toStartOf="@+id/nve_imgLine" />
 
         <TextView
             android:id="@+id/b1_txtDenominator"
@@ -65,9 +65,9 @@
             android:text="99"
             android:textAlignment="center"
             android:textSize="80sp"
-            app:layout_constraintEnd_toEndOf="@+id/imageView4"
-            app:layout_constraintStart_toStartOf="@+id/imageView4"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+            app:layout_constraintEnd_toEndOf="@+id/nve_imgLine"
+            app:layout_constraintStart_toStartOf="@+id/nve_imgLine"
+            app:layout_constraintTop_toBottomOf="@+id/nve_imgLine" />
 
         <TextView
             android:id="@+id/b1_txtScore"

@@ -47,7 +47,7 @@
             app:layout_constraintTop_toTopOf="@+id/d2_btnEquals" />
 
         <ImageView
-            android:id="@+id/d2_imgAvatar"
+            android:id="@+id/cde2_imgAvatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginBottom="8dp"
@@ -65,10 +65,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="compare the two fractions"
-            app:layout_constraintBottom_toBottomOf="@+id/d2_imgAvatar"
+            app:layout_constraintBottom_toBottomOf="@+id/cde2_imgAvatar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/d2_imgAvatar"
-            app:layout_constraintTop_toTopOf="@+id/d2_imgAvatar" />
+            app:layout_constraintStart_toEndOf="@+id/cde2_imgAvatar"
+            app:layout_constraintTop_toTopOf="@+id/cde2_imgAvatar" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout3"
@@ -101,9 +101,9 @@
                 android:layout_height="wrap_content"
                 android:text="99"
                 android:textSize="60sp"
-                app:layout_constraintEnd_toEndOf="@+id/imageView10"
-                app:layout_constraintStart_toStartOf="@+id/imageView10"
-                app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+                app:layout_constraintEnd_toEndOf="@+id/imgLine2"
+                app:layout_constraintStart_toStartOf="@+id/imgLine2"
+                app:layout_constraintTop_toBottomOf="@+id/imgLine2" />
 
             <TextView
                 android:id="@+id/d2_txtNum2"
@@ -111,9 +111,9 @@
                 android:layout_height="wrap_content"
                 android:text="99"
                 android:textSize="60sp"
-                app:layout_constraintBottom_toTopOf="@+id/imageView10"
-                app:layout_constraintEnd_toEndOf="@+id/imageView10"
-                app:layout_constraintStart_toStartOf="@+id/imageView10" />
+                app:layout_constraintBottom_toTopOf="@+id/imgLine2"
+                app:layout_constraintEnd_toEndOf="@+id/imgLine2"
+                app:layout_constraintStart_toStartOf="@+id/imgLine2" />
 
             <TextView
                 android:id="@+id/d2_txtDenom1"
@@ -121,9 +121,9 @@
                 android:layout_height="wrap_content"
                 android:text="99"
                 android:textSize="60sp"
-                app:layout_constraintEnd_toEndOf="@+id/imageView9"
-                app:layout_constraintStart_toStartOf="@+id/imageView9"
-                app:layout_constraintTop_toBottomOf="@+id/imageView9" />
+                app:layout_constraintEnd_toEndOf="@+id/imgLine1"
+                app:layout_constraintStart_toStartOf="@+id/imgLine1"
+                app:layout_constraintTop_toBottomOf="@+id/imgLine1" />
 
             <TextView
                 android:id="@+id/d2_txtNum1"
@@ -131,12 +131,12 @@
                 android:layout_height="wrap_content"
                 android:text="99"
                 android:textSize="60sp"
-                app:layout_constraintBottom_toTopOf="@+id/imageView9"
-                app:layout_constraintEnd_toEndOf="@+id/imageView9"
-                app:layout_constraintStart_toStartOf="@+id/imageView9" />
+                app:layout_constraintBottom_toTopOf="@+id/imgLine1"
+                app:layout_constraintEnd_toEndOf="@+id/imgLine1"
+                app:layout_constraintStart_toStartOf="@+id/imgLine1" />
 
             <ImageView
-                android:id="@+id/imageView10"
+                android:id="@+id/imgLine2"
                 android:layout_width="80dp"
                 android:layout_height="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -145,12 +145,12 @@
                 app:srcCompat="@drawable/line" />
 
             <ImageView
-                android:id="@+id/imageView9"
+                android:id="@+id/imgLine1"
                 android:layout_width="80dp"
                 android:layout_height="25dp"
                 android:layout_marginEnd="64dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView10"
+                app:layout_constraintEnd_toStartOf="@+id/imgLine2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/line" />

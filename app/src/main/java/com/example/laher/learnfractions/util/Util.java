@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.util;
 
 import android.content.Context;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.laher.learnfractions.model.SeatWork;
@@ -42,6 +43,21 @@ public class Util {
         ParsePosition pos = new ParsePosition(0);
         formatter.parse(str, pos);
         return str.length() == pos.getIndex();
+    }
+    public static boolean randomBoolean(){
+        int randomNumber = (int) (Math.random() * 2 + 1);
+        if (randomNumber==1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isEditTextEmpty(EditText editText) {
+        if (editText.getText().toString().trim().length() > 0)
+            return false;
+
+        return true;
     }
 
 }

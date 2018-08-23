@@ -34,8 +34,8 @@ import com.example.laher.learnfractions.service.SeatWorkStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
-import com.example.laher.learnfractions.teacher_activities.TeacherMainActivity;
-import com.example.laher.learnfractions.teacher_activities.dialogs.SeatWorkUpdateDialog;
+import com.example.laher.learnfractions.teacher.TeacherMainActivity;
+import com.example.laher.learnfractions.teacher.dialogs.SeatWorkUpdateDialog;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 

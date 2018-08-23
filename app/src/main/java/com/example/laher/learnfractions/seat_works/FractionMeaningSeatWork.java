@@ -91,8 +91,8 @@ public class FractionMeaningSeatWork extends SeatWork {
         imgBox7 = findViewById(R.id.a1_imgBox7);
         imgBox8 = findViewById(R.id.a1_imgBox8);
         imgBox9 = findViewById(R.id.a1_imgBox9);
-        inputNum = findViewById(R.id.a1_numerator);
-        inputDenom = findViewById(R.id.a1_denominator);
+        inputNum = findViewById(R.id.fme2_inputNumerator);
+        inputDenom = findViewById(R.id.fme2_inputDenominator);
         inputNum.setEnabled(false);
         inputDenom.setEnabled(false);
         inputNum.setHintTextColor(Color.rgb(0,0,0));

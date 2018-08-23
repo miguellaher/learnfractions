@@ -1,9 +1,5 @@
 package com.example.laher.learnfractions.lessons.fraction_meaning;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,58 +8,76 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.archive.LessonArchive;
-import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.FractionMeaningQuestion;
-import com.example.laher.learnfractions.model.Exercise;
-import com.example.laher.learnfractions.model.ExerciseStat;
-import com.example.laher.learnfractions.model.Student;
-import com.example.laher.learnfractions.service.ExerciseService;
-import com.example.laher.learnfractions.service.ExerciseStatService;
-import com.example.laher.learnfractions.service.Service;
-import com.example.laher.learnfractions.service.ServiceResponse;
+import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.AppIDs;
 
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FractionMeaningExerciseActivity extends AppCompatActivity {
-    private static final String TAG = "FM_E1";
-    Context mContext = this;
-    Exercise exercise;
-    ExerciseStat mExerciseStat;
-    //GUI
-    ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
-    Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
-    TextView txtScore, txtInstruction;
-    //TOOLBAR
-    Button btnBack, btnNext;
-    TextView txtTitle;
-    public final String TITLE = "Fraction Meaning";
+import pl.droidsonroids.gif.GifImageView;
 
-    //VARIABLES
+public class FractionMeaningExerciseActivity extends LessonExercise {
+    private static final String TAG = "FM_E1";
+    //GUI
+    ImageView imgBox1;
+    ImageView imgBox2;
+    ImageView imgBox3;
+    ImageView imgBox4;
+    ImageView imgBox5;
+    ImageView imgBox6;
+    ImageView imgBox7;
+    ImageView imgBox8;
+    ImageView imgBox9;
+    GifImageView gifAvatar;
+    Button btnChoice1;
+    Button btnChoice2;
+    Button btnChoice3;
+    Button btnChoice4;
+    TextView txtScore;
+    TextView txtInstruction;
+
+    public String title = "Fraction Meaning\nex.1"; // IMPORTANT VAR
+    String id = AppIDs.FME_ID; // IMPORTANT VAR
+
+    //ACTIVITY VARIABLES
     ArrayList<String> instructions;
     String strCorrectAns;
-    int num, denom, correct, error;
-    public final String INSTRUCTION_DENOM = "Click how many parts the whole is divided into.";
+    int num;
+    int denominator;
+    public final String INSTRUCTION_DENOMINATOR = "Click how many parts the whole is divided into.";
     public final String INSTRUCTION_NUM = "Click how many parts we have.";
-    int requiredCorrects;
-    int maxErrors;
-    boolean correctsShouldBeConsecutive;
-    boolean errorsShouldBeConsecutive;
-    long startingTime, endingTime;
 
     ArrayList<FractionMeaningQuestion> mFractionMeaningQuestions;
     int mQuestionNum;
 
-    final Handler handler = new Handler();
+    public FractionMeaningExerciseActivity() {
+        super();
+        setId(id);
+        setExerciseTitle(title);
+        setMaxItemsSize();
+    }
+
+    /*@Override
+    protected void setMaxItemsSize() {
+        int range = getRange();
+        int product = 1;
+        while (range>0){
+            product = product * range;
+            range--;
+        }
+        setMaxItemsSize(product);
+    }*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_meaning_exercise);
+        setId(id);
+        setExerciseTitle(title);
+        super.onCreate(savedInstanceState);
+
         imgBox1 = findViewById(R.id.a_imgBox1);
         imgBox2 = findViewById(R.id.a_imgBox2);
         imgBox3 = findViewById(R.id.a_imgBox3);
@@ -73,6 +87,9 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         imgBox7 = findViewById(R.id.a_imgBox7);
         imgBox8 = findViewById(R.id.a_imgBox8);
         imgBox9 = findViewById(R.id.a_imgBox9);
+        gifAvatar = findViewById(R.id.a_imgAvatar);
+        int gifID = R.drawable.adventure_frits;
+        gifAvatar.setImageResource(gifID);
         btnChoice1 = findViewById(R.id.btnChoice1);
         btnChoice2 = findViewById(R.id.btnChoice2);
         btnChoice3 = findViewById(R.id.btnChoice3);
@@ -83,99 +100,34 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         btnChoice4.setOnClickListener(new BtnChoiceListener());
         txtInstruction = findViewById(R.id.txtInstruction);
         txtScore = findViewById(R.id.txtScore);
-        btnBack = findViewById(R.id.btnBack);
-        btnNext = findViewById(R.id.btnNext);
-        btnBack.setOnClickListener(new BtnBackListener());
-        btnNext.setOnClickListener(new BtnNextListener());
-        txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(TITLE);
 
         instructions = new ArrayList<>();
-        instructions.add(INSTRUCTION_DENOM);
+        instructions.add(INSTRUCTION_DENOMINATOR);
         instructions.add(INSTRUCTION_NUM);
-        correct = 0;
-        error = 0;
 
-        int EXERCISE_NUM = 1;
-        exercise = LessonArchive.getLesson(AppConstants.FRACTION_MEANING).getExercises().get(EXERCISE_NUM - 1);
-        setAttributes((ExerciseStat) exercise);
-        if (!Storage.isEmpty()) {
-            checkUpdate();
-        }
-
-        startingTime = System.currentTimeMillis();
-        go();
+        startExercise(); // IMPORTANT METHOD
     }
 
-    public void setAttributes(ExerciseStat exerciseAtt){
-        Log.d(TAG, "set attributes");
-        requiredCorrects = exerciseAtt.getRequiredCorrects();
-        maxErrors = exerciseAtt.getMaxErrors();
-        correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
-        errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
-        mExerciseStat = exerciseAtt;
-        mExerciseStat.setTopicName(exercise.getTopicName());
-        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
-        showScore();
-    }
-    public void checkUpdate(){
-        if (Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)){
-            Service service = new Service("Checking for updates...", mContext, new ServiceResponse() {
-                @Override
-                public void postExecute(JSONObject response) {
-                    try {
-                        Log.d(TAG, "*service post execute");
-                        Exercise updatedExercise = new ExerciseStat();
-                        Log.d(TAG, "rc:" + response.optString("required_corrects"));
-                        Log.d(TAG, "rcc:" + response.optString("rc_consecutive"));
-                        Log.d(TAG, "me:" + response.optString("max_errors"));
-                        Log.d(TAG, "mec:" + response.optString("me_consecutive"));
-                        updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
-                        if (response.optString("rc_consecutive").equals("1")) {
-                            updatedExercise.setRc_consecutive(true);
-                        } else {
-                            updatedExercise.setRc_consecutive(false);
-                        }
-                        updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
-                        if (response.optString("me_consecutive").equals("1")) {
-                            updatedExercise.setMe_consecutive(true);
-                        } else {
-                            updatedExercise.setMe_consecutive(false);
-                        }
-                        setAttributes((ExerciseStat) updatedExercise);
-                        startingTime = System.currentTimeMillis();
-                    } catch (Exception e){e.printStackTrace();}
-                }
-            });
-            Student student = new Student();
-            student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
-            ExerciseService.getUpdate(exercise, student, service);
-        }
-    }
-    public void go(){
-        btnNext.setEnabled(false);
-
-        generateFractionQuestions();
-    }
     public void generateFractionQuestions(){
         mFractionMeaningQuestions = new ArrayList<>();
         mQuestionNum = 1;
         int item_size;
+        int requiredCorrects = getItemsSize();
         if (requiredCorrects%2!=0){
             item_size = requiredCorrects/2+1;
         } else {
             item_size = requiredCorrects/2;
         }
         for (int i = 0; i < item_size; i++){
-            FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion();
+            FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion(1,9);
             while (mFractionMeaningQuestions.contains(fractionMeaningQuestion)){
-                fractionMeaningQuestion = new FractionMeaningQuestion();
+                fractionMeaningQuestion = new FractionMeaningQuestion(1,9);
             }
             mFractionMeaningQuestions.add(fractionMeaningQuestion);
         }
         for (FractionMeaningQuestion fractionMeaningQuestion : mFractionMeaningQuestions) {
             Log.d(TAG, "num: " + fractionMeaningQuestion.getNumeratorAnswer());
-            Log.d(TAG, "denom: " + fractionMeaningQuestion.getDenominatorAnswer());
+            Log.d(TAG, "denominator: " + fractionMeaningQuestion.getDenominatorAnswer());
             Log.d(TAG, "------------------------------------");
         }
         Log.d(TAG, "size: " + mFractionMeaningQuestions.size());
@@ -183,13 +135,13 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     }
     public void setBoxes(){
         num = mFractionMeaningQuestions.get(mQuestionNum-1).getNumerator();
-        denom = mFractionMeaningQuestions.get(mQuestionNum-1).getDenominator();
-        denom = denom - num;
+        denominator = mFractionMeaningQuestions.get(mQuestionNum-1).getDenominator();
+        denominator = denominator - num;
         ArrayList<Integer> imageList = new ArrayList<>();
         for (int i = 1; i <= num; i++){
             imageList.add(R.drawable.chocolate);
         }
-        for (int i = 1; i <= denom; i++){
+        for (int i = 1; i <= denominator; i++){
             imageList.add(R.drawable.chocosmudge);
         }
         for (int i = imageList.size(); i <= 9; i++){
@@ -208,27 +160,27 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
     }
     public void setButtonChoices(){
         int correctAnswer = Integer.valueOf(strCorrectAns);
-        ArrayList<Integer> choiceNums = new ArrayList<>();
+        ArrayList<Integer> choiceNumbers = new ArrayList<>();
         //FOUR CHOICES
-        choiceNums.add(correctAnswer);
+        choiceNumbers.add(correctAnswer);
         int randomNum;
         for(int i = 0; i < 3; i++){
             randomNum = (int) (Math.random() * 9 + 1);
-            while (choiceNums.contains(randomNum)){
+            while (choiceNumbers.contains(randomNum)){
                 randomNum = (int) (Math.random() * 9 + 1);
             }
-            choiceNums.add(randomNum);
+            choiceNumbers.add(randomNum);
         }
-        Collections.shuffle(choiceNums);
-        btnChoice1.setText(String.valueOf(choiceNums.get(0)));
-        btnChoice2.setText(String.valueOf(choiceNums.get(1)));
-        btnChoice3.setText(String.valueOf(choiceNums.get(2)));
-        btnChoice4.setText(String.valueOf(choiceNums.get(3)));
+        Collections.shuffle(choiceNumbers);
+        btnChoice1.setText(String.valueOf(choiceNumbers.get(0)));
+        btnChoice2.setText(String.valueOf(choiceNumbers.get(1)));
+        btnChoice3.setText(String.valueOf(choiceNumbers.get(2)));
+        btnChoice4.setText(String.valueOf(choiceNumbers.get(3)));
     }
     public void setTxtInstruction(){
         Collections.shuffle(instructions);
         txtInstruction.setText(instructions.get(0));
-        if(instructions.get(0).equals(INSTRUCTION_DENOM)){
+        if(instructions.get(0).equals(INSTRUCTION_DENOMINATOR)){
             strCorrectAns = String.valueOf(mFractionMeaningQuestions.get(mQuestionNum-1).getDenominator());
         } else if (instructions.get(0).equals(INSTRUCTION_NUM)){
             strCorrectAns = String.valueOf(mFractionMeaningQuestions.get(mQuestionNum-1).getNumerator());
@@ -236,154 +188,119 @@ public class FractionMeaningExerciseActivity extends AppCompatActivity {
         setButtonChoices();
     }
 
-    private void setFinalAttributes(){
-        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
-            @Override
-            public void postExecute(JSONObject response) {
-                try{
-                    Log.d(TAG, "post execute");
-                    Log.d(TAG, "message: " + response.optString("message"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        mExerciseStat.setDone(true);
-        mExerciseStat.setTime_spent(endingTime-startingTime);
-        Student student = new Student();
-        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
-        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
-        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
-        mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
-        "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
-        mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
-        mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
-        ExerciseStatService.postStats(student,mExerciseStat,service);
-    }
-
-    public void showScore(){
-        Log.d(TAG, "c:"+correct);
-        Log.d(TAG, "rc:"+requiredCorrects);
-        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
-    }
     public class BtnChoiceListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             Button choice = (Button) view;
             if (choice.getText() == strCorrectAns) {
-                //FOR TESTS
-                //txtInstruction.setText("correct " + choice.getText() + " / " + strCorrectAns + " " + correct);
-                if (errorsShouldBeConsecutive) {
-                    error = 0;
-                }
-                correct++;
-                showScore();
-                txtInstruction.setText(AppConstants.CORRECT);
-                btnChoice1.setEnabled(false);
-                btnChoice2.setEnabled(false);
-                btnChoice3.setEnabled(false);
-                btnChoice4.setEnabled(false);
-                if (correct >= requiredCorrects) {
-                    endingTime = System.currentTimeMillis();
-                    if (!Storage.isEmpty()) {
-                        setFinalAttributes();
-                    }
-                    txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
-                    btnNext.setEnabled(true);
-                } else {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            btnChoice1.setEnabled(true);
-                            btnChoice2.setEnabled(true);
-                            btnChoice3.setEnabled(true);
-                            btnChoice4.setEnabled(true);
-
-                            instructions.remove(0);
-                            if (instructions.size() == 0) {
-                                instructions.add(INSTRUCTION_DENOM);
-                                instructions.add(INSTRUCTION_NUM);
-                                mQuestionNum++;
-                                setBoxes();
-                            } else {
-                                setTxtInstruction();
-                            }
-                        }
-                    }, 2000);
-
-                }
+                correct();// IMPORTANT METHOD
             } else {
-                if (correctsShouldBeConsecutive) {
-                    correct = 0;
-                }
-                error++;
-                mExerciseStat.incrementError();
-                txtInstruction.setText(AppConstants.ERROR);
-                showScore();
-                btnChoice1.setEnabled(false);
-                btnChoice2.setEnabled(false);
-                btnChoice3.setEnabled(false);
-                btnChoice4.setEnabled(false);
-                if (error >= maxErrors) {
-                    if (errorsShouldBeConsecutive) {
-                        txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
-                    } else {
-                        txtInstruction.setText(AppConstants.FAILED(error));
-                    }
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(FractionMeaningExerciseActivity.this,
-                                    FractionMeaningVideoActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }
-                    }, 3000);
-                } else {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                        btnChoice1.setEnabled(true);
-                        btnChoice2.setEnabled(true);
-                        btnChoice3.setEnabled(true);
-                        btnChoice4.setEnabled(true);
-
-                        if (correctsShouldBeConsecutive) {
-                            generateFractionQuestions();
-                        } else {
-                            FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion();
-                            while (mFractionMeaningQuestions.contains(fractionMeaningQuestion)){
-                                fractionMeaningQuestion = new FractionMeaningQuestion();
-                            }
-                            mFractionMeaningQuestions.add(fractionMeaningQuestion);
-                            setBoxes();
-                        }
-                        }
-                    }, 2000);
-                }
-                //FOR TESTS
-                //txtInstruction.setText("error " + choice.getText() + " / " + strCorrectAns);
+                wrong();// IMPORTANT METHOD
             }
         }
     }
 
-    public class BtnBackListener implements Button.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(FractionMeaningExerciseActivity.this,
-                    FractionMeaningVideoActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+    @Override
+    public void showScore(){
+        super.showScore();
+        int correct = getCorrect();
+        int itemsSize = getItemsSize();
+        Log.d(TAG, "c:"+correct);
+        Log.d(TAG, "rc:"+itemsSize);
+        txtScore.setText(AppConstants.SCORE(correct,itemsSize));
+    }
+
+    @Override
+    protected void startExercise() {
+        super.startExercise();
+        generateFractionQuestions();
+    }
+
+    @Override
+    protected void preAnswered() {
+        super.preAnswered();
+        btnChoice1.setEnabled(false);
+        btnChoice2.setEnabled(false);
+        btnChoice3.setEnabled(false);
+        btnChoice4.setEnabled(false);
+    }
+
+    @Override
+    protected void postAnswered() {
+        super.postAnswered();
+        btnChoice1.setEnabled(true);
+        btnChoice2.setEnabled(true);
+        btnChoice3.setEnabled(true);
+        btnChoice4.setEnabled(true);
+    }
+
+    @Override
+    protected void preCorrect() {
+        super.preCorrect();
+        txtInstruction.setText(AppConstants.CORRECT);
+    }
+
+    @Override
+    protected void postCorrect() {
+        super.postCorrect();
+        instructions.remove(0);
+        if (instructions.size() == 0) {
+            instructions.add(INSTRUCTION_DENOMINATOR);
+            instructions.add(INSTRUCTION_NUM);
+            mQuestionNum++;
+            setBoxes();
+        } else {
+            setTxtInstruction();
         }
     }
 
-    public class BtnNextListener implements Button.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(FractionMeaningExerciseActivity.this,
-                    FractionMeaningExercise2Activity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+    @Override
+    protected void preFinished() {
+        super.preFinished();
+        txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+    }
+
+    @Override
+    protected void preWrong() {
+        super.preWrong();
+        txtInstruction.setText(AppConstants.ERROR);
+    }
+
+    @Override
+    protected void postWrong() {
+        super.postWrong();
+        final boolean correctsShouldBeConsecutive = isCorrectsShouldBeConsecutive();
+        if (correctsShouldBeConsecutive) {
+            generateFractionQuestions();
+        } else {
+            FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion(1,9);
+            int questionsSize = mFractionMeaningQuestions.size();
+            int maxSize = getMaxItemsSize();
+            while (mFractionMeaningQuestions.contains(fractionMeaningQuestion) && questionsSize<=maxSize){
+                fractionMeaningQuestion = new FractionMeaningQuestion(1,9);
+            }
+            mFractionMeaningQuestions.add(fractionMeaningQuestion);
+            instructions.remove(0);
+            if (instructions.size() == 0) {
+                instructions.add(INSTRUCTION_DENOMINATOR);
+                instructions.add(INSTRUCTION_NUM);
+                mQuestionNum++;
+                setBoxes();
+            } else {
+                setTxtInstruction();
+            }
         }
+    }
+
+    @Override
+    protected void preFailWrongsAreConsecutive() {
+        super.preFailWrongsAreConsecutive();
+        txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(getWrong()));
+    }
+
+    @Override
+    protected void preFailWrongsAreNotConsecutive() {
+        super.preFailWrongsAreNotConsecutive();
+        txtInstruction.setText(AppConstants.FAILED(getWrong()));
     }
 }

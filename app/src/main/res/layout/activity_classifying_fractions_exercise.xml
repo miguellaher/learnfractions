@@ -91,9 +91,9 @@
                 android:layout_height="wrap_content"
                 android:text="99"
                 android:textSize="80sp"
-                app:layout_constraintBottom_toTopOf="@+id/imageView12"
-                app:layout_constraintEnd_toEndOf="@+id/imageView12"
-                app:layout_constraintStart_toStartOf="@+id/imageView12" />
+                app:layout_constraintBottom_toTopOf="@+id/cfe_imgLine"
+                app:layout_constraintEnd_toEndOf="@+id/cfe_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/cfe_imgLine" />
 
             <TextView
                 android:id="@+id/clF_txtWholeNum"
@@ -102,7 +102,7 @@
                 android:text="99"
                 android:textSize="80sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView12"
+                app:layout_constraintEnd_toStartOf="@+id/cfe_imgLine"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -112,12 +112,12 @@
                 android:layout_height="wrap_content"
                 android:text="99"
                 android:textSize="80sp"
-                app:layout_constraintEnd_toEndOf="@+id/imageView12"
-                app:layout_constraintStart_toStartOf="@+id/imageView12"
-                app:layout_constraintTop_toBottomOf="@+id/imageView12" />
+                app:layout_constraintEnd_toEndOf="@+id/cfe_imgLine"
+                app:layout_constraintStart_toStartOf="@+id/cfe_imgLine"
+                app:layout_constraintTop_toBottomOf="@+id/cfe_imgLine" />
 
             <ImageView
-                android:id="@+id/imageView12"
+                android:id="@+id/cfe_imgLine"
                 android:layout_width="100dp"
                 android:layout_height="25dp"
                 android:layout_marginBottom="8dp"

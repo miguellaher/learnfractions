@@ -39,7 +39,7 @@ public class SeatWorkRankListAdapter extends ArrayAdapter<SW_StatAverage> {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(mResource, parent, false);
             holder = new ViewHolder();
-            holder.textView1 = convertView.findViewById(R.id.exercise_rank_item_txtView1);
+            holder.textView1 = convertView.findViewById(R.id.exercise_list_item_txtView1);
 
             result = convertView;
 

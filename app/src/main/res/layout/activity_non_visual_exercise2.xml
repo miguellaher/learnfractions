@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/nve2_imgLine"
             android:layout_width="100dp"
             android:layout_height="25dp"
             android:layout_marginEnd="8dp"
@@ -55,9 +55,9 @@
             android:layout_marginBottom="8dp"
             android:text="99"
             android:textSize="80sp"
-            app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView" />
+            app:layout_constraintBottom_toTopOf="@+id/nve2_imgLine"
+            app:layout_constraintEnd_toEndOf="@+id/nve2_imgLine"
+            app:layout_constraintStart_toStartOf="@+id/nve2_imgLine" />
 
         <TextView
             android:id="@+id/b2_txtDenominator"
@@ -67,9 +67,9 @@
             android:text="99"
             android:textAlignment="center"
             android:textSize="80sp"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintEnd_toEndOf="@+id/nve2_imgLine"
+            app:layout_constraintStart_toStartOf="@+id/nve2_imgLine"
+            app:layout_constraintTop_toBottomOf="@+id/nve2_imgLine" />
 
         <TextView
             android:id="@+id/b2_txtScore"

@@ -22,6 +22,13 @@ public class MixedFraction extends Fraction {
         setModifier(MIXED);
     }
 
+    public Fraction getImproperFraction(){
+        int product = getDenominator() * getWholeNumber();
+        int sum = product + getNumerator();
+        Fraction improperFraction = new Fraction(sum, getDenominator());
+        return improperFraction;
+    }
+
     @Override
     public void generateFraction() {
         super.generateFraction();

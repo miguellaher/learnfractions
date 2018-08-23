@@ -32,7 +32,7 @@
             android:name=".lessons.fraction_meaning.FractionMeaningExercise2Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TopicsMenuActivity"
+            android:name=".LessonsMenuActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".lessons.non_visual_fraction.NonVisualVideoActivity"
@@ -167,10 +167,10 @@
             android:name=".admin_activities.UserListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".teacher_activities.TeacherMainActivity"
+            android:name=".teacher.TeacherMainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".teacher_activities.ExercisesListActivity"
+            android:name=".teacher.ExercisesListActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".student_activities.StudentMainActivity"
@@ -220,16 +220,21 @@
         <activity
             android:name=".seat_works.MultiplyDivideMixedFractionsSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".teacher_activities.StudentSWProgressActivity" />
-        <activity android:name=".teacher_activities.StudentEProgressActivity" />
+        <activity android:name=".teacher.StudentSWProgressActivity" />
+        <activity android:name=".teacher.StudentEProgressActivity" />
         <activity android:name=".ChapterExamListActivity" />
         <activity android:name=".model.ChapterExam" />
-        <activity android:name=".teacher_activities.StudentExamProgressActivity" />
-        <activity android:name=".teacher_activities.ManageExamsActivity" />
+        <activity android:name=".teacher.StudentExamProgressActivity" />
+        <activity android:name=".teacher.ManageExamsActivity" />
         <activity android:name=".student_activities.ClassRanksActivity"></activity>
         <activity android:name=".rankings.ClassExerciseRanksActivity" />
         <activity android:name=".rankings.ClassExamRanksActivity" />
         <activity android:name=".rankings.ClassSeatWorkRanksActivity" />
+        <activity android:name=".parent_activities.Lesson" />
+        <activity android:name=".parent_activities.LessonVideo" />
+        <activity android:name=".parent_activities.LessonExercise" />
+        <activity android:name=".teacher2.LessonExercisesListActivity" />
+        <activity android:name=".parent_activities.MainFrame" />
     </application>
 
 </manifest>

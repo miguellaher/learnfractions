@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.Util;
 import com.loopj.android.http.RequestParams;
 
@@ -41,6 +42,54 @@ public class ExerciseStatService {
                 exerciseStat.getRequiredCorrects() + "; rc_consecutive: " + exerciseStat.isRc_consecutive() + "; max_errors: " +
                 exerciseStat.getMaxErrors() + "; me_consecutive: " + exerciseStat.isMe_consecutive());
         service.post("http://jabahan.com/learnfractions/e_stat/create.php", requestParams);
+        service.execute();
+    }
+    public static void post(LessonExercise exercise, Service service){
+        RequestParams params = new RequestParams();
+        Student student = exercise.getStudent();
+
+
+        String teacher_code = student.getTeacher_code();
+        String student_id = student.getId();
+        String exercise_id = exercise.getId();
+        String title = exercise.getExerciseTitle();
+
+        long timeSpent = exercise.getTimeSpent();
+        int totalWrongs = exercise.getTotalWrongs();
+
+        int items_size = exercise.getItemsSize();
+        boolean rcc = exercise.isCorrectsShouldBeConsecutive();
+        int max_wrong = exercise.getMaxWrong();
+        boolean mec = exercise.isWrongsShouldBeConsecutive();
+
+
+        String strTimeSpent = String.valueOf(timeSpent);
+        String strTotalWrongs = String.valueOf(totalWrongs);
+        Log.d(TAG, "total wrongs: " + strTotalWrongs);
+        String strItemsSize = String.valueOf(items_size);
+        String strRCC = "0";
+        if (rcc){
+            strRCC = "1";
+        }
+        String strMaxWrong = String.valueOf(max_wrong);
+        String strMEC = "1";
+        if (!mec){
+            strMEC = "0";
+        }
+
+        params.put("teacher_code", teacher_code);
+        params.put("student_id", student_id);
+        params.put("exercise_id", exercise_id);
+        params.put("title", title);
+
+        params.put("time_spent", strTimeSpent);
+        params.put("total_wrongs", strTotalWrongs);
+        params.put("required_corrects", strItemsSize);
+        params.put("rc_consecutive", strRCC);
+        params.put("max_errors", strMaxWrong);
+        params.put("me_consecutive", strMEC);
+
+        service.post("http://jabahan.com/learnfractions/e_stat/insert.php", params);
         service.execute();
     }
     public static void getAllStats(String teacher_code, Service service){

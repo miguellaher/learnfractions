@@ -53,6 +53,10 @@ public class OrderingNumbersQuestion {
             number2 = (int) (Math.random() * 9 + 1);
             number3 = (int) (Math.random() * 9 + 1);
         }
+        setNumber1(number1);
+        setNumber2(number2);
+        setNumber3(number3);
+        numbers = new ArrayList<>();
         numbers.add(number1);
         numbers.add(number2);
         numbers.add(number3);

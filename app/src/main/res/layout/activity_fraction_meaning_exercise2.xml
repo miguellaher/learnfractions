@@ -10,8 +10,53 @@
     <include layout="@layout/layout_toolbar" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/fme2_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/fme2_imgLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/a1_imgBox8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/a1_imgBox6"
+            app:layout_constraintTop_toTopOf="@+id/a1_imgBox2"
+            app:srcCompat="@drawable/line" />
+
+        <EditText
+            android:id="@+id/fme2_inputDenominator"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="number"
+            android:maxLength="2"
+            android:text="99"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@+id/fme2_imgLine"
+            app:layout_constraintStart_toStartOf="@+id/fme2_imgLine"
+            app:layout_constraintTop_toBottomOf="@+id/fme2_imgLine" />
+
+        <EditText
+            android:id="@+id/fme2_inputNumerator"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:inputType="number"
+            android:maxLength="2"
+            android:text="99"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/fme2_imgLine"
+            app:layout_constraintEnd_toEndOf="@+id/fme2_imgLine"
+            app:layout_constraintStart_toStartOf="@+id/fme2_imgLine" />
 
         <ImageView
             android:id="@+id/a1_imgBox4"
@@ -23,53 +68,6 @@
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@android:color/background_light" />
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="48dp"
-            app:layout_constraintBottom_toBottomOf="@+id/a1_imgBox8"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/a1_imgBox2">
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/line" />
-
-            <EditText
-                android:id="@+id/a1_denominator"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:ems="10"
-                android:inputType="number"
-                android:maxLength="2"
-                android:text="99"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                app:layout_constraintStart_toStartOf="@+id/imageView2"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-            <EditText
-                android:id="@+id/a1_numerator"
-                android:layout_width="0dp"
-                android:layout_height="49dp"
-                android:ems="10"
-                android:inputType="number"
-                android:maxLength="2"
-                android:text="99"
-                android:textAlignment="center"
-                app:layout_constraintBottom_toTopOf="@+id/imageView2"
-                app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                app:layout_constraintStart_toStartOf="@+id/imageView2" />
-        </android.support.constraint.ConstraintLayout>
-
         <ImageView
             android:id="@+id/a1_imgBox6"
             android:layout_width="50dp"
@@ -80,11 +78,12 @@
             app:srcCompat="@android:color/background_light" />
 
         <ImageView
-            android:id="@+id/a1_imgAvatar"
+            android:id="@+id/fme2_imgAvatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/avatar" />
@@ -116,7 +115,8 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.35"
@@ -148,10 +148,10 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
             android:text="fill in the blanks"
-            app:layout_constraintBottom_toBottomOf="@+id/a1_imgAvatar"
+            app:layout_constraintBottom_toBottomOf="@+id/fme2_imgAvatar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/a1_imgAvatar"
-            app:layout_constraintTop_toTopOf="@+id/a1_imgAvatar" />
+            app:layout_constraintStart_toEndOf="@+id/fme2_imgAvatar"
+            app:layout_constraintTop_toTopOf="@+id/fme2_imgAvatar" />
 
         <ImageView
             android:id="@+id/a1_imgBox8"
@@ -187,9 +187,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="OK"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            app:layout_constraintEnd_toEndOf="@+id/fme2_inputDenominator"
+            app:layout_constraintStart_toStartOf="@+id/fme2_inputDenominator"
+            app:layout_constraintTop_toBottomOf="@+id/fme2_inputDenominator" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/a1_clChoices"

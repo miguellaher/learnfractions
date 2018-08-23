@@ -13,8 +13,7 @@ import com.example.laher.learnfractions.ChapterExamListActivity;
 import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
-import com.example.laher.learnfractions.TopicsMenuActivity;
-import com.example.laher.learnfractions.adapters.ChapterExamListAdapter;
+import com.example.laher.learnfractions.LessonsMenuActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
@@ -62,7 +61,7 @@ public class StudentMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StudentMainActivity.this,
-                        TopicsMenuActivity.class);
+                        LessonsMenuActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }

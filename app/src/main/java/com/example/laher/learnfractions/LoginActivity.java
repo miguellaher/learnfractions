@@ -27,7 +27,7 @@ import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.service.StudentService;
 import com.example.laher.learnfractions.service.TeacherService;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
-import com.example.laher.learnfractions.teacher_activities.TeacherMainActivity;
+import com.example.laher.learnfractions.teacher.TeacherMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         if (!isNetworkAvailable()){
             Storage.logout(mContext);
             Intent intent = new Intent(LoginActivity.this,
-                    TopicsMenuActivity.class);
+                    LessonsMenuActivity.class);
             startActivity(intent);
         }
         if (Storage.load(mContext,Storage.STUDENT_ID)!=null){

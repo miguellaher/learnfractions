@@ -59,7 +59,7 @@ public class SW_StatAverage extends SeatWork implements Comparable<SW_StatAverag
         int o1Position = 0;
         int o2Position = 0;
         int i = 0;
-        for (Lesson lesson : LessonArchive.getAllLessons()){
+        for (LessonClass lesson : LessonArchive.getAllLessons()){
             if (o.getTopicName().equals(lesson.getTitle())){
                 o1Position = i;
             }

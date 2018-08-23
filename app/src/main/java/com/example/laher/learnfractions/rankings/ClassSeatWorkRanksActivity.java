@@ -24,10 +24,6 @@ import com.example.laher.learnfractions.service.SeatWorkStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.student_activities.ClassRanksActivity;
-import com.example.laher.learnfractions.student_activities.StudentMainActivity;
-import com.example.laher.learnfractions.teacher_activities.TeacherMainActivity;
-import com.example.laher.learnfractions.teacher_activities.list_adapters.StudentSWProgressAdapter;
-import com.example.laher.learnfractions.teacher_activities.list_adapters.StudentSWProgressAdapter2;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Util;
@@ -188,7 +184,7 @@ public class ClassSeatWorkRanksActivity extends AppCompatActivity {
     }
 
     private void setListViewAdapter(){
-        mSeatWorkRankListAdapter = new SeatWorkRankListAdapter(mContext,R.layout.exercise_rank_item, mStatAverages);
+        mSeatWorkRankListAdapter = new SeatWorkRankListAdapter(mContext,R.layout.exercise_list_item, mStatAverages);
         studentSWProgressListView.setAdapter(mSeatWorkRankListAdapter);
         setListViewOnClickListener();
         btnBack.setOnClickListener(new View.OnClickListener() {

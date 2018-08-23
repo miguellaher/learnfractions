@@ -1,8 +1,6 @@
 package com.example.laher.learnfractions.service;
 
-import com.example.laher.learnfractions.archive.LessonArchive;
 import com.example.laher.learnfractions.model.Admin;
-import com.example.laher.learnfractions.model.Lesson;
 import com.example.laher.learnfractions.util.Encryptor;
 import com.example.laher.learnfractions.util.Util;
 import com.loopj.android.http.RequestParams;

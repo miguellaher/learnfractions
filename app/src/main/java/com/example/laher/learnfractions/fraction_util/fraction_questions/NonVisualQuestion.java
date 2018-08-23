@@ -31,6 +31,10 @@ public class NonVisualQuestion extends FractionQuestionClass {
     public void randomizeFraction(){
         int numerator = (int) (Math.random() * 9 + 1);
         int denominator = (int) (Math.random() * 9 + 1);
+        while (numerator==denominator){
+            numerator = (int) (Math.random() * 9 + 1);
+            denominator = (int) (Math.random() * 9 + 1);
+        }
         setNumerator(numerator);
         setDenominator(denominator);
     }

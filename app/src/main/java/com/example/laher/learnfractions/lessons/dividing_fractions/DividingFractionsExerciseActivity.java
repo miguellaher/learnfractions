@@ -1,12 +1,10 @@
 package com.example.laher.learnfractions.lessons.dividing_fractions;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.TouchDelegate;
@@ -15,89 +13,67 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.laher.learnfractions.archive.LessonArchive;
-import com.example.laher.learnfractions.fraction_util.Fraction;
-import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.TopicsMenuActivity;
+import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.DividingFractionsQuestion;
-import com.example.laher.learnfractions.model.Exercise;
-import com.example.laher.learnfractions.model.Student;
-import com.example.laher.learnfractions.service.ExerciseService;
-import com.example.laher.learnfractions.service.Service;
-import com.example.laher.learnfractions.service.ServiceResponse;
+import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-public class DividingFractionsExerciseActivity extends AppCompatActivity {
-    Context mContext = this;
-
-    Exercise exercise;
-    final int EXERCISE_NUM = 1;
-
-    //TOOLBAR
-    Button btnBack, btnNext;
-    TextView txtTitle;
-    public final String TITLE = "Dividing Fraction";
+public class DividingFractionsExerciseActivity extends LessonExercise {
     //GUI
-    TextView txtNum1, txtNum2, txtNum3, txtNum4, txtDenom1, txtDenom2, txtDenom3, txtDenom4, txtEquation1, txtEquation2
-            , txtScore, txtInstruction, txtSign1, txtSign2;
-    EditText inputNum, inputDenom;
+    TextView txtNum1;
+    TextView txtNum2;
+    TextView txtNum3;
+    TextView txtNum4;
+    TextView txtDenom1;
+    TextView txtDenom2;
+    TextView txtDenom3;
+    TextView txtDenom4;
+    TextView txtEquation1;
+    TextView txtEquation2;
+    TextView txtScore;
+    TextView txtInstruction;
+    TextView txtSign1;
+    TextView txtSign2;
+    EditText inputNum;
+    EditText inputDenom;
     Button btnCheck;
+    ImageView imgLine1;
+    ImageView imgLine2;
+    ImageView imgLine3;
+    ImageView imgLine4;
+    ImageView imgLine5;
+    ImageView imgAvatar;
     //VARIABLES
     ArrayList<DividingFractionsQuestion> mFractionsQuestions;
     DividingFractionsQuestion mFractionsQuestion;
     int mQuestionNum;
-
-    int correct, error;
-    int requiredCorrects;
-    int maxErrors;
-    boolean correctsShouldBeConsecutive;
-    boolean errorsShouldBeConsecutive;
-    final Handler handler = new Handler();
     ColorStateList defaultColor;
     TextView txtContainer;
+
+    public String title = "Dividing Fractions ex.1";
+    String id = AppIDs.DFE_ID;
+
+    public DividingFractionsExerciseActivity() {
+        super();
+        setId(id);
+        setExerciseTitle(title);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_dissimilar_equation);
-        exercise = LessonArchive.getLesson(AppConstants.DIVIDING_FRACTIONS).getExercises().get(EXERCISE_NUM-1);
-
-        //TOOLBAR
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DividingFractionsExerciseActivity.this,
-                        DividingFractionsVideoActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnNext = findViewById(R.id.btnNext);
-        btnNext.setEnabled(false);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // CHANGE INTENT PARAMS
-                Intent intent = new Intent(DividingFractionsExerciseActivity.this,
-                        TopicsMenuActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(TITLE);
-        txtTitle.setTextSize(14);
-        btnNext.setText(AppConstants.DONE);
+        super.onCreate(savedInstanceState);
+        setId(id);
+        setExerciseTitle(title);
         //GUI
         txtNum1 = findViewById(R.id.adsm_txtNum1);
         txtNum2 = findViewById(R.id.adsm_txtNum2);
@@ -113,7 +89,6 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
         txtEquation2.setVisibility(TextView.INVISIBLE);
         setClickAreas();
         txtScore = findViewById(R.id.adsm_txtScore);
-        setTxtScore();
         txtInstruction = findViewById(R.id.adsm_txtInstruction);
         inputNum = findViewById(R.id.adsm_inputNum);
         inputDenom = findViewById(R.id.adsm_inputDenom);
@@ -125,127 +100,30 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
         txtSign2.setText("x");
         defaultColor = txtScore.getTextColors();
         btnCheck.setOnClickListener(new BtnCheckListener());
+        imgLine1 = findViewById(R.id.adsm_imgLine1);
+        imgLine2 = findViewById(R.id.adsm_imgLine2);
+        imgLine3 = findViewById(R.id.adsm_imgLine3);
+        imgLine4 = findViewById(R.id.adsm_imgLine4);
+        imgLine5 = findViewById(R.id.adsm_imgLine5);
+        imgAvatar = findViewById(R.id.adsm_imgAvatar);
+        imgLine1.setImageResource(R.drawable.line);
+        imgLine2.setImageResource(R.drawable.line);
+        imgLine3.setImageResource(R.drawable.line);
+        imgLine4.setImageResource(R.drawable.line);
+        imgLine5.setImageResource(R.drawable.line);
+        imgAvatar.setImageResource(R.drawable.avatar);
 
-        setAttributes(exercise);
-        checkUpdate();
-
-        go();
-    }
-
-    public void setAttributes(Exercise exerciseAtt){
-        requiredCorrects = exerciseAtt.getRequiredCorrects();
-        maxErrors = exerciseAtt.getMaxErrors();
-        correctsShouldBeConsecutive = exerciseAtt.isRc_consecutive();
-        errorsShouldBeConsecutive = exerciseAtt.isMe_consecutive();
-        setTxtScore();
-    }
-    public void checkUpdate(){
-        if (Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)){
-            Service service = new Service("Checking for updates...", mContext, new ServiceResponse() {
-                @Override
-                public void postExecute(JSONObject response) {
-                    try {
-                        Exercise updatedExercise = new Exercise();
-                        updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
-                        if (response.optString("rc_consecutive").equals("1")) {
-                            updatedExercise.setRc_consecutive(true);
-                        } else {
-                            updatedExercise.setRc_consecutive(false);
-                        }
-                        updatedExercise.setMaxErrors(Integer.valueOf(response.optString("max_errors")));
-                        if (response.optString("me_consecutive").equals("1")) {
-                            updatedExercise.setMe_consecutive(true);
-                        } else {
-                            updatedExercise.setMe_consecutive(false);
-                        }
-                        setAttributes(updatedExercise);
-                    } catch (Exception e){e.printStackTrace();}
-                }
-            });
-            Student student = new Student();
-            student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
-            ExerciseService.getUpdate(exercise, student, service);
-        }
-    }
-    public void go(){
-        setFractionQuestions();
-        setFractionGui();
-        setUp();
-    }
-    public void setTxtScore(){
-        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
-    }
-    public void correct(){
-        correct++;
-        if (errorsShouldBeConsecutive) {
-            error = 0;
-        }
-        setTxtScore();
-        setAnswerEnabled(false);
-        setTxtFractionListener(false);
-        if (correct >= requiredCorrects){
-            btnNext.setEnabled(true);
-            txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        } else {
-            txtInstruction.setText(AppConstants.CORRECT);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    nextQuestion();
-                }
-            }, 2000);
-        }
+        startExercise();
     }
     public void nextQuestion(){
         mQuestionNum++;
         setFractionGui();
         setUp();
     }
-    public void wrong(){
-        error++;
-        if (correctsShouldBeConsecutive) {
-            correct = 0;
-        }
-        setTxtScore();
-        setAnswerEnabled(false);
-        setTxtFractionListener(false);
-        if (error >= maxErrors){
-            if (errorsShouldBeConsecutive) {
-                txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(error));
-            } else {
-                txtInstruction.setText(AppConstants.FAILED(error));
-            }
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(DividingFractionsExerciseActivity.this,
-                            DividingFractionsVideoActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
-            }, 4000);
-        } else {
-            txtInstruction.setText(AppConstants.ERROR);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (correctsShouldBeConsecutive) {
-                        go();
-                    } else {
-                        DividingFractionsQuestion fractionsQuestion = new DividingFractionsQuestion();
-                        while (mFractionsQuestions.contains(fractionsQuestion)){
-                            fractionsQuestion = new DividingFractionsQuestion();
-                        }
-                        mFractionsQuestions.add(fractionsQuestion);
-                        nextQuestion();
-                    }
-                }
-            }, 2000);
-        }
-    }
     public void setFractionQuestions(){
         mQuestionNum = 1;
         mFractionsQuestions = new ArrayList<>();
+        int requiredCorrects = getItemsSize();
         for (int i = 0; i < requiredCorrects; i++){
             DividingFractionsQuestion fractionsQuestion = new DividingFractionsQuestion();
             while (mFractionsQuestions.contains(fractionsQuestion)){
@@ -271,8 +149,9 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
         txtDenom1.setText(strDenominator1);
         txtDenom2.setText(strDenominator2);
         txtNum3.setText(strNumerator1);
-        txtDenom3.setText(strNumerator2);
+        txtDenom3.setText(strDenominator1);
     }
+    @SuppressLint("SetTextI18n")
     public void setUp(){
         inputNum.setText("");
         inputDenom.setText("");
@@ -321,6 +200,7 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
         txtNum2.setClickable(b);
         txtDenom2.setClickable(b);
     }
+    @SuppressLint("SetTextI18n")
     public void readyCheck(){
         try {
             mFractionsQuestion = mFractionsQuestions.get(mQuestionNum-1);
@@ -341,11 +221,14 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
                     txtInstruction.setText("Solve the equation.");
                     if (mQuestionNum>1) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        assert imm != null;
                         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
                     }
                 }
             }
-        }catch (NumberFormatException e){}
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+        }
     }
     public class TxtFractionListener implements TextView.OnClickListener{
         @Override
@@ -426,5 +309,86 @@ public class DividingFractionsExerciseActivity extends AppCompatActivity {
                 parent.setTouchDelegate( new TouchDelegate( rect , textView));
             }
         });
+    }
+    @Override
+    public void showScore(){
+        super.showScore();
+        int correct = getCorrect();
+        int requiredCorrects = getItemsSize();
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
+
+    @Override
+    protected void startExercise() {
+        super.startExercise();
+        setFractionQuestions();
+        setFractionGui();
+        setUp();
+    }
+
+    @Override
+    protected void preAnswered() {
+        super.preAnswered();
+        setAnswerEnabled(false);
+        setTxtFractionListener(false);
+    }
+
+    @Override
+    protected void postAnswered() {
+        super.postAnswered();
+    }
+
+    @Override
+    protected void preCorrect() {
+        super.preCorrect();
+        txtInstruction.setText(AppConstants.CORRECT);
+    }
+
+    @Override
+    protected void postCorrect() {
+        super.postCorrect();
+        nextQuestion();
+    }
+
+    @Override
+    protected void preFinished() {
+        super.preFinished();
+        txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+    }
+
+    @Override
+    protected void preWrong() {
+        super.preWrong();
+        txtInstruction.setText(AppConstants.ERROR);
+    }
+
+    @Override
+    protected void postWrong() {
+        super.postWrong();
+        boolean correctsShouldBeConsecutive = isCorrectsShouldBeConsecutive();
+        if (correctsShouldBeConsecutive) {
+            setFractionQuestions();
+            setFractionGui();
+            setUp();
+        } else {
+            DividingFractionsQuestion fractionsQuestion = new DividingFractionsQuestion();
+            while (mFractionsQuestions.contains(fractionsQuestion)){
+                fractionsQuestion = new DividingFractionsQuestion();
+            }
+            mFractionsQuestions.add(fractionsQuestion);
+            nextQuestion();
+        }
+    }
+
+    @Override
+    protected void preFailWrongsAreConsecutive() {
+        super.preFailWrongsAreConsecutive();
+        txtInstruction.setText(AppConstants.FAILED_CONSECUTIVE(getWrong()));
+    }
+
+    @Override
+    protected void preFailWrongsAreNotConsecutive() {
+        super.preFailWrongsAreNotConsecutive();
+        txtInstruction.setText(AppConstants.FAILED(getWrong()));
     }
 }

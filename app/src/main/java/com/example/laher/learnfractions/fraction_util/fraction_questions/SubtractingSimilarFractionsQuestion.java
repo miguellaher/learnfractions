@@ -24,7 +24,7 @@ public class SubtractingSimilarFractionsQuestion extends FractionQuestionClass {
         fraction2 = new Fraction();
         int denominator1 = fraction1.getDenominator();
         int denominator2 = fraction2.getDenominator();
-        while (denominator1!=denominator2){
+        while (denominator1!=denominator2 || fraction2.compare(fraction1)>=0){
             fraction1 = new Fraction();
             fraction2 = new Fraction();
             denominator1 = fraction1.getDenominator();
@@ -32,7 +32,7 @@ public class SubtractingSimilarFractionsQuestion extends FractionQuestionClass {
         }
         int numerator1 = fraction1.getNumerator();
         int numerator2 = fraction2.getNumerator();
-        int numeratorAnswer = numerator1 + numerator2;
+        int numeratorAnswer = numerator1 - numerator2;
         int denominatorAnswer = denominator1;
         Fraction fractionAnswer = new Fraction(numeratorAnswer, denominatorAnswer);
         setFractionAnswer(fractionAnswer);

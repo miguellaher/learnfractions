@@ -18,6 +18,10 @@ public class GettingLcmQuestion {
         return lcm;
     }
 
+    public void setLcm(int lcm) {
+        this.lcm = lcm;
+    }
+
     public int getNumber1() {
         return number1;
     }
@@ -30,6 +34,18 @@ public class GettingLcmQuestion {
         return number3;
     }
 
+    public void setNumber1(int number1) {
+        this.number1 = number1;
+    }
+
+    public void setNumber2(int number2) {
+        this.number2 = number2;
+    }
+
+    public void setNumber3(int number3) {
+        this.number3 = number3;
+    }
+
     public static void main(String[] args){
         GettingLcmQuestion gettingLcmQuestion = new GettingLcmQuestion();
     }
@@ -39,26 +55,33 @@ public class GettingLcmQuestion {
     }
 
     public void generateNumbers(){
-        int number1 = (int) (Math.random() * 9 + 1);
-        int number2 = (int) (Math.random() * 9 + 1);
-        int number3 = (int) (Math.random() * 9 + 1);
+        int number1 = 1;
+        int number2 = 1;
+        int number3 = 1;
+        int lcm = 1;
+        numbers = new ArrayList<>();
         while (number1==number2 ||
                 number1==number3 ||
-                number2==number3){
+                number2==number3 ||
+                lcm > (9*9)){
             number1 = (int) (Math.random() * 9 + 1);
             number2 = (int) (Math.random() * 9 + 1);
             number3 = (int) (Math.random() * 9 + 1);
+            numbers = new ArrayList<>();
+            numbers.add(number1);
+            numbers.add(number2);
+            numbers.add(number3);
+            lcm = FractionUtil.getLcm(numbers);
         }
-        numbers = new ArrayList<>();
-        numbers.add(number1);
-        numbers.add(number2);
-        numbers.add(number3);
-        this.lcm = FractionUtil.getLcm(numbers);
-        System.out.print("numbers:");
+        setNumber1(number1);
+        setNumber2(number2);
+        setNumber3(number3);
+        setLcm(lcm);
+        System.out.println("numbers:");
         for (Integer number : numbers){
-            System.out.print(number+", ");
+            System.out.println(number+", ");
         }
-        System.out.println("lcm: " + this.lcm);
+        System.out.println("lcm: " + lcm);
     }
 
 

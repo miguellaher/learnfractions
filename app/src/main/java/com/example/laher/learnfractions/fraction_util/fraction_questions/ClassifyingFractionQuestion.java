@@ -31,12 +31,10 @@ public class ClassifyingFractionQuestion extends FractionQuestionClass{
     }
 
     private void generateFraction(String modifier){
-        if (modifier.equals(Fraction.PROPER)){
-            fraction = new Fraction(Fraction.PROPER);
-        } else if (modifier.equals(Fraction.IMPROPER)){
-            fraction = new Fraction(Fraction.IMPROPER);
-        } else if (modifier.equals(Fraction.MIXED)){
+        if (modifier.equals(Fraction.MIXED)){
             fraction = new MixedFraction();
+        } else {
+            fraction = new Fraction(modifier);
         }
     }
 

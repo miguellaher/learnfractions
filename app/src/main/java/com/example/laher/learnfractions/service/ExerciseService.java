@@ -1,49 +1,52 @@
 package com.example.laher.learnfractions.service;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.model.Student;
-import com.example.laher.learnfractions.model.Teacher;
-import com.example.laher.learnfractions.util.Util;
+import com.example.laher.learnfractions.parent_activities.Lesson;
+import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.Storage;
 import com.loopj.android.http.RequestParams;
 
 public class ExerciseService {
     private static final String TAG = "EXERCISE_SERVICE";
-    public static void create(Teacher teacher, Exercise exercise, Service service){
+    public static void post(Context context, LessonExercise lessonExercise, Service service){
         RequestParams requestParams = new RequestParams();
-        requestParams.put("exercise_id", Util.generateId());
-        requestParams.put("teacher_id", teacher.getId());
-        requestParams.put("teacher_code", teacher.getTeacher_code());
-        requestParams.put("topic_name", exercise.getTopicName());
-        requestParams.put("exercise_num", exercise.getExerciseNum());
-        requestParams.put("required_corrects", exercise.getRequiredCorrects());
-        if(exercise.getMaxErrors() > 0) {
-            if (exercise.isRc_consecutive()) {
-                requestParams.put("rc_consecutive", "1");
-            } else {
-                requestParams.put("rc_consecutive", "0");
-            }
-            requestParams.put("max_errors", exercise.getMaxErrors());
-            if (exercise.isMe_consecutive()) {
-                requestParams.put("me_consecutive", "1");
-            } else {
-                requestParams.put("me_consecutive", "0");
-            }
+        String id = lessonExercise.getId();
+        String title = lessonExercise.getExerciseTitle();
+        String teacher_code = Storage.load(context, Storage.TEACHER_CODE);
+        int itemsSize = lessonExercise.getItemsSize();
+        int maxWrong = lessonExercise.getMaxWrong();
+        boolean isCorrectsShouldBeConsecutive = lessonExercise.isCorrectsShouldBeConsecutive();
+        boolean isWrongsShouldBeConsecutive = lessonExercise.isWrongsShouldBeConsecutive();
+        requestParams.put("exercise_id", id);
+        requestParams.put("teacher_code", teacher_code);
+        requestParams.put("title", title);
+        requestParams.put("required_corrects", itemsSize);
+        requestParams.put("max_errors", maxWrong);
+        if (isCorrectsShouldBeConsecutive) {
+            requestParams.put("rc_consecutive", "1");
+        } else {
+            requestParams.put("rc_consecutive", "0");
         }
-        service.post("http://jabahan.com/learnfractions/exercise/create.php", requestParams);
+        if (isWrongsShouldBeConsecutive) {
+            requestParams.put("me_consecutive", "1");
+        } else {
+            requestParams.put("me_consecutive", "0");
+        }
+        service.post("http://jabahan.com/learnfractions/exercise/insert.php", requestParams);
         service.execute();
     }
 
-    public static void getUpdate(Exercise exercise, Student student, Service service){
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("teacher_code", student.getTeacher_code());
-        Log.d(TAG, "teacher code:" +student.getTeacher_code());
-        requestParams.put("topic_name", exercise.getTopicName());
-        Log.d(TAG, "topic name:" +exercise.getTopicName());
-        requestParams.put("exercise_num", exercise.getExerciseNum());
-        Log.d(TAG, "exercise num:" +exercise.getExerciseNum());
-        service.get("http://jabahan.com/learnfractions/exercise/getUpdate.php",requestParams);
+    public static void getUpdate(Context context, LessonExercise exercise, Service service){
+        RequestParams params = new RequestParams();
+        String teacher_code = Storage.load(context, Storage.TEACHER_CODE);
+        String id = exercise.getId();
+        params.put("exercise_id", id);
+        params.put("teacher_code", teacher_code);
+        service.get("http://jabahan.com/learnfractions/exercise/getUpdate.php", params);
         service.execute();
     }
     public static void getUpdates(String teacher_code, Service service){
@@ -53,4 +56,15 @@ public class ExerciseService {
         service.execute();
     }
 
+    public static void getUpdates(Context context, Service service){
+        RequestParams params = new RequestParams();
+        String teacher_code = Storage.load(context,Storage.TEACHER_CODE);
+        params.put("teacher_code", teacher_code);
+        service.get("http://jabahan.com/learnfractions/exercise/getUpdates.php", params);
+        service.execute();
+    }
+
+    public static void getUpdate(Exercise exercise, Student student, Service service) {
+
+    }
 }

@@ -1,118 +1,85 @@
 package com.example.laher.learnfractions.lessons.converting_fractions;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.laher.learnfractions.archive.LessonArchive;
-import com.example.laher.learnfractions.fraction_util.Fraction;
-import com.example.laher.learnfractions.fraction_util.FractionClass;
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.MixedFraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.ConvertingFractionsQuestion;
-import com.example.laher.learnfractions.model.Exercise;
-import com.example.laher.learnfractions.model.ExerciseStat;
-import com.example.laher.learnfractions.model.Student;
-import com.example.laher.learnfractions.service.ExerciseService;
-import com.example.laher.learnfractions.service.ExerciseStatService;
-import com.example.laher.learnfractions.service.Service;
-import com.example.laher.learnfractions.service.ServiceResponse;
+import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
-
-import org.json.JSONObject;
+import com.example.laher.learnfractions.util.AppIDs;
 
 import java.util.ArrayList;
 
-public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
-    Context mContext = this;
-    private static final String TAG = "CF_E1";
-
-    Exercise exercise;
-    ExerciseStat mExerciseStat;
-    final int EXERCISE_NUM = 1;
-
-    //TOOLBAR
-    Button btnBack, btnNext;
-    TextView txtTitle;
-    public final String TITLE = "Converting Fraction";
+public class ConvertingFractionsExerciseActivity extends LessonExercise {
+    //private static final String TAG = "CF_E1";
     //GUI
-    TextView txtNum1, txtDenom1, txtScore, txtInstruction, txtQuotient, txtRemainder, txtR;
-    EditText inputNum, inputDenom, inputWholeNum;
+    TextView txtNum1;
+    TextView txtDenom1;
+    TextView txtScore;
+    TextView txtInstruction;
+    TextView txtQuotient;
+    TextView txtRemainder;
+    TextView txtR;
+    EditText inputNum;
+    EditText inputDenom;
+    EditText inputWholeNum;
     Button btnCheck;
+    ImageView imgLine1;
+    ImageView imgLine2;
+    ImageView imgAvatar;
     //DIVISION DIALOG
     Dialog divisionDialog;
     View ddView;
-    TextView diagDdTxtNum1, diagDdTxtNum2, diagDdTxtSign;
-    EditText diagDdInputAnswer, diagDdInputRemainder;
+    TextView diagDdTxtNum1;
+    TextView diagDdTxtNum2;
+    TextView diagDdTxtSign;
+    EditText diagDdInputAnswer;
+    EditText diagDdInputRemainder;
     Button diagDdBtnCheck;
     //VARIABLES
     ArrayList<ConvertingFractionsQuestion> mConvertingFractionsQuestions;
     ConvertingFractionsQuestion mConvertingFractionsQuestion;
     int mQuestionNum;
-
-
-    int correct;
-    int requiredCorrects;
+    ColorStateList defaultColor;
     int clicks;
 
-    long startingTime, endingTime;
+    public String title = "Converting Fractions ex.1";
+    String id = AppIDs.CONVERTING_EXERCISE_ID;
 
-    final Handler handler = new Handler();
-    ColorStateList defaultColor;
+    public ConvertingFractionsExerciseActivity() {
+        super();
+        setId(id);
+        setExerciseTitle(title);
+    }
+
+    @SuppressLint("InflateParams")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_converting_fractions_exercise);
-        exercise = LessonArchive.getLesson(AppConstants.CONVERTING_FRACTIONS).getExercises().get(EXERCISE_NUM-1);
-        requiredCorrects = exercise.getRequiredCorrects();
-
-        //TOOLBAR
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ConvertingFractionsExerciseActivity.this,
-                        ConvertingFractionsVideoActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnNext = findViewById(R.id.btnNext);
-        btnNext.setEnabled(false);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //CHANGE INTENT PARAMS
-                Intent intent = new Intent(ConvertingFractionsExerciseActivity.this,
-                        ConvertingFractionsExercise2Activity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(TITLE);
-        txtTitle.setTextSize(14);
+        setId(id);
+        setExerciseTitle(title);
+        super.onCreate(savedInstanceState);
         //GUI
         txtNum1 = findViewById(R.id.cvt_txtNum1);
         txtDenom1 = findViewById(R.id.cvt_txtDenom1);
         txtScore = findViewById(R.id.cvt_txtScore);
-        setTxtScore();
         txtInstruction = findViewById(R.id.cvt_txtInstruction);
         txtQuotient = findViewById(R.id.cvt_txtQuotient);
         txtRemainder = findViewById(R.id.cvt_txtRemainder);
@@ -123,6 +90,12 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         inputWholeNum = findViewById(R.id.cvt_inputWholeNum);
         btnCheck = findViewById(R.id.cvt_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
+        imgLine1 = findViewById(R.id.cvt_imgLine1);
+        imgLine2 = findViewById(R.id.cvt_imgLine2);
+        imgAvatar = findViewById(R.id.cvt_imgAvatar);
+        imgLine1.setImageResource(R.drawable.line);
+        imgLine2.setImageResource(R.drawable.line);
+        imgAvatar.setImageResource(R.drawable.avatar);
         //DIVISION DIALOG
         ddView = getLayoutInflater().inflate(R.layout.layout_dialog_division, null);
         divisionDialog = new Dialog(ConvertingFractionsExerciseActivity.this);
@@ -144,102 +117,12 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
 
         defaultColor = txtDenom1.getTextColors();
 
-        setAttributes((ExerciseStat) exercise);
-        if (!Storage.isEmpty()) {
-            checkUpdate();
-        }
-        startingTime = System.currentTimeMillis();
-
-        go();
-    }
-
-    public void setAttributes(ExerciseStat exerciseAtt){
-        Log.d(TAG, "set attributes");
-        requiredCorrects = exerciseAtt.getRequiredCorrects();
-        mExerciseStat = exerciseAtt;
-        mExerciseStat.setTopicName(exercise.getTopicName());
-        mExerciseStat.setExerciseNum(exercise.getExerciseNum());
-        setTxtScore();
-    }
-    public void checkUpdate(){
-        if (Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)){
-            Service service = new Service("Checking for updates...", mContext, new ServiceResponse() {
-                @Override
-                public void postExecute(JSONObject response) {
-                    try {
-                        if (response.optString("message") != null && response.optString("message").equals("Exercise not found.")){
-                        } else {
-                            Exercise updatedExercise = new ExerciseStat();
-                            updatedExercise.setRequiredCorrects(Integer.valueOf(response.optString("required_corrects")));
-                            setAttributes((ExerciseStat) updatedExercise);
-                            startingTime = System.currentTimeMillis();
-                        }
-                    } catch (Exception e){e.printStackTrace();}
-                }
-            });
-            Student student = new Student();
-            student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
-            ExerciseService.getUpdate(exercise, student, service);
-        }
-    }
-    public void go(){
-        setFractionQuestions();
-        setUp();
-    }
-    public void setTxtScore(){
-        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
-    }
-    public void correct(){
-        correct++;
-        setTxtScore();
-        setInputEnabled(false);
-        btnCheck.setEnabled(false);
-        if (correct >= requiredCorrects){
-            endingTime = System.currentTimeMillis();
-            if (!Storage.isEmpty()) {
-                setFinalAttributes();
-            }
-            btnNext.setEnabled(true);
-            txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
-        } else {
-            txtInstruction.setText(AppConstants.CORRECT);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mQuestionNum++;
-                    setGuiFraction();
-                    setUp();
-                }
-            },2000);
-        }
-    }
-    private void setFinalAttributes(){
-        Service service = new Service("Posting exercise stats...", mContext, new ServiceResponse() {
-            @Override
-            public void postExecute(JSONObject response) {
-                try{
-                    Log.d(TAG, "post execute");
-                    Log.d(TAG, "message: " + response.optString("message"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        mExerciseStat.setDone(true);
-        mExerciseStat.setTime_spent(endingTime-startingTime);
-        Student student = new Student();
-        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
-        student.setTeacher_code(Storage.load(mContext, Storage.TEACHER_CODE));
-        Log.d(TAG, "ATTRIBUTES: teacher_code: " + student.getTeacher_code() + "; student_id: " + student.getId() + "topic_name: " +
-                mExerciseStat.getTopicName() + "; exercise_num: " + mExerciseStat.getExerciseNum() + "; done: " + mExerciseStat.isDone() +
-                "; time_spent: " + mExerciseStat.getTime_spent() + "; errors: " + mExerciseStat.getErrors() + "; required_corrects: " +
-                mExerciseStat.getRequiredCorrects() + "; rc_consecutive: " + mExerciseStat.isRc_consecutive() + "; max_errors: " +
-                mExerciseStat.getMaxErrors() + "; me_consecutive: " + mExerciseStat.isMe_consecutive());
-        ExerciseStatService.postStats(student,mExerciseStat,service);
+        startExercise();
     }
     private void setFractionQuestions(){
         mQuestionNum = 1;
         mConvertingFractionsQuestions = new ArrayList<>();
+        int requiredCorrects = getItemsSize();
         for (int i = 0; i < requiredCorrects; i++){
             ConvertingFractionsQuestion convertingFractionsQuestion = new ConvertingFractionsQuestion(ConvertingFractionsQuestion.IMPROPER_TO_MIXED);
             while (mConvertingFractionsQuestions.contains(convertingFractionsQuestion)){
@@ -259,6 +142,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         txtNum1.setText(strNumerator);
         txtDenom1.setText(strDenominator);
     }
+    @SuppressLint("SetTextI18n")
     public void setUp(){
         txtInstruction.setText("To divide the numerator by the denominator, click the numerator first and the " +
                 "denominator second.");
@@ -284,6 +168,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         inputNum.setEnabled(bool);
         inputDenom.setEnabled(bool);
     }
+    @SuppressLint("SetTextI18n")
     public void popUpDivisionDialog(){
         mConvertingFractionsQuestion = mConvertingFractionsQuestions.get(mQuestionNum-1);
         Fraction fraction = mConvertingFractionsQuestion.getFraction();
@@ -340,6 +225,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
         }
     }
     public class DiagDdBtnCheckListener implements Button.OnClickListener{
+        @SuppressLint("SetTextI18n")
         @Override
         public void onClick(View v) {
             mConvertingFractionsQuestion = mConvertingFractionsQuestions.get(mQuestionNum-1);
@@ -418,6 +304,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
             if ((txtQuotient.getVisibility()==View.VISIBLE && txtRemainder.getVisibility()==View.VISIBLE)&&mQuestionNum>1) {
                 inputWholeNum.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert imm != null;
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
             }
         }
@@ -428,6 +315,7 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
             diagDdInputRemainder.setText("");
             diagDdInputAnswer.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
             imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
         }
     }
@@ -455,5 +343,51 @@ public class ConvertingFractionsExerciseActivity extends AppCompatActivity {
             }
             return false;
         }
+    }
+    @Override
+    public void showScore(){
+        super.showScore();
+        int correct = getCorrect();
+        int requiredCorrects = getItemsSize();
+        txtScore.setText(AppConstants.SCORE(correct,requiredCorrects));
+    }
+
+    @Override
+    protected void startExercise() {
+        super.startExercise();
+        setFractionQuestions();
+        setUp();
+    }
+
+    @Override
+    protected void preAnswered() {
+        super.preAnswered();
+        setInputEnabled(false);
+        btnCheck.setEnabled(false);
+    }
+
+    @Override
+    protected void postAnswered() {
+        super.postAnswered();
+    }
+
+    @Override
+    protected void preCorrect() {
+        super.preCorrect();
+        txtInstruction.setText(AppConstants.CORRECT);
+    }
+
+    @Override
+    protected void postCorrect() {
+        super.postCorrect();
+        mQuestionNum++;
+        setGuiFraction();
+        setUp();
+    }
+
+    @Override
+    protected void preFinished() {
+        super.preFinished();
+        txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
     }
 }

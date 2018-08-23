@@ -62,12 +62,12 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="80sp"
-                app:layout_constraintEnd_toEndOf="@+id/imageView8"
-                app:layout_constraintStart_toStartOf="@+id/imageView8"
-                app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+                app:layout_constraintEnd_toEndOf="@+id/ose2_imgLine1"
+                app:layout_constraintStart_toStartOf="@+id/ose2_imgLine1"
+                app:layout_constraintTop_toBottomOf="@+id/ose2_imgLine1" />
 
             <ImageView
-                android:id="@+id/imageView8"
+                android:id="@+id/ose2_imgLine1"
                 android:layout_width="100dp"
                 android:layout_height="25dp"
                 android:layout_marginBottom="8dp"
@@ -87,9 +87,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="80sp"
-                app:layout_constraintBottom_toTopOf="@+id/imageView8"
-                app:layout_constraintEnd_toEndOf="@+id/imageView8"
-                app:layout_constraintStart_toStartOf="@+id/imageView8" />
+                app:layout_constraintBottom_toTopOf="@+id/ose2_imgLine1"
+                app:layout_constraintEnd_toEndOf="@+id/ose2_imgLine1"
+                app:layout_constraintStart_toStartOf="@+id/ose2_imgLine1" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -107,7 +107,7 @@
             app:layout_constraintVertical_bias="0.40">
 
             <ImageView
-                android:id="@+id/imageView13"
+                android:id="@+id/ose2_imgLine2"
                 android:layout_width="100dp"
                 android:layout_height="25dp"
                 android:layout_marginBottom="8dp"
@@ -127,9 +127,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="80sp"
-                app:layout_constraintEnd_toEndOf="@+id/imageView13"
-                app:layout_constraintStart_toStartOf="@+id/imageView13"
-                app:layout_constraintTop_toBottomOf="@+id/imageView13" />
+                app:layout_constraintEnd_toEndOf="@+id/ose2_imgLine2"
+                app:layout_constraintStart_toStartOf="@+id/ose2_imgLine2"
+                app:layout_constraintTop_toBottomOf="@+id/ose2_imgLine2" />
 
             <TextView
                 android:id="@+id/os2_txtNum2"
@@ -138,9 +138,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="80sp"
-                app:layout_constraintBottom_toTopOf="@+id/imageView13"
-                app:layout_constraintEnd_toEndOf="@+id/imageView13"
-                app:layout_constraintStart_toStartOf="@+id/imageView13" />
+                app:layout_constraintBottom_toTopOf="@+id/ose2_imgLine2"
+                app:layout_constraintEnd_toEndOf="@+id/ose2_imgLine2"
+                app:layout_constraintStart_toStartOf="@+id/ose2_imgLine2" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -159,9 +159,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="80sp"
-                app:layout_constraintBottom_toTopOf="@+id/imageView14"
-                app:layout_constraintEnd_toEndOf="@+id/imageView14"
-                app:layout_constraintStart_toStartOf="@+id/imageView14" />
+                app:layout_constraintBottom_toTopOf="@+id/ose2_imgLine3"
+                app:layout_constraintEnd_toEndOf="@+id/ose2_imgLine3"
+                app:layout_constraintStart_toStartOf="@+id/ose2_imgLine3" />
 
             <TextView
                 android:id="@+id/os2_txtDenom3"
@@ -170,12 +170,12 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="80sp"
-                app:layout_constraintEnd_toEndOf="@+id/imageView14"
-                app:layout_constraintStart_toStartOf="@+id/imageView14"
-                app:layout_constraintTop_toBottomOf="@+id/imageView14" />
+                app:layout_constraintEnd_toEndOf="@+id/ose2_imgLine3"
+                app:layout_constraintStart_toStartOf="@+id/ose2_imgLine3"
+                app:layout_constraintTop_toBottomOf="@+id/ose2_imgLine3" />
 
             <ImageView
-                android:id="@+id/imageView14"
+                android:id="@+id/ose2_imgLine3"
                 android:layout_width="100dp"
                 android:layout_height="23dp"
                 android:layout_marginBottom="8dp"

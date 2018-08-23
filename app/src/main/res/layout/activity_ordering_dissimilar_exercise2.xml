@@ -45,7 +45,7 @@
             app:layout_constraintTop_toTopOf="@+id/od_fraction5">
 
             <ImageView
-                android:id="@+id/od_imgLine"
+                android:id="@+id/od_imgLine6"
                 android:layout_width="70dp"
                 android:layout_height="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -61,9 +61,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine6"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine6"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine6" />
 
             <TextView
                 android:id="@+id/od_txtDenom6"
@@ -72,9 +72,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
-                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine6"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine6"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine6" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -87,7 +87,7 @@
             app:layout_constraintTop_toBottomOf="@+id/od_fraction2">
 
             <ImageView
-                android:id="@+id/od_imgLine"
+                android:id="@+id/od_imgLine5"
                 android:layout_width="70dp"
                 android:layout_height="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -103,9 +103,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine5"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine5"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine5" />
 
             <TextView
                 android:id="@+id/od_txtDenom5"
@@ -114,9 +114,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
-                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine5"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine5"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine5" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -129,7 +129,7 @@
             app:layout_constraintTop_toTopOf="@+id/od_fraction5">
 
             <ImageView
-                android:id="@+id/od_imgLine"
+                android:id="@+id/od_imgLine4"
                 android:layout_width="70dp"
                 android:layout_height="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -145,9 +145,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine4"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine4"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine4" />
 
             <TextView
                 android:id="@+id/od_txtDenom4"
@@ -156,9 +156,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
-                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine4"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine4"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine4" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -171,7 +171,7 @@
             app:layout_constraintTop_toTopOf="@+id/od_fraction2">
 
             <ImageView
-                android:id="@+id/od_imgLine"
+                android:id="@+id/od_imgLine3"
                 android:layout_width="70dp"
                 android:layout_height="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -187,9 +187,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine3"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine3"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine3" />
 
             <TextView
                 android:id="@+id/od_txtDenom3"
@@ -198,9 +198,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
-                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine3"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine3"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine3" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -215,7 +215,7 @@
             app:layout_constraintTop_toBottomOf="@+id/od_txtScore">
 
             <ImageView
-                android:id="@+id/od_imgLine"
+                android:id="@+id/od_imgLine2"
                 android:layout_width="70dp"
                 android:layout_height="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -231,9 +231,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine2"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine2"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine2" />
 
             <TextView
                 android:id="@+id/od_txtDenom2"
@@ -242,9 +242,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
-                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine2"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine2"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine2" />
         </android.support.constraint.ConstraintLayout>
 
         <TextView
@@ -267,7 +267,7 @@
             app:layout_constraintTop_toTopOf="@+id/od_fraction2">
 
             <ImageView
-                android:id="@+id/od_imgLine"
+                android:id="@+id/od_imgLine1"
                 android:layout_width="70dp"
                 android:layout_height="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -283,9 +283,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintBottom_toTopOf="@+id/od_imgLine"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine" />
+                app:layout_constraintBottom_toTopOf="@+id/od_imgLine1"
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine1"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine1" />
 
             <TextView
                 android:id="@+id/od_txtDenom1"
@@ -294,9 +294,9 @@
                 android:text="99"
                 android:textAlignment="center"
                 android:textSize="50sp"
-                app:layout_constraintEnd_toEndOf="@+id/od_imgLine"
-                app:layout_constraintStart_toStartOf="@+id/od_imgLine"
-                app:layout_constraintTop_toBottomOf="@+id/od_imgLine" />
+                app:layout_constraintEnd_toEndOf="@+id/od_imgLine1"
+                app:layout_constraintStart_toStartOf="@+id/od_imgLine1"
+                app:layout_constraintTop_toBottomOf="@+id/od_imgLine1" />
         </android.support.constraint.ConstraintLayout>
 
         <TextView
