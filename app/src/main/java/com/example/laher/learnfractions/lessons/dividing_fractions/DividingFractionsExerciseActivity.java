@@ -17,11 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.DividingFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
@@ -64,6 +66,10 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
 
     public DividingFractionsExerciseActivity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.P_RAISED_TO_4, range);
+        setProbability(probability);
+        setRangeEditable(true);
         setId(id);
         setExerciseTitle(title);
     }
@@ -72,6 +78,10 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_fraction_dissimilar_equation);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.P_RAISED_TO_4, range);
+        setProbability(probability);
+        setRangeEditable(true);
         setId(id);
         setExerciseTitle(title);
         //GUI
@@ -124,10 +134,11 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
         mQuestionNum = 1;
         mFractionsQuestions = new ArrayList<>();
         int requiredCorrects = getItemsSize();
+        Range range = getRange();
         for (int i = 0; i < requiredCorrects; i++){
-            DividingFractionsQuestion fractionsQuestion = new DividingFractionsQuestion();
+            DividingFractionsQuestion fractionsQuestion = new DividingFractionsQuestion(range);
             while (mFractionsQuestions.contains(fractionsQuestion)){
-                fractionsQuestion = new DividingFractionsQuestion();
+                fractionsQuestion = new DividingFractionsQuestion(range);
             }
             mFractionsQuestions.add(fractionsQuestion);
         }
@@ -366,14 +377,17 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
     protected void postWrong() {
         super.postWrong();
         boolean correctsShouldBeConsecutive = isCorrectsShouldBeConsecutive();
+        Range range = getRange();
         if (correctsShouldBeConsecutive) {
             setFractionQuestions();
             setFractionGui();
             setUp();
         } else {
-            DividingFractionsQuestion fractionsQuestion = new DividingFractionsQuestion();
-            while (mFractionsQuestions.contains(fractionsQuestion)){
-                fractionsQuestion = new DividingFractionsQuestion();
+            DividingFractionsQuestion fractionsQuestion = new DividingFractionsQuestion(range);
+            int questionsSize = mFractionsQuestions.size();
+            int maxItemSize = getMaxItemSize();
+            while (mFractionsQuestions.contains(fractionsQuestion) && questionsSize<maxItemSize){
+                fractionsQuestion = new DividingFractionsQuestion(range);
             }
             mFractionsQuestions.add(fractionsQuestion);
             nextQuestion();

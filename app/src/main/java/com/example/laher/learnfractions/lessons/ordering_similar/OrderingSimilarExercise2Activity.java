@@ -8,11 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.OrderingSimilarQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 
@@ -45,6 +47,10 @@ public class OrderingSimilarExercise2Activity extends LessonExercise {
 
     public OrderingSimilarExercise2Activity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.ORDERING_SIMILAR, range);
+        setProbability(probability);
+        setRangeEditable(true);
         setId(id);
         setExerciseTitle(title);
     }
@@ -55,6 +61,10 @@ public class OrderingSimilarExercise2Activity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.ORDERING_SIMILAR, range);
+        setProbability(probability);
+        setRangeEditable(true);
         //GUI
         txtNum1 = findViewById(R.id.os2_txtNum1);
         txtNum2 = findViewById(R.id.os2_txtNum2);
@@ -82,10 +92,11 @@ public class OrderingSimilarExercise2Activity extends LessonExercise {
         mQuestionNum = 1;
         mOrderingSimilarQuestions = new ArrayList<>();
         int requiredCorrects = getItemsSize();
+        Range range = getRange();
         for (int i = 0; i < requiredCorrects; i++){
-            OrderingSimilarQuestion orderingFractionsQuestion = new OrderingSimilarQuestion();
+            OrderingSimilarQuestion orderingFractionsQuestion = new OrderingSimilarQuestion(range);
             while(mOrderingSimilarQuestions.contains(orderingFractionsQuestion)){
-                orderingFractionsQuestion = new OrderingSimilarQuestion();
+                orderingFractionsQuestion = new OrderingSimilarQuestion(range);
             }
             mOrderingSimilarQuestions.add(orderingFractionsQuestion);
         }
@@ -223,12 +234,15 @@ public class OrderingSimilarExercise2Activity extends LessonExercise {
     protected void postWrong() {
         super.postWrong();
         boolean correctsShouldBeConsecutive = isCorrectsShouldBeConsecutive();
+        Range range = getRange();
         if (correctsShouldBeConsecutive) {
             setFractionQuestions();
         } else {
-            OrderingSimilarQuestion orderingFractionsQuestion = new OrderingSimilarQuestion();
-            while(mOrderingSimilarQuestions.contains(orderingFractionsQuestion)){
-                orderingFractionsQuestion = new OrderingSimilarQuestion();
+            OrderingSimilarQuestion orderingFractionsQuestion = new OrderingSimilarQuestion(range);
+            int questionsSize = mOrderingSimilarQuestions.size();
+            int maxItemSize = getMaxItemSize();
+            while (mOrderingSimilarQuestions.contains(orderingFractionsQuestion) && questionsSize<maxItemSize){
+                orderingFractionsQuestion = new OrderingSimilarQuestion(range);
             }
             mOrderingSimilarQuestions.add(orderingFractionsQuestion);
             mQuestionNum++;

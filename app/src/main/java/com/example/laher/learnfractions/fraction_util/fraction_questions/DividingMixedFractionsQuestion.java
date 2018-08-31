@@ -1,5 +1,6 @@
 package com.example.laher.learnfractions.fraction_util.fraction_questions;
 
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 import com.example.laher.learnfractions.fraction_util.MixedFraction;
@@ -34,12 +35,27 @@ public class DividingMixedFractionsQuestion extends FractionQuestionClass {
     }
 
     public DividingMixedFractionsQuestion(String tag) {
+        Range range = new Range();
         if (tag.equals(ONE_MIXED)) {
             TAG = ONE_MIXED;
-            generateOneMixedFractionEquation();
+            generateOneMixedFractionEquation(range);
         } else if (tag.equals(TWO_MIXED)) {
             TAG = TWO_MIXED;
-            generateTwoMixedFractionsEquation();
+            generateTwoMixedFractionsEquation(range);
+        } else {
+            TAG = AppConstants.ERROR;
+        }
+    }
+
+    public DividingMixedFractionsQuestion(Range range) {
+        super(range);
+        int randomNumber = (int) (Math.random() * 2 + 1);
+        if (randomNumber==1){
+            TAG = ONE_MIXED;
+            generateOneMixedFractionEquation(range);
+        } else if (randomNumber==2){
+            TAG = TWO_MIXED;
+            generateTwoMixedFractionsEquation(range);
         } else {
             TAG = AppConstants.ERROR;
         }
@@ -47,27 +63,23 @@ public class DividingMixedFractionsQuestion extends FractionQuestionClass {
 
     public DividingMixedFractionsQuestion() {
         int randomNumber = (int) (Math.random() * 2 + 1);
+        Range range = new Range();
         if (randomNumber==1){
             TAG = ONE_MIXED;
-            generateOneMixedFractionEquation();
+            generateOneMixedFractionEquation(range);
         } else if (randomNumber==2){
             TAG = TWO_MIXED;
-            generateTwoMixedFractionsEquation();
+            generateTwoMixedFractionsEquation(range);
         } else {
             TAG = AppConstants.ERROR;
         }
     }
 
-    private void generateOneMixedFractionEquation(){
-        mixedFraction1 = new MixedFraction();
-        fraction = new Fraction();
+    private void generateOneMixedFractionEquation(Range range){
+        mixedFraction1 = new MixedFraction(range);
+        fraction = new Fraction(range);
         Fraction improperFraction1 = mixedFraction1.getImproperFraction();
         int numeratorImproper = improperFraction1.getNumerator();
-        while (numeratorImproper>10){
-            mixedFraction1 = new MixedFraction();
-            improperFraction1 = mixedFraction1.getImproperFraction();
-            numeratorImproper = improperFraction1.getNumerator();
-        }
         int numerator = fraction.getNumerator();
         int denominator = fraction.getDenominator();
         int denominatorImproper = improperFraction1.getDenominator();
@@ -82,21 +94,13 @@ public class DividingMixedFractionsQuestion extends FractionQuestionClass {
         setStringEquation(equation);
     }
 
-    private void generateTwoMixedFractionsEquation(){
-        mixedFraction1 = new MixedFraction();
-        mixedFraction2 = new MixedFraction();
+    private void generateTwoMixedFractionsEquation(Range range){
+        mixedFraction1 = new MixedFraction(range);
+        mixedFraction2 = new MixedFraction(range);
         Fraction improperFraction1 = mixedFraction1.getImproperFraction();
         Fraction improperFraction2 = mixedFraction2.getImproperFraction();
         int numeratorImproper1 = improperFraction1.getNumerator();
         int numeratorImproper2 = improperFraction2.getNumerator();
-        while (numeratorImproper1>10||numeratorImproper2>10){
-            mixedFraction1 = new MixedFraction();
-            improperFraction1 = mixedFraction1.getImproperFraction();
-            numeratorImproper1 = improperFraction1.getNumerator();
-            mixedFraction2 = new MixedFraction();
-            improperFraction2 = mixedFraction2.getImproperFraction();
-            numeratorImproper2 = improperFraction2.getNumerator();
-        }
         int denominatorImproper1 = improperFraction1.getDenominator();
         int denominatorImproper2 = improperFraction2.getDenominator();
         int numeratorAnswer = numeratorImproper1 * denominatorImproper2;

@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +18,7 @@ import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.model.SeatWork;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Storage;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.Objects;
 
 public class FractionMeaningSeatWork extends SeatWork {
     Context mContext = this;
-    private static final String TAG = "FM_S";
+    //private static final String TAG = "FM_S";
 
     //TOOLBAR
     Button btnBack, btnNext;
@@ -47,8 +47,6 @@ public class FractionMeaningSeatWork extends SeatWork {
     String instruction;
 
     long startingTime;
-
-    Handler handler = new Handler();
 
     public FractionMeaningSeatWork() {
         super();
@@ -115,12 +113,13 @@ public class FractionMeaningSeatWork extends SeatWork {
             setItems_size(item_size);
             updateItemIndicator(txtItemIndicator);
         }
+
+
         go();
         instruction = INPUT_NUM;
         startingTime = System.currentTimeMillis();
     }
     public void go(){
-
         generateFraction();
         setBoxes(num, denom);
         inputNum.setText("");

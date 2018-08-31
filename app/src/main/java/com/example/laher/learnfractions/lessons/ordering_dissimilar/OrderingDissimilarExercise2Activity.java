@@ -18,11 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.OrderingDissimilarQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
@@ -84,11 +86,14 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
     int clicks;
     TextView standByTxt, standByTxtEquation, standByTxtNum;
 
-    public String title = "Ordering Dissimilar Fractions ex.1";
+    public String title = "Ordering Dissimilar Fractions ex.2";
     String id = AppIDs.ODE2_ID;
 
     public OrderingDissimilarExercise2Activity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.ORDERING_DISSIMILAR, range);
+        setProbability(probability);
         setId(id);
         setExerciseTitle(title);
     }
@@ -100,6 +105,9 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.ORDERING_DISSIMILAR, range);
+        setProbability(probability);
         //EQUATION DIALOG
         edView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         equationDialog = new Dialog(OrderingDissimilarExercise2Activity.this);
@@ -694,7 +702,9 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
             startup();
         } else {
             OrderingDissimilarQuestion orderingDissimilarQuestion = new OrderingDissimilarQuestion();
-            while (mOrderingDissimilarQuestions.contains(orderingDissimilarQuestion)){
+            int questionsSize = mOrderingDissimilarQuestions.size();
+            int maxItemSize = getMaxItemSize();
+            while (mOrderingDissimilarQuestions.contains(orderingDissimilarQuestion) && questionsSize<maxItemSize){
                 orderingDissimilarQuestion = new OrderingDissimilarQuestion();
             }
             mOrderingDissimilarQuestions.add(orderingDissimilarQuestion);

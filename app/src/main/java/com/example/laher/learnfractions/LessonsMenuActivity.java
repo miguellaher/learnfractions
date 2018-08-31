@@ -159,19 +159,19 @@ public class LessonsMenuActivity extends AppCompatActivity {
 
         Lesson classifyingFractionsLesson = new Lesson("Classifying Fractions");
         classifyingFractionsLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
-        classifyingFractionsLesson.addActivity(new ClassifyingFractionsVideoActivity());
         classifyingFractionsLesson.addActivity(new ClassifyingFractionsExerciseActivity());
+        classifyingFractionsLesson.addActivity(new ClassifyingFractionsVideoActivity());
 
         Lesson convertingFractionsLesson = new Lesson("Converting Fractions");
         convertingFractionsLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
-        convertingFractionsLesson.addActivity(new ConvertingFractionsVideoActivity());
-        convertingFractionsLesson.addActivity(new ConvertingFractionsExerciseActivity());
         convertingFractionsLesson.addActivity(new ConvertingFractionsExercise2Activity());
+        convertingFractionsLesson.addActivity(new ConvertingFractionsExerciseActivity());
+        convertingFractionsLesson.addActivity(new ConvertingFractionsVideoActivity());
 
         Lesson addingSimilarLesson = new Lesson("Adding Similar Fractions");
         addingSimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
-        addingSimilarLesson.addActivity(new AddingSimilarExerciseActivity());
         addingSimilarLesson.addActivity(new AddingSimilarVideoActivity());
+        addingSimilarLesson.addActivity(new AddingSimilarExerciseActivity());
 
         Lesson addingDissimilarLesson = new Lesson("Adding Dissimilar Fractions");
         addingDissimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
@@ -185,8 +185,8 @@ public class LessonsMenuActivity extends AppCompatActivity {
 
         Lesson subtractingDissimilarLesson = new Lesson("Subtracting Dissimilar Fractions");
         subtractingDissimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
-        subtractingDissimilarLesson.addActivity(new SubtractingDissimilarExerciseActivity());
         subtractingDissimilarLesson.addActivity(new SubtractingDissimilarVideoActivity());
+        subtractingDissimilarLesson.addActivity(new SubtractingDissimilarExerciseActivity());
 
         Lesson multiplyingLesson = new Lesson("Multiplying Fractions");
         multiplyingLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");

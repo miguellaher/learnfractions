@@ -1,5 +1,6 @@
 package com.example.laher.learnfractions.fraction_util.fraction_questions;
 
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -27,16 +28,22 @@ public class ComparingDissimilarQuestion extends FractionQuestionClass {
     }
 
     public ComparingDissimilarQuestion() {
-        generateFractions();
+        Range range = new Range();
+        generateFractions(range);
     }
 
-    public void generateFractions(){
-        setFraction1(new Fraction());
-        setFraction2(new Fraction());
+    public ComparingDissimilarQuestion(Range range) {
+        super(range);
+        generateFractions(range);
+    }
+
+    public void generateFractions(Range range){
+        setFraction1(new Fraction(range));
+        setFraction2(new Fraction(range));
         while (getFraction1().getNumerator()==getFraction2().getNumerator() ||
                 getFraction1().getDenominator()==getFraction2().getDenominator()){
-            setFraction1(new Fraction());
-            setFraction2(new Fraction());
+            setFraction1(new Fraction(range));
+            setFraction2(new Fraction(range));
         }
         int numerator1 = getFraction1().getNumerator();
         int numerator2 = getFraction2().getNumerator();

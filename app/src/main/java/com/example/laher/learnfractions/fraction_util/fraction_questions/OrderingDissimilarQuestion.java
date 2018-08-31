@@ -30,6 +30,10 @@ public class OrderingDissimilarQuestion extends FractionQuestionClass {
         generateFractions();
     }
 
+    public int getQuotientLimit() {
+        return quotientLimit;
+    }
+
     public Fraction getFraction1() {
         return fraction1;
     }
@@ -82,7 +86,7 @@ public class OrderingDissimilarQuestion extends FractionQuestionClass {
         Collections.sort(sortedFractions, new SortFraction());
     }
 
-    private boolean limitLcd(int quotientLimit, ArrayList<Fraction> fractions){
+    public static boolean limitLcd(int quotientLimit, ArrayList<Fraction> fractions){
         int lcd = FractionUtil.getLcd(fractions);
         boolean pastLimit = false;
         for (Fraction fraction : fractions){

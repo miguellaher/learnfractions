@@ -2,17 +2,16 @@ package com.example.laher.learnfractions.teacher2.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
@@ -22,6 +21,7 @@ import com.example.laher.learnfractions.service.ExerciseService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.ActivityUtil;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
@@ -64,12 +64,26 @@ public class LessonExerciseUpdateDialog extends Dialog {
         String strMaxWrong = String.valueOf(maxWrong);
         boolean isCorrectsShouldBeConsecutive = lessonExercise.isCorrectsShouldBeConsecutive();
         boolean isWrongsShouldBeConsecutive = lessonExercise.isWrongsShouldBeConsecutive();
+        Range range = lessonExercise.getRange();
+        int minimum = range.getMinimum();
+        int maximum = range.getMaximum();
+        String strMinimum = String.valueOf(minimum);
+        String strMaximum = String.valueOf(maximum);
+
         inputTitle.setHint(title);
         inputTitle.setText(title);
         txtLabel1.setText(label1);
         txtLabel2.setText(label2);
         inputItemsSize.setHint(strItemsSize);
         inputMaxWrong.setHint(strMaxWrong);
+        if (getLessonExercise().isRangeEditable()){
+            inputMinimum.setHint(strMinimum);
+            inputMaximum.setHint(strMaximum);
+        } else {
+            inputMinimum.setEnabled(false);
+            inputMaximum.setEnabled(false);
+            inputMaxWrong.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        }
         chk_RC_consecutive.setChecked(isCorrectsShouldBeConsecutive);
         chk_ME_consecutive.setChecked(isWrongsShouldBeConsecutive);
 
@@ -116,22 +130,40 @@ public class LessonExerciseUpdateDialog extends Dialog {
         @Override
         public void onClick(View v) {
             ActivityUtil.hideKeyboardFrom(context,v);
-            if (areFieldsFilled()) {
+            if (checkFields()) {
                 LessonExercise thisLessonExercise = getLessonExercise();
                 String id = thisLessonExercise.getId();
-                int maxItemSize = thisLessonExercise.getMaxItemSize();
                 String title = inputTitle.getText().toString().trim();
+
+                // <---------------------------------------------------> //
+                //        setting the maximum number of item size
+                Probability lessonExerciseProbability = thisLessonExercise.getProbability();
+                String equation;
+                int maxItemSize = 0;
+                Range range = new Range();
+                if (lessonExerciseProbability!=null) {
+                    equation = lessonExerciseProbability.getEquation();
+
+                    if (thisLessonExercise.isRangeEditable()) {
+                        String strInputMinimum = inputMinimum.getText().toString().trim();
+                        String strInputMaximum = inputMaximum.getText().toString().trim();
+                        int minimum = Integer.valueOf(strInputMinimum);
+                        int maximum = Integer.valueOf(strInputMaximum);
+                        range = new Range(minimum, maximum);
+                    }
+
+                    Probability probability = new Probability(equation, range);
+                    maxItemSize = probability.getOutComes(); // number of outcomes
+                }
+                // <---------------------------------------------------> //
+
+                
                 String strInputItemsSize = inputItemsSize.getText().toString().trim();
                 int intInputItemsSize = Integer.valueOf(strInputItemsSize);
                 String strInputMaxWrong = inputMaxWrong.getText().toString().trim();
                 int intInputMaxWrong = Integer.valueOf(strInputMaxWrong);
                 boolean isRcChecked = chk_RC_consecutive.isChecked();
                 boolean isMeChecked = chk_ME_consecutive.isChecked();
-                String strInputMinimum = inputMinimum.getText().toString().trim();
-                String strInputMaximum = inputMaximum.getText().toString().trim();
-                int minimum = Integer.valueOf(strInputMinimum);
-                int maximum = Integer.valueOf(strInputMaximum);
-                Range range = new Range(minimum,maximum);
                 final LessonExercise lessonExercise = new LessonExercise();
                 lessonExercise.setId(id);
                 lessonExercise.setExerciseTitle(title);
@@ -140,6 +172,7 @@ public class LessonExerciseUpdateDialog extends Dialog {
                 lessonExercise.setMaxWrong(intInputMaxWrong);
                 lessonExercise.setCorrectsShouldBeConsecutive(isRcChecked);
                 lessonExercise.setWrongsShouldBeConsecutive(isMeChecked);
+                lessonExercise.setRangeEditable(getLessonExercise().isRangeEditable());
                 lessonExercise.setRange(range);
                 Service service = new Service("Posting lesson exercise...", context, new ServiceResponse() {
                     @Override
@@ -157,6 +190,15 @@ public class LessonExerciseUpdateDialog extends Dialog {
                             inputItemsSize.setText(strItemsSize);
                             inputItemsSize.setHint(strItemsSize);
                             inputMaxWrong.setHint(strMaxWrong);
+                            Range range = lessonExercise.getRange();
+                            int minimum = range.getMinimum();
+                            int maximum = range.getMaximum();
+                            String strMinimum = String.valueOf(minimum);
+                            String strMaximum = String.valueOf(maximum);
+                            if (lessonExercise.isRangeEditable()){
+                                inputMinimum.setHint(strMinimum);
+                                inputMaximum.setHint(strMaximum);
+                            }
                             String title = lessonExercise.getExerciseTitle();
                             inputTitle.setHint(title);
                         } catch (Exception e) {
@@ -170,8 +212,9 @@ public class LessonExerciseUpdateDialog extends Dialog {
         }
     }
 
-    private boolean areFieldsFilled(){
+    private boolean checkFields(){ // true means go
         boolean isAFieldEmpty = false;
+        boolean errorDetected = false;
         if (Util.isEditTextEmpty(inputTitle)){
             Styles.shakeAnimate(inputTitle);
             isAFieldEmpty = true;
@@ -186,14 +229,26 @@ public class LessonExerciseUpdateDialog extends Dialog {
         }
         if (lessonExercise.isRangeEditable()){
             if (Util.isEditTextEmpty(inputMinimum)){
-                Styles.shakeAnimate(inputMaxWrong);
+                Styles.shakeAnimate(inputMinimum);
                 isAFieldEmpty = true;
             }
             if (Util.isEditTextEmpty(inputMaximum)){
-                Styles.shakeAnimate(inputMaxWrong);
+                Styles.shakeAnimate(inputMaximum);
                 isAFieldEmpty = true;
             }
+            String strInputMinimum = inputMinimum.getText().toString().trim();
+            String strInputMaximum = inputMaximum.getText().toString().trim();
+            int intInputMinimum = Integer.valueOf(strInputMinimum);
+            int intInputMaximum = Integer.valueOf(strInputMaximum);
+
+            if (intInputMinimum>=intInputMaximum){
+                Styles.shakeAnimate(inputMinimum);
+                Styles.shakeAnimate(inputMaximum);
+                String message = "Input a larger number on the maximum field.";
+                Util.toast(context, message);
+                errorDetected = true;
+            }
         }
-        return !isAFieldEmpty;
+        return !isAFieldEmpty && !errorDetected;
     }
 }

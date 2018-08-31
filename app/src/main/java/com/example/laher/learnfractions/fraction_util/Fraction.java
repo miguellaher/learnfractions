@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.example.laher.learnfractions.classes.Range;
 
+import java.util.Random;
+
 public class Fraction implements Comparable<Fraction>{
     private int numerator;
     private int denominator;
@@ -67,8 +69,9 @@ public class Fraction implements Comparable<Fraction>{
     public void generateFraction(Range range){
         int minimum = range.getMinimum();
         int maximum = range.getMaximum();
-        int numerator = (int) (Math.random() * maximum + minimum);
-        int denominator = (int) (Math.random() * maximum + minimum);
+        Random random = new Random();
+        int numerator = random.nextInt(maximum + 1 - minimum) + minimum;
+        int denominator = random.nextInt(maximum + 1 - minimum) + minimum;
         setNumerator(numerator);
         setDenominator(denominator);
         setModifier();
@@ -103,7 +106,7 @@ public class Fraction implements Comparable<Fraction>{
     private void generateProperFraction(){
         int numerator = (int) (Math.random() * 9 + 1);
         int denominator = (int) (Math.random() * 9 + 1);
-        while (denominator>numerator){
+        while (numerator>denominator){
             numerator = (int) (Math.random() * 9 + 1);
             denominator = (int) (Math.random() * 9 + 1);
         }
@@ -156,6 +159,6 @@ public class Fraction implements Comparable<Fraction>{
 
     @Override
     public final int compareTo(@NonNull Fraction o) {
-        return Integer.compare(0, this.compare(o));
+        return Integer.compare(0, this.compare(o)); // greatest to least
     }
 }

@@ -7,10 +7,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.questions.ComparingNumbersQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 
@@ -40,6 +42,9 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
 
     public ComparingSimilarExerciseActivity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.P_RAISED_TO_2, range);
+        setProbability(probability);
         setId(id);
         setExerciseTitle(title);
     }
@@ -50,7 +55,9 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
-
+        Range range = getRange();
+        Probability probability = new Probability(Probability.P_RAISED_TO_2, range);
+        setProbability(probability);
         //GUI
         txtNum1 = findViewById(R.id.c1_txtNum1);
         txtNum2 = findViewById(R.id.c1_txtNum2);
@@ -199,7 +206,9 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
     protected void postWrong() {
         super.postWrong();
         ComparingNumbersQuestion comparingNumbers = new ComparingNumbersQuestion();
-        while (mComparingNumbersQuestions.contains(comparingNumbers)){
+        int questionsSize = mComparingNumbersQuestions.size();
+        int maxItemSize = getMaxItemSize();
+        while (mComparingNumbersQuestions.contains(comparingNumbers) && questionsSize<maxItemSize){
             comparingNumbers = new ComparingNumbersQuestion();
         }
         mComparingNumbersQuestions.add(comparingNumbers);

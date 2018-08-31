@@ -31,6 +31,7 @@ import com.example.laher.learnfractions.teacher.TeacherMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
+import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -137,6 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     } catch (Exception e){
                         e.printStackTrace();
+                        Util.toast(mContext, AppConstants.SERVER_DOWN);
                     }
                 }
             });
@@ -167,6 +169,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     } catch (Exception e){
                         e.printStackTrace();
+                        Util.toast(mContext, AppConstants.SERVER_DOWN);
                     }
                 }
             });

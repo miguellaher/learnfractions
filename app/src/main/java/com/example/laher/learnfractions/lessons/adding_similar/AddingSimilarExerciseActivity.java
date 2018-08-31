@@ -21,7 +21,7 @@ import com.example.laher.learnfractions.fraction_util.fraction_questions.AddingS
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
-import com.example.laher.learnfractions.util.Limit;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 
@@ -52,8 +52,9 @@ public class AddingSimilarExerciseActivity extends LessonExercise {
 
     public AddingSimilarExerciseActivity() {
         super();
-        int product = Limit.rangeUp3(getRange());
-        setMaxItemSize(product);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.P_RAISED_TO_3, range);
+        setProbability(probability);
         setId(id);
         setExerciseTitle(title);
         setRangeEditable(true);
@@ -64,10 +65,11 @@ public class AddingSimilarExerciseActivity extends LessonExercise {
         setContentView(R.layout.activity_fraction_equation);
         setId(id);
         setExerciseTitle(title);
-        int product = Limit.rangeUp3(getRange());
-        setMaxItemSize(product);
-        setRangeEditable(true);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.P_RAISED_TO_3, range);
+        setProbability(probability);
+        setRangeEditable(true);
         //FRACTION EQUATION GUI
         txtNum1 = findViewById(R.id.fe_txtNum1);
         txtNum2 = findViewById(R.id.fe_txtNum2);
@@ -254,15 +256,18 @@ public class AddingSimilarExerciseActivity extends LessonExercise {
     protected void postWrong() {
         super.postWrong();
         boolean correctsShouldBeConsecutive = isCorrectsShouldBeConsecutive();
+        Range range = getRange();
         if (correctsShouldBeConsecutive) {
             setQuestions();
             startUp();
             enableInputFraction();
             btnCheck.setEnabled(true);
         } else {
-            AddingSimilarFractionsQuestion fractionsQuestion = new AddingSimilarFractionsQuestion(getRange());
-            while (mFractionsQuestions.contains(fractionsQuestion)){
-                fractionsQuestion = new AddingSimilarFractionsQuestion(getRange());
+            AddingSimilarFractionsQuestion fractionsQuestion = new AddingSimilarFractionsQuestion(range);
+            int questionsSize = mFractionsQuestions.size();
+            int maxItemSize = getMaxItemSize();
+            while (mFractionsQuestions.contains(fractionsQuestion) && questionsSize<maxItemSize){
+                fractionsQuestion = new AddingSimilarFractionsQuestion(range);
             }
             mFractionsQuestions.add(fractionsQuestion);
             nextQuestion();

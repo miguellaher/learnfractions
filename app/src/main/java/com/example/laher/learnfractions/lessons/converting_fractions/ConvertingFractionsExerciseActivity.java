@@ -18,12 +18,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.MixedFraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.ConvertingFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 
@@ -65,6 +67,9 @@ public class ConvertingFractionsExerciseActivity extends LessonExercise {
 
     public ConvertingFractionsExerciseActivity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.CONVERTING_FRACTIONS1, range);
+        setProbability(probability);
         setId(id);
         setExerciseTitle(title);
     }
@@ -76,6 +81,9 @@ public class ConvertingFractionsExerciseActivity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.CONVERTING_FRACTIONS1, range);
+        setProbability(probability);
         //GUI
         txtNum1 = findViewById(R.id.cvt_txtNum1);
         txtDenom1 = findViewById(R.id.cvt_txtDenom1);

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.EquationDialog;
 import com.example.laher.learnfractions.dialog_layout.LcmDialog;
 import com.example.laher.learnfractions.fraction_util.Fraction;
@@ -29,10 +30,12 @@ import com.example.laher.learnfractions.fraction_util.fraction_questions.Subtrac
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static android.content.DialogInterface.OnDismissListener;
 import static android.content.DialogInterface.OnShowListener;
@@ -103,6 +106,10 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
 
     public SolvingMixedExerciseActivity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.SOLVING_MIXED2, range);
+        setProbability(probability);
+        setRangeEditable(true);
         setId(id);
         setExerciseTitle(title);
     }
@@ -112,6 +119,10 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_fraction_equation_mixed);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.SOLVING_MIXED2, range);
+        setProbability(probability);
+        setRangeEditable(true);
         setId(id);
         setExerciseTitle(title);
         //GUI
@@ -214,21 +225,23 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
         mQuestionNum = 1;
         mFractionsQuestions = new ArrayList<>();
         int requiredCorrects = getItemsSize();
+        Range range = getRange();
         for (int i = 0; i < requiredCorrects; i++){
             if (i>=(requiredCorrects/2)) {
-                AddingMixedFractionsQuestion fractionsQuestion = new AddingMixedFractionsQuestion();
+                AddingMixedFractionsQuestion fractionsQuestion = new AddingMixedFractionsQuestion(range);
                 while (mFractionsQuestions.contains(fractionsQuestion)) {
-                    fractionsQuestion = new AddingMixedFractionsQuestion();
+                    fractionsQuestion = new AddingMixedFractionsQuestion(range);
                 }
                 mFractionsQuestions.add(fractionsQuestion);
             } else {
-                SubtractingMixedFractionsQuestion fractionsQuestion = new SubtractingMixedFractionsQuestion();
+                SubtractingMixedFractionsQuestion fractionsQuestion = new SubtractingMixedFractionsQuestion(range);
                 while (mFractionsQuestions.contains(fractionsQuestion)) {
-                    fractionsQuestion = new SubtractingMixedFractionsQuestion();
+                    fractionsQuestion = new SubtractingMixedFractionsQuestion(range);
                 }
                 mFractionsQuestions.add(fractionsQuestion);
             }
         }
+        Collections.shuffle(mFractionsQuestions);
     }
     public void setFractionGui(){
         mFractionsQuestion = mFractionsQuestions.get(mQuestionNum-1);
@@ -296,7 +309,7 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
             String tag = fractionsQuestion.getTAG();
             txtSign1.setText("-");
             txtSign2.setText("-");
-            if (tag.equals(AddingMixedFractionsQuestion.ONE_MIXED)){
+            if (tag.equals(SubtractingMixedFractionsQuestion.ONE_MIXED)){
                 MixedFraction mixedFraction = fractionsQuestion.getMixedFraction1();
                 Fraction fraction = fractionsQuestion.getFraction();
                 int wholeNumber = mixedFraction.getWholeNumber();
@@ -316,7 +329,7 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
                 txtNum2.setText(strNumerator);
                 txtDenom2.setText(strDenominator);
                 txtWholeNum2.setText("");
-            } else if (tag.equals(AddingMixedFractionsQuestion.TWO_MIXED)){
+            } else if (tag.equals(SubtractingMixedFractionsQuestion.TWO_MIXED)){
                 MixedFraction mixedFraction1 = fractionsQuestion.getMixedFraction1();
                 MixedFraction mixedFraction2 = fractionsQuestion.getMixedFraction2();
                 int wholeNumber1 = mixedFraction1.getWholeNumber();
@@ -936,11 +949,31 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
             setFractionQuestions();
             setFractionGui();
         } else {
-            AddingMixedFractionsQuestion fractionsQuestion = new AddingMixedFractionsQuestion(AddingMixedFractionsQuestion.ONE_MIXED);
-            while (mFractionsQuestions.contains(fractionsQuestion)){
-                fractionsQuestion = new AddingMixedFractionsQuestion(AddingMixedFractionsQuestion.ONE_MIXED);
+            mFractionsQuestion = mFractionsQuestions.get(mQuestionNum-1);
+            Range range = getRange();
+            int addingItems = 0;
+            int subtractingItems = 0;
+            for (FractionQuestionClass questionClass : mFractionsQuestions){
+                if (questionClass instanceof AddingMixedFractionsQuestion){
+                    addingItems++;
+                } else if (questionClass instanceof SubtractingMixedFractionsQuestion){
+                    subtractingItems++;
+                }
             }
-            mFractionsQuestions.add(fractionsQuestion);
+            int maxItemSize = getMaxItemSize()/2;
+            if (mFractionsQuestion instanceof AddingMixedFractionsQuestion){
+                AddingMixedFractionsQuestion question = new AddingMixedFractionsQuestion(range);
+                while (mFractionsQuestions.contains(question) && addingItems<maxItemSize){
+                    question = new AddingMixedFractionsQuestion(range);
+                }
+                mFractionsQuestions.add(question);
+            } else if (mFractionsQuestion instanceof SubtractingMixedFractionsQuestion){
+                SubtractingMixedFractionsQuestion question = new SubtractingMixedFractionsQuestion(range);
+                while (mFractionsQuestions.contains(question) && subtractingItems<maxItemSize){
+                    question = new SubtractingMixedFractionsQuestion(range);
+                }
+                mFractionsQuestions.add(question);
+            }
             nextQuestion();
         }
     }

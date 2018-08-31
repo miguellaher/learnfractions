@@ -18,11 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.AddingDissimilarFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
@@ -81,6 +83,10 @@ public class AddingDissimilarExerciseActivity extends LessonExercise {
 
     public AddingDissimilarExerciseActivity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.TWO_DISSIMILAR_FRACTIONS, range);
+        setProbability(probability);
+        setRangeEditable(true);
         setId(id);
         setExerciseTitle(title);
     }
@@ -89,9 +95,13 @@ public class AddingDissimilarExerciseActivity extends LessonExercise {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_fraction_dissimilar_equation);
-        super.onCreate(savedInstanceState);
         setId(id);
         setExerciseTitle(title);
+        super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.TWO_DISSIMILAR_FRACTIONS, range);
+        setProbability(probability);
+        setRangeEditable(true);
         //GUI
         txtNum1 = findViewById(R.id.adsm_txtNum1);
         txtNum2 = findViewById(R.id.adsm_txtNum2);
@@ -166,10 +176,11 @@ public class AddingDissimilarExerciseActivity extends LessonExercise {
         mQuestionNum = 1;
         mFractionQuestions = new ArrayList<>();
         int requiredCorrects = getItemsSize();
+        Range range = getRange();
         for (int i = 0; i < requiredCorrects; i++){
-            AddingDissimilarFractionsQuestion fractionQuestion = new AddingDissimilarFractionsQuestion();
+            AddingDissimilarFractionsQuestion fractionQuestion = new AddingDissimilarFractionsQuestion(range);
             while (mFractionQuestions.contains(fractionQuestion)){
-                fractionQuestion = new AddingDissimilarFractionsQuestion();
+                fractionQuestion = new AddingDissimilarFractionsQuestion(range);
             }
             mFractionQuestions.add(fractionQuestion);
         }
@@ -652,13 +663,16 @@ public class AddingDissimilarExerciseActivity extends LessonExercise {
     protected void postWrong() {
         super.postWrong();
         boolean correctsShouldBeConsecutive = isCorrectsShouldBeConsecutive();
+        Range range = getRange();
         if (correctsShouldBeConsecutive) {
             setQuestions();
             startUp();
         } else {
-            AddingDissimilarFractionsQuestion fractionQuestion = new AddingDissimilarFractionsQuestion();
-            while (mFractionQuestions.contains(fractionQuestion)){
-                fractionQuestion = new AddingDissimilarFractionsQuestion();
+            AddingDissimilarFractionsQuestion fractionQuestion = new AddingDissimilarFractionsQuestion(range);
+            int questionsSize = mFractionQuestions.size();
+            int maxItemSize = getMaxItemSize();
+            while (mFractionQuestions.contains(fractionQuestion) && questionsSize<maxItemSize){
+                fractionQuestion = new AddingDissimilarFractionsQuestion(range);
             }
             mFractionQuestions.add(fractionQuestion);
             nextQuestion();

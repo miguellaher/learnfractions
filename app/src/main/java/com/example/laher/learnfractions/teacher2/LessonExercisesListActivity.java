@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.lessons.adding_dissimilar.AddingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.lessons.adding_similar.AddingSimilarExerciseActivity;
 import com.example.laher.learnfractions.lessons.classifying_fractions.ClassifyingFractionsExerciseActivity;
@@ -42,6 +43,7 @@ import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.teacher.TeacherMainActivity;
 import com.example.laher.learnfractions.teacher2.dialog.LessonExerciseUpdateDialog;
 import com.example.laher.learnfractions.teacher2.list_adpaters.LessonExercisesListAdapter;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
@@ -158,12 +160,18 @@ public class LessonExercisesListActivity extends MainFrame {
                         String exercise_id = response.optString(i + "exercise_id");
                         String title = response.optString(i + "title");
                         String strItemsSize = response.optString(i + "items_size");
+                        String strMaxItemsSize = response.optString(i + "max_items");
                         String strRCC = response.optString(i + "rc_consecutive");
                         String strMaxWrong = response.optString(i + "max_wrong");
                         String strMEC = response.optString(i + "me_consecutive");
+                        String strRangeEditable = response.optString(i + "r_editable");
+                        String strMinimum = response.optString(i + "r_minimum");
+                        String strMaximum = response.optString(i + "r_maximum");
 
-                        if (Util.isNumeric(strItemsSize) && Util.isNumeric(strMaxWrong)) {
+                        if (Util.isNumeric(strItemsSize) && Util.isNumeric(strMaxWrong) && Util.isNumeric(strMaxItemsSize)
+                                && Util.isNumeric(strMinimum) && Util.isNumeric(strMaximum)) {
                             int itemsSize = Integer.valueOf(strItemsSize);
+                            int maxItemsSize = Integer.valueOf(strMaxItemsSize);
                             boolean isCorrectsShouldBeConsecutive = false;
                             if (strRCC.equals("1")) {
                                 isCorrectsShouldBeConsecutive = true;
@@ -173,14 +181,24 @@ public class LessonExercisesListActivity extends MainFrame {
                             if (strMEC.equals("0")) {
                                 isWrongsShouldBeConsecutive = false;
                             }
+                            boolean isRangeEditable = false;
+                            if (strRangeEditable.equals("1")){
+                                isRangeEditable = true;
+                            }
+                            int minimum = Integer.valueOf(strMinimum);
+                            int maximum = Integer.valueOf(strMaximum);
+                            Range range = new Range(minimum,maximum);
 
                             LessonExercise exercise = new LessonExercise();
                             exercise.setId(exercise_id);
                             exercise.setExerciseTitle(title);
                             exercise.setItemsSize(itemsSize);
+                            exercise.setMaxItemSize(maxItemsSize);
                             exercise.setCorrectsShouldBeConsecutive(isCorrectsShouldBeConsecutive);
                             exercise.setMaxWrong(maxWrong);
                             exercise.setWrongsShouldBeConsecutive(isWrongsShouldBeConsecutive);
+                            exercise.setRangeEditable(isRangeEditable);
+                            exercise.setRange(range);
                             exercises.add(exercise);
                         }
                     }
@@ -198,10 +216,10 @@ public class LessonExercisesListActivity extends MainFrame {
         for (LessonExercise exercise : getLessonExercises()){
             for (LessonExercise downloadedExercise : downloadedExercises){
                 if (exercise.equals(downloadedExercise)){
-                    int maxItemSize = exercise.getMaxItemSize();
-                    boolean rangeEditable = exercise.isRangeEditable();
-                    downloadedExercise.setMaxItemSize(maxItemSize);
-                    downloadedExercise.setRangeEditable(rangeEditable);
+                    Probability probability = exercise.getProbability();
+                    if (probability!=null){
+                        downloadedExercise.setProbability(probability);
+                    }
                     getLessonExercises().set(i, downloadedExercise);
                 }
             }

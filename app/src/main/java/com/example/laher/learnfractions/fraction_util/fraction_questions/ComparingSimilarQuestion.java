@@ -2,6 +2,7 @@ package com.example.laher.learnfractions.fraction_util.fraction_questions;
 
 import android.util.Log;
 
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -19,16 +20,22 @@ public class ComparingSimilarQuestion extends FractionQuestionClass {
     }
 
     public ComparingSimilarQuestion() {
-        generateFractions();
+        Range range = new Range();
+        generateFractions(range);
     }
 
-    private void generateFractions(){
-        this.fraction1 = new Fraction();
-        this.fraction2 = new Fraction();
+    public ComparingSimilarQuestion(Range range) {
+        super(range);
+        generateFractions(range);
+    }
+
+    private void generateFractions(Range range){
+        this.fraction1 = new Fraction(range);
+        this.fraction2 = new Fraction(range);
         while (this.fraction1.getNumerator()!=this.fraction2.getNumerator() &&
                 this.fraction1.getDenominator()!=this.fraction2.getDenominator()){
-            this.fraction1 = new Fraction();
-            this.fraction2 = new Fraction();
+            this.fraction1 = new Fraction(range);
+            this.fraction2 = new Fraction(range);
         }
     }
 

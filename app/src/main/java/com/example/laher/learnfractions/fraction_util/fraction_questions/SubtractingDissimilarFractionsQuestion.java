@@ -1,10 +1,12 @@
 package com.example.laher.learnfractions.fraction_util.fraction_questions;
 
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 import com.example.laher.learnfractions.util.FractionUtil;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class SubtractingDissimilarFractionsQuestion extends FractionQuestionClass {
     private Fraction fraction1;
@@ -25,6 +27,11 @@ public class SubtractingDissimilarFractionsQuestion extends FractionQuestionClas
 
     public SubtractingDissimilarFractionsQuestion() {
         generateFractions();
+    }
+
+    public SubtractingDissimilarFractionsQuestion(Range range) {
+        super(range);
+        generateFractions(range);
     }
 
     private void generateFractions(){
@@ -53,6 +60,60 @@ public class SubtractingDissimilarFractionsQuestion extends FractionQuestionClas
         }
         setFractionAnswer();
     }
+
+    public static void main (String[] args){
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        System.out.print("Enter range: ");
+        int n = reader.nextInt();
+        Range range = new Range(1,n);
+        for (int i = 0; i < 100; i++) {
+            SubtractingDissimilarFractionsQuestion question = new SubtractingDissimilarFractionsQuestion(range);
+            Fraction fraction1 = question.getFraction1();
+            Fraction fraction2 = question.getFraction2();
+            Fraction fractionAnswer = question.getFractionAnswer();
+            if (fraction1.equals(new Fraction(2,1))) {
+                System.out.println("Fraction 1: " + fraction1.getNumerator() + "/" + fraction1.getDenominator());
+                System.out.println("Fraction 2: " + fraction2.getNumerator() + "/" + fraction2.getDenominator());
+                System.out.println("Fraction Answer: " + fractionAnswer.getNumerator() + "/" + fractionAnswer.getDenominator());
+                System.out.println("<----------------------------------------------------->");
+            }
+        }
+    }
+
+    private void generateFractions(Range range){
+        fraction1 = new Fraction(range);
+        fraction2 = new Fraction(range);
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        ArrayList<Fraction> fractions = new ArrayList<>();
+        fractions.add(fraction1);
+        fractions.add(fraction2);
+        int lcd = FractionUtil.getLcd(fractions);
+        int quotient1 = lcd / denominator1;
+        int quotient2 = lcd / denominator2;
+        int quotientLimit = range.getMaximum();
+        while (denominator1==denominator2 || (quotient1>quotientLimit||quotient2>quotientLimit) || fraction1.compare(fraction2)<1){
+            //while fraction1 is less than fraction2
+            if (fraction2.compare(fraction1)>0){
+                Fraction fractionOne = fraction1;
+                fraction1 = fraction2;
+                fraction2 = fractionOne;
+            } else {
+                fraction1 = new Fraction(range);
+                fraction2 = new Fraction(range);
+            }
+            denominator1 = fraction1.getDenominator();
+            denominator2 = fraction2.getDenominator();
+            fractions = new ArrayList<>();
+            fractions.add(fraction1);
+            fractions.add(fraction2);
+            lcd = FractionUtil.getLcd(fractions);
+            quotient1 = lcd / denominator1;
+            quotient2 = lcd / denominator2;
+        }
+        setFractionAnswer();
+    }
+
     private void setFractionAnswer(){ //exclusive method for generateFractions()
         ArrayList<Fraction> fractions = new ArrayList<>();
         fractions.add(fraction1);

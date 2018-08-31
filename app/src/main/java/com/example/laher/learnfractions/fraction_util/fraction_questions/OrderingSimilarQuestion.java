@@ -1,5 +1,6 @@
 package com.example.laher.learnfractions.fraction_util.fraction_questions;
 
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 
@@ -31,22 +32,35 @@ public class OrderingSimilarQuestion extends FractionQuestionClass {
     }
 
     public OrderingSimilarQuestion() {
-        generateFractions();
+        Range range = new Range();
+        generateFractions(range);
     }
 
-    public void generateFractions(){
-        fraction1 = new Fraction();
-        fraction2 = new Fraction();
-        fraction3 = new Fraction();
+    public OrderingSimilarQuestion(Range range) {
+        super(range);
+        int intRange = range.getRange();
+        while (intRange<3){
+            int maximum = range.getMaximum();
+            maximum = maximum + 1;
+            range.setMaximum(maximum);
+            intRange = range.getRange();
+        }
+        generateFractions(range);
+    }
+
+    public void generateFractions(Range range){
+        fraction1 = new Fraction(range);
+        fraction2 = new Fraction(range);
+        fraction3 = new Fraction(range);
         while ((fraction1.equals(fraction2) ||
                 fraction1.equals(fraction3) ||
                 fraction2.equals(fraction3)) ||
                 (fraction1.getDenominator()!=fraction2.getDenominator() ||
                 fraction1.getDenominator()!=fraction3.getDenominator() ||
                 fraction2.getDenominator()!=fraction3.getDenominator())){
-            fraction1 = new Fraction();
-            fraction2 = new Fraction();
-            fraction3 = new Fraction();
+            fraction1 = new Fraction(range);
+            fraction2 = new Fraction(range);
+            fraction3 = new Fraction(range);
         }
         fractions = new ArrayList<>();
         fractions.add(fraction1);

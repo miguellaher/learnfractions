@@ -3,7 +3,9 @@ package com.example.laher.learnfractions.model;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Probability;
 
 public class SeatWork extends AppCompatActivity {
     private String topicName;
@@ -14,6 +16,23 @@ public class SeatWork extends AppCompatActivity {
     private long timeSpent;
     private int currentItemNum;
     private boolean answered;
+
+    private int maxItemsSize;
+    private Probability probability;
+    private Range range;
+
+    public void setProbability(Probability probability) {
+        this.probability = probability;
+        int outComes = probability.getOutComes();
+        setMaxItemsSize(outComes);
+    }
+
+    public void setMaxItemsSize(int maxItemsSize) {
+        if (maxItemsSize>0) {
+            this.maxItemsSize = maxItemsSize;
+            setItems_size(maxItemsSize);
+        }
+    }
 
     public SeatWork(String topicName, int seatWorkNum) {
         super();
@@ -71,7 +90,9 @@ public class SeatWork extends AppCompatActivity {
     }
 
     public void setItems_size(int items_size) {
-        this.items_size = items_size;
+        if (items_size>0) {
+            this.items_size = items_size;
+        }
     }
 
     public int getCorrect() {

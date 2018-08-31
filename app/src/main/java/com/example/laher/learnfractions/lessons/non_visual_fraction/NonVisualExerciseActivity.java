@@ -7,10 +7,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.NonVisualQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +38,9 @@ public class NonVisualExerciseActivity extends LessonExercise {
 
     public NonVisualExerciseActivity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.TWO_DISSIMILAR_NUMBERS, range);
+        setProbability(probability);
         setId(id);
         setExerciseTitle(title);
     }
@@ -46,7 +51,9 @@ public class NonVisualExerciseActivity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
-
+        Range range = getRange();
+        Probability probability = new Probability(Probability.TWO_DISSIMILAR_NUMBERS, range);
+        setProbability(probability);
         txtNumerator = findViewById(R.id.b1_txtNumerator);
         txtDenominator = findViewById(R.id.b1_txtDenominator);
         txtInstruction = findViewById(R.id.b1_txtInstruction);
@@ -179,7 +186,9 @@ public class NonVisualExerciseActivity extends LessonExercise {
         } else {
             resetColor();
             NonVisualQuestion nonVisualQuestion = new NonVisualQuestion();
-            while (mNonVisualQuestions.contains(nonVisualQuestion)) {
+            int questionsSize = mNonVisualQuestions.size();
+            int maxItemSize = getMaxItemSize();
+            while (mNonVisualQuestions.contains(nonVisualQuestion) && questionsSize<maxItemSize){
                 nonVisualQuestion = new NonVisualQuestion();
             }
             mNonVisualQuestions.add(nonVisualQuestion);

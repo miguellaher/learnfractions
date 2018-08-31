@@ -16,12 +16,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.ComparingFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
@@ -65,6 +67,10 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
 
     public ComparingFractionsExercise2Activity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.COMPARING_FRACTIONS, range);
+        setProbability(probability);
+        setRangeEditable(true);
         setId(id);
         setExerciseTitle(title);
     }
@@ -76,6 +82,10 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.COMPARING_FRACTIONS, range);
+        setProbability(probability);
+        setRangeEditable(true);
         //GUI
         txtNum1 = findViewById(R.id.e2_txtNum1);
         txtNum2 = findViewById(R.id.e2_txtNum2);
@@ -136,18 +146,19 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
         mQuestionNum = 1;
         mComparingFractionsQuestions = new ArrayList<>();
         int requiredCorrects = getItemsSize();
+        Range range = getRange();
         for (int i = 0; i < requiredCorrects; i++){
             ComparingFractionsQuestion comparingFractionsQuestion;
             if (i<requiredCorrects/2){
-                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR,range);
             } else {
-                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.DISSIMILAR);
+                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.DISSIMILAR,range);
             }
             while (mComparingFractionsQuestions.contains(comparingFractionsQuestion)){
                 if (i<requiredCorrects/2){
-                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR,range);
                 } else {
-                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.DISSIMILAR);
+                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.DISSIMILAR,range);
                 }
             }
             mComparingFractionsQuestions.add(comparingFractionsQuestion);
@@ -415,6 +426,7 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
     protected void postWrong() {
         super.postWrong();
         boolean correctsShouldBeConsecutive = isCorrectsShouldBeConsecutive();
+        Range range = getRange();
         if (correctsShouldBeConsecutive) {
             setFractionQuestions();
             setup();
@@ -422,15 +434,30 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
             mComparingFractionsQuestion = mComparingFractionsQuestions.get(mQuestionNum-1);
             ComparingFractionsQuestion comparingFractionsQuestion = null;
             if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.SIMILAR)){
-                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR,range);
             } else if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.DISSIMILAR)){
-                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR,range);
             }
-            while (mComparingFractionsQuestions.contains(comparingFractionsQuestion)){
-                if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.SIMILAR)){
-                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
-                } else if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.DISSIMILAR)){
-                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR);
+            int similarFractionsSize = 0;
+            int dissimilarFractionsSize = 0;
+            for (ComparingFractionsQuestion fractionQuestion : mComparingFractionsQuestions){
+                String modifier = fractionQuestion.getModifier();
+                if (modifier.equals(ComparingFractionsQuestion.SIMILAR)){
+                    similarFractionsSize++;
+                } else if (modifier.equals(ComparingFractionsQuestion.DISSIMILAR)){
+                    dissimilarFractionsSize++;
+                }
+            }
+            int maxItemSize = getMaxItemSize()/2;
+            if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.SIMILAR)){
+                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR,range);
+                while (mComparingFractionsQuestions.contains(comparingFractionsQuestion) && similarFractionsSize<maxItemSize) {
+                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.SIMILAR,range);
+                }
+            } else if (mComparingFractionsQuestion.getModifier().equals(ComparingFractionsQuestion.DISSIMILAR)){
+                comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.DISSIMILAR,range);
+                while (mComparingFractionsQuestions.contains(comparingFractionsQuestion) && dissimilarFractionsSize<maxItemSize) {
+                    comparingFractionsQuestion = new ComparingFractionsQuestion(ComparingFractionsQuestion.DISSIMILAR,range);
                 }
             }
             mComparingFractionsQuestions.add(comparingFractionsQuestion);

@@ -7,12 +7,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 import com.example.laher.learnfractions.fraction_util.MixedFraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.ClassifyingFractionQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +42,9 @@ public class ClassifyingFractionsExerciseActivity extends LessonExercise {
 
     public ClassifyingFractionsExerciseActivity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.CLASSIFYING_FRACTIONS, range);
+        setProbability(probability);
         setId(id);
         setExerciseTitle(title);
     }
@@ -49,6 +55,9 @@ public class ClassifyingFractionsExerciseActivity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.CLASSIFYING_FRACTIONS, range);
+        setProbability(probability);
         //GUI
         txtNum = findViewById(R.id.clF_txtNum);
         txtDenom = findViewById(R.id.clF_txtDenom);
@@ -206,16 +215,37 @@ public class ClassifyingFractionsExerciseActivity extends LessonExercise {
             ClassifyingFractionQuestion classifyingFractionQuestion = new ClassifyingFractionQuestion();
             Fraction fraction = mClassifyingFractionQuestion.getFraction();
             String modifier = fraction.getModifier();
+            int improperFractionsItems = 0;
+            int properFractionsItems = 0;
+            int mixedFractionsItems = 0;
+            for (ClassifyingFractionQuestion fractionQuestion : mClassifyingFractionQuestions){
+                Fraction fraction1 = fractionQuestion.getFraction();
+                String modifier1 = fraction1.getModifier();
+                if (modifier1.equals(Fraction.IMPROPER)){
+                    improperFractionsItems++;
+                } else if (modifier1.equals(Fraction.PROPER)){
+                    properFractionsItems++;
+                } else if (modifier1.equals(Fraction.MIXED)){
+                    mixedFractionsItems++;
+                }
+            }
+            int maxItemSize = getMaxItemSize()/3;
             if (modifier.equals(Fraction.MIXED)){
                 classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.MIXED);
-                while (mClassifyingFractionQuestions.contains(classifyingFractionQuestion)){
+                while (mClassifyingFractionQuestions.contains(classifyingFractionQuestion) && mixedFractionsItems<maxItemSize){
                     classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.MIXED);
                 }
             } else {
                 if (modifier.equals(Fraction.PROPER)){
                     classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.PROPER);
+                    while (mClassifyingFractionQuestions.contains(classifyingFractionQuestion) && properFractionsItems<maxItemSize){
+                        classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.PROPER);
+                    }
                 } else if (modifier.equals(Fraction.IMPROPER)){
                     classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.IMPROPER);
+                    while (mClassifyingFractionQuestions.contains(classifyingFractionQuestion) && improperFractionsItems<maxItemSize){
+                        classifyingFractionQuestion = new ClassifyingFractionQuestion(Fraction.IMPROPER);
+                    }
                 }
             }
             mClassifyingFractionQuestions.add(classifyingFractionQuestion);

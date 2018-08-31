@@ -17,11 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.MixedFraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.ConvertingFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
@@ -62,6 +64,9 @@ public class ConvertingFractionsExercise2Activity extends LessonExercise {
 
     public ConvertingFractionsExercise2Activity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.P_RAISED_TO_3, range);
+        setProbability(probability);
         setId(id);
         setExerciseTitle(title);
     }
@@ -73,6 +78,9 @@ public class ConvertingFractionsExercise2Activity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.P_RAISED_TO_3, range);
+        setProbability(probability);
         //GUI
         txtWholeNum = findViewById(R.id.cvt2_txtWholeNum);
         txtNum1 = findViewById(R.id.cvt2_txtNum);

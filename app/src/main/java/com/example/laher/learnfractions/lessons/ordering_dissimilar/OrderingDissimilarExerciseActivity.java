@@ -15,10 +15,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.questions.GettingLcmQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
@@ -51,6 +53,9 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
 
     public OrderingDissimilarExerciseActivity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.GETTING_LCM, range);
+        setProbability(probability);
         setId(id);
         setExerciseTitle(title);
     }
@@ -62,6 +67,9 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.GETTING_LCM, range);
+        setProbability(probability);
         //LCM DIALOG
         lcmView = getLayoutInflater().inflate(R.layout.layout_dialog_lcm, null);
         lcmDialog = new Dialog(OrderingDissimilarExerciseActivity.this);
@@ -276,7 +284,9 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
             setup();
         } else {
             GettingLcmQuestion gettingLcmQuestion = new GettingLcmQuestion();
-            while (mGettingLcmQuestions.contains(gettingLcmQuestion)){
+            int questionsSize = mGettingLcmQuestions.size();
+            int maxItemSize = getMaxItemSize();
+            while (mGettingLcmQuestions.contains(gettingLcmQuestion) && questionsSize<maxItemSize){
                 gettingLcmQuestion = new GettingLcmQuestion();
             }
             mGettingLcmQuestions.add(gettingLcmQuestion);

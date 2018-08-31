@@ -6,6 +6,19 @@ public class Range {
     private int range;
 
     public Range(int minimum, int maximum) {
+        this.minimum = minimum;
+        this.maximum = maximum;
+        fixMinMax();
+        int difference = this.maximum - this.minimum;
+        this.range = difference+1;
+    }
+
+    private void fixMinMax(){
+        // this.minimum, this.maximum ** IMPORTANT DETAIL
+        if (minimum<1||maximum<1){
+            minimum=1;
+            maximum=2;
+        }
         if (maximum<minimum){
             int min = minimum;
             minimum = maximum;
@@ -14,14 +27,26 @@ public class Range {
         if (maximum==minimum){
             maximum++;
         }
-        this.minimum = minimum;
-        this.maximum = maximum;
-        int difference = maximum - minimum;
-        this.range = difference+1;
+    }
+
+    public Range() {
+        // default
+        this.minimum = 1;
+        this.maximum = 9;
+        setRange();
     }
 
     public int getRange() {
+        if (range<=1){
+            range = 2;
+        }
         return range;
+    }
+
+    private void setRange(){
+        fixMinMax();
+        int difference = this.maximum - this.minimum;
+        this.range = difference+1;
     }
 
     public int getMinimum() {
@@ -38,5 +63,6 @@ public class Range {
 
     public void setMaximum(int maximum) {
         this.maximum = maximum;
+        setRange();
     }
 }

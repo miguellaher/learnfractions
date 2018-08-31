@@ -8,10 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.FractionMeaningQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 
 import java.util.ArrayList;
@@ -55,20 +57,12 @@ public class FractionMeaningExerciseActivity extends LessonExercise {
 
     public FractionMeaningExerciseActivity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.SUMMATION_NOTATION_1, range);
+        setProbability(probability);
         setId(id);
         setExerciseTitle(title);
     }
-
-    /*@Override
-    protected void setMaxItemsSize() {
-        int range = getRange();
-        int product = 1;
-        while (range>0){
-            product = product * range;
-            range--;
-        }
-        setMaxItemsSize(product);
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +70,9 @@ public class FractionMeaningExerciseActivity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
-
+        Range range = getRange();
+        Probability probability = new Probability(Probability.SUMMATION_NOTATION_1, range);
+        setProbability(probability);
         imgBox1 = findViewById(R.id.a_imgBox1);
         imgBox2 = findViewById(R.id.a_imgBox2);
         imgBox3 = findViewById(R.id.a_imgBox3);
@@ -273,7 +269,9 @@ public class FractionMeaningExerciseActivity extends LessonExercise {
             generateFractionQuestions();
         } else {
             FractionMeaningQuestion fractionMeaningQuestion = new FractionMeaningQuestion();
-            while (mFractionMeaningQuestions.contains(fractionMeaningQuestion)){
+            int questionsSize = mFractionMeaningQuestions.size();
+            int maxItemSize = getMaxItemSize();
+            while (mFractionMeaningQuestions.contains(fractionMeaningQuestion) && questionsSize<maxItemSize){
                 fractionMeaningQuestion = new FractionMeaningQuestion();
             }
             mFractionMeaningQuestions.add(fractionMeaningQuestion);

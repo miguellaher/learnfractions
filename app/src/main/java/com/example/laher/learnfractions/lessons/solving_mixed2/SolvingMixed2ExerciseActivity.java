@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 import com.example.laher.learnfractions.fraction_util.MixedFraction;
@@ -27,6 +28,7 @@ import com.example.laher.learnfractions.fraction_util.fraction_questions.Multipl
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
@@ -97,6 +99,10 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
 
     public SolvingMixed2ExerciseActivity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.SOLVING_MIXED1, range);
+        setProbability(probability);
+        setRangeEditable(true);
         setId(id);
         setExerciseTitle(title);
     }
@@ -106,6 +112,10 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_fraction_equation_mixed);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.SOLVING_MIXED1, range);
+        setProbability(probability);
+        setRangeEditable(true);
         setId(id);
         setExerciseTitle(title);
         //GUI
@@ -211,17 +221,18 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
         mQuestionNum = 1;
         mFractionQuestions = new ArrayList<>();
         int requiredCorrects = getItemsSize();
+        Range range = getRange();
         for (int i = 0; i < requiredCorrects; i++){
             if (i < (requiredCorrects /2)){
-                MultiplyingMixedFractionsQuestion fractionsQuestion = new MultiplyingMixedFractionsQuestion();
+                MultiplyingMixedFractionsQuestion fractionsQuestion = new MultiplyingMixedFractionsQuestion(range);
                 while (mFractionQuestions.contains(fractionsQuestion)){
-                    fractionsQuestion = new MultiplyingMixedFractionsQuestion();
+                    fractionsQuestion = new MultiplyingMixedFractionsQuestion(range);
                 }
                 mFractionQuestions.add(fractionsQuestion);
             } else {
-                DividingMixedFractionsQuestion fractionsQuestion = new DividingMixedFractionsQuestion();
+                DividingMixedFractionsQuestion fractionsQuestion = new DividingMixedFractionsQuestion(range);
                 while (mFractionQuestions.contains(fractionsQuestion)){
-                    fractionsQuestion = new DividingMixedFractionsQuestion();
+                    fractionsQuestion = new DividingMixedFractionsQuestion(range);
                 }
                 mFractionQuestions.add(fractionsQuestion);
             }
@@ -739,16 +750,27 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
             setFractionGui();
         } else {
             mFractionQuestion = mFractionQuestions.get(mQuestionNum-1);
+            Range range = getRange();
+            int multiplyingItems = 0;
+            int dividingItems = 0;
+            for (FractionQuestionClass questionClass : mFractionQuestions){
+                if (questionClass instanceof MultiplyingMixedFractionsQuestion){
+                    multiplyingItems++;
+                } else if (questionClass instanceof DividingMixedFractionsQuestion){
+                    dividingItems++;
+                }
+            }
+            int maxItemSize = getMaxItemSize()/2;
             if (mFractionQuestion instanceof MultiplyingMixedFractionsQuestion){
-                MultiplyingMixedFractionsQuestion fractionsQuestion = new MultiplyingMixedFractionsQuestion();
-                while (mFractionQuestions.contains(fractionsQuestion)){
-                    fractionsQuestion = new MultiplyingMixedFractionsQuestion();
+                MultiplyingMixedFractionsQuestion fractionsQuestion = new MultiplyingMixedFractionsQuestion(range);
+                while (mFractionQuestions.contains(fractionsQuestion) && multiplyingItems<maxItemSize){
+                    fractionsQuestion = new MultiplyingMixedFractionsQuestion(range);
                 }
                 mFractionQuestions.add(fractionsQuestion);
             } else if (mFractionQuestion instanceof DividingMixedFractionsQuestion){
-                DividingMixedFractionsQuestion fractionsQuestion = new DividingMixedFractionsQuestion();
-                while (mFractionQuestions.contains(fractionsQuestion)){
-                    fractionsQuestion = new DividingMixedFractionsQuestion();
+                DividingMixedFractionsQuestion fractionsQuestion = new DividingMixedFractionsQuestion(range);
+                while (mFractionQuestions.contains(fractionsQuestion) && dividingItems<maxItemSize){
+                    fractionsQuestion = new DividingMixedFractionsQuestion(range);
                 }
                 mFractionQuestions.add(fractionsQuestion);
             }

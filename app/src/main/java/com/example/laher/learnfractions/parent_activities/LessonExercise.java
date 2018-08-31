@@ -22,6 +22,7 @@ import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppCache;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Util;
 
@@ -49,10 +50,21 @@ public class LessonExercise extends AppCompatActivity {
     private int itemsSize;
     private int maxWrong;
     private Range range;
+    private Probability probability;
     private int maxItemSize;
     protected final Handler handler = new Handler();
     //SETTINGS
     private boolean rangeEditable;
+
+    public Probability getProbability() {
+        return probability;
+    }
+
+    public void setProbability(Probability probability) {
+        this.probability = probability;
+        int outComes = probability.getOutComes();
+        setMaxItemSize(outComes);
+    }
 
     public int getMaxItemSize() {
         return maxItemSize;
@@ -253,19 +265,23 @@ public class LessonExercise extends AppCompatActivity {
 
     public void setAttributes(LessonExercise lessonExercise){
         String title = lessonExercise.getExerciseTitle();
+        int maxItemSize = lessonExercise.getMaxItemSize();
         int requiredCorrects = lessonExercise.getItemsSize();
         int maxErrors = lessonExercise.getMaxWrong();
         boolean correctsShouldBeConsecutive = lessonExercise.isCorrectsShouldBeConsecutive();
         boolean errorsShouldBeConsecutive = lessonExercise.isWrongsShouldBeConsecutive();
+        Range range = lessonExercise.getRange();
         try {
             setTxtTitle(title); // if there is a toolbar
         } catch (Exception e){
             setExerciseTitle(title);
         }
+        setMaxItemSize(maxItemSize);
         setItemsSize(requiredCorrects);
         setMaxWrong(maxErrors);
         setCorrectsShouldBeConsecutive(correctsShouldBeConsecutive);
         setWrongsShouldBeConsecutive(errorsShouldBeConsecutive);
+        setRange(range);
         String tag = "Lesson Exercise Class";
         Log.d(tag, "setAttributes()");
     }
@@ -287,18 +303,27 @@ public class LessonExercise extends AppCompatActivity {
                     String title = response.optString("title");
                     String strItemsSize = response.optString("items_size");
                     String strRCC = response.optString("rc_consecutive");
+                    String strMaxItemsSize = response.optString("max_items");
                     String strMaxWrong = response.optString("max_wrong");
                     String strMEC = response.optString("me_consecutive");
+                    String strMinimum = response.optString("r_minimum");
+                    String strMaximum = response.optString("r_maximum");
 
                     String tag = "lesson_exercise";
                     Log.d(tag, title);
                     Log.d(tag, strItemsSize);
+                    Log.d(tag, strMaxItemsSize);
                     Log.d(tag, strRCC);
                     Log.d(tag, strMaxWrong);
                     Log.d(tag, strMEC);
+                    Log.d(tag, strMinimum);
+                    Log.d(tag, strMaximum);
 
-                    if (Util.isNumeric(strItemsSize) && Util.isNumeric(strMaxWrong)) {
+                    if (Util.isNumeric(strItemsSize) && Util.isNumeric(strMaxWrong)
+                            && Util.isNumeric(strMinimum) && Util.isNumeric(strMaximum)
+                            && Util.isNumeric(strMaxItemsSize)) {
                         int itemsSize = Integer.valueOf(strItemsSize);
+                        int maxItemSize = Integer.valueOf(strMaxItemsSize);
                         int maxWrong = Integer.valueOf(strMaxWrong);
                         boolean isCorrectsShouldBeConsecutive = false;
                         if (strRCC.equals("1")){
@@ -308,13 +333,18 @@ public class LessonExercise extends AppCompatActivity {
                         if (strMEC.equals("0")){
                             isWrongsShouldBeConsecutive = false;
                         }
+                        int minimum = Integer.valueOf(strMinimum);
+                        int maximum = Integer.valueOf(strMaximum);
+                        Range range = new Range(minimum,maximum);
 
                         LessonExercise exercise = new LessonExercise();
                         exercise.setExerciseTitle(title);
+                        exercise.setMaxItemSize(maxItemSize);
                         exercise.setItemsSize(itemsSize);
                         exercise.setMaxWrong(maxWrong);
                         exercise.setCorrectsShouldBeConsecutive(isCorrectsShouldBeConsecutive);
                         exercise.setWrongsShouldBeConsecutive(isWrongsShouldBeConsecutive);
+                        exercise.setRange(range);
                         setAttributes(exercise);
                     }
                     startExercise();
@@ -377,8 +407,8 @@ public class LessonExercise extends AppCompatActivity {
     public boolean equals(Object obj) {
         if (obj instanceof LessonExercise){
             LessonExercise exercise = (LessonExercise) obj;
-            String thisId = this.getId();
-            String objId = exercise.getId();
+            String thisId = this.getId().trim();
+            String objId = exercise.getId().trim();
             return thisId.equals(objId);
         }
         return super.equals(obj);

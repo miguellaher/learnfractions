@@ -1,5 +1,6 @@
 package com.example.laher.learnfractions.fraction_util.fraction_questions;
 
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 
@@ -17,6 +18,11 @@ public class SubtractingSimilarFractionsQuestion extends FractionQuestionClass {
 
     public SubtractingSimilarFractionsQuestion() {
         generateFractions();
+    }
+
+    public SubtractingSimilarFractionsQuestion(Range range) {
+        super(range);
+        generateFractions(range);
     }
 
     public void generateFractions(){
@@ -38,6 +44,25 @@ public class SubtractingSimilarFractionsQuestion extends FractionQuestionClass {
         setFractionAnswer(fractionAnswer);
     }
 
+    public void generateFractions(Range range){
+        fraction1 = new Fraction(range);
+        fraction2 = new Fraction(range);
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        while (denominator1!=denominator2 || fraction2.compare(fraction1)>=0){
+            fraction1 = new Fraction(range);
+            fraction2 = new Fraction(range);
+            denominator1 = fraction1.getDenominator();
+            denominator2 = fraction2.getDenominator();
+        }
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int numeratorAnswer = numerator1 - numerator2;
+        int denominatorAnswer = denominator1;
+        Fraction fractionAnswer = new Fraction(numeratorAnswer, denominatorAnswer);
+        setFractionAnswer(fractionAnswer);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof SubtractingSimilarFractionsQuestion){
@@ -46,7 +71,7 @@ public class SubtractingSimilarFractionsQuestion extends FractionQuestionClass {
             Fraction thisFraction2 = this.getFraction2();
             Fraction objFraction1 = fractionsQuestion.getFraction1();
             Fraction objFraction2 = fractionsQuestion.getFraction2();
-            return thisFraction1==objFraction1 && thisFraction2==objFraction2;
+            return thisFraction1.equals(objFraction1) && thisFraction2.equals(objFraction2);
         }
         return super.equals(obj);
     }

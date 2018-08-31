@@ -8,11 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.ComparingSimilarQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 
@@ -42,6 +44,10 @@ public class ComparingSimilarExercise2Activity extends LessonExercise {
 
     public ComparingSimilarExercise2Activity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.P_RAISED_TO_3, range);
+        setProbability(probability);
+        setRangeEditable(true);
         setId(id);
         setExerciseTitle(title);
     }
@@ -52,6 +58,10 @@ public class ComparingSimilarExercise2Activity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.P_RAISED_TO_3, range);
+        setProbability(probability);
+        setRangeEditable(true);
         //GUI
         txtNum1 = findViewById(R.id.c2_num1);
         txtNum2 = findViewById(R.id.c2_num2);
@@ -83,10 +93,11 @@ public class ComparingSimilarExercise2Activity extends LessonExercise {
         mQuestionNum = 1;
         mComparingSimilarQuestions = new ArrayList<>();
         int requiredCorrects = getItemsSize();
+        Range range = getRange();
         for (int i = 0; i < requiredCorrects; i++){
-            ComparingSimilarQuestion comparingSimilarQuestion = new ComparingSimilarQuestion();
+            ComparingSimilarQuestion comparingSimilarQuestion = new ComparingSimilarQuestion(range);
             while (mComparingSimilarQuestions.contains(comparingSimilarQuestion)){
-                comparingSimilarQuestion = new ComparingSimilarQuestion();
+                comparingSimilarQuestion = new ComparingSimilarQuestion(range);
             }
             mComparingSimilarQuestions.add(comparingSimilarQuestion);
         }
@@ -212,12 +223,15 @@ public class ComparingSimilarExercise2Activity extends LessonExercise {
     protected void postWrong() {
         super.postWrong();
         boolean correctsShouldBeConsecutive = isCorrectsShouldBeConsecutive();
+        Range range = getRange();
         if (correctsShouldBeConsecutive) {
             generateFractionQuestion();
         } else {
-            ComparingSimilarQuestion comparingSimilarQuestion = new ComparingSimilarQuestion();
-            while (mComparingSimilarQuestions.contains(comparingSimilarQuestion)){
-                comparingSimilarQuestion = new ComparingSimilarQuestion();
+            ComparingSimilarQuestion comparingSimilarQuestion = new ComparingSimilarQuestion(range);
+            int questionsSize = mComparingSimilarQuestions.size();
+            int maxItemSize = getMaxItemSize();
+            while (mComparingSimilarQuestions.contains(comparingSimilarQuestion) && questionsSize<maxItemSize){
+                comparingSimilarQuestion = new ComparingSimilarQuestion(range);
             }
             mComparingSimilarQuestions.add(comparingSimilarQuestion);
             mQuestionNum++;

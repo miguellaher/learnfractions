@@ -2,6 +2,7 @@ package com.example.laher.learnfractions.service;
 
 import android.util.Log;
 
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
@@ -62,6 +63,9 @@ public class ExerciseStatService {
         int max_wrong = exercise.getMaxWrong();
         boolean mec = exercise.isWrongsShouldBeConsecutive();
 
+        Range range = exercise.getRange();
+        int minimum = range.getMinimum();
+        int maximum = range.getMaximum();
 
         String strTimeSpent = String.valueOf(timeSpent);
         String strTotalWrongs = String.valueOf(totalWrongs);
@@ -76,7 +80,10 @@ public class ExerciseStatService {
         if (!mec){
             strMEC = "0";
         }
+        String strMinimum = String.valueOf(minimum);
+        String strMaximum = String.valueOf(maximum);
 
+        params.put("stat_id", Util.generateId());
         params.put("teacher_code", teacher_code);
         params.put("student_id", student_id);
         params.put("exercise_id", exercise_id);
@@ -88,6 +95,9 @@ public class ExerciseStatService {
         params.put("rc_consecutive", strRCC);
         params.put("max_errors", strMaxWrong);
         params.put("me_consecutive", strMEC);
+
+        params.put("minimum", strMinimum);
+        params.put("maximum", strMaximum);
 
         service.post("http://jabahan.com/learnfractions/e_stat/insert.php", params);
         service.execute();

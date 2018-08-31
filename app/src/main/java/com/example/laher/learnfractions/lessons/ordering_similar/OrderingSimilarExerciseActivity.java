@@ -3,13 +3,16 @@ package com.example.laher.learnfractions.lessons.ordering_similar;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.questions.OrderingNumbersQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 
@@ -21,6 +24,7 @@ public class OrderingSimilarExerciseActivity extends LessonExercise {
     TextView txtNum3;
     TextView txtScore;
     TextView txtInstruction;
+    ImageView imgAvatar;
     //VARIABLES
     ArrayList<OrderingNumbersQuestion> mOrderingNumbersQuestions;
     OrderingNumbersQuestion mOrderingNumbersQuestion;
@@ -32,6 +36,9 @@ public class OrderingSimilarExerciseActivity extends LessonExercise {
 
     public OrderingSimilarExerciseActivity() {
         super();
+        Range range = getRange();
+        Probability probability = new Probability(Probability.ORDERING_NUMBERS, range);
+        setProbability(probability);
         setId(id);
         setExerciseTitle(title);
     }
@@ -42,13 +49,17 @@ public class OrderingSimilarExerciseActivity extends LessonExercise {
         setId(id);
         setExerciseTitle(title);
         super.onCreate(savedInstanceState);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.ORDERING_NUMBERS, range);
+        setProbability(probability);
         //GUI
         txtNum1 = findViewById(R.id.os_txtNum1);
         txtNum2 = findViewById(R.id.os_txtNum2);
         txtNum3 = findViewById(R.id.os_txtNum3);
         txtScore = findViewById(R.id.os_txtScore);
         txtInstruction = findViewById(R.id.os_txtInstruction);
-
+        imgAvatar = findViewById(R.id.cs_imgAvatar);
+        imgAvatar.setImageResource(R.drawable.avatar);
         startExercise();
     }
     public void setQuestions(){
@@ -172,7 +183,9 @@ public class OrderingSimilarExerciseActivity extends LessonExercise {
             setQuestions();
         } else {
             OrderingNumbersQuestion orderingNumbersQuestion = new OrderingNumbersQuestion();
-            while (mOrderingNumbersQuestions.contains(orderingNumbersQuestion)){
+            int questionsSize = mOrderingNumbersQuestions.size();
+            int maxItemSize = getMaxItemSize();
+            while (mOrderingNumbersQuestions.contains(orderingNumbersQuestion) && questionsSize<maxItemSize){
                 orderingNumbersQuestion = new OrderingNumbersQuestion();
             }
             mOrderingNumbersQuestions.add(orderingNumbersQuestion);
