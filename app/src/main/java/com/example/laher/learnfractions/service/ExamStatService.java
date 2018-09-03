@@ -3,7 +3,7 @@ package com.example.laher.learnfractions.service;
 import android.util.Log;
 
 import com.example.laher.learnfractions.model.ChapterExam;
-import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.Util;
 import com.loopj.android.http.RequestParams;

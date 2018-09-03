@@ -26,9 +26,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/exercise_update_linearMaxErrors"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="58dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -58,11 +58,11 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="3"
+            android:nextFocusDown="@+id/exercise_update_inputMinimum"
             android:textAlignment="center"
             android:textSize="25sp"
             tools:layout_editor_absoluteX="252dp"
-            tools:layout_editor_absoluteY="108dp"
-            android:nextFocusDown="@+id/exercise_update_inputMinimum"/>
+            tools:layout_editor_absoluteY="108dp" />
 
     </LinearLayout>
 
@@ -73,8 +73,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:text="Consecutive"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout1"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout1" />
+        app:layout_constraintEnd_toEndOf="@+id/exercise_update_linearMaxErrors"
+        app:layout_constraintTop_toBottomOf="@+id/exercise_update_linearMaxErrors" />
 
     <CheckBox
         android:id="@+id/exercise_update_chk_RC_consecutive"

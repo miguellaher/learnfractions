@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.model.SW_StatAverage;
-import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.model.Student_SW_Progress;
 import com.example.laher.learnfractions.model.Teacher;
@@ -239,6 +239,6 @@ public class ClassSeatWorkRanksActivity extends AppCompatActivity {
                 }
             }
         });
-        SeatWorkService.getUpdates(teacher.getTeacher_code(), service);
+        SeatWorkService.getUpdates(mContext, service);
     }
 }

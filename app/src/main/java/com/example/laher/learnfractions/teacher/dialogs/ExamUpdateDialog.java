@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.model.ChapterExam;
-import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.model.Teacher;
 import com.example.laher.learnfractions.service.ExamService;
 import com.example.laher.learnfractions.service.ServiceResponse;

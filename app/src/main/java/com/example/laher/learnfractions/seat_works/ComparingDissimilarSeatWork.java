@@ -17,7 +17,7 @@ import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.FractionClass;
-import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;

@@ -4,14 +4,14 @@ import android.annotation.SuppressLint;
 
 import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.model.ExamStat;
-import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.parent_activities.Lesson;
 
 import java.util.ArrayList;
 
 public class AppCache {
     private static ArrayList<SeatWork> seatWorks;
-    private static SeatWork seatWorkStat;
+    private static SeatWork seatWork;
     @SuppressLint("StaticFieldLeak")
     private static ChapterExam chapterExam;
     @SuppressLint("StaticFieldLeak")
@@ -41,12 +41,16 @@ public class AppCache {
         AppCache.seatWorks = seatWorks;
     }
 
-    public static SeatWork getSeatWorkStat() {
-        return seatWorkStat;
+    public static SeatWork getSeatWork() {
+        return seatWork;
+    }
+
+    public static void setSeatWork(SeatWork seatWork) {
+        AppCache.seatWork = seatWork;
     }
 
     public static void postSeatWorkStat(SeatWork seatWorkStat) {
-        AppCache.seatWorkStat = seatWorkStat;
+        AppCache.seatWork = seatWorkStat;
     }
 
     //LESSON ACTIVITIES

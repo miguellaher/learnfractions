@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.util.AppConstants;
 
 import java.util.ArrayList;
@@ -37,7 +37,6 @@ public class SeatWorkListAdapter extends ArrayAdapter<SeatWork> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         String topicName = getItem(position).getTopicName();
-        String seatworkNum = String.valueOf(getItem(position).getSeatWorkNum());
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         convertView = layoutInflater.inflate(mResource, parent, false);

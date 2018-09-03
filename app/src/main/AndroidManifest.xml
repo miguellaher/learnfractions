@@ -182,7 +182,7 @@
             android:name=".seat_works.FractionMeaningSeatWork"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".model.SeatWork"
+            android:name=".parent_activities.SeatWork"
             android:screenOrientation="portrait" />
         <activity
             android:name=".seat_works.ComparingSimilarSeatWork"

@@ -2,6 +2,8 @@ package com.example.laher.learnfractions.model;
 
 import android.support.annotation.NonNull;
 
+import com.example.laher.learnfractions.parent_activities.SeatWork;
+
 public class Student_SW_Progress extends SeatWork implements Comparable<Student_SW_Progress>{
     private Student student;
 

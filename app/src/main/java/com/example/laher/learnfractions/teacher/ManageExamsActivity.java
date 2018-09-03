@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.model.Exercise;
-import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.seat_works.AddSubMixedFractionsSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingDissimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingSimilarSeatWork;

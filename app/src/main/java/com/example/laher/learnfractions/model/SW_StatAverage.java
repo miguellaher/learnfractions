@@ -3,6 +3,7 @@ package com.example.laher.learnfractions.model;
 import android.support.annotation.NonNull;
 
 import com.example.laher.learnfractions.archive.LessonArchive;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.util.Util;
 
 public class SW_StatAverage extends SeatWork implements Comparable<SW_StatAverage>{

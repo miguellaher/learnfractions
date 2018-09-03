@@ -1,6 +1,6 @@
 package com.example.laher.learnfractions.archive;
 
-import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.seat_works.AddSubMixedFractionsSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingDissimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingSimilarSeatWork;

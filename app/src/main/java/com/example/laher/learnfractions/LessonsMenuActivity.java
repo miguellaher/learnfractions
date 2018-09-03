@@ -159,14 +159,14 @@ public class LessonsMenuActivity extends AppCompatActivity {
 
         Lesson classifyingFractionsLesson = new Lesson("Classifying Fractions");
         classifyingFractionsLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
-        classifyingFractionsLesson.addActivity(new ClassifyingFractionsExerciseActivity());
         classifyingFractionsLesson.addActivity(new ClassifyingFractionsVideoActivity());
+        classifyingFractionsLesson.addActivity(new ClassifyingFractionsExerciseActivity());
 
         Lesson convertingFractionsLesson = new Lesson("Converting Fractions");
         convertingFractionsLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
+        convertingFractionsLesson.addActivity(new ConvertingFractionsVideoActivity());
         convertingFractionsLesson.addActivity(new ConvertingFractionsExercise2Activity());
         convertingFractionsLesson.addActivity(new ConvertingFractionsExerciseActivity());
-        convertingFractionsLesson.addActivity(new ConvertingFractionsVideoActivity());
 
         Lesson addingSimilarLesson = new Lesson("Adding Similar Fractions");
         addingSimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");

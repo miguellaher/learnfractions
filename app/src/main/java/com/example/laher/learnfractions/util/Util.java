@@ -4,18 +4,10 @@ import android.content.Context;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.laher.learnfractions.model.SeatWork;
-import com.example.laher.learnfractions.service.SeatWorkService;
-import com.example.laher.learnfractions.service.Service;
-import com.example.laher.learnfractions.service.ServiceResponse;
-
-import org.json.JSONObject;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
-import java.util.ArrayList;
 import java.util.UUID;
 
 public class Util {

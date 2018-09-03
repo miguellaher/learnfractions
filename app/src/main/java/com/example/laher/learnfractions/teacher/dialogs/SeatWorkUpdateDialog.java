@@ -4,18 +4,20 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.model.SeatWork;
-import com.example.laher.learnfractions.model.Teacher;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.service.SeatWorkService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
@@ -24,71 +26,125 @@ import org.json.JSONObject;
 
 public class SeatWorkUpdateDialog extends Dialog {
     private Context mContext;
-    private TextView txtTopicName, txtSeatWorkNum;
-    private TextView txtLabel1, txtLabel2;
-    private EditText inputItemsSize, inputMaxErrors;
-    private CheckBox chk_RC_consecutive, chk_ME_consecutive;
+    private TextView txtLabel1;
+    private EditText inputTopicName;
+    private EditText inputItemsSize;
+    private CheckBox chk_RC_consecutive;
+    private CheckBox chk_ME_consecutive;
+
+    private LinearLayout linearMaxErrors;
+    private LinearLayout linearRange;
 
     private SeatWork mSeatWork;
-    private Teacher mTeacher;
 
-    public SeatWorkUpdateDialog(@NonNull Context context, SeatWork seatWork, Teacher teacher) {
+    public SeatWorkUpdateDialog(@NonNull Context context, SeatWork seatWork) {
         super(context);
         mContext = context;
         mSeatWork = seatWork;
-        mTeacher = teacher;
 
         setGui();
 
-        txtTopicName.setText(seatWork.getTopicName());
-        txtSeatWorkNum.setText("SeatWork no. " + seatWork.getSeatWorkNum());
-        txtLabel1.setText("Number of Items:");
-        inputMaxErrors.setVisibility(View.INVISIBLE);
-        txtLabel2.setVisibility(View.INVISIBLE);
+        String topicName = seatWork.getTopicName();
+        inputTopicName.setText(topicName);
+        String label1 = "Number of Items:";
+        txtLabel1.setText(label1);
+
+        ConstraintLayout.LayoutParams linearRangeLayoutParams = (ConstraintLayout.LayoutParams) linearRange.getLayoutParams();
+        linearRangeLayoutParams.height = 0;
+        linearRangeLayoutParams.topMargin = 0;
+        linearRange.setLayoutParams(linearRangeLayoutParams);
+
+        ConstraintLayout.LayoutParams linearMaxErrorsLayoutParams = (ConstraintLayout.LayoutParams) linearMaxErrors.getLayoutParams();
+        linearMaxErrorsLayoutParams.height = 0;
+        linearMaxErrorsLayoutParams.topMargin = 0;
+        linearMaxErrors.setLayoutParams(linearMaxErrorsLayoutParams);
+
+        ConstraintLayout.LayoutParams chkRcConsecutiveLayoutParams = (ConstraintLayout.LayoutParams) chk_RC_consecutive.getLayoutParams();
+        chkRcConsecutiveLayoutParams.height = 0;
+        chkRcConsecutiveLayoutParams.topMargin = 0;
+        chk_RC_consecutive.setLayoutParams(chkRcConsecutiveLayoutParams);
         chk_RC_consecutive.setVisibility(View.INVISIBLE);
+
+        ConstraintLayout.LayoutParams chkMeConsecutiveLayoutParams = (ConstraintLayout.LayoutParams) chk_ME_consecutive.getLayoutParams();
+        chkMeConsecutiveLayoutParams.height = 0;
+        chkMeConsecutiveLayoutParams.topMargin = 0;
+        chk_ME_consecutive.setLayoutParams(chkMeConsecutiveLayoutParams);
         chk_ME_consecutive.setVisibility(View.INVISIBLE);
+
+        inputItemsSize.requestFocus();
     }
 
     private void setGui(){
         setContentView(R.layout.layout_exercise_update);
+        inputTopicName = findViewById(R.id.exercise_update_inputTitle);
         txtLabel1 = findViewById(R.id.exercise_update_txtLabel1);
-        txtLabel2 = findViewById(R.id.exercise_update_txtLabel2);
+
         inputItemsSize = findViewById(R.id.exercise_update_inputRequiredCorrects);
-        inputMaxErrors = findViewById(R.id.exercise_update_inputMaxErrors);
+        SeatWork seatWork = mSeatWork;
+        int itemSize = seatWork.getItems_size();
+        String strItemSize = String.valueOf(itemSize);
+        inputItemsSize.setHint(strItemSize);
+
+        linearMaxErrors = findViewById(R.id.exercise_update_linearMaxErrors);
+        linearRange = findViewById(R.id.exercise_update_linearRange);
         chk_RC_consecutive = findViewById(R.id.exercise_update_chk_RC_consecutive);
         chk_ME_consecutive = findViewById(R.id.exercise_update_chk_ME_consecutive);
         Button btnUpdate = findViewById(R.id.exercise_update_btnUpdate);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if (checkErrors()){
-                SeatWork seatWork = mSeatWork;
-                int items_size = Integer.valueOf(String.valueOf(inputItemsSize.getText()));
-                seatWork.setItems_size(items_size);
+                ActivityUtil.hideKeyboardFrom(mContext,v);
+            if (noErrors()){
+                String topicName = inputTopicName.getText().toString();
+                String strItemSize = inputItemsSize.getText().toString();
+                final int itemSize = Integer.valueOf(strItemSize);
+
+                final SeatWork seatWork = mSeatWork;
+                seatWork.setTopicName(topicName);
+                seatWork.setItems_size(itemSize);
+
                 Service service = new Service("Posting seat work...", mContext, new ServiceResponse() {
                     @Override
                     public void postExecute(JSONObject response) {
                         Util.toast(mContext, response.optString("message"));
-                        dismiss();
+
+                        String title = seatWork.getTopicName();
+                        int itemSize = seatWork.getItems_size();
+                        String strItemSize = String.valueOf(itemSize);
+
+                        inputTopicName.setText(title);
+                        inputTopicName.setHint(title);
+                        inputItemsSize.setText(strItemSize);
+                        inputItemsSize.setHint(strItemSize);
+                        inputItemsSize.requestFocus();
                     }
                 });
-                SeatWorkService.updateSeatWork(mTeacher,seatWork,service);
+                SeatWorkService.insert(mContext, seatWork,service);
             }
             }
         });
     }
 
-    private boolean checkErrors(){
-        if (inputItemsSize.getText().toString().trim().equals("")){
-            Styles.shakeAnimate(inputItemsSize);
-            return false;
+    private boolean noErrors(){
+        boolean noErrors = true;
+        if (inputTopicName.getText().toString().trim().equals("")){
+            Styles.shakeAnimate(inputTopicName);
+            noErrors = false;
         }
-        if (Integer.valueOf(String.valueOf(inputItemsSize.getText()))<1){
+        String strItemSize = inputItemsSize.getText().toString().trim();
+        if (strItemSize.equals("")) {
             Styles.shakeAnimate(inputItemsSize);
-            Util.toast(mContext, AppConstants.INVALID_INPUT);
-            return false;
+            noErrors = false;
+        } else {
+            if (Util.isNumeric(strItemSize)) {
+                if (Integer.valueOf(strItemSize) < 1) {
+                    Styles.shakeAnimate(inputItemsSize);
+                    Util.toast(mContext, AppConstants.INVALID_INPUT);
+                    noErrors = false;
+                }
+            }
         }
-        return true;
+        return noErrors;
     }
 
     private void focusInputRequiredCorrects(){

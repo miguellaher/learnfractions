@@ -9,12 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.SeatWorkStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
-import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
@@ -87,7 +86,7 @@ public class SeatWorkStatDialog extends Dialog {
                 Log.d(TAG, "post execute");
             }
         });
-        SeatWorkStatService.postStat(mSeatWork, mStudent, service);
+        SeatWorkStatService.postStat(mContext, mSeatWork, service);
         Log.d(TAG, "post SeatWorkStatService.postStat()");
     }
 

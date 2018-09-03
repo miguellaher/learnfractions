@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.service.ExamStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
@@ -167,7 +168,7 @@ public class ChapterExam extends AppCompatActivity {
 
     protected void onRestart() {
         super.onRestart();
-        SeatWork seatWorkStat = AppCache.getSeatWorkStat();
+        SeatWork seatWorkStat = AppCache.getSeatWork();
         seatWorkStats.add(seatWorkStat);
         execute();
     }

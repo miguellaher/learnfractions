@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.model.ExamStat;
-import com.example.laher.learnfractions.model.SeatWork;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.teacher.list_adapters.StudentExamSWStatAdapter;
 
 import java.util.ArrayList;
