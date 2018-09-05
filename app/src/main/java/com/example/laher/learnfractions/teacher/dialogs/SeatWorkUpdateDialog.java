@@ -33,6 +33,7 @@ public class SeatWorkUpdateDialog extends Dialog {
     private EditText inputItemsSize;
     private EditText inputMinimum;
     private EditText inputMaximum;
+    private EditText inputMaxWrong;
     private CheckBox chk_RC_consecutive;
     private CheckBox chk_ME_consecutive;
 
@@ -84,6 +85,9 @@ public class SeatWorkUpdateDialog extends Dialog {
 
     private void setGui(){
         setContentView(R.layout.layout_exercise_update);
+        inputMaxWrong = findViewById(R.id.exercise_update_inputMaxErrors);
+        inputMaxWrong.setEnabled(false);
+
         inputTopicName = findViewById(R.id.exercise_update_inputTitle);
         txtLabel1 = findViewById(R.id.exercise_update_txtLabel1);
 
@@ -150,6 +154,7 @@ public class SeatWorkUpdateDialog extends Dialog {
                         inputItemsSize.setText(strItemSize);
                         inputItemsSize.setHint(strItemSize);
                         inputItemsSize.requestFocus();
+                        inputItemsSize.setSelection(strItemSize.length());
 
                         if (seatWork.isRangeEditable()) {
                             Range range = seatWork.getRange();

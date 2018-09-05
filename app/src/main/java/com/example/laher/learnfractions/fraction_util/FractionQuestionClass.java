@@ -69,7 +69,9 @@ public class FractionQuestionClass {
             FractionQuestionClass fractionQuestionClass = (FractionQuestionClass) obj;
             String thisEquation1 = this.getStringEquation();
             String thisEquation2 = fractionQuestionClass.getStringEquation();
-            return thisEquation1.equals(thisEquation2);
+            if (thisEquation1!=null && thisEquation2!=null) {
+                return thisEquation1.equals(thisEquation2);
+            }
         }
         return super.equals(obj);
     }

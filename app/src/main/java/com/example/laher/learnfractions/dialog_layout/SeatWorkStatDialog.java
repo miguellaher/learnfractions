@@ -1,5 +1,6 @@
 package com.example.laher.learnfractions.dialog_layout;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -19,42 +20,24 @@ import com.example.laher.learnfractions.util.Util;
 import org.json.JSONObject;
 
 public class SeatWorkStatDialog extends Dialog {
-    Context mContext;
+    private Context mContext;
     private static final String TAG = "SW_STAT_D";
 
-    SeatWork mSeatWork;
-    Student mStudent;
+    private SeatWork mSeatWork;
 
-    TextView txtScore, txtTimeSpent;
-    Button btnOk;
+    private TextView txtScore, txtTimeSpent;
 
-    public SeatWorkStatDialog(@NonNull Context context, SeatWork seatwork, Student student) {
-        super(context);
-        mContext = context;
-        mSeatWork = seatwork;
-        mStudent = student;
-        postStat();
-        setGui();
-
-        long seconds = seatwork.getTimeSpent()/1000;
-        long minutes = seconds/60;
-        seconds = (minutes*60) - seconds;
-        seconds = Math.abs(seconds);
-
-        txtScore.setText("Score: "+seatwork.getCorrect()+" / " + seatwork.getItems_size());
-        txtTimeSpent.setText("Time Spent: " + minutes + "m" + seconds + "s");
-        setCancelable(false);
-        setCanceledOnTouchOutside(false);
-    }
-
+    @SuppressLint("SetTextI18n")
     public SeatWorkStatDialog(@NonNull Context context, SeatWork seatWork) {
         super(context);
         mContext = context;
         this.mSeatWork = seatWork;
-
+        postStat();
         setGui();
 
-        long seconds = seatWork.getTimeSpent()/1000;
+        long timeSpent = seatWork.getTimeSpent();
+        timeSpent = Math.round(timeSpent/1000d);
+        long seconds = timeSpent;
         long minutes = seconds/60;
         seconds = (minutes*60) - seconds;
         seconds = Math.abs(seconds);
@@ -69,11 +52,10 @@ public class SeatWorkStatDialog extends Dialog {
         setContentView(R.layout.layout_dialog_seatwork_stats);
         txtScore = findViewById(R.id.seatwork_stats_txtScore);
         txtTimeSpent = findViewById(R.id.seatwork_stats_txtTimeSpent);
-        btnOk = findViewById(R.id.seatwork_stats_btnOk);
+        Button btnOk = findViewById(R.id.seatwork_stats_btnOk);
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dismiss();
             }
         });

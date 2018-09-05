@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,81 +11,77 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.ChapterExamListActivity;
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.SeatWorkListActivity;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
-import com.example.laher.learnfractions.fraction_util.FractionQuestion;
+import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
+import com.example.laher.learnfractions.fraction_util.MixedFraction;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.AddingMixedFractionsQuestion;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.SubtractingMixedFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
-import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Util;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
 public class AddSubMixedFractionsSeatWork extends SeatWork {
-    private static final String TAG = "ASMF_SW1";
     Context mContext = this;
-
-    //TOOLBAR
-    Button btnBack, btnNext;
-    TextView txtTitle;
-    public final String TITLE = "Adding/Subtracting with Mixed Fraction";
     //FRACTION EQUATION GUI
-    TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtSign, txtIndicator, txtInstruction;
-    TextView txtWholeNum1, txtWholeNum2;
-    EditText inputNum, inputDenom;
-    Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
+    TextView txtNum1;
+    TextView txtNum2;
+    TextView txtDenom1;
+    TextView txtDenom2;
+    TextView txtSign;
+    TextView txtIndicator;
+    TextView txtInstruction;
+    TextView txtWholeNum1;
+    TextView txtWholeNum2;
+    EditText inputNum;
+    EditText inputDenom;
+    Button btnChoice1;
+    Button btnChoice2;
+    Button btnChoice3;
+    Button btnChoice4;
     //VARIABLES
     private String TYPE;
     boolean shouldAllowBack;
 
-    FractionQuestion fractionQuestion;
-    ArrayList<FractionQuestion> fractionQuestions;
+    ArrayList<FractionQuestionClass> questions;
     int questionNum;
     String correctAns;
     long startingTime;
 
-    public AddSubMixedFractionsSeatWork(String topicName, int seatworkNum) {
-        super(topicName, seatworkNum);
+    public AddSubMixedFractionsSeatWork(String topicName) {
+        super(topicName);
+        String id = AppIDs.MF1S;
+        setId(id);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.SOLVING_MIXED1, range);
+        setProbability(probability);
+        setRangeEditable(true);
     }
 
     public AddSubMixedFractionsSeatWork(int size) {
         super(size);
         setTopicName(AppConstants.ADDING_SUBTRACTING_MIXED);
-        setSeatWorkNum(1);
     }
 
     public AddSubMixedFractionsSeatWork() {
         setTopicName(AppConstants.ADDING_SUBTRACTING_MIXED);
-        setSeatWorkNum(1);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mixed_fraction_equation);
-        setTopicName(AppConstants.ADDING_SUBTRACTING_MIXED);
-        setSeatWorkNum(1);
-
-        //TOOLBAR
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddSubMixedFractionsSeatWork.this,
-                        SeatWorkListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnNext = findViewById(R.id.btnNext);
-        btnNext.setVisibility(View.INVISIBLE);
-        txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(TITLE);
-        txtTitle.setTextSize(14);
+        super.onCreate(savedInstanceState);
+        String id = AppIDs.MF1S;
+        setId(id);
         //FRACTION EQUATION GUI
         txtNum1 = findViewById(R.id.mfe_txtNum1);
         txtNum2 = findViewById(R.id.mfe_txtNum2);
@@ -122,7 +117,7 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
                 String title = AppCache.getChapterExam().getExamTitle();
                 txtTitle.setText(title);
                 shouldAllowBack = false;
-                btnBack.setOnClickListener(new View.OnClickListener() {
+                buttonBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext,"Are you sure you want to exit exam?");
@@ -140,17 +135,17 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
                         confirmationDialog.show();
                     }
                 });
-                Log.d(TAG, "chapter exam setup done");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d(TAG, e.getMessage());
         }
         disableInputFraction();
         startingTime = System.currentTimeMillis();
         go();
     }
+    @Override
     public void go(){
+        super.go();
         setQuestions();
         setGuiFractions();
         setBtnChoices();
@@ -174,35 +169,46 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
     }
     public void setQuestions(){
         questionNum = 0;
-        fractionQuestions = new ArrayList<>();
-        for(int i = 0; i < getItems_size(); i++){
-            if (i<(getItems_size()/2)){
-                fractionQuestion = new FractionQuestion(FractionQuestion.ADDING_WITH_MIXED);
+        questions = new ArrayList<>();
+        Range range = getRange();
+        int requiredCorrects = getItems_size();
+        for (int i = 0; i < requiredCorrects; i++){
+            if (i>=(requiredCorrects/2)) {
+                AddingMixedFractionsQuestion question = new AddingMixedFractionsQuestion(range);
+                while (questions.contains(question)) {
+                    question = new AddingMixedFractionsQuestion(range);
+                }
+                questions.add(question);
             } else {
-                fractionQuestion = new FractionQuestion(FractionQuestion.SUBTRACTING_WITH_MIXED);
+                SubtractingMixedFractionsQuestion question = new SubtractingMixedFractionsQuestion(range);
+                while (questions.contains(question)) {
+                    question = new SubtractingMixedFractionsQuestion(range);
+                }
+                questions.add(question);
             }
-            fractionQuestions.add(fractionQuestion);
         }
-        Collections.shuffle(fractionQuestions);
+        Collections.shuffle(questions);
     }
     public void setBtnChoices(){
         ArrayList<String> choices = new ArrayList<>();
-        int correctNum = fractionQuestions.get(questionNum).getFractionAnswer().getNumerator();
-        int correctDenom = fractionQuestions.get(questionNum).getFractionAnswer().getDenominator();
-        correctAns = correctNum + " / " + correctDenom;
+        FractionQuestionClass question = questions.get(questionNum);
+        Fraction fractionAnswer = question.getFractionAnswer();
+        int numeratorAnswer = fractionAnswer.getNumerator();
+        int denominatorAnswer = fractionAnswer.getDenominator();
+        correctAns = numeratorAnswer + " / " + denominatorAnswer;
         choices.add(correctAns);
         for (int i = 0; i < 3; i++){
             int num;
             int denom;
             if (i == 0){
-                num = logicalRandomNum(correctNum);
-                denom = correctDenom;
+                num = logicalRandomNum(numeratorAnswer);
+                denom = denominatorAnswer;
             } else if (i == 1){
-                num = correctNum;
-                denom = logicalRandomNum(correctDenom);
+                num = numeratorAnswer;
+                denom = logicalRandomNum(denominatorAnswer);
             } else {
-                num = logicalRandomNum(correctNum);
-                denom = logicalRandomNum(correctDenom);
+                num = logicalRandomNum(numeratorAnswer);
+                denom = logicalRandomNum(denominatorAnswer);
             }
             String choice = num + " / " + denom;
             choices.add(choice);
@@ -214,25 +220,106 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
         btnChoice4.setText(choices.get(3));
     }
     public void setGuiFractions(){
-        txtInstruction.setText("Solve the equation.");
-        txtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()));
-        txtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()));
-        txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
-        txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
-        if (fractionQuestions.get(questionNum).getFractionOne().getWholeNum()==0){
-            txtWholeNum1.setText("");
-        } else {
-            txtWholeNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getWholeNum()));
-        }
-        if (fractionQuestions.get(questionNum).getFractionTwo().getWholeNum()==0){
-            txtWholeNum2.setText("");
-        } else {
-            txtWholeNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getWholeNum()));
-        }
-        if (fractionQuestions.get(questionNum).getContext().equals(FractionQuestion.SUBTRACTING_WITH_MIXED)){
-            txtSign.setText("-");
-        } else {
+        FractionQuestionClass question = questions.get(questionNum);
+        if (question instanceof AddingMixedFractionsQuestion){
+            AddingMixedFractionsQuestion fractionsQuestion = (AddingMixedFractionsQuestion) question;
+            String tag = fractionsQuestion.getTAG();
             txtSign.setText("+");
+            if (tag.equals(AddingMixedFractionsQuestion.ONE_MIXED)){
+                MixedFraction mixedFraction = fractionsQuestion.getMixedFraction1();
+                Fraction fraction = fractionsQuestion.getFraction();
+                int wholeNumber = mixedFraction.getWholeNumber();
+                int numeratorMixed = mixedFraction.getNumerator();
+                int denominatorMixed = mixedFraction.getDenominator();
+                int numerator = fraction.getNumerator();
+                int denominator = fraction.getDenominator();
+                String strWholeNumber = String.valueOf(wholeNumber);
+                String strNumeratorMixed = String.valueOf(numeratorMixed);
+                String strDenominatorMixed = String.valueOf(denominatorMixed);
+                String strNumerator = String.valueOf(numerator);
+                String strDenominator = String.valueOf(denominator);
+                if (Util.randomBoolean()){
+                    txtWholeNum1.setText(strWholeNumber);
+                    txtNum1.setText(strNumeratorMixed);
+                    txtDenom1.setText(strDenominatorMixed);
+                    txtNum2.setText(strNumerator);
+                    txtDenom2.setText(strDenominator);
+                    txtWholeNum2.setText("");
+                } else {
+                    txtWholeNum2.setText(strWholeNumber);
+                    txtNum2.setText(strNumeratorMixed);
+                    txtDenom2.setText(strDenominatorMixed);
+                    txtNum1.setText(strNumerator);
+                    txtDenom1.setText(strDenominator);
+                    txtWholeNum1.setText("");
+                }
+            } else if (tag.equals(AddingMixedFractionsQuestion.TWO_MIXED)){
+                MixedFraction mixedFraction1 = fractionsQuestion.getMixedFraction1();
+                MixedFraction mixedFraction2 = fractionsQuestion.getMixedFraction2();
+                int wholeNumber1 = mixedFraction1.getWholeNumber();
+                int numeratorMixed1 = mixedFraction1.getNumerator();
+                int denominatorMixed1 = mixedFraction1.getDenominator();
+                int wholeNumber2 = mixedFraction2.getWholeNumber();
+                int numeratorMixed2 = mixedFraction2.getNumerator();
+                int denominatorMixed2 = mixedFraction2.getDenominator();
+                String strWholeNumber1 = String.valueOf(wholeNumber1);
+                String strNumeratorMixed1 = String.valueOf(numeratorMixed1);
+                String strDenominatorMixed1 = String.valueOf(denominatorMixed1);
+                String strWholeNumber2 = String.valueOf(wholeNumber2);
+                String strNumeratorMixed2 = String.valueOf(numeratorMixed2);
+                String strDenominatorMixed2 = String.valueOf(denominatorMixed2);
+                txtWholeNum1.setText(strWholeNumber1);
+                txtNum1.setText(strNumeratorMixed1);
+                txtDenom1.setText(strDenominatorMixed1);
+                txtWholeNum2.setText(strWholeNumber2);
+                txtNum2.setText(strNumeratorMixed2);
+                txtDenom2.setText(strDenominatorMixed2);
+            }
+        } else if (question instanceof SubtractingMixedFractionsQuestion){
+            SubtractingMixedFractionsQuestion fractionsQuestion = (SubtractingMixedFractionsQuestion) question;
+            String tag = fractionsQuestion.getTAG();
+            txtSign.setText("-");
+            if (tag.equals(SubtractingMixedFractionsQuestion.ONE_MIXED)){
+                MixedFraction mixedFraction = fractionsQuestion.getMixedFraction1();
+                Fraction fraction = fractionsQuestion.getFraction();
+                int wholeNumber = mixedFraction.getWholeNumber();
+                int numeratorMixed = mixedFraction.getNumerator();
+                int denominatorMixed = mixedFraction.getDenominator();
+                int numerator = fraction.getNumerator();
+                int denominator = fraction.getDenominator();
+                String strWholeNumber = String.valueOf(wholeNumber);
+                String strNumeratorMixed = String.valueOf(numeratorMixed);
+                String strDenominatorMixed = String.valueOf(denominatorMixed);
+                String strNumerator = String.valueOf(numerator);
+                String strDenominator = String.valueOf(denominator);
+                txtWholeNum1.setText(strWholeNumber);
+                txtNum1.setText(strNumeratorMixed);
+                txtDenom1.setText(strDenominatorMixed);
+                txtNum2.setText(strNumerator);
+                txtDenom2.setText(strDenominator);
+                txtWholeNum2.setText("");
+            } else if (tag.equals(SubtractingMixedFractionsQuestion.TWO_MIXED)){
+                MixedFraction mixedFraction1 = fractionsQuestion.getMixedFraction1();
+                MixedFraction mixedFraction2 = fractionsQuestion.getMixedFraction2();
+                int wholeNumber1 = mixedFraction1.getWholeNumber();
+                int numeratorMixed1 = mixedFraction1.getNumerator();
+                int denominatorMixed1 = mixedFraction1.getDenominator();
+                int wholeNumber2 = mixedFraction2.getWholeNumber();
+                int numeratorMixed2 = mixedFraction2.getNumerator();
+                int denominatorMixed2 = mixedFraction2.getDenominator();
+                String strWholeNumber1 = String.valueOf(wholeNumber1);
+                String strNumeratorMixed1 = String.valueOf(numeratorMixed1);
+                String strDenominatorMixed1 = String.valueOf(denominatorMixed1);
+                String strWholeNumber2 = String.valueOf(wholeNumber2);
+                String strNumeratorMixed2 = String.valueOf(numeratorMixed2);
+                String strDenominatorMixed2 = String.valueOf(denominatorMixed2);
+                txtWholeNum1.setText(strWholeNumber1);
+                txtNum1.setText(strNumeratorMixed1);
+                txtDenom1.setText(strDenominatorMixed1);
+                txtWholeNum2.setText(strWholeNumber2);
+                txtNum2.setText(strNumeratorMixed2);
+                txtDenom2.setText(strDenominatorMixed2);
+            }
         }
     }
     public void disableInputFraction(){
@@ -271,31 +358,20 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
                 long endingTime = System.currentTimeMillis();
                 enableBtnChoices(false);
                 setTimeSpent(endingTime - startingTime);
-                if (TYPE.equals(AppConstants.CHAPTER_EXAM)){
-                    AppCache.postSeatWorkStat(AddSubMixedFractionsSeatWork.this);
-                    SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, AddSubMixedFractionsSeatWork.this);
-                    seatWorkStatDialog.show();
-                    seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            finish();
-                        }
-                    });
+                if (TYPE!=null) {
+                    if (TYPE.equals(AppConstants.CHAPTER_EXAM)) {
+                        AppCache.postSeatWorkStat(AddSubMixedFractionsSeatWork.this);
+                        SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, AddSubMixedFractionsSeatWork.this);
+                        seatWorkStatDialog.show();
+                        seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                finish();
+                            }
+                        });
+                    }
                 } else {
-                    Student student = new Student();
-                    student.setId(Storage.load(mContext,Storage.STUDENT_ID));
-                    student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
-                    SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, AddSubMixedFractionsSeatWork.this, student);
-                    seatWorkStatDialog.show();
-                    seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            Intent intent = new Intent(AddSubMixedFractionsSeatWork.this,
-                                    SeatWorkListActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }
-                    });
+                    seatworkFinished();
                 }
             } else {
                 nextQuestion();

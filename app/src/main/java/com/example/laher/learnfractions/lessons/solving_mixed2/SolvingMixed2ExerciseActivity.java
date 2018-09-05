@@ -100,7 +100,7 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
     public SolvingMixed2ExerciseActivity() {
         super();
         Range range = getRange();
-        Probability probability = new Probability(Probability.SOLVING_MIXED1, range);
+        Probability probability = new Probability(Probability.SOLVING_MIXED2, range);
         setProbability(probability);
         setRangeEditable(true);
         setId(id);
@@ -113,7 +113,7 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
         setContentView(R.layout.activity_fraction_equation_mixed);
         super.onCreate(savedInstanceState);
         Range range = getRange();
-        Probability probability = new Probability(Probability.SOLVING_MIXED1, range);
+        Probability probability = new Probability(Probability.SOLVING_MIXED2, range);
         setProbability(probability);
         setRangeEditable(true);
         setId(id);

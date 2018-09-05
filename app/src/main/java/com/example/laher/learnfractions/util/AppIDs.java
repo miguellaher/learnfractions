@@ -36,12 +36,12 @@ public class AppIDs {
     public static final String ASS = "CpKFN561FOiLWoFl";
     public static final String SSS = "VTPLDQkuyK7orcQU";
     public static final String ADS = "7sbssXwsqgqLtCH6";
-    public static final String SDS = "5ZNHgCxaZhn7U4z2";
+    public static final String SDS = "eDRbZJcTtLwTwkEn";
+    public static final String MFS = "5ZNHgCxaZhn7U4z2";
+    public static final String DFS = "ojE61hRQ7YPTaVp5";
+    public static final String MF1S = "rRmlOCEt3HmdMi0Q";
+    public static final String MF2S = "uHtt0vJ5Cr4GlAUe";
     /*
-    eDRbZJcTtLwTwkEn
-    ojE61hRQ7YPTaVp5
-    rRmlOCEt3HmdMi0Q
-    uHtt0vJ5Cr4GlAUe
     tQktCU3DGOPb9wJH
     gNw0dHZssXvVha81
     TX3fRFz1HLPBq5i6

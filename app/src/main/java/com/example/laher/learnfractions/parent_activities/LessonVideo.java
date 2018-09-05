@@ -1,5 +1,6 @@
 package com.example.laher.learnfractions.parent_activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
@@ -52,6 +53,7 @@ public class LessonVideo extends AppCompatActivity {
         txtTitle = findViewById(R.id.txtTitle);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void go(){
         video.setVideoURI(this.uri);
         video.setOnCompletionListener(new VideoListener());
@@ -66,6 +68,7 @@ public class LessonVideo extends AppCompatActivity {
             buttonNext.setEnabled(true);
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (v instanceof VideoView){

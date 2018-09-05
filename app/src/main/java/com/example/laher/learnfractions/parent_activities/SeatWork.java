@@ -14,15 +14,10 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
-import com.example.laher.learnfractions.service.SeatWorkStatService;
-import com.example.laher.learnfractions.service.Service;
-import com.example.laher.learnfractions.service.ServiceResponse;
+import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Probability;
-import com.example.laher.learnfractions.util.Util;
-
-import org.json.JSONObject;
 
 public class SeatWork extends AppCompatActivity {
     private Context context;
@@ -60,10 +55,6 @@ public class SeatWork extends AppCompatActivity {
 
     public Probability getProbability() {
         return probability;
-    }
-
-    public long getEndingTime() {
-        return endingTime;
     }
 
     public void setContext(Context context) {
@@ -309,14 +300,14 @@ public class SeatWork extends AppCompatActivity {
         long totalTimeSpent = endingTime - startingTime;
         setTimeSpent(totalTimeSpent);
 
-        Service service = new Service("Posting stats...", context, new ServiceResponse() {
+        SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(context, this);
+        seatWorkStatDialog.show();
+        seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
-            public void postExecute(JSONObject response) {
-                Util.toast(context, response.optString("message"));
+            public void onDismiss(DialogInterface dialog) {
                 goBack();
             }
         });
-        SeatWorkStatService.postStat(context, this, service);
     }
 
     public void goBack(){
