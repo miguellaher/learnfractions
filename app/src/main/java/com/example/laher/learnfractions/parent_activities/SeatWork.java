@@ -26,6 +26,10 @@ import org.json.JSONObject;
 
 public class SeatWork extends AppCompatActivity {
     private Context context;
+    //TOOLBAR
+    protected Button buttonBack;
+    protected Button buttonNext;
+    protected TextView txtTitle;
     //IMPORTANT DETAILS
     private String id;
     private int seatWorkNum; // REMEMBER TO REMOVE
@@ -43,6 +47,16 @@ public class SeatWork extends AppCompatActivity {
     private Range range;
     //FOR CHECKING
     private boolean answered;
+    //SETTINGS
+    private boolean rangeEditable;
+
+    public boolean isRangeEditable() {
+        return rangeEditable;
+    }
+
+    public void setRangeEditable(boolean rangeEditable) {
+        this.rangeEditable = rangeEditable;
+    }
 
     public Probability getProbability() {
         return probability;
@@ -218,11 +232,31 @@ public class SeatWork extends AppCompatActivity {
         }
     }
 
+    public boolean isUpdatedWith(SeatWork seatWork){
+        if (this.equals(seatWork)){
+            int itemsSize = getItems_size();
+            Range range = getRange();
+
+            int swItemsSize = seatWork.getItems_size();
+            Range swRange = seatWork.getRange();
+
+            return itemsSize==swItemsSize && range.equals(swRange);
+        }
+        return false;
+    }
+
+    public void getStatsFrom(SeatWork seatWork){
+        int score = seatWork.getCorrect();
+        long timeSpent = seatWork.getTimeSpent();
+
+        setCorrect(score);
+        setTimeSpent(timeSpent);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContext(this);
         super.onCreate(savedInstanceState);
-        setToolBarGui();
         SeatWork seatWork = AppCache.getSeatWork();
 
         String topicName = seatWork.getTopicName();
@@ -232,14 +266,16 @@ public class SeatWork extends AppCompatActivity {
         setTopicName(topicName);
         setItems_size(itemSize);
         setRange(range);
+
+        setToolBarGui();
     }
 
     private void setToolBarGui(){
-        Button buttonBack = findViewById(R.id.btnBack);
+        buttonBack = findViewById(R.id.btnBack);
         buttonBack.setOnClickListener(new ButtonBackListener());
-        Button buttonNext = findViewById(R.id.btnNext);
+        buttonNext = findViewById(R.id.btnNext);
         buttonNext.setVisibility(View.INVISIBLE);
-        TextView txtTitle = findViewById(R.id.txtTitle);
+        txtTitle = findViewById(R.id.txtTitle);
         String title = getTopicName();
         txtTitle.setText(title);
     }
@@ -295,7 +331,9 @@ public class SeatWork extends AppCompatActivity {
             SeatWork objSeatWork = (SeatWork) obj;
             String objId = objSeatWork.getId();
             String thisId = this.getId();
-            return thisId.equals(objId);
+            if (thisId!=null && objId!=null) {
+                return thisId.equals(objId);
+            }
         }
         return super.equals(obj);
     }

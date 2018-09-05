@@ -114,5 +114,11 @@ public class TeacherMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //TEMPORARY
+        btnManageSeatWorks.setEnabled(false);
+        btnManageExams.setEnabled(false);
+        btnCheckSWProgress.setEnabled(false);
+        btnCheckEProgress.setEnabled(false);
+        btnCheckExamProgress.setEnabled(false);
     }
 }

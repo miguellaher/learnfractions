@@ -7,9 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -54,16 +54,29 @@ public class LessonVideo extends AppCompatActivity {
 
     private void go(){
         video.setVideoURI(this.uri);
-        video.setMediaController(new MediaController(this));
+        video.setOnCompletionListener(new VideoListener());
+        video.setOnTouchListener(new VideoListener());
         video.requestFocus();
         video.start();
-        video.setOnCompletionListener(new VideoOnCompletionListener());
     }
 
-    public class VideoOnCompletionListener implements MediaPlayer.OnCompletionListener{
+    public class VideoListener implements MediaPlayer.OnCompletionListener, View.OnTouchListener{
         @Override
         public void onCompletion(MediaPlayer mp) {
             buttonNext.setEnabled(true);
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (v instanceof VideoView){
+                VideoView video = (VideoView) v;
+                if (video.isPlaying()){
+                    video.pause();
+                } else {
+                    video.start();
+                }
+            }
+            return false;
         }
     }
 

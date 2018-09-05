@@ -64,24 +64,11 @@ public class AddingDissimilarFractionsQuestion extends FractionQuestionClass {
         fraction2 = new Fraction(range);
         int denominator1 = fraction1.getDenominator();
         int denominator2 = fraction2.getDenominator();
-        ArrayList<Fraction> fractions = new ArrayList<>();
-        fractions.add(fraction1);
-        fractions.add(fraction2);
-        int lcd = FractionUtil.getLcd(fractions);
-        int quotient1 = lcd / denominator1;
-        int quotient2 = lcd / denominator2;
-        int quotientLimit = range.getMaximum();
-        while (denominator1==denominator2 && (quotient1>quotientLimit||quotient2>quotientLimit)){
+        while (denominator1==denominator2){
             fraction1 = new Fraction(range);
             fraction2 = new Fraction(range);
             denominator1 = fraction1.getDenominator();
             denominator2 = fraction2.getDenominator();
-            fractions = new ArrayList<>();
-            fractions.add(fraction1);
-            fractions.add(fraction2);
-            lcd = FractionUtil.getLcd(fractions);
-            quotient1 = lcd / denominator1;
-            quotient2 = lcd / denominator2;
         }
         setFractionAnswer();
     }

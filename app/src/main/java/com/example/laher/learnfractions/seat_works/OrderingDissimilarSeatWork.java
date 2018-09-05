@@ -6,90 +6,73 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.ChapterExamListActivity;
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.SeatWorkListActivity;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
-import com.example.laher.learnfractions.fraction_util.FractionClass;
-import com.example.laher.learnfractions.fraction_util.FractionQuestion;
+import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.OrderingDissimilarQuestion;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
-import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class OrderingDissimilarSeatWork extends SeatWork {
-    private static final String TAG = "OD_SW1";
     Context mContext = this;
-
-    //TOOLBAR
-    Button btnBack, btnNext;
-    TextView txtTitle;
-    public final String TITLE = "Ordering Fraction";
     //GUI
-    TextView txtNum1, txtNum2, txtNum3, txtDenom1, txtDenom2, txtDenom3, txtItemIndicator, txtInstruction;
-    ConstraintLayout clFraction1, clFraction2, clFraction3;
+    TextView txtNum1;
+    TextView txtNum2;
+    TextView txtNum3;
+    TextView txtDenom1;
+    TextView txtDenom2;
+    TextView txtDenom3;
+    TextView txtItemIndicator;
+    TextView txtInstruction;
+    ConstraintLayout clFraction1;
+    ConstraintLayout clFraction2;
+    ConstraintLayout clFraction3;
     //VARIABLES
     private String TYPE;
     boolean shouldAllowBack;
 
-    FractionClass fraction1, fraction2, fraction3;
-    FractionQuestion fractionQuestion;
-    ArrayList<FractionQuestion> fractionQuestions;
+    ArrayList<OrderingDissimilarQuestion> questions;
     int questionNum;
 
     int clicks;
     boolean wrong;
-    long startingTime;
 
-    public OrderingDissimilarSeatWork(String topicName, int seatworkNum) {
-        super(topicName, seatworkNum);
+    public OrderingDissimilarSeatWork(String topicName) {
+        super(topicName);
+        String id = AppIDs.ODS;
+        setId(id);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.ORDERING_SIMILAR, range);
+        setProbability(probability);
     }
 
     public OrderingDissimilarSeatWork(int size) {
         super(size);
         setTopicName(AppConstants.ORDERING_DISSIMILAR);
-        setSeatWorkNum(1);
     }
 
     public OrderingDissimilarSeatWork() {
         setTopicName(AppConstants.ORDERING_DISSIMILAR);
-        setSeatWorkNum(1);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ordering_similar_exercise2);
-        setTopicName(AppConstants.ORDERING_DISSIMILAR);
-        setSeatWorkNum(1);
-
-        //TOOLBAR
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(OrderingDissimilarSeatWork.this,
-                        SeatWorkListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnNext = findViewById(R.id.btnNext);
-        btnNext.setVisibility(View.INVISIBLE);
-        txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(TITLE);
-        txtTitle.setTextSize(14);
-        btnNext.setText(AppConstants.DONE);
+        super.onCreate(savedInstanceState);
+        String id = AppIDs.ODS;
+        setId(id);
         //GUI
         txtNum1 = findViewById(R.id.os2_txtNum1);
         txtNum2 = findViewById(R.id.os2_txtNum2);
@@ -118,7 +101,7 @@ public class OrderingDissimilarSeatWork extends SeatWork {
                 String title = AppCache.getChapterExam().getExamTitle();
                 txtTitle.setText(title);
                 shouldAllowBack = false;
-                btnBack.setOnClickListener(new View.OnClickListener() {
+                buttonBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext,"Are you sure you want to exit exam?");
@@ -136,48 +119,62 @@ public class OrderingDissimilarSeatWork extends SeatWork {
                         confirmationDialog.show();
                     }
                 });
-                Log.d(TAG, "chapter exam setup done");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d(TAG, e.getMessage());
         }
         go();
-        startingTime = System.currentTimeMillis();
     }
 
-    public void go(){
+    @Override
+    protected void go(){
+        super.go();
         setFractionQuestions();
         wrong = false;
     }
     public void setFractionQuestions(){
-        fractionQuestions = new ArrayList<>();
+        questions = new ArrayList<>();
         questionNum = 0;
         for (int i = 0; i < getItems_size(); i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.ORDERING_DISSIMILAR);
-            fractionQuestions.add(fractionQuestion);
+            OrderingDissimilarQuestion question = new OrderingDissimilarQuestion();
+            while (questions.contains(question)){
+                question = new OrderingDissimilarQuestion();
+            }
+            questions.add(question);
         }
         setGuiFractions();
     }
-    public void setFractions(){
-        fraction1 = fractionQuestions.get(questionNum).getFractionOne();
-        fraction2 = fractionQuestions.get(questionNum).getFractionTwo();
-        fraction3 = fractionQuestions.get(questionNum).getFractionThree();
-    }
     public void setGuiFractions(){
         clicks = 0;
-        setFractions();
-        txtInstruction.setText("Click from least to greatest.");
-        txtNum1.setText(String.valueOf(fraction1.getNumerator()));
-        txtNum2.setText(String.valueOf(fraction2.getNumerator()));
-        txtNum3.setText(String.valueOf(fraction3.getNumerator()));
-        txtDenom1.setText(String.valueOf(fraction1.getDenominator()));
-        txtDenom2.setText(String.valueOf(fraction2.getDenominator()));
-        txtDenom3.setText(String.valueOf(fraction3.getDenominator()));
+        OrderingDissimilarQuestion question = questions.get(questionNum);
+        Fraction fraction1 = question.getFraction1();
+        Fraction fraction2 = question.getFraction2();
+        Fraction fraction3 = question.getFraction3();
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int numerator3 = fraction3.getNumerator();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        int denominator3 = fraction3.getDenominator();
+        String strNumerator1 = String.valueOf(numerator1);
+        String strNumerator2 = String.valueOf(numerator2);
+        String strNumerator3 = String.valueOf(numerator3);
+        String strDenominator1 = String.valueOf(denominator1);
+        String strDenominator2 = String.valueOf(denominator2);
+        String strDenominator3 = String.valueOf(denominator3);
+
+        String instruction = "Click from least to greatest.";
+        txtInstruction.setText(instruction);
+        txtNum1.setText(strNumerator1);
+        txtNum2.setText(strNumerator2);
+        txtNum3.setText(strNumerator3);
+        txtDenom1.setText(strDenominator1);
+        txtDenom2.setText(strDenominator2);
+        txtDenom3.setText(strDenominator3);
         setClFractionsListener();
-        resetTxtNumsColor();
+        resetTxtNumColor();
     }
-    public void resetTxtNumsColor(){
+    public void resetTxtNumColor(){
         txtNum1.setTextColor(Color.rgb(128,128,128));
         txtNum2.setTextColor(Color.rgb(128,128,128));
         txtNum3.setTextColor(Color.rgb(128,128,128));
@@ -193,33 +190,20 @@ public class OrderingDissimilarSeatWork extends SeatWork {
     public void answered(){
         incrementItemNum();
         if (getCurrentItemNum()>getItems_size()){
-            long endingTime = System.currentTimeMillis();
-            setTimeSpent(endingTime-startingTime);
-            if (TYPE.equals(AppConstants.CHAPTER_EXAM)){
-                AppCache.postSeatWorkStat(OrderingDissimilarSeatWork.this);
-                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingDissimilarSeatWork.this);
-                seatWorkStatDialog.show();
-                seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        finish();
-                    }
-                });
+            if (TYPE!=null) {
+                if (TYPE.equals(AppConstants.CHAPTER_EXAM)) {
+                    AppCache.postSeatWorkStat(OrderingDissimilarSeatWork.this);
+                    SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingDissimilarSeatWork.this);
+                    seatWorkStatDialog.show();
+                    seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            finish();
+                        }
+                    });
+                }
             } else {
-                Student student = new Student();
-                student.setId(Storage.load(mContext,Storage.STUDENT_ID));
-                student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
-                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingDissimilarSeatWork.this, student);
-                seatWorkStatDialog.show();
-                seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        Intent intent = new Intent(OrderingDissimilarSeatWork.this,
-                                SeatWorkListActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    }
-                });
+                seatworkFinished();
             }
         } else {
             wrong = false;
@@ -229,9 +213,14 @@ public class OrderingDissimilarSeatWork extends SeatWork {
         }
     }
     public class ClFractionListener implements ConstraintLayout.OnClickListener{
-        TextView num, denom;
+        TextView num;
+        TextView denom;
         @Override
         public void onClick(View v) {
+            OrderingDissimilarQuestion question = questions.get(questionNum);
+            Fraction fraction1 = question.getFraction1();
+            Fraction fraction2 = question.getFraction2();
+            Fraction fraction3 = question.getFraction3();
             if (v.getId()==clFraction1.getId()){
                 num = txtNum1;
                 denom = txtDenom1;
@@ -254,8 +243,11 @@ public class OrderingDissimilarSeatWork extends SeatWork {
                 answered();
             }
         }
-        public void check(FractionClass fraction){
-            if (!fraction.equals(fractionQuestions.get(questionNum).getFractions().get(clicks))){
+        public void check(Fraction fraction){
+            OrderingDissimilarQuestion question = questions.get(questionNum);
+            ArrayList<Fraction> sortedFractions = question.getSortedFractions();
+            Fraction correctFraction = sortedFractions.get(clicks);
+            if (!fraction.equals(correctFraction)){
                 wrong = true;
             }
             setTextColor(0,255,0);

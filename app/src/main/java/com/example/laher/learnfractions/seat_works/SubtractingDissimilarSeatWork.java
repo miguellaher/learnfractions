@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,45 +11,54 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.ChapterExamListActivity;
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.SeatWorkListActivity;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
-import com.example.laher.learnfractions.fraction_util.FractionQuestion;
+import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.SubtractingDissimilarFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
-import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
 public class SubtractingDissimilarSeatWork extends SeatWork {
-    private static final String TAG = "SD_SW1";
     Context mContext = this;
-
-    //TOOLBAR
-    Button btnBack, btnNext;
-    TextView txtTitle;
-    public final String TITLE = "Subtracting Fraction";
     //FRACTION EQUATION GUI
-    TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtSign, txtIndicator, txtInstruction;
-    EditText inputNum, inputDenom;
+    TextView txtNum1;
+    TextView txtNum2;
+    TextView txtDenom1;
+    TextView txtDenom2;
+    TextView txtSign;
+    TextView txtIndicator;
+    TextView txtInstruction;
+    EditText inputNum;
+    EditText inputDenom;
     Button btnCheck;
-    Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
+    Button btnChoice1;
+    Button btnChoice2;
+    Button btnChoice3;
+    Button btnChoice4;
     //VARIABLES
     private String TYPE;
     boolean shouldAllowBack;
 
-    FractionQuestion fractionQuestion;
-    ArrayList<FractionQuestion> fractionQuestions;
+    ArrayList<SubtractingDissimilarFractionsQuestion> questions;
     int questionNum;
     String correctAns;
-    long startingTime;
 
-    public SubtractingDissimilarSeatWork(String topicName, int seatworkNum) {
-        super(topicName, seatworkNum);
+    public SubtractingDissimilarSeatWork(String topicName) {
+        super(topicName);
+        String id = AppIDs.SDS;
+        setId(id);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.SUBTRACTING_2DISSIMILAR_F, range);
+        setProbability(probability);
+        setRangeEditable(true);
     }
 
     public SubtractingDissimilarSeatWork(int size) {
@@ -66,27 +74,10 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction_equation);
-        setTopicName(AppConstants.SUBTRACTING_DISSIMILAR);
-        setSeatWorkNum(1);
-
-        //TOOLBAR
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SubtractingDissimilarSeatWork.this,
-                        SeatWorkListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnNext = findViewById(R.id.btnNext);
-        btnNext.setVisibility(View.INVISIBLE);
-        txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(TITLE);
-        txtTitle.setTextSize(14);
+        super.onCreate(savedInstanceState);
+        String id = AppIDs.SDS;
+        setId(id);
         //FRACTION EQUATION GUI
         txtNum1 = findViewById(R.id.fe_txtNum1);
         txtNum2 = findViewById(R.id.fe_txtNum2);
@@ -123,7 +114,7 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
                 String title = AppCache.getChapterExam().getExamTitle();
                 txtTitle.setText(title);
                 shouldAllowBack = false;
-                btnBack.setOnClickListener(new View.OnClickListener() {
+                buttonBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext,"Are you sure you want to exit exam?");
@@ -141,19 +132,17 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
                         confirmationDialog.show();
                     }
                 });
-                Log.d(TAG, "chapter exam setup done");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d(TAG, e.getMessage());
         }
         disableInputFraction();
-        startingTime = System.currentTimeMillis();
         go();
     }
-    public void go(){
+    @Override
+    protected void go(){
+        super.go();
         setQuestions();
-        setGuiFractions();
         setBtnChoices();
         startUp();
     }
@@ -175,30 +164,37 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
     }
     public void setQuestions(){
         questionNum = 0;
-        fractionQuestions = new ArrayList<>();
+        questions = new ArrayList<>();
+        Range range = getRange();
         for(int i = 0; i < getItems_size(); i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.SUBTRACTING_DISSIMILAR);
-            fractionQuestions.add(fractionQuestion);
+            SubtractingDissimilarFractionsQuestion question = new SubtractingDissimilarFractionsQuestion(range);
+            while (questions.contains(question)){
+                question = new SubtractingDissimilarFractionsQuestion(range);
+            }
+            questions.add(question);
         }
+        setGuiFractions();
     }
     public void setBtnChoices(){
         ArrayList<String> choices = new ArrayList<>();
-        int correctNum = fractionQuestions.get(questionNum).getFractionAnswer().getNumerator();
-        int correctDenom = fractionQuestions.get(questionNum).getFractionAnswer().getDenominator();
-        correctAns = correctNum + " / " + correctDenom;
+        SubtractingDissimilarFractionsQuestion question = questions.get(questionNum);
+        Fraction fractionAnswer = question.getFractionAnswer();
+        int numeratorAnswer = fractionAnswer.getNumerator();
+        int denominatorAnswer = fractionAnswer.getDenominator();
+        correctAns = numeratorAnswer + " / " + denominatorAnswer;
         choices.add(correctAns);
         for (int i = 0; i < 3; i++){
             int num;
             int denom;
             if (i == 0){
-                num = logicalRandomNum(correctNum);
-                denom = correctDenom;
+                num = logicalRandomNum(numeratorAnswer);
+                denom = denominatorAnswer;
             } else if (i == 1){
-                num = correctNum;
-                denom = logicalRandomNum(correctDenom);
+                num = numeratorAnswer;
+                denom = logicalRandomNum(denominatorAnswer);
             } else {
-                num = logicalRandomNum(correctNum);
-                denom = logicalRandomNum(correctDenom);
+                num = logicalRandomNum(numeratorAnswer);
+                denom = logicalRandomNum(denominatorAnswer);
             }
             String choice = num + " / " + denom;
             choices.add(choice);
@@ -210,11 +206,24 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
         btnChoice4.setText(choices.get(3));
     }
     public void setGuiFractions(){
-        txtInstruction.setText("Solve the equation.");
-        txtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()));
-        txtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()));
-        txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
-        txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
+        SubtractingDissimilarFractionsQuestion question = questions.get(questionNum);
+        Fraction fraction1 = question.getFraction1();
+        Fraction fraction2 = question.getFraction2();
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        String strNumerator1 = String.valueOf(numerator1);
+        String strNumerator2 = String.valueOf(numerator2);
+        String strDenominator1 = String.valueOf(denominator1);
+        String strDenominator2 = String.valueOf(denominator2);
+
+        String instruction = "Solve the equation.";
+        txtInstruction.setText(instruction);
+        txtNum1.setText(strNumerator1);
+        txtNum2.setText(strNumerator2);
+        txtDenom1.setText(strDenominator1);
+        txtDenom2.setText(strDenominator2);
     }
     public void disableInputFraction(){
         inputNum.setEnabled(false);
@@ -249,34 +258,21 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
             }
             incrementItemNum();
             if (getCurrentItemNum()>getItems_size()){
-                long endingTime = System.currentTimeMillis();
                 enableBtnChoices(false);
-                setTimeSpent(endingTime - startingTime);
-                if (TYPE.equals(AppConstants.CHAPTER_EXAM)){
-                    AppCache.postSeatWorkStat(SubtractingDissimilarSeatWork.this);
-                    SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, SubtractingDissimilarSeatWork.this);
-                    seatWorkStatDialog.show();
-                    seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            finish();
-                        }
-                    });
+                if (TYPE!=null) {
+                    if (TYPE.equals(AppConstants.CHAPTER_EXAM)) {
+                        AppCache.postSeatWorkStat(SubtractingDissimilarSeatWork.this);
+                        SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, SubtractingDissimilarSeatWork.this);
+                        seatWorkStatDialog.show();
+                        seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                finish();
+                            }
+                        });
+                    }
                 } else {
-                    Student student = new Student();
-                    student.setId(Storage.load(mContext,Storage.STUDENT_ID));
-                    student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
-                    SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, SubtractingDissimilarSeatWork.this, student);
-                    seatWorkStatDialog.show();
-                    seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            Intent intent = new Intent(SubtractingDissimilarSeatWork.this,
-                                    SeatWorkListActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }
-                    });
+                    seatworkFinished();
                 }
             } else {
                 nextQuestion();

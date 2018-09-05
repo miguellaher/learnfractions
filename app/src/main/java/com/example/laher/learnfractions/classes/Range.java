@@ -65,4 +65,19 @@ public class Range {
         this.maximum = maximum;
         setRange();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Range){
+            Range objRange = (Range) obj;
+            int objMinimum = objRange.getMinimum();
+            int objMaximum = objRange.getMaximum();
+
+            int thisMinimum = getMinimum();
+            int thisMaximum = getMaximum();
+
+            return objMinimum==thisMinimum && objMaximum==thisMaximum;
+        }
+        return super.equals(obj);
+    }
 }

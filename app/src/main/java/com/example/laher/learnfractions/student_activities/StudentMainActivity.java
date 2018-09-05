@@ -97,5 +97,10 @@ public class StudentMainActivity extends AppCompatActivity {
             }
         });
 
+        //TEMPORARY
+        btnSeatWorks.setEnabled(false);
+        btnChapterExam.setEnabled(false);
+        btnClassRanks.setEnabled(false);
+
     }
 }

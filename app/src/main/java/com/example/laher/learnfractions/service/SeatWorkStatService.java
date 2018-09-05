@@ -48,13 +48,16 @@ public class SeatWorkStatService {
         service.post("http://jabahan.com/learnfractions/sw_stat/insert.php",params);
         service.execute();
     }
-    public static void getStats(Student student, Service service){
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("teacher_code", student.getTeacher_code());
-        requestParams.put("student_id", student.getId());
-        Log.d(TAG, "getStats(): teacher_code: " + student.getTeacher_code());
-        Log.d(TAG, "getStats(): student_id: " + student.getId());
-        service.get("http://jabahan.com/learnfractions/sw_stat/getStats.php", requestParams);
+    public static void getStats(Context context, Service service){
+        RequestParams params = new RequestParams();
+
+        String teacher_code = Storage.load(context, Storage.TEACHER_CODE);
+        String student_id = Storage.load(context, Storage.STUDENT_ID);
+
+        params.put("teacher_code", teacher_code);
+        params.put("student_id", student_id);
+
+        service.get("http://jabahan.com/learnfractions/sw_stat/getStats.php", params);
         service.execute();
     }
     public static void getAllStats(String teacher_code, Service service){

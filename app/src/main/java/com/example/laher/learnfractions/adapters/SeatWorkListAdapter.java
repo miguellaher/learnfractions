@@ -1,5 +1,6 @@
 package com.example.laher.learnfractions.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,15 +34,20 @@ public class SeatWorkListAdapter extends ArrayAdapter<SeatWork> {
         mUserType = userType;
     }
 
+    @SuppressLint({"SetTextI18n", "ViewHolder"})
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        String topicName = getItem(position).getTopicName();
+        SeatWork seatWork = getItem(position);
+        assert seatWork != null;
+        String topicName = seatWork.getTopicName();
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         convertView = layoutInflater.inflate(mResource, parent, false);
 
-        long seconds = getItem(position).getTimeSpent()/1000;
+        long timeSpent = seatWork.getTimeSpent();
+        timeSpent = Math.round(timeSpent/1000d);
+        long seconds = timeSpent;
         long minutes = seconds/60;
         seconds = (minutes*60) - seconds;
         seconds = Math.abs(seconds);
@@ -54,14 +60,20 @@ public class SeatWorkListAdapter extends ArrayAdapter<SeatWork> {
         if (mUserType!=null) {
             if (mUserType.equals(AppConstants.TEACHER)) {
                 textView2.setText("No. of items");
-                textView3.setText(String.valueOf(getItem(position).getItems_size()));
+                textView3.setText(String.valueOf(seatWork.getItems_size()));
             }
         } else {
             textView2.setText("Score: ");
-            if(getItem(position).isAnswered()) {
-                textView2.setText(textView2.getText().toString() + getItem(position).getCorrect() + " / " + getItem(position).getItems_size());
+            if(seatWork.isAnswered()) {
+                String strTxtView2 = textView2.getText().toString();
+                int correct = seatWork.getCorrect();
+                String strCorrect = String.valueOf(correct);
+                int itemSize = seatWork.getItems_size();
+                String strItemSize = String.valueOf(itemSize);
+
+                textView2.setText(strTxtView2 + strCorrect + " / " + strItemSize);
             } else {
-                textView2.setText(textView2.getText().toString() + "__ / " + getItem(position).getItems_size());
+                textView2.setText(textView2.getText().toString() + "__ / " + seatWork.getItems_size());
                 convertView.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
             }
             textView3.setText("Time spent:\n");

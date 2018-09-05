@@ -27,12 +27,27 @@ public class FractionMeaningSeatWork extends SeatWork {
     Context mContext = this;
     //private static final String TAG = "FM_S";
     //GUI
-    ImageView imgBox1, imgBox2, imgBox3, imgBox4, imgBox5, imgBox6, imgBox7, imgBox8, imgBox9;
-    EditText inputNum, inputDenom;
-    TextView txtItemIndicator, txtInstruction;
+    ImageView imgBox1;
+    ImageView imgBox2;
+    ImageView imgBox3;
+    ImageView imgBox4;
+    ImageView imgBox5;
+    ImageView imgBox6;
+    ImageView imgBox7;
+    ImageView imgBox8;
+    ImageView imgBox9;
+    ImageView imgAvatar;
+    ImageView imgLine;
+    EditText inputNum;
+    EditText inputDenom;
+    TextView txtItemIndicator;
+    TextView txtInstruction;
     Button btnOK;
     ConstraintLayout clChoices;
-    Button btnChoice1, btnChoice2, btnChoice3, btnChoice4;
+    Button btnChoice1;
+    Button btnChoice2;
+    Button btnChoice3;
+    Button btnChoice4;
     //VARIABLES
     final static String INPUT_NUM = "INPUT_NUM";
     final static String INPUT_DENOM = "INPUT_DENOM";
@@ -44,7 +59,6 @@ public class FractionMeaningSeatWork extends SeatWork {
     public FractionMeaningSeatWork() {
         super();
         setTopicName(AppConstants.FRACTION_MEANING);
-
     }
 
     public FractionMeaningSeatWork(String topicName) {
@@ -75,6 +89,10 @@ public class FractionMeaningSeatWork extends SeatWork {
         imgBox9 = findViewById(R.id.a1_imgBox9);
         inputNum = findViewById(R.id.fme2_inputNumerator);
         inputDenom = findViewById(R.id.fme2_inputDenominator);
+        imgAvatar = findViewById(R.id.fme2_imgAvatar);
+        imgAvatar.setImageResource(R.drawable.avatar);
+        imgLine = findViewById(R.id.fme2_imgLine);
+        imgLine.setImageResource(R.drawable.line);
         inputNum.setEnabled(false);
         inputDenom.setEnabled(false);
         inputNum.setHintTextColor(Color.rgb(0,0,0));

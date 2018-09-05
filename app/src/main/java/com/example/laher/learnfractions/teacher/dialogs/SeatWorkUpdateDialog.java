@@ -13,12 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.service.SeatWorkService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
@@ -29,6 +31,8 @@ public class SeatWorkUpdateDialog extends Dialog {
     private TextView txtLabel1;
     private EditText inputTopicName;
     private EditText inputItemsSize;
+    private EditText inputMinimum;
+    private EditText inputMaximum;
     private CheckBox chk_RC_consecutive;
     private CheckBox chk_ME_consecutive;
 
@@ -49,10 +53,14 @@ public class SeatWorkUpdateDialog extends Dialog {
         String label1 = "Number of Items:";
         txtLabel1.setText(label1);
 
-        ConstraintLayout.LayoutParams linearRangeLayoutParams = (ConstraintLayout.LayoutParams) linearRange.getLayoutParams();
-        linearRangeLayoutParams.height = 0;
-        linearRangeLayoutParams.topMargin = 0;
-        linearRange.setLayoutParams(linearRangeLayoutParams);
+        boolean rangeEditable = seatWork.isRangeEditable();
+
+        if (!rangeEditable) {
+            ConstraintLayout.LayoutParams linearRangeLayoutParams = (ConstraintLayout.LayoutParams) linearRange.getLayoutParams();
+            linearRangeLayoutParams.height = 0;
+            linearRangeLayoutParams.topMargin = 0;
+            linearRange.setLayoutParams(linearRangeLayoutParams);
+        }
 
         ConstraintLayout.LayoutParams linearMaxErrorsLayoutParams = (ConstraintLayout.LayoutParams) linearMaxErrors.getLayoutParams();
         linearMaxErrorsLayoutParams.height = 0;
@@ -85,6 +93,16 @@ public class SeatWorkUpdateDialog extends Dialog {
         String strItemSize = String.valueOf(itemSize);
         inputItemsSize.setHint(strItemSize);
 
+        inputMinimum = findViewById(R.id.exercise_update_inputMinimum);
+        inputMaximum = findViewById(R.id.exercise_update_inputMaximum);
+        Range range = seatWork.getRange();
+        int minimum = range.getMinimum();
+        int maximum = range.getMaximum();
+        String strMinimum = String.valueOf(minimum);
+        String strMaximum = String.valueOf(maximum);
+        inputMinimum.setHint(strMinimum);
+        inputMaximum.setHint(strMaximum);
+
         linearMaxErrors = findViewById(R.id.exercise_update_linearMaxErrors);
         linearRange = findViewById(R.id.exercise_update_linearRange);
         chk_RC_consecutive = findViewById(R.id.exercise_update_chk_RC_consecutive);
@@ -101,6 +119,22 @@ public class SeatWorkUpdateDialog extends Dialog {
 
                 final SeatWork seatWork = mSeatWork;
                 seatWork.setTopicName(topicName);
+                if (seatWork.isRangeEditable()){
+                    String strMinimum = inputMinimum.getText().toString().trim();
+                    String strMaximum = inputMaximum.getText().toString().trim();
+                    if (Util.isNumeric(strMinimum) && Util.isNumeric(strMaximum)){
+                        int minimum = Integer.valueOf(strMinimum);
+                        int maximum = Integer.valueOf(strMaximum);
+                        Range range = new Range(minimum,maximum);
+                        seatWork.setRange(range);
+
+                        Probability probability = seatWork.getProbability();
+                        String equation = probability.getEquation();
+
+                        Probability newProbability = new Probability(equation,range);
+                        seatWork.setProbability(newProbability);
+                    }
+                }
                 seatWork.setItems_size(itemSize);
 
                 Service service = new Service("Posting seat work...", mContext, new ServiceResponse() {
@@ -111,15 +145,24 @@ public class SeatWorkUpdateDialog extends Dialog {
                         String title = seatWork.getTopicName();
                         int itemSize = seatWork.getItems_size();
                         String strItemSize = String.valueOf(itemSize);
-
                         inputTopicName.setText(title);
                         inputTopicName.setHint(title);
                         inputItemsSize.setText(strItemSize);
                         inputItemsSize.setHint(strItemSize);
                         inputItemsSize.requestFocus();
+
+                        if (seatWork.isRangeEditable()) {
+                            Range range = seatWork.getRange();
+                            int minimum = range.getMinimum();
+                            int maximum = range.getMaximum();
+                            String strMinimum = String.valueOf(minimum);
+                            String strMaximum = String.valueOf(maximum);
+                            inputMinimum.setHint(strMinimum);
+                            inputMaximum.setHint(strMaximum);
+                        }
                     }
                 });
-                SeatWorkService.insert(mContext, seatWork,service);
+                SeatWorkService.insert(mContext, seatWork, service);
             }
             }
         });
@@ -127,10 +170,12 @@ public class SeatWorkUpdateDialog extends Dialog {
 
     private boolean noErrors(){
         boolean noErrors = true;
-        if (inputTopicName.getText().toString().trim().equals("")){
+        String strInputTopicName = inputTopicName.getText().toString().trim();
+        if (strInputTopicName.equals("")){
             Styles.shakeAnimate(inputTopicName);
             noErrors = false;
         }
+
         String strItemSize = inputItemsSize.getText().toString().trim();
         if (strItemSize.equals("")) {
             Styles.shakeAnimate(inputItemsSize);
@@ -140,6 +185,33 @@ public class SeatWorkUpdateDialog extends Dialog {
                 if (Integer.valueOf(strItemSize) < 1) {
                     Styles.shakeAnimate(inputItemsSize);
                     Util.toast(mContext, AppConstants.INVALID_INPUT);
+                    noErrors = false;
+                }
+            }
+        }
+
+        SeatWork seatWork = mSeatWork;
+        boolean rangeEditable = seatWork.isRangeEditable();
+        if (rangeEditable){
+            String strMinimum = inputMinimum.getText().toString().trim();
+            String strMaximum = inputMaximum.getText().toString().trim();
+
+            if (strMinimum.equals("")) {
+                Styles.shakeAnimate(inputMinimum);
+                noErrors = false;
+            }
+            if (strMaximum.equals("")){
+                Styles.shakeAnimate(inputMaximum);
+                noErrors = false;
+            }
+            if (Util.isNumeric(strMinimum) && Util.isNumeric(strMaximum)) {
+                int intInputMinimum = Integer.valueOf(strMinimum);
+                int intInputMaximum = Integer.valueOf(strMaximum);
+                if (intInputMinimum >= intInputMaximum) {
+                    Styles.shakeAnimate(inputMinimum);
+                    Styles.shakeAnimate(inputMaximum);
+                    String message = "Input a larger number on the maximum field.";
+                    Util.toast(mContext, message);
                     noErrors = false;
                 }
             }

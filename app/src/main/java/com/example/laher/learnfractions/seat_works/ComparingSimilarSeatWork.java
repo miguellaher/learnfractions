@@ -4,86 +4,73 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.ChapterExamListActivity;
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.SeatWorkListActivity;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
-import com.example.laher.learnfractions.fraction_util.FractionClass;
-import com.example.laher.learnfractions.fraction_util.FractionQuestion;
+import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.ComparingSimilarQuestion;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
-import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class ComparingSimilarSeatWork extends SeatWork {
-    private static final String TAG = "CS_SW1";
+    //private static final String TAG = "CS_SW1";
     Context mContext = this;
-
-    //TOOLBAR
-    Button btnBack, btnNext;
-    TextView txtTitle;
-    public final String TITLE = "Comparing Similar";
     //GUI
-    TextView txtNum1, txtNum2, txtDenom1, txtDenom2, txtCompareSign, txtItemIndicator, txtInstruction;
-    Button btnGreater, btnEquals, btnLess;
+    TextView txtNum1;
+    TextView txtNum2;
+    TextView txtDenom1;
+    TextView txtDenom2;
+    TextView txtCompareSign;
+    TextView txtItemIndicator;
+    TextView txtInstruction;
+    Button btnGreater;
+    Button btnEquals;
+    Button btnLess;
     //VARIABLES
     private String TYPE;
     boolean shouldAllowBack;
 
     int questionNum;
-    FractionClass fractionOne, fractionTwo;
-    FractionQuestion fractionQuestion;
-    ArrayList<FractionQuestion> fractionQuestions;
-    String strAnswer;
-    long startingTime;
+    ComparingSimilarQuestion fractionQuestion;
+    ArrayList<ComparingSimilarQuestion> fractionQuestions;
 
-    public ComparingSimilarSeatWork(String topicName, int seatWorkNum) {
-        super(topicName, seatWorkNum);
+    public ComparingSimilarSeatWork(String topicName) {
+        super(topicName);
+        String id = AppIDs.CSS;
+        setId(id);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.P_RAISED_TO_3, range);
+        setProbability(probability);
+        setRangeEditable(true);
     }
 
     public ComparingSimilarSeatWork(int size) {
         super(size);
         setTopicName(AppConstants.COMPARING_SIMILAR_FRACTIONS);
-        setSeatWorkNum(1);
     }
 
     public ComparingSimilarSeatWork() {
         setTopicName(AppConstants.COMPARING_SIMILAR_FRACTIONS);
-        setSeatWorkNum(1);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comparing_similar_exercise2);
-        setTopicName(AppConstants.COMPARING_SIMILAR_FRACTIONS);
-        setSeatWorkNum(1);
-
-        //TOOLBAR
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ComparingSimilarSeatWork.this,
-                        SeatWorkListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnNext = findViewById(R.id.btnNext);
-        btnNext.setVisibility(View.INVISIBLE);
-        txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(TITLE);
+        super.onCreate(savedInstanceState);
+        String id = AppIDs.CSS;
+        setId(id);
         //GUI
         txtNum1 = findViewById(R.id.c2_num1);
         txtNum2 = findViewById(R.id.c2_num2);
@@ -97,18 +84,14 @@ public class ComparingSimilarSeatWork extends SeatWork {
         btnGreater = findViewById(R.id.c2_btnGreater);
         btnEquals = findViewById(R.id.c2_btnEqual);
         btnLess = findViewById(R.id.c2_btnLess);
-        btnGreater.setText(FractionQuestion.ANSWER_GREATER);
-        btnEquals.setText(FractionQuestion.ANSWER_EQUAL);
-        btnLess.setText(FractionQuestion.ANSWER_LESS);
+        btnGreater.setText(AppConstants.GREATER_THAN);
+        btnEquals.setText(AppConstants.EQUAL_TO);
+        btnLess.setText(AppConstants.LESS_THAN);
         btnGreater.setOnClickListener(new BtnListener());
         btnEquals.setOnClickListener(new BtnListener());
         btnLess.setOnClickListener(new BtnListener());
         //VARIABLES
         shouldAllowBack = true;
-        fractionOne = new FractionClass();
-        fractionTwo = new FractionClass();
-        fractionQuestion = new FractionQuestion();
-        fractionQuestions = new ArrayList<>();
 
         try {
             int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
@@ -122,7 +105,7 @@ public class ComparingSimilarSeatWork extends SeatWork {
                 String title = AppCache.getChapterExam().getExamTitle();
                 txtTitle.setText(title);
                 shouldAllowBack = false;
-                btnBack.setOnClickListener(new View.OnClickListener() {
+                buttonBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext,"Are you sure you want to exit exam?");
@@ -140,33 +123,47 @@ public class ComparingSimilarSeatWork extends SeatWork {
                         confirmationDialog.show();
                     }
                 });
-                Log.d(TAG, "chapter exam setup done");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d(TAG, e.getMessage());
         }
         go();
-        startingTime = System.currentTimeMillis();
     }
-    public void go(){
+    @Override
+    protected void go(){
+        super.go();
         setFractionQuestions();
     }
     public void setFractionQuestions(){
         fractionQuestions = new ArrayList<>();
         questionNum = 0;
+        Range range = getRange();
         for(int i = 0; i < getItems_size(); i++){
-            fractionQuestion = new FractionQuestion(FractionQuestion.COMPARING_SIMILAR);
+            fractionQuestion = new ComparingSimilarQuestion(range);
+            while (fractionQuestions.contains(fractionQuestion)){
+                fractionQuestion = new ComparingSimilarQuestion(range);
+            }
             fractionQuestions.add(fractionQuestion);
         }
         setTxtFractions();
     }
     public void setTxtFractions(){
-        txtNum1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getNumerator()));
-        txtNum2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getNumerator()));
-        txtDenom1.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionOne().getDenominator()));
-        txtDenom2.setText(String.valueOf(fractionQuestions.get(questionNum).getFractionTwo().getDenominator()));
-        strAnswer = fractionQuestions.get(questionNum).getAnswer();
+        ComparingSimilarQuestion question = fractionQuestions.get(questionNum);
+        Fraction fraction1 = question.getFraction1();
+        Fraction fraction2 = question.getFraction2();
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        String strNumerator1 = String.valueOf(numerator1);
+        String strNumerator2 = String.valueOf(numerator2);
+        String strDenominator1 = String.valueOf(denominator1);
+        String strDenominator2 = String.valueOf(denominator2);
+
+        txtNum1.setText(strNumerator1);
+        txtNum2.setText(strNumerator2);
+        txtDenom1.setText(strDenominator1);
+        txtDenom2.setText(strDenominator2);
         txtInstruction.setText(AppConstants.I_COMPARE);
         txtCompareSign.setText("_");
     }
@@ -181,38 +178,25 @@ public class ComparingSimilarSeatWork extends SeatWork {
             Button b = (Button) v;
             String s = b.getText().toString();
             txtCompareSign.setText(s);
-            if (s.matches(fractionQuestions.get(questionNum).getAnswer())){
+            if (isCorrect(s)){
                 incrementCorrect();
             }
             if (getCurrentItemNum()>= getItems_size()){
                 enableButtons(false);
-                long endingTime = System.currentTimeMillis();
-                setTimeSpent(endingTime-startingTime);
-                if (TYPE.equals(AppConstants.CHAPTER_EXAM)){
-                    AppCache.postSeatWorkStat(ComparingSimilarSeatWork.this);
-                    SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, ComparingSimilarSeatWork.this);
-                    seatWorkStatDialog.show();
-                    seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            finish();
-                        }
-                    });
+                if (TYPE!=null) {
+                    if (TYPE.equals(AppConstants.CHAPTER_EXAM)) {
+                        AppCache.postSeatWorkStat(ComparingSimilarSeatWork.this);
+                        SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, ComparingSimilarSeatWork.this);
+                        seatWorkStatDialog.show();
+                        seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                finish();
+                            }
+                        });
+                    }
                 } else {
-                    Student student = new Student();
-                    student.setId(Storage.load(mContext,Storage.STUDENT_ID));
-                    student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
-                    SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, ComparingSimilarSeatWork.this, student);
-                    seatWorkStatDialog.show();
-                    seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            Intent intent = new Intent(ComparingSimilarSeatWork.this,
-                                    SeatWorkListActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }
-                    });
+                    seatworkFinished();
                 }
             } else {
                 questionNum++;
@@ -221,6 +205,30 @@ public class ComparingSimilarSeatWork extends SeatWork {
                 updateItemIndicator(txtItemIndicator);
             }
         }
+    }
+    private boolean isCorrect(String answer){
+        ComparingSimilarQuestion question = fractionQuestions.get(questionNum);
+        Fraction fraction1 = question.getFraction1();
+        Fraction fraction2 = question.getFraction2();
+        Fraction fractionAnswer = question.getFractionAnswer();
+        switch (answer) {
+            case AppConstants.GREATER_THAN:
+                if (fractionAnswer.equals(fraction1)) {
+                    return true;
+                }
+                break;
+            case AppConstants.LESS_THAN:
+                if (fractionAnswer.equals(fraction2)) {
+                    return true;
+                }
+                break;
+            case AppConstants.EQUAL_TO:
+                if (fractionAnswer.equals(AppConstants.EQUAL_FRACTIONS)) {
+                    return true;
+                }
+                break;
+        }
+        return false;
     }
 
     @Override

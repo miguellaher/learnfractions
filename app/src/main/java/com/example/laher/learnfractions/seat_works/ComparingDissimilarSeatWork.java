@@ -6,87 +6,79 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.ChapterExamListActivity;
 import com.example.laher.learnfractions.R;
-import com.example.laher.learnfractions.SeatWorkListActivity;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
-import com.example.laher.learnfractions.fraction_util.FractionClass;
+import com.example.laher.learnfractions.fraction_util.Fraction;
+import com.example.laher.learnfractions.fraction_util.fraction_questions.ComparingDissimilarQuestion;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
-import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.AppIDs;
+import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class ComparingDissimilarSeatWork extends SeatWork {
-    private static final String TAG = "CD_SW1";
     Context mContext = this;
-
-    //TOOLBAR
-    Button btnBack, btnNext;
-    TextView txtTitle;
-    public final String TITLE = "Comparing Dissimilar";
     //GUI
-    TextView txtItemIndicator, txtProduct1, txtProduct2, txtNum1, txtNum2, txtDenom1, txtDenom2, txtCompareSign, txtInstruction;
-    Button btnGreater, btnEquals, btnLess;
+    TextView txtItemIndicator;
+    TextView txtProduct1;
+    TextView txtProduct2;
+    TextView txtNum1;
+    TextView txtNum2;
+    TextView txtDenom1;
+    TextView txtDenom2;
+    TextView txtCompareSign;
+    TextView txtInstruction;
+    Button btnGreater;
+    Button btnEquals;
+    Button btnLess;
     //VARIABLES
     private String TYPE;
     boolean shouldAllowBack;
 
     ArrayList<Integer> stepsIdList;
-    FractionClass fractionOne, fractionTwo;
-    long startingTime;
+
+    ArrayList<ComparingDissimilarQuestion> questions;
+    int questionNum;
 
     public final String GREATER_THAN = ">";
     public final String EQUAL_TO = "=";
     public final String LESS_THAN = "<";
 
-    public ComparingDissimilarSeatWork(String topicName, int seatworkNum) {
-        super(topicName, seatworkNum);
+    public ComparingDissimilarSeatWork(String topicName) {
+        super(topicName);
+        String id = AppIDs.CDS;
+        setId(id);
+        Range range = getRange();
+        Probability probability = new Probability(Probability.TWO_DISSIMILAR_FRACTIONS, range);
+        setProbability(probability);
+        setRangeEditable(true);
     }
 
     public ComparingDissimilarSeatWork(int size) {
         super(size);
         setTopicName(AppConstants.COMPARING_DISSIMILAR_FRACTIONS);
-        setSeatWorkNum(1);
     }
 
     public ComparingDissimilarSeatWork() {
         setTopicName(AppConstants.COMPARING_DISSIMILAR_FRACTIONS);
-        setSeatWorkNum(1);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comparing_dissimilar_exercise2);
-        setTopicName(AppConstants.COMPARING_DISSIMILAR_FRACTIONS);
-        setSeatWorkNum(1);
-
-        //TOOLBAR
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ComparingDissimilarSeatWork.this,
-                        SeatWorkListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnNext = findViewById(R.id.btnNext);
-        btnNext.setVisibility(View.INVISIBLE);
-        txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(TITLE);
-        txtTitle.setTextSize(14);
+        super.onCreate(savedInstanceState);
+        String id = AppIDs.CDS;
+        setId(id);
         //GUI
         txtItemIndicator = findViewById(R.id.d2_txtScore);
         updateItemIndicator(txtItemIndicator);
@@ -109,8 +101,6 @@ public class ComparingDissimilarSeatWork extends SeatWork {
         btnLess.setOnClickListener(new BtnListener());
         //VARIABLES
         shouldAllowBack = true;
-        fractionOne = new FractionClass();
-        fractionTwo = new FractionClass();
 
         try {
             int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
@@ -124,7 +114,7 @@ public class ComparingDissimilarSeatWork extends SeatWork {
                 String title = AppCache.getChapterExam().getExamTitle();
                 txtTitle.setText(title);
                 shouldAllowBack = false;
-                btnBack.setOnClickListener(new View.OnClickListener() {
+                buttonBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext,"Are you sure you want to exit exam?");
@@ -142,21 +132,20 @@ public class ComparingDissimilarSeatWork extends SeatWork {
                         confirmationDialog.show();
                     }
                 });
-                Log.d(TAG, "chapter exam setup done");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d(TAG, e.getMessage());
         }
         go();
-        startingTime = System.currentTimeMillis();
     }
 
-    public void go(){
+    @Override
+    protected void go(){
+        super.go();
         setup();
     }
     public void setup(){
-        setFractions();
+        setFractionQuestions();
         txtCompareSign.setText("_");
         txtInstruction.setText(AppConstants.I_COMPARE);
     }
@@ -165,20 +154,37 @@ public class ComparingDissimilarSeatWork extends SeatWork {
         btnEquals.setEnabled(bool);
         btnLess.setEnabled(bool);
     }
-    public void setFractions(){
-        fractionOne.generateRandFraction(9);
-        fractionTwo.generateRandFraction(9);
-        while (fractionOne.getDenominator()==fractionTwo.getDenominator() ||
-                fractionOne.getNumerator()==fractionTwo.getNumerator()){
-            fractionTwo.generateRandFraction(9);
+    public void setFractionQuestions(){
+        questionNum = 0;
+        questions = new ArrayList<>();
+        Range range = getRange();
+        for(int i = 0; i < getItems_size(); i++) {
+            ComparingDissimilarQuestion question = new ComparingDissimilarQuestion(range);
+            while (questions.contains(question)) {
+                question = new ComparingDissimilarQuestion(range);
+            }
+            questions.add(question);
         }
         setGuiFractions();
     }
     public void setGuiFractions(){
-        txtNum1.setText(String.valueOf(fractionOne.getNumerator()));
-        txtDenom1.setText(String.valueOf(fractionOne.getDenominator()));
-        txtNum2.setText(String.valueOf(fractionTwo.getNumerator()));
-        txtDenom2.setText(String.valueOf(fractionTwo.getDenominator()));
+        ComparingDissimilarQuestion question = questions.get(questionNum);
+        txtCompareSign.setText("");
+        Fraction fraction1 = question.getFraction1();
+        Fraction fraction2 = question.getFraction2();
+        int numerator1 = fraction1.getNumerator();
+        int numerator2 = fraction2.getNumerator();
+        int denominator1 = fraction1.getDenominator();
+        int denominator2 = fraction2.getDenominator();
+        String strNumerator1 = String.valueOf(numerator1);
+        String strNumerator2 = String.valueOf(numerator2);
+        String strDenominator1 = String.valueOf(denominator1);
+        String strDenominator2 = String.valueOf(denominator2);
+
+        txtNum1.setText(strNumerator1);
+        txtNum2.setText(strNumerator2);
+        txtDenom1.setText(strDenominator1);
+        txtDenom2.setText(strDenominator2);
         txtProduct1.setVisibility(TextView.INVISIBLE);
         txtProduct2.setVisibility(TextView.INVISIBLE);
     }
@@ -221,38 +227,26 @@ public class ComparingDissimilarSeatWork extends SeatWork {
         removeTxtListeners();
         incrementItemNum();
         if (getCurrentItemNum()>getItems_size()){
-            long endingTime = System.currentTimeMillis();
             enableBtnCompareSign(false);
-            setTimeSpent(endingTime-startingTime);
-            if (TYPE.equals(AppConstants.CHAPTER_EXAM)){
-                AppCache.postSeatWorkStat(ComparingDissimilarSeatWork.this);
-                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, ComparingDissimilarSeatWork.this);
-                seatWorkStatDialog.show();
-                seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        finish();
-                    }
-                });
+            if (TYPE!=null) {
+                if (TYPE.equals(AppConstants.CHAPTER_EXAM)) {
+                    AppCache.postSeatWorkStat(ComparingDissimilarSeatWork.this);
+                    SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, ComparingDissimilarSeatWork.this);
+                    seatWorkStatDialog.show();
+                    seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            finish();
+                        }
+                    });
+                }
             } else {
-                Student student = new Student();
-                student.setId(Storage.load(mContext,Storage.STUDENT_ID));
-                student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
-                SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, ComparingDissimilarSeatWork.this, student);
-                seatWorkStatDialog.show();
-                seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        Intent intent = new Intent(ComparingDissimilarSeatWork.this,
-                                SeatWorkListActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    }
-                });
+                seatworkFinished();
             }
         } else {
             updateItemIndicator(txtItemIndicator);
-            go();
+            questionNum++;
+            setGuiFractions();
         }
     }
     public class BtnListener implements Button.OnClickListener{

@@ -29,15 +29,15 @@ public class AppIDs {
 
     // SEATWORK IDS
     public static final String FMS = "7KcFWFH4tk7xbd5t";
+    public static final String CSS = "R8q8vXxkb5nX3oyi";
+    public static final String CDS = "MEczqH3Cr9Lxclic";
+    public static final String OSS = "IjQZvn3DQbfwHdRq";
+    public static final String ODS = "iRpkud1di7cYOkxn";
+    public static final String ASS = "CpKFN561FOiLWoFl";
+    public static final String SSS = "VTPLDQkuyK7orcQU";
+    public static final String ADS = "7sbssXwsqgqLtCH6";
+    public static final String SDS = "5ZNHgCxaZhn7U4z2";
     /*
-    7sbssXwsqgqLtCH6
-    R8q8vXxkb5nX3oyi
-    MEczqH3Cr9Lxclic
-    IjQZvn3DQbfwHdRq
-    iRpkud1di7cYOkxn
-    CpKFN561FOiLWoFl
-    VTPLDQkuyK7orcQU
-    5ZNHgCxaZhn7U4z2
     eDRbZJcTtLwTwkEn
     ojE61hRQ7YPTaVp5
     rRmlOCEt3HmdMi0Q

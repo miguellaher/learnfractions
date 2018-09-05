@@ -3,8 +3,8 @@ package com.example.laher.learnfractions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.adapters.SeatWorkListAdapter;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
-import com.example.laher.learnfractions.model.Student;
-import com.example.laher.learnfractions.model.Teacher;
 import com.example.laher.learnfractions.seat_works.AddSubMixedFractionsSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingDissimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingSimilarSeatWork;
@@ -70,14 +68,14 @@ public class SeatWorkListActivity extends AppCompatActivity {
 
         //ACTIVITY
         FractionMeaningSeatWork fractionMeaningSeatWork = new FractionMeaningSeatWork(AppConstants.FRACTION_MEANING);
-        ComparingSimilarSeatWork comparingSimilarSeatWork = new ComparingSimilarSeatWork(AppConstants.COMPARING_SIMILAR_FRACTIONS, 1);
-        ComparingDissimilarSeatWork comparingDissimilarSeatWork = new ComparingDissimilarSeatWork(AppConstants.COMPARING_DISSIMILAR_FRACTIONS, 1);
-        OrderingSimilarSeatWork orderingSimilarSeatWork = new OrderingSimilarSeatWork(AppConstants.ORDERING_SIMILAR, 1);
-        OrderingDissimilarSeatWork orderingDissimilarSeatWork = new OrderingDissimilarSeatWork(AppConstants.ORDERING_DISSIMILAR, 1);
-        AddingSimilarSeatWork addingSimilarSeatWork = new AddingSimilarSeatWork(AppConstants.ADDING_SIMILAR, 1);
-        SubtractingSimilarSeatWork subtractingSimilarSeatWork = new SubtractingSimilarSeatWork(AppConstants.SUBTRACTING_SIMILAR, 1);
-        AddingDissimilarSeatWork addingDissimilarSeatWork = new AddingDissimilarSeatWork(AppConstants.ADDING_DISSIMILAR, 1);
-        SubtractingDissimilarSeatWork subtractingDissimilarSeatWork = new SubtractingDissimilarSeatWork(AppConstants.SUBTRACTING_DISSIMILAR, 1);
+        ComparingSimilarSeatWork comparingSimilarSeatWork = new ComparingSimilarSeatWork(AppConstants.COMPARING_SIMILAR_FRACTIONS);
+        ComparingDissimilarSeatWork comparingDissimilarSeatWork = new ComparingDissimilarSeatWork(AppConstants.COMPARING_DISSIMILAR_FRACTIONS);
+        OrderingSimilarSeatWork orderingSimilarSeatWork = new OrderingSimilarSeatWork(AppConstants.ORDERING_SIMILAR);
+        OrderingDissimilarSeatWork orderingDissimilarSeatWork = new OrderingDissimilarSeatWork(AppConstants.ORDERING_DISSIMILAR);
+        AddingSimilarSeatWork addingSimilarSeatWork = new AddingSimilarSeatWork(AppConstants.ADDING_SIMILAR);
+        SubtractingSimilarSeatWork subtractingSimilarSeatWork = new SubtractingSimilarSeatWork(AppConstants.SUBTRACTING_SIMILAR);
+        AddingDissimilarSeatWork addingDissimilarSeatWork = new AddingDissimilarSeatWork(AppConstants.ADDING_DISSIMILAR);
+        SubtractingDissimilarSeatWork subtractingDissimilarSeatWork = new SubtractingDissimilarSeatWork(AppConstants.SUBTRACTING_DISSIMILAR);
         MultiplyingFractionsSeatWork multiplyingFractionsSeatWork = new MultiplyingFractionsSeatWork(AppConstants.MULTIPLYING_FRACTIONS, 1);
         DividingFractionsSeatWork dividingFractionsSeatWork = new DividingFractionsSeatWork(AppConstants.DIVIDING_FRACTIONS,1);
         AddSubMixedFractionsSeatWork addSubMixedFractionsSeatWork = new AddSubMixedFractionsSeatWork(AppConstants.ADDING_SUBTRACTING_MIXED, 1);
@@ -99,12 +97,16 @@ public class SeatWorkListActivity extends AppCompatActivity {
         seatWorks.add(addSubMixedFractionsSeatWork);
         seatWorks.add(multiplyDivideMixedFractionsSeatWork);
 
-        if (Storage.load(mContext,Storage.USER_TYPE).equals(AppConstants.TEACHER)){
-            teacherMode();
-        } else if (Storage.load(mContext,Storage.USER_TYPE).equals(AppConstants.STUDENT)){
-            studentMode();
-        } else {
-            baseMode();
+        switch (Storage.load(mContext, Storage.USER_TYPE)) {
+            case AppConstants.TEACHER:
+                teacherMode();
+                break;
+            case AppConstants.STUDENT:
+                studentMode();
+                break;
+            default:
+                baseMode();
+                break;
         }
     }
 
@@ -119,6 +121,21 @@ public class SeatWorkListActivity extends AppCompatActivity {
 
             }
         });
+
+        seatworkListAdapter = new SeatWorkListAdapter(mContext, R.layout.layout_user_item, seatWorks);
+        seatWorkListView.setAdapter(seatworkListAdapter);
+
+        seatWorkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SeatWork seatWork = seatWorks.get(position);
+                AppCache.setSeatWork(seatWork);
+                Intent intent = new Intent(mContext, seatWorks.get(position).getClass());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+
         Service service = new Service("Loading seat works...", mContext, new ServiceResponse() {
             @Override
             public void postExecute(JSONObject response) {
@@ -164,35 +181,48 @@ public class SeatWorkListActivity extends AppCompatActivity {
             }
         });
         SeatWorkService.getUpdates(mContext, service);
+
         Service getStatsService = new Service("Getting stats...", mContext, new ServiceResponse() {
             @Override
             public void postExecute(JSONObject response) {
                 try {
                     int item_count = Integer.valueOf(response.optString("item_count"));
-                    ArrayList<SeatWork> seatWorks2 = new ArrayList<>();
+                    ArrayList<SeatWork> uploadedSeatworkStats = new ArrayList<>();
                     for (int i = 1; i <= item_count; i++) {
-                        SeatWork seatWork2 = new SeatWork();
-                        seatWork2.setTopicName(String.valueOf(response.optString(i + "topic_name")));
-                        Log.d(TAG, seatWork2.getTopicName()+": stat received.");
-                        seatWork2.setSeatWorkNum(Integer.valueOf(String.valueOf(response.optString(i + "sw_num"))));
-                        seatWork2.setCorrect(Integer.valueOf(String.valueOf(response.optString(i + "score"))));
-                        Long timeSpent = Long.valueOf(String.valueOf(response.optString(i + "time_spent"))) * 1000;
-                        seatWork2.setTimeSpent(timeSpent);
-                        seatWork2.setItems_size(Integer.valueOf(String.valueOf(response.optString(i + "items_size"))));
-                        seatWorks2.add(seatWork2);
+                        String seatworkID = response.optString(i + "seatwork_id");
+                        String strItemsSize = response.optString(i + "items_size");
+                        String strMinimum = response.optString(i + "r_minimum");
+                        String strMaximum = response.optString(i + "r_maximum");
+                        String topic_name = response.optString(i + "topic_name");
+                        String strScore = response.optString(i + "score");
+                        String strTimeSpent = response.optString(i + "time_spent");
+
+                        int itemsSize = Integer.valueOf(strItemsSize);
+
+                        int minimum = Integer.valueOf(strMinimum);
+                        int maximum = Integer.valueOf(strMaximum);
+                        Range range = new Range(minimum,maximum);
+
+                        int score = Integer.valueOf(strScore);
+                        long timeSpent = Long.valueOf(strTimeSpent);
+
+                        SeatWork uploadedSeatworkStat = new SeatWork();
+                        uploadedSeatworkStat.setId(seatworkID);
+                        uploadedSeatworkStat.setItems_size(itemsSize);
+                        uploadedSeatworkStat.setRange(range);
+                        uploadedSeatworkStat.setTopicName(topic_name);
+                        uploadedSeatworkStat.setCorrect(score);
+                        uploadedSeatworkStat.setTimeSpent(timeSpent);
+
+                        uploadedSeatworkStats.add(uploadedSeatworkStat);
                     }
-                    for(SeatWork seatWork2 : seatWorks2){
+                    for(SeatWork uploadedSeatworkStat : uploadedSeatworkStats){
                         int i = 0;
-                        for (SeatWork seatWork1 : seatWorks){
-                            if (seatWork2.getTopicName().equals(seatWork1.getTopicName())){
-                                if(seatWork2.getSeatWorkNum()==seatWork1.getSeatWorkNum()){
-                                    if(seatWork2.getItems_size()==seatWork1.getItems_size()){
-                                        seatWorks.get(i).setAnswered(true);
-                                        seatWorks.get(i).setCorrect(seatWork2.getCorrect());
-                                        seatWorks.get(i).setTimeSpent(seatWork2.getTimeSpent());
-                                        Log.d(TAG, seatWorks.get(i).getTopicName()+": stat updated");
-                                    }
-                                }
+                        for (SeatWork seatWork : seatWorks){
+                            if (seatWork.isUpdatedWith(uploadedSeatworkStat)){
+                                seatWork.getStatsFrom(uploadedSeatworkStat);
+                                seatWork.setAnswered(true);
+                                seatWorks.set(i, seatWork);
                             }
                             i++;
                         }
@@ -200,24 +230,11 @@ public class SeatWorkListActivity extends AppCompatActivity {
                     seatworkListAdapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    seatworkListAdapter.notifyDataSetChanged();
                 }
             }
         });
-        //SeatWorkStatService.getStats(student,getStatsService);
-
-        seatworkListAdapter = new SeatWorkListAdapter(mContext, R.layout.layout_user_item, seatWorks);
-        seatWorkListView.setAdapter(seatworkListAdapter);
-
-        seatWorkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SeatWork seatWork = seatWorks.get(position);
-                AppCache.setSeatWork(seatWork);
-                Intent intent = new Intent(mContext, seatWorks.get(position).getClass());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
+        SeatWorkStatService.getStats(mContext, getStatsService);
     }
 
     private void teacherMode(){
