@@ -11,7 +11,6 @@ import com.example.laher.learnfractions.util.Util;
 import com.loopj.android.http.RequestParams;
 
 public class SeatWorkStatService {
-    private static final String TAG = "SW_STAT_SERVICE";
     public static void postStat(Context context, SeatWork seatWork, Service service){
         RequestParams params = new RequestParams();
 

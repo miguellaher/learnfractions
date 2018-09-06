@@ -15,6 +15,7 @@ import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.service.SeatWorkStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
+import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
@@ -68,7 +69,9 @@ public class SeatWorkStatDialog extends Dialog {
                 Log.d(TAG, "post execute");
             }
         });
-        SeatWorkStatService.postStat(mContext, mSeatWork, service);
+        if (!AppCache.isInChapterExam()) {
+            SeatWorkStatService.postStat(mContext, mSeatWork, service);
+        }
         Log.d(TAG, "post SeatWorkStatService.postStat()");
     }
 

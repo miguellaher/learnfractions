@@ -48,9 +48,6 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
     Button btnChoice2;
     Button btnChoice3;
     Button btnChoice4;
-    //VARIABLES
-    private String TYPE;
-    boolean shouldAllowBack;
 
     ArrayList<FractionQuestionClass> questions;
     int questionNum;
@@ -65,11 +62,6 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
         Probability probability = new Probability(Probability.SOLVING_MIXED1, range);
         setProbability(probability);
         setRangeEditable(true);
-    }
-
-    public AddSubMixedFractionsSeatWork(int size) {
-        super(size);
-        setTopicName(AppConstants.ADDING_SUBTRACTING_MIXED);
     }
 
     public AddSubMixedFractionsSeatWork() {
@@ -103,42 +95,6 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
         btnChoice3.setOnClickListener(new BtnChoiceListener());
         btnChoice4.setOnClickListener(new BtnChoiceListener());
 
-        shouldAllowBack = true;
-
-        try {
-            int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
-            if (item_size != 0) {
-                setItems_size(item_size);
-                updateItemIndicator(txtIndicator);
-            }
-            TYPE = Objects.requireNonNull(getIntent().getExtras()).getString("type");
-            assert TYPE != null;
-            if (TYPE.equals(AppConstants.CHAPTER_EXAM)){
-                String title = AppCache.getChapterExam().getExamTitle();
-                txtTitle.setText(title);
-                shouldAllowBack = false;
-                buttonBack.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext,"Are you sure you want to exit exam?");
-                        confirmationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                if (confirmationDialog.isConfirmed()){
-                                    Intent intent = new Intent(AddSubMixedFractionsSeatWork.this,
-                                            ChapterExamListActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                }
-                            }
-                        });
-                        confirmationDialog.show();
-                    }
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         disableInputFraction();
         startingTime = System.currentTimeMillis();
         go();
@@ -358,31 +314,10 @@ public class AddSubMixedFractionsSeatWork extends SeatWork {
                 long endingTime = System.currentTimeMillis();
                 enableBtnChoices(false);
                 setTimeSpent(endingTime - startingTime);
-                if (TYPE!=null) {
-                    if (TYPE.equals(AppConstants.CHAPTER_EXAM)) {
-                        AppCache.postSeatWorkStat(AddSubMixedFractionsSeatWork.this);
-                        SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, AddSubMixedFractionsSeatWork.this);
-                        seatWorkStatDialog.show();
-                        seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                finish();
-                            }
-                        });
-                    }
-                } else {
-                    seatworkFinished();
-                }
+                seatworkFinished();
             } else {
                 nextQuestion();
             }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (shouldAllowBack){
-            super.onBackPressed();
         }
     }
 }

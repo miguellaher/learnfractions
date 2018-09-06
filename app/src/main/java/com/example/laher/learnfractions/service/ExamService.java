@@ -1,41 +1,41 @@
 package com.example.laher.learnfractions.service;
 
-import android.util.Log;
+import android.content.Context;
 
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
-import com.example.laher.learnfractions.model.Teacher;
+import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Util;
 import com.loopj.android.http.RequestParams;
 
 public class ExamService {
-    private static final String TAG = "EXAM_SERVICE";
-    public static void postExam(Service service, ChapterExam chapterExam, Teacher teacher){
-        RequestParams requestParams = new RequestParams();
+    public static void postExam(Context context, ChapterExam chapterExam, Service service){
+        RequestParams params = new RequestParams();
+
         String id = Util.generateId();
-        requestParams.put("exam_id", id);
-        requestParams.put("teacher_code", teacher.getTeacher_code());
-        requestParams.put("exam_title", chapterExam.getExamTitle());
-        StringBuilder string_seatWorks = new StringBuilder();
-        for (SeatWork seatWork : chapterExam.getSeatWorks()){
-            string_seatWorks.append(seatWork.getTopicName());
-            string_seatWorks.append(":");
-            string_seatWorks.append(seatWork.getSeatWorkNum());
-            string_seatWorks.append(":");
-            string_seatWorks.append(seatWork.getItems_size());
-            string_seatWorks.append(";");
-        }
-        requestParams.put("seat_works", string_seatWorks);
-        Log.d(TAG, "exam_id: " + id + "; teacher_code: " + teacher.getTeacher_code()
-                + "; exam_title: " + chapterExam.getExamTitle()
-                + "; string_seatWorks: " + string_seatWorks);
-        service.post("http://jabahan.com/learnfractions/exam/create.php", requestParams);
+        String teacherCode = Storage.load(context, Storage.TEACHER_CODE);
+        int examNumber = chapterExam.getExamNumber();
+        String strExamNumber = String.valueOf(examNumber);
+        String examTitle = chapterExam.getExamTitle();
+        String compiledSeatWorks = chapterExam.getCompiledSeatWorks();
+
+        params.put("id", id);
+        params.put("teacher_code", teacherCode);
+        params.put("exam_number", strExamNumber);
+        params.put("exam_title", examTitle);
+        params.put("seat_works", compiledSeatWorks);
+
+        service.post("http://jabahan.com/learnfractions/exam/insert.php", params);
         service.execute();
     }
-    public static void getExams(Service service, String teacher_code){
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("teacher_code", teacher_code);
-        service.get("http://jabahan.com/learnfractions/exam/getUpdates.php", requestParams);
+    public static void getExams(Context context, Service service){
+        RequestParams params = new RequestParams();
+
+        String teacher_code = Storage.load(context, Storage.TEACHER_CODE);
+
+        params.put("teacher_code", teacher_code);
+        service.get("http://jabahan.com/learnfractions/exam/getUpdates.php", params);
         service.execute();
     }
 }

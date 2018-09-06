@@ -1,30 +1,23 @@
 package com.example.laher.learnfractions.seat_works;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.laher.learnfractions.ChapterExamListActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
-import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
-import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.SubtractingDissimilarFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
-import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 
 public class SubtractingDissimilarSeatWork extends SeatWork {
     Context mContext = this;
@@ -43,9 +36,6 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
     Button btnChoice2;
     Button btnChoice3;
     Button btnChoice4;
-    //VARIABLES
-    private String TYPE;
-    boolean shouldAllowBack;
 
     ArrayList<SubtractingDissimilarFractionsQuestion> questions;
     int questionNum;
@@ -59,12 +49,6 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
         Probability probability = new Probability(Probability.SUBTRACTING_2DISSIMILAR_F, range);
         setProbability(probability);
         setRangeEditable(true);
-    }
-
-    public SubtractingDissimilarSeatWork(int size) {
-        super(size);
-        setTopicName(AppConstants.SUBTRACTING_DISSIMILAR);
-        setSeatWorkNum(1);
     }
 
     public SubtractingDissimilarSeatWork() {
@@ -100,42 +84,6 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
         btnChoice3.setOnClickListener(new BtnChoiceListener());
         btnChoice4.setOnClickListener(new BtnChoiceListener());
 
-        shouldAllowBack = true;
-
-        try {
-            int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
-            if (item_size != 0) {
-                setItems_size(item_size);
-                updateItemIndicator(txtIndicator);
-            }
-            TYPE = Objects.requireNonNull(getIntent().getExtras()).getString("type");
-            assert TYPE != null;
-            if (TYPE.equals(AppConstants.CHAPTER_EXAM)){
-                String title = AppCache.getChapterExam().getExamTitle();
-                txtTitle.setText(title);
-                shouldAllowBack = false;
-                buttonBack.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext,"Are you sure you want to exit exam?");
-                        confirmationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                if (confirmationDialog.isConfirmed()){
-                                    Intent intent = new Intent(SubtractingDissimilarSeatWork.this,
-                                            ChapterExamListActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                }
-                            }
-                        });
-                        confirmationDialog.show();
-                    }
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         disableInputFraction();
         go();
     }
@@ -259,30 +207,10 @@ public class SubtractingDissimilarSeatWork extends SeatWork {
             incrementItemNum();
             if (getCurrentItemNum()>getItems_size()){
                 enableBtnChoices(false);
-                if (TYPE!=null) {
-                    if (TYPE.equals(AppConstants.CHAPTER_EXAM)) {
-                        AppCache.postSeatWorkStat(SubtractingDissimilarSeatWork.this);
-                        SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, SubtractingDissimilarSeatWork.this);
-                        seatWorkStatDialog.show();
-                        seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                finish();
-                            }
-                        });
-                    }
-                } else {
-                    seatworkFinished();
-                }
+                seatworkFinished();
             } else {
                 nextQuestion();
             }
-        }
-    }
-    @Override
-    public void onBackPressed() {
-        if (shouldAllowBack){
-            super.onBackPressed();
         }
     }
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.ChapterExamListActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.classes.Range;
@@ -33,7 +34,6 @@ public class SeatWork extends AppCompatActivity {
     private String topicName;
     private int correct;
     private long startingTime;
-    private long endingTime;
     private long timeSpent;
     //GUIDELINES
     private int currentItemNum;
@@ -75,10 +75,6 @@ public class SeatWork extends AppCompatActivity {
 
     public void setStartingTime(long startingTime) {
         this.startingTime = startingTime;
-    }
-
-    public void setEndingTime(long endingTime) {
-        this.endingTime = endingTime;
     }
 
     public String getId() {
@@ -250,13 +246,15 @@ public class SeatWork extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SeatWork seatWork = AppCache.getSeatWork();
 
-        String topicName = seatWork.getTopicName();
-        int itemSize = seatWork.getItems_size();
-        Range range = seatWork.getRange();
+        if (seatWork!=null) {
+            String topicName = seatWork.getTopicName();
+            int itemSize = seatWork.getItems_size();
+            Range range = seatWork.getRange();
 
-        setTopicName(topicName);
-        setItems_size(itemSize);
-        setRange(range);
+            setTopicName(topicName);
+            setItems_size(itemSize);
+            setRange(range);
+        }
 
         setToolBarGui();
     }
@@ -295,25 +293,33 @@ public class SeatWork extends AppCompatActivity {
 
     protected void seatworkFinished(){
         long endingTime = System.currentTimeMillis();
-        setEndingTime(endingTime);
         long startingTime = getStartingTime();
         long totalTimeSpent = endingTime - startingTime;
         setTimeSpent(totalTimeSpent);
 
         SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(context, this);
         seatWorkStatDialog.show();
-        seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                goBack();
-            }
-        });
+
+        if (AppCache.isInChapterExam()){
+            SeatWork seatWork = this;
+            AppCache.setSeatWork(seatWork);
+            seatWorkStatDialog.setOnDismissListener(new IfInChapterExamListener());
+        } else {
+            seatWorkStatDialog.setOnDismissListener(new DialogListener());
+        }
     }
 
     public void goBack(){
-        Intent intent = new Intent(context, SeatWorkListActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        boolean inChapterExam = AppCache.isInChapterExam();
+        if (!inChapterExam) {
+            Intent intent = new Intent(context, SeatWorkListActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        } else { // currently in a chapter exam
+            Intent intent = new Intent(context, ChapterExamListActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -327,5 +333,24 @@ public class SeatWork extends AppCompatActivity {
             }
         }
         return super.equals(obj);
+    }
+
+    private class IfInChapterExamListener implements DialogInterface.OnDismissListener{
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            finish();
+        }
+    }
+
+    private class DialogListener implements DialogInterface.OnDismissListener{
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            goBack();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        buttonBack.performClick();
     }
 }

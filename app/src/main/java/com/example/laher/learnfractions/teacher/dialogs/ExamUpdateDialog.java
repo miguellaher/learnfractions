@@ -12,14 +12,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
-import com.example.laher.learnfractions.model.Teacher;
 import com.example.laher.learnfractions.service.ExamService;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.teacher.list_adapters.ExamUpdateAdapter;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -47,27 +47,40 @@ public class ExamUpdateDialog extends Dialog {
         txtSubTitle.setVisibility(View.INVISIBLE);
         btnSave.setText(AppConstants.SAVE);
 
-
         mSeatWorks = chapterExam.getSeatWorks();
+
         final ExamUpdateAdapter examUpdateAdapter = new ExamUpdateAdapter(mContext,R.layout.layout_user_item,mSeatWorks);
         listSeatWorks.setAdapter(examUpdateAdapter);
+
         listSeatWorks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 final SeatWork seatWork = mSeatWorks.get(position);
                 final ExamSeatWorkUpdateDialog examSeatWorkUpdateDialog = new ExamSeatWorkUpdateDialog(mContext, seatWork);
+
                 examSeatWorkUpdateDialog.setOnDismissListener(new OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        Log.d(TAG, "onDismiss:");
-                        seatWork.setItems_size(examSeatWorkUpdateDialog.getItemSize());
-                        Log.d(TAG, "seat work: " + seatWork.getTopicName() + " no." + seatWork.getSeatWorkNum());
-                        Log.d(TAG, "item size: " + seatWork.getItems_size());
+                        SeatWork updatedSeatWork1 = examSeatWorkUpdateDialog.getSeatWork();
+
+                        int updatedItemSize = updatedSeatWork1.getItems_size();
+                        Range updatedRange = updatedSeatWork1.getRange();
+
+                        if (updatedItemSize>0) {
+                            seatWork.setItems_size(updatedItemSize);
+                        }
+
+                        if (updatedRange!=null){
+                            seatWork.setRange(updatedRange);
+                        }
+
                         mSeatWorks.set(position, seatWork);
                         mChapterExam.setSeatWorks(mSeatWorks);
+
                         examUpdateAdapter.notifyDataSetChanged();
                     }
                 });
+
                 examSeatWorkUpdateDialog.show();
             }
         });
@@ -93,23 +106,18 @@ public class ExamUpdateDialog extends Dialog {
             @Override
             public void postExecute(JSONObject response) {
                 try {
-                    Log.d(TAG, response.optString("message"));
+                    String message = response.optString("message");
+                    Util.toast(mContext, message);
                     dismiss();
                 } catch (Exception e){
                     e.printStackTrace();
                 }
             }
         });
-        Teacher teacher = new Teacher();
-        teacher.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
-        ExamService.postExam(service, mChapterExam, teacher);
+        ExamService.postExam(mContext, mChapterExam, service);
     }
 
-    public ChapterExam getmChapterExam() {
+    public ChapterExam getChapterExam() {
         return mChapterExam;
-    }
-
-    public void setmChapterExam(ChapterExam mChapterExam) {
-        this.mChapterExam = mChapterExam;
     }
 }

@@ -72,7 +72,8 @@ public class LessonsMenuActivity extends AppCompatActivity {
 
     //TOOLBAR
     TextView txtTitle;
-    Button btnBack, btnNext;
+    Button btnBack;
+    Button btnNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,5 +1,6 @@
 package com.example.laher.learnfractions.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,16 +27,22 @@ public class ChapterExamListAdapter extends ArrayAdapter<ChapterExam> {
         mResource = resource;
     }
 
+    @SuppressLint({"SetTextI18n", "ViewHolder"})
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        String title = getItem(position).getExamTitle();
-        int score = getItem(position).getTotalScore();
+        ChapterExam chapterExam = getItem(position);
+
+        assert chapterExam != null;
+        String title = chapterExam.getExamTitle();
+        int score = chapterExam.getTotalScore();
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         convertView = layoutInflater.inflate(mResource, parent, false);
 
-        long seconds = getItem(position).getTimeSpent()/1000;
+        long timeSpent = chapterExam.getTimeSpent();
+        timeSpent = Math.round(timeSpent/1000d);
+        long seconds = timeSpent;
         long minutes = seconds/60;
         seconds = (minutes*60) - seconds;
         seconds = Math.abs(seconds);
@@ -46,10 +53,10 @@ public class ChapterExamListAdapter extends ArrayAdapter<ChapterExam> {
 
         textView1.setText(title);
         textView2.setText("Score: ");
-        if(getItem(position).isAnswered()) {
-            textView2.setText(textView2.getText().toString() + score + " / " + getItem(position).getTotalItems());
+        if(chapterExam.isAnswered()) {
+            textView2.setText(textView2.getText().toString() + score + " / " + chapterExam.getTotalItems());
         } else {
-            textView2.setText(textView2.getText().toString() + "__ / " + getItem(position).getTotalItems());
+            textView2.setText(textView2.getText().toString() + "__ / " + chapterExam.getTotalItems());
             convertView.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
         }
         textView3.setText("Time spent:\n");

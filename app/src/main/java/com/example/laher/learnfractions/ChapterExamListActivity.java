@@ -13,16 +13,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.adapters.ChapterExamListAdapter;
-import com.example.laher.learnfractions.archive.SeatWorkArchive;
+import com.example.laher.learnfractions.classes.ExamList;
 import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
-import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.seat_works.AddSubMixedFractionsSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingDissimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingSimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.ComparingDissimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.ComparingSimilarSeatWork;
 import com.example.laher.learnfractions.seat_works.DividingFractionsSeatWork;
+import com.example.laher.learnfractions.seat_works.FractionMeaningSeatWork;
 import com.example.laher.learnfractions.seat_works.MultiplyDivideMixedFractionsSeatWork;
 import com.example.laher.learnfractions.seat_works.MultiplyingFractionsSeatWork;
 import com.example.laher.learnfractions.seat_works.OrderingDissimilarSeatWork;
@@ -36,7 +36,7 @@ import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
@@ -46,7 +46,7 @@ public class ChapterExamListActivity extends AppCompatActivity {
     private static final String TAG = "CHAPTER_EXAM_ACTIVITY";
     Context mContext = this;
     ListView examListView;
-    ArrayList<ChapterExam> mChapterExams;
+    ExamList mChapterExams;
     ChapterExamListAdapter mChapterExamListAdapter;
 
     //TOOLBAR
@@ -74,29 +74,44 @@ public class ChapterExamListActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
 
-        SeatWork seatWork1 = new ComparingSimilarSeatWork(10);
-        SeatWork seatWork2 = new ComparingDissimilarSeatWork(10);
+        ComparingSimilarSeatWork comparingSimilarSeatWork = new ComparingSimilarSeatWork(AppConstants.COMPARING_SIMILAR_FRACTIONS);
+        ComparingDissimilarSeatWork comparingDissimilarSeatWork = new ComparingDissimilarSeatWork(AppConstants.COMPARING_DISSIMILAR_FRACTIONS);
+        OrderingSimilarSeatWork orderingSimilarSeatWork = new OrderingSimilarSeatWork(AppConstants.ORDERING_SIMILAR);
+        OrderingDissimilarSeatWork orderingDissimilarSeatWork = new OrderingDissimilarSeatWork(AppConstants.ORDERING_DISSIMILAR);
+        AddingSimilarSeatWork addingSimilarSeatWork = new AddingSimilarSeatWork(AppConstants.ADDING_SIMILAR);
+        SubtractingSimilarSeatWork subtractingSimilarSeatWork = new SubtractingSimilarSeatWork(AppConstants.SUBTRACTING_SIMILAR);
+        AddingDissimilarSeatWork addingDissimilarSeatWork = new AddingDissimilarSeatWork(AppConstants.ADDING_DISSIMILAR);
+        SubtractingDissimilarSeatWork subtractingDissimilarSeatWork = new SubtractingDissimilarSeatWork(AppConstants.SUBTRACTING_DISSIMILAR);
+        MultiplyingFractionsSeatWork multiplyingFractionsSeatWork = new MultiplyingFractionsSeatWork(AppConstants.MULTIPLYING_FRACTIONS);
+        DividingFractionsSeatWork dividingFractionsSeatWork = new DividingFractionsSeatWork(AppConstants.DIVIDING_FRACTIONS);
+        AddSubMixedFractionsSeatWork addSubMixedFractionsSeatWork = new AddSubMixedFractionsSeatWork(AppConstants.ADDING_SUBTRACTING_MIXED);
+        MultiplyDivideMixedFractionsSeatWork multiplyDivideMixedFractionsSeatWork = new MultiplyDivideMixedFractionsSeatWork(AppConstants.MULTIPLYING_DIVIDING_MIXED);
 
         ChapterExam chapterExam1 = new ChapterExam(AppConstants.C_EXAM1);
-        chapterExam1.addSeatWork(seatWork1);
-        chapterExam1.addSeatWork(seatWork2);
-        ChapterExam chapterExam2 = new ChapterExam(AppConstants.C_EXAM2);
-        chapterExam2.addSeatWork(new OrderingSimilarSeatWork(10));
-        chapterExam2.addSeatWork(new OrderingDissimilarSeatWork(10));
-        ChapterExam chapterExam3 = new ChapterExam(AppConstants.C_EXAM3);
-        chapterExam3.addSeatWork(new AddingSimilarSeatWork(10));
-        chapterExam3.addSeatWork(new SubtractingSimilarSeatWork(10));
-        ChapterExam chapterExam4 = new ChapterExam(AppConstants.C_EXAM4);
-        chapterExam4.addSeatWork(new AddingDissimilarSeatWork(10));
-        chapterExam4.addSeatWork(new SubtractingDissimilarSeatWork(10));
-        ChapterExam chapterExam5 = new ChapterExam(AppConstants.C_EXAM5);
-        chapterExam5.addSeatWork(new MultiplyingFractionsSeatWork(10));
-        chapterExam5.addSeatWork(new DividingFractionsSeatWork(10));
-        ChapterExam chapterExam6 = new ChapterExam(AppConstants.C_EXAM6);
-        chapterExam6.addSeatWork(new AddSubMixedFractionsSeatWork(10));
-        chapterExam6.addSeatWork(new MultiplyDivideMixedFractionsSeatWork(10));
+        chapterExam1.addSeatWork(comparingSimilarSeatWork);
+        chapterExam1.addSeatWork(comparingDissimilarSeatWork);
 
-        mChapterExams = new ArrayList<>();
+        ChapterExam chapterExam2 = new ChapterExam(AppConstants.C_EXAM2);
+        chapterExam2.addSeatWork(orderingSimilarSeatWork);
+        chapterExam2.addSeatWork(orderingDissimilarSeatWork);
+
+        ChapterExam chapterExam3 = new ChapterExam(AppConstants.C_EXAM3);
+        chapterExam3.addSeatWork(addingSimilarSeatWork);
+        chapterExam3.addSeatWork(subtractingSimilarSeatWork);
+
+        ChapterExam chapterExam4 = new ChapterExam(AppConstants.C_EXAM4);
+        chapterExam4.addSeatWork(addingDissimilarSeatWork);
+        chapterExam4.addSeatWork(subtractingDissimilarSeatWork);
+
+        ChapterExam chapterExam5 = new ChapterExam(AppConstants.C_EXAM5);
+        chapterExam5.addSeatWork(multiplyingFractionsSeatWork);
+        chapterExam5.addSeatWork(dividingFractionsSeatWork);
+
+        ChapterExam chapterExam6 = new ChapterExam(AppConstants.C_EXAM6);
+        chapterExam6.addSeatWork(addSubMixedFractionsSeatWork);
+        chapterExam6.addSeatWork(multiplyDivideMixedFractionsSeatWork);
+
+        mChapterExams = new ExamList();
         mChapterExams.add(chapterExam1);
         mChapterExams.add(chapterExam2);
         mChapterExams.add(chapterExam3);
@@ -114,101 +129,46 @@ public class ChapterExamListActivity extends AppCompatActivity {
                 try {
                     int item_count = Integer.valueOf(response.optString("item_count"));
                     ArrayList<ChapterExam> onlineChapterExamStats = new ArrayList<>();
-                    Log.d(TAG, "Student id: " + Storage.load(mContext, Storage.STUDENT_ID));
                     for (int i = 1; i <= item_count; i++) {
                         ChapterExam chapterExam = new ChapterExam();
-                        chapterExam.setExamTitle(String.valueOf(response.optString(i + "exam_title")));
-                        Log.d(TAG, "Exam title: " + chapterExam.getExamTitle());
-                        chapterExam.setTotalScore(Integer.valueOf(String.valueOf(response.optString(i + "score"))));
-                        chapterExam.setTotalItems(Integer.valueOf(String.valueOf(response.optString(i + "item_size"))));
-                        chapterExam.setTimeSpent(Long.valueOf(String.valueOf(response.optString(i + "time_spent"))));
-                        String seat_works = response.optString(i + "seat_works");
-                        Log.d(TAG, "Seat works: " + seat_works);
-                        String[] sw_tokens = seat_works.split(";");
-                        ArrayList<SeatWork> seatWorks = new ArrayList<>();
-                        for (String token : sw_tokens){
-                            String[] tokens2 = token.split(":");
-                            String topicName = tokens2[0];
-                            int swNum = Integer.valueOf(tokens2[1]);
-                            int item_size = Integer.valueOf(tokens2[2]);
-                            SeatWork seatWork = new SeatWork();
-                            seatWork.setTopicName(topicName);
-                            seatWork.setSeatWorkNum(swNum);
-                            seatWork.setItems_size(item_size);
-                            seatWorks.add(seatWork);
-                        }
-                        chapterExam.setSeatWorks(seatWorks);
 
-                        Log.d(TAG, "Score / Total Items, Time Spent: " + chapterExam.getTotalScore() + " / " + chapterExam.getTotalItems() +
-                                ", " + chapterExam.getTimeSpent());
-                        Log.d(TAG, "------------------------");
-                        chapterExam.setAnswered(true);
+                        String strExamNumber = response.optString(i + "exam_number");
+                        if (Util.isNumeric(strExamNumber)) {
+                            int examNumber = Integer.valueOf(strExamNumber);
+                            String compiledSeatWorksStats = response.optString(i + "seat_works_stats");
+                            String compiledSeatWorks = response.optString(i + "seatworks");
+
+                            chapterExam.setExamNumber(examNumber);
+                            chapterExam.setCompiledSeatWorksStats(compiledSeatWorksStats);
+                            chapterExam.setCompiledSeatWorks(compiledSeatWorks);
+                        }
                         onlineChapterExamStats.add(chapterExam);
                     }
-                    ArrayList<ChapterExam> toRemove = new ArrayList<>();
-                    for (ChapterExam mChapterExam : mChapterExams){ // removing exam stats that isn't updated
-                        for (ChapterExam onlineChapterExamStat : onlineChapterExamStats){
-                            if (mChapterExam.getExamTitle().equals(onlineChapterExamStat.getExamTitle())) {
-                                boolean hasDifferentSeatWorks = false;
-                                if (mChapterExam.getSeatWorks().size() == onlineChapterExamStat.getSeatWorks().size()) {
-                                    boolean hasDifference;
-                                    for (SeatWork ce_seatWork : mChapterExam.getSeatWorks()) {
-                                        boolean hasSameSeatWorkTopicName = false;
-                                        boolean hasSameSeatWorkNum = false;
-                                        boolean hasSameSeatWork = false;
-                                        for (SeatWork es_seatWork : onlineChapterExamStat.getSeatWorks()) {
-                                            if (ce_seatWork.getTopicName().equals(es_seatWork.getTopicName())) {
-                                                hasSameSeatWorkTopicName = true;
-                                            }
-                                            if (hasSameSeatWorkTopicName) {
-                                                if (ce_seatWork.getSeatWorkNum() == es_seatWork.getSeatWorkNum()) {
-                                                    hasSameSeatWorkNum = true;
-                                                }
-                                                if (hasSameSeatWorkNum) {
-                                                    if (ce_seatWork.getItems_size() == es_seatWork.getItems_size()) {
-                                                        hasSameSeatWork = true;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        hasDifference = !hasSameSeatWork;
-                                        if (hasDifference){
-                                            hasDifferentSeatWorks = true;
-                                        }
-                                    }
-                                } else {
-                                    hasDifferentSeatWorks = true;
-                                }
-                                if (hasDifferentSeatWorks) {
-                                    toRemove.add(onlineChapterExamStat);
+                    for (ChapterExam onlineChapterExamStat : onlineChapterExamStats){
+                        int i = 0;
+                        for (ChapterExam mChapterExam : mChapterExams){
+                            if (mChapterExam.equals(onlineChapterExamStat)){
+                                String mCompiledSeatWorks = mChapterExam.getCompiledSeatWorks();
+                                String onlineCompiledSeatWorks = onlineChapterExamStat.getCompiledSeatWorks();
+                                if (mCompiledSeatWorks.equals(onlineCompiledSeatWorks)){
+                                    String onlineCompiledSeatWorksStats = onlineChapterExamStat.getCompiledSeatWorksStats();
+                                    ArrayList<SeatWork> onlineSeatWorksStats = ChapterExam.decompileSeatWorksStats(onlineCompiledSeatWorksStats);
+
+                                    mChapterExam.setSeatWorksStats(onlineSeatWorksStats);
+                                    mChapterExam.setAnswered(true);
+                                    mChapterExams.set(i, mChapterExam);
                                 }
                             }
+                            i++;
                         }
                     }
-                    onlineChapterExamStats.removeAll(toRemove);
-                    rewriteChapterExams(onlineChapterExamStats);
+                    mChapterExamListAdapter.notifyDataSetChanged();
                 } catch (Exception e){
                     e.printStackTrace();
                 }
             }
         });
-        Student student = new Student();
-        student.setTeacher_code(Storage.load(mContext,Storage.TEACHER_CODE));
-        student.setId(Storage.load(mContext, Storage.STUDENT_ID));
-        ExamStatService.getStudentStats(service, student);
-    }
-    private void rewriteChapterExams(ArrayList<ChapterExam> updatedChapterExams){
-        for (ChapterExam updatedChapterExam : updatedChapterExams) {
-            int i = 0;
-            for (ChapterExam chapterExam : mChapterExams) {
-                if (updatedChapterExam.getExamTitle().equals(chapterExam.getExamTitle())){
-                    updatedChapterExam.setSeatWorks(chapterExam.getSeatWorks());
-                    mChapterExams.set(i, updatedChapterExam);
-                }
-                i++;
-            }
-        }
-        setExamListView();
+        ExamStatService.getStudentStats(mContext, service);
     }
     private void setExamListView(){
         mChapterExamListAdapter = new ChapterExamListAdapter(mContext, R.layout.layout_user_item, mChapterExams);
@@ -217,81 +177,105 @@ public class ChapterExamListActivity extends AppCompatActivity {
         examListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Class ce_class = mChapterExams.get(position).getClass();
-                ArrayList<SeatWork> seatWorks = mChapterExams.get(position).getSeatWorks();
+                ChapterExam chapterExam = mChapterExams.get(position);
+                Class ce_class = chapterExam.getClass();
+                ArrayList<SeatWork> seatWorks = chapterExam.getSeatWorks();
                 AppCache.setSeatWorks(seatWorks);
-                AppCache.setChapterExam(mChapterExams.get(position));
+                AppCache.setChapterExam(chapterExam);
                 Intent intent = new Intent(mContext, ce_class);
                 startActivity(intent);
             }
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume()");
-        updateExams();
-    }
     private void updateExams(){
-        Log.d(TAG, "updateExams()");
         Service service = new Service("Getting exams...", mContext, new ServiceResponse() {
             @Override
             public void postExecute(JSONObject response) {
                 try{
                     int item_count = Integer.valueOf(response.optString("item_count"));
-                    ArrayList<ChapterExam> onlineChapterExams = new ArrayList<>();
+                    ArrayList<SeatWork> builtInSeatWorks = getSeatWorks(); // "ARCHIVE OF SEATWORKS"
+
                     for (int i = 1; i <= item_count; i++) {
-                        ChapterExam chapterExam = new ChapterExam();
-                        String exam_title = response.optString(i + "exam_title");
-                        Log.d(TAG, "Exam title: " + exam_title);
-                        chapterExam.setExamTitle(exam_title);
-                        String seat_works = response.optString(i + "seat_works");
-                        Log.d(TAG, "Seat works: " + seat_works);
-                        String[] sw_tokens = seat_works.split(";");
-                        ArrayList<SeatWork> seatWorks = new ArrayList<>();
-                        for (String token : sw_tokens){
-                            String[] tokens2 = token.split(":");
-                            String topicName = tokens2[0];
-                            int swNum = Integer.valueOf(tokens2[1]);
-                            int item_size = Integer.valueOf(tokens2[2]);
-                            SeatWork seatWork = new SeatWork();
-                            seatWork.setTopicName(topicName);
-                            Log.d(TAG, "Seat work topic name: " + seatWork.getTopicName());
-                            seatWork.setSeatWorkNum(swNum);
-                            Log.d(TAG, "Seat work num: " + seatWork.getSeatWorkNum());
-                            seatWork.setItems_size(item_size);
-                            Log.d(TAG, "Seat work item size: " + seatWork.getItems_size());
-                            seatWorks.add(seatWork);
-                        }
-                        for (SeatWork seatWork : seatWorks){
-                            SeatWork toAdd;
-                            SeatWorkArchive seatWorkArchive = new SeatWorkArchive();
-                            toAdd = seatWorkArchive.findSeatWork(seatWork);
-                            Log.d(TAG, "To Add Seat work topic name: " + toAdd.getTopicName());
-                            Log.d(TAG, "To Add Seat work num: " + toAdd.getSeatWorkNum());
-                            Log.d(TAG, "To Add Seat work item size: " + toAdd.getItems_size());
-                            chapterExam.addSeatWork(toAdd);
-                        }
-                        onlineChapterExams.add(chapterExam);
-                    }
-                    for (ChapterExam onlineChapterExam : onlineChapterExams){
-                        int i = 0;
-                        for (ChapterExam chapterExam : mChapterExams){
-                            if (onlineChapterExam.getExamTitle().equals(chapterExam.getExamTitle())){
-                                mChapterExams.set(i, onlineChapterExam);
+                        ChapterExam onlineChapterExam = new ChapterExam();
+                        String strExamNumber = response.optString(i + "exam_number");
+                        if (Util.isNumeric(strExamNumber)) {
+                            int examNumber = Integer.valueOf(strExamNumber);
+                            String examTitle = response.optString(i + "exam_title");
+                            String compiledSeatWorks = response.optString(i + "seat_works");
+
+                            ArrayList<SeatWork> downloadedSeatWorks = ChapterExam.decompileSeatWorks(compiledSeatWorks);
+                            ArrayList<SeatWork> examSeatWorks = new ArrayList<>();
+                            for (SeatWork downloadedSeatWork : downloadedSeatWorks) {
+                                for (SeatWork builtInSeatWork : builtInSeatWorks) {
+                                    if (builtInSeatWork.equals(downloadedSeatWork)) {
+                                        builtInSeatWork.getValuesFrom(downloadedSeatWork);
+                                        examSeatWorks.add(builtInSeatWork);
+                                    }
+                                }
                             }
-                            i++;
+
+                            onlineChapterExam.setExamNumber(examNumber);
+                            onlineChapterExam.setExamTitle(examTitle);
+                            onlineChapterExam.setSeatWorks(examSeatWorks);
+                            int i1 = 0;
+                            for (ChapterExam mChapterExam : mChapterExams) {
+                                if (mChapterExam.equals(onlineChapterExam)) {
+                                    mChapterExam = onlineChapterExam;
+
+                                    mChapterExams.set(i1, mChapterExam);
+                                }
+                                i1++;
+                            }
                         }
                     }
-                    rewriteChapterExams(mChapterExams);
+                    mChapterExamListAdapter.notifyDataSetChanged();
                     getStudentStats();
                 } catch (Exception e){
                     e.printStackTrace();
                 }
             }
         });
-        String teacher_code = Storage.load(mContext,Storage.TEACHER_CODE);
-        ExamService.getExams(service, teacher_code);
+        ExamService.getExams(mContext, service);
+    }
+
+    private ArrayList<SeatWork> getSeatWorks(){ // "ARCHIVE OF SEATWORKS"
+        ArrayList<SeatWork> seatWorks = new ArrayList<>();
+
+        FractionMeaningSeatWork fractionMeaningSeatWork = new FractionMeaningSeatWork(AppConstants.FRACTION_MEANING);
+        ComparingSimilarSeatWork comparingSimilarSeatWork = new ComparingSimilarSeatWork(AppConstants.COMPARING_SIMILAR_FRACTIONS);
+        ComparingDissimilarSeatWork comparingDissimilarSeatWork = new ComparingDissimilarSeatWork(AppConstants.COMPARING_DISSIMILAR_FRACTIONS);
+        OrderingSimilarSeatWork orderingSimilarSeatWork = new OrderingSimilarSeatWork(AppConstants.ORDERING_SIMILAR);
+        OrderingDissimilarSeatWork orderingDissimilarSeatWork = new OrderingDissimilarSeatWork(AppConstants.ORDERING_DISSIMILAR);
+        AddingSimilarSeatWork addingSimilarSeatWork = new AddingSimilarSeatWork(AppConstants.ADDING_SIMILAR);
+        SubtractingSimilarSeatWork subtractingSimilarSeatWork = new SubtractingSimilarSeatWork(AppConstants.SUBTRACTING_SIMILAR);
+        AddingDissimilarSeatWork addingDissimilarSeatWork = new AddingDissimilarSeatWork(AppConstants.ADDING_DISSIMILAR);
+        SubtractingDissimilarSeatWork subtractingDissimilarSeatWork = new SubtractingDissimilarSeatWork(AppConstants.SUBTRACTING_DISSIMILAR);
+        MultiplyingFractionsSeatWork multiplyingFractionsSeatWork = new MultiplyingFractionsSeatWork(AppConstants.MULTIPLYING_FRACTIONS);
+        DividingFractionsSeatWork dividingFractionsSeatWork = new DividingFractionsSeatWork(AppConstants.DIVIDING_FRACTIONS);
+        AddSubMixedFractionsSeatWork addSubMixedFractionsSeatWork = new AddSubMixedFractionsSeatWork(AppConstants.ADDING_SUBTRACTING_MIXED);
+        MultiplyDivideMixedFractionsSeatWork multiplyDivideMixedFractionsSeatWork = new MultiplyDivideMixedFractionsSeatWork(AppConstants.MULTIPLYING_DIVIDING_MIXED);
+
+        seatWorks.add(fractionMeaningSeatWork);
+        seatWorks.add(comparingSimilarSeatWork);
+        seatWorks.add(comparingDissimilarSeatWork);
+        seatWorks.add(orderingSimilarSeatWork);
+        seatWorks.add(orderingDissimilarSeatWork);
+        seatWorks.add(addingSimilarSeatWork);
+        seatWorks.add(subtractingSimilarSeatWork);
+        seatWorks.add(addingDissimilarSeatWork);
+        seatWorks.add(subtractingDissimilarSeatWork);
+        seatWorks.add(multiplyingFractionsSeatWork);
+        seatWorks.add(dividingFractionsSeatWork);
+        seatWorks.add(addSubMixedFractionsSeatWork);
+        seatWorks.add(multiplyDivideMixedFractionsSeatWork);
+
+        return seatWorks;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateExams();
     }
 }

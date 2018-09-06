@@ -302,6 +302,6 @@ public class ClassExamRanksActivity extends AppCompatActivity {
             }
         });
         String teacher_code = Storage.load(mContext,Storage.TEACHER_CODE);
-        ExamService.getExams(service, teacher_code);
+        //ExamService.getExams(service, teacher_code);
     }
 }

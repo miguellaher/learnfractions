@@ -25,29 +25,6 @@ public class AppCache {
         AppCache.examStat = examStat;
     }
 
-    public static ChapterExam getChapterExam() {
-        return chapterExam;
-    }
-
-    public static void setChapterExam(ChapterExam chapterExam) {
-        AppCache.chapterExam = chapterExam;
-    }
-
-    public static ArrayList<SeatWork> getSeatWorks() {
-        return seatWorks;
-    }
-
-    public static void setSeatWorks(ArrayList<SeatWork> seatWorks) {
-        AppCache.seatWorks = seatWorks;
-    }
-
-    public static SeatWork getSeatWork() {
-        return seatWork;
-    }
-
-    public static void setSeatWork(SeatWork seatWork) {
-        AppCache.seatWork = seatWork;
-    }
 
     public static void postSeatWorkStat(SeatWork seatWorkStat) {
         AppCache.seatWork = seatWorkStat;
@@ -85,4 +62,43 @@ public class AppCache {
         AppCache.backClicked = backClicked;
     }
     //LESSON ACTIVITIES
+
+
+
+
+    // FOR CHAPTER EXAM
+    public static ChapterExam getChapterExam() {
+        return chapterExam;
+    }
+
+    public static void setChapterExam(ChapterExam chapterExam) {
+        AppCache.chapterExam = chapterExam;
+    }
+
+    public static ArrayList<SeatWork> getSeatWorks() {
+        return seatWorks;
+    }
+
+    public static void setSeatWorks(ArrayList<SeatWork> seatWorks) {
+        AppCache.seatWorks = seatWorks;
+    }
+
+    public static SeatWork getSeatWork() {
+        return seatWork;
+    }
+
+    public static void setSeatWork(SeatWork seatWork) {
+        AppCache.seatWork = seatWork;
+    }
+
+
+    private static boolean inChapterExam;
+
+    public static boolean isInChapterExam() {
+        return inChapterExam;
+    }
+
+    public static void setInChapterExam(boolean inChapterExam) {
+        AppCache.inChapterExam = inChapterExam;
+    }
 }

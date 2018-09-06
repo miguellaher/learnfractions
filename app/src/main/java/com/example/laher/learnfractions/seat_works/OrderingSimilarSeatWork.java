@@ -39,9 +39,6 @@ public class OrderingSimilarSeatWork extends SeatWork {
     ConstraintLayout clFraction1;
     ConstraintLayout clFraction2;
     ConstraintLayout clFraction3;
-    //VARIABLES
-    private String TYPE;
-    boolean shouldAllowBack;
 
     ArrayList<OrderingSimilarQuestion> questions;
     int questionNum;
@@ -57,12 +54,6 @@ public class OrderingSimilarSeatWork extends SeatWork {
         Probability probability = new Probability(Probability.ORDERING_SIMILAR, range);
         setProbability(probability);
         setRangeEditable(true);
-    }
-
-    public OrderingSimilarSeatWork(int size) {
-        super(size);
-        setTopicName(AppConstants.ORDERING_SIMILAR);
-        setSeatWorkNum(1);
     }
 
     public OrderingSimilarSeatWork() {
@@ -90,43 +81,6 @@ public class OrderingSimilarSeatWork extends SeatWork {
         clFraction2 = findViewById(R.id.os2_clFraction2);
         clFraction3 = findViewById(R.id.os2_clFraction3);
 
-        //VARIABLES
-        shouldAllowBack = true;
-
-        try {
-            int item_size = Objects.requireNonNull(getIntent().getExtras()).getInt("item_size");
-            if (item_size != 0) {
-                setItems_size(item_size);
-                updateItemIndicator(txtItemIndicator);
-            }
-            TYPE = Objects.requireNonNull(getIntent().getExtras()).getString("type");
-            assert TYPE != null;
-            if (TYPE.equals(AppConstants.CHAPTER_EXAM)){
-                String title = AppCache.getChapterExam().getExamTitle();
-                txtTitle.setText(title);
-                shouldAllowBack = false;
-                buttonBack.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext,"Are you sure you want to exit exam?");
-                        confirmationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                if (confirmationDialog.isConfirmed()){
-                                    Intent intent = new Intent(OrderingSimilarSeatWork.this,
-                                            ChapterExamListActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                }
-                            }
-                        });
-                        confirmationDialog.show();
-                    }
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         go();
     }
 
@@ -197,21 +151,7 @@ public class OrderingSimilarSeatWork extends SeatWork {
     public void answered(){
         incrementItemNum();
         if (getCurrentItemNum()>getItems_size()){
-            if (TYPE!=null) {
-                if (TYPE.equals(AppConstants.CHAPTER_EXAM)) {
-                    AppCache.postSeatWorkStat(OrderingSimilarSeatWork.this);
-                    SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(mContext, OrderingSimilarSeatWork.this);
-                    seatWorkStatDialog.show();
-                    seatWorkStatDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            finish();
-                        }
-                    });
-                }
-            } else {
-                seatworkFinished();
-            }
+            seatworkFinished();
         } else {
             wrong = false;
             updateItemIndicator(txtItemIndicator);
@@ -262,12 +202,6 @@ public class OrderingSimilarSeatWork extends SeatWork {
         public void setTextColor(int r, int g, int b){
             num.setTextColor(Color.rgb(r, g, b));
             denom.setTextColor(Color.rgb(r, g, b));
-        }
-    }
-    @Override
-    public void onBackPressed() {
-        if (shouldAllowBack){
-            super.onBackPressed();
         }
     }
 }
