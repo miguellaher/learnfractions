@@ -20,6 +20,7 @@ import com.example.laher.learnfractions.teacher.dialogs.ExerciseUpdateDialog;
 import com.example.laher.learnfractions.teacher.list_adapters.ExerciseListAdapter;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
@@ -47,6 +48,8 @@ public class ExercisesListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Styles.bgPaintRandomMain(btnBack);
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
         txtTitle = findViewById(R.id.txtTitle);

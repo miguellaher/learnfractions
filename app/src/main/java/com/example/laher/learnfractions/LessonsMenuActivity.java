@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -61,6 +62,7 @@ import com.example.laher.learnfractions.parent_activities.Lesson;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
@@ -79,9 +81,14 @@ public class LessonsMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topics_menu);
-        Log.d(TAG, "onCreate: started.");
 
         btnBack = findViewById(R.id.btnBack);
+
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+        Styles.bgPaintMainYellow(toolbar);
+
+        Styles.bgPaintMainBlue(btnBack);
+
         if (!isNetworkAvailable()&&!LessonsMenuActivity.openedOnce){
             LessonsMenuActivity.openedOnce = true;
             final MessageDialog messageDialog = new MessageDialog(mContext, "Go online to login/register.");

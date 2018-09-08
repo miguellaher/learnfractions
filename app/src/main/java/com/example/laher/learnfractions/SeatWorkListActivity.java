@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -38,6 +39,7 @@ import com.example.laher.learnfractions.teacher.dialogs.SeatWorkUpdateDialog;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Styles;
 
 import org.json.JSONObject;
 
@@ -52,7 +54,8 @@ public class SeatWorkListActivity extends AppCompatActivity {
 
     //TOOLBAR
     TextView txtTitle;
-    Button btnBack, btnNext;
+    Button btnBack;
+    Button btnNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,21 +66,27 @@ public class SeatWorkListActivity extends AppCompatActivity {
         txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(AppConstants.SEAT_WORKS);
         btnBack = findViewById(R.id.btnBack);
+
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+        Styles.bgPaintMainYellow(toolbar);
+
+        Styles.bgPaintMainBlue(btnBack);
+
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
 
         seatWorks = getSeatWorks();
 
-        switch (Storage.load(mContext, Storage.USER_TYPE)) {
-            case AppConstants.TEACHER:
-                teacherMode();
-                break;
-            case AppConstants.STUDENT:
-                studentMode();
-                break;
-            default:
-                baseMode();
-                break;
+        String s = Storage.load(mContext, Storage.USER_TYPE);
+        if (AppConstants.TEACHER.equals(s)) {
+            teacherMode();
+
+        } else if (AppConstants.STUDENT.equals(s)) {
+            studentMode();
+
+        } else {
+            baseMode();
+
         }
     }
 

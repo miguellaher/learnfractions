@@ -3,6 +3,7 @@ package com.example.laher.learnfractions.student_activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.laher.learnfractions.LessonsMenuActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Styles;
 
 public class StudentMainActivity extends AppCompatActivity {
     Context mContext = this;
@@ -96,6 +98,16 @@ public class StudentMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+        Styles.bgPaintMainYellow(toolbar);
+
+        Styles.bgPaintMainBlue(btnBack);
+
+        Styles.bgPaintMainBlue(btnLessons);
+        Styles.bgPaintMainYellow(btnSeatWorks);
+        Styles.bgPaintMainOrange(btnChapterExam);
+        Styles.bgPaintMainBlueGreen(btnClassRanks);
 
         /*TEMPORARY
         btnSeatWorks.setEnabled(false);

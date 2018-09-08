@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +15,11 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.util.Styles;
 
 public class MainFrame extends AppCompatActivity {//TOOLBAR
-    private Button buttonBack, buttonNext;
+    protected Button buttonBack;
+    private Button buttonNext;
     private TextView txtTitle;
 
     public Button getButtonNext() {
@@ -55,6 +58,12 @@ public class MainFrame extends AppCompatActivity {//TOOLBAR
         buttonBack = findViewById(R.id.btnBack);
         buttonNext = findViewById(R.id.btnNext);
         buttonNext.setEnabled(false);
+
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+        Styles.bgPaintMainYellow(toolbar);
+
+        Styles.bgPaintMainBlue(buttonBack);
+
         txtTitle = findViewById(R.id.txtTitle);
     }
 

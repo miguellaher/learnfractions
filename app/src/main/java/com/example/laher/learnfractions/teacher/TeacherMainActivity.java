@@ -3,26 +3,41 @@ package com.example.laher.learnfractions.teacher;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
+import com.example.laher.learnfractions.adapters.TeacherMainActivityListAdapter;
+import com.example.laher.learnfractions.classes.AppActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.student_activities.ClassRanksMainActivity;
 import com.example.laher.learnfractions.teacher2.LessonExercisesListActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Styles;
+
+import java.util.ArrayList;
 
 public class TeacherMainActivity extends AppCompatActivity {
     Context mContext = this;
-    Button btnManageExercises, btnManageSeatWorks, btnManageExams, btnClassRanks;
-    Button btnBack, btnNext;
+    //TOOLBAR
+    Button btnBack;
+    Button btnNext;
     TextView txtTitle;
+    //ACTIVITY
+    ListView listViewButtons;
+    TextView txtWelcome;
+    ImageView imgAvatar;
+    ConstraintLayout constraintLayoutBackground;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,47 +68,57 @@ public class TeacherMainActivity extends AppCompatActivity {
         btnNext.setVisibility(View.INVISIBLE);
         txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(AppConstants.TEACHER_MAIN);
+
         //ACTIVITY
-        btnManageExercises = findViewById(R.id.teacher_main_btnManageExercises);
-        btnManageExercises.setOnClickListener(new View.OnClickListener() {
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        Styles.bgPaintRandomMainSet2(constraintLayoutBackground);
+
+        imgAvatar = findViewById(R.id.teacher_main_imgAvatar);
+        int resource = Styles.getRandomFritsImageResource();
+        imgAvatar.setImageResource(resource);
+
+        txtWelcome = findViewById(R.id.teacher_main_txtWelcome);
+        String teacherUsername = Storage.load(mContext, Storage.TEACHER_USERNAME);
+        String strWelcome = "Welcome! " + teacherUsername + ".";
+        txtWelcome.setText(strWelcome);
+        Styles.paintBlack(txtWelcome);
+
+        String manageExercisesTitle = "Manage Exercises";
+        AppActivity manageExercises = new AppActivity(mContext, LessonExercisesListActivity.class, manageExercisesTitle);
+        String manageSeatworksTitle = "Manage Seatworks";
+        AppActivity manageSeatworks = new AppActivity(mContext, SeatWorkListActivity.class, manageSeatworksTitle);
+        String manageExamsTitle = "Manage Exams";
+        AppActivity manageExams = new AppActivity(mContext, ManageExamsActivity.class, manageExamsTitle);
+        String manageClassRanksTitle = "Class Ranks";
+        AppActivity classRanks = new AppActivity(mContext, ClassRanksMainActivity.class, manageClassRanksTitle);
+
+        final ArrayList<AppActivity> activities = new ArrayList<>();
+        activities.add(manageExercises);
+        activities.add(manageSeatworks);
+        activities.add(manageExams);
+        activities.add(classRanks);
+
+        TeacherMainActivityListAdapter adapter = new TeacherMainActivityListAdapter(mContext, R.layout.teacher_main_activity_list_item, activities);
+
+        listViewButtons = findViewById(R.id.teacher_main_listButtons);
+        listViewButtons.setAdapter(adapter);
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+        Styles.bgPaintMainYellow(toolbar);
+
+        listViewButtons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TeacherMainActivity.this,
-                        LessonExercisesListActivity.class);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AppActivity appActivity = activities.get(position);
+                Context context = appActivity.getContext();
+                Class theClass = appActivity.getTheClass();
+
+                Intent intent = new Intent(context, theClass);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
-        btnManageSeatWorks = findViewById(R.id.teacher_main_btnManageSeatWorks);
-        btnManageSeatWorks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TeacherMainActivity.this,
-                        SeatWorkListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnManageExams = findViewById(R.id.teacher_main_btnManageExams);
-        btnManageExams.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TeacherMainActivity.this,
-                        ManageExamsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnClassRanks = findViewById(R.id.teacher_main_btnClassRanks);
-        btnClassRanks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TeacherMainActivity.this,
-                        ClassRanksMainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
+
+        Styles.bgPaintMainBlue(btnBack);
         /*TEMPORARY
         btnManageSeatWorks.setEnabled(false);
         btnManageExams.setEnabled(false);

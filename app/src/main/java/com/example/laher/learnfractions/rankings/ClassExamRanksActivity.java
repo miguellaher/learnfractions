@@ -3,9 +3,11 @@ package com.example.laher.learnfractions.rankings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.student_activities.ClassRanksMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
@@ -47,6 +50,12 @@ public class ClassExamRanksActivity extends AppCompatActivity {
 
         //TOOLBAR
         btnBack = findViewById(R.id.btnBack);
+
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+        Styles.bgPaintMainYellow(toolbar);
+
+        Styles.bgPaintMainBlue(btnBack);
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,5 +198,28 @@ public class ClassExamRanksActivity extends AppCompatActivity {
     private void setListAdapter(ArrayList<ChapterExamRank> chapterExamRanks){
         ChapterExamRankListAdapter adapter = new ChapterExamRankListAdapter(mContext, R.layout.rank_adapter_template, chapterExamRanks);
         mExamRanksListView.setAdapter(adapter);
+
+        int chapterExamRanksSize = chapterExamRanks.size();
+
+        while (chapterExamRanksSize>4){
+            chapterExamRanksSize = chapterExamRanksSize - 4;
+        }
+
+        LinearLayout linearLayoutBackground = findViewById(R.id.linearLayoutBackground);
+
+        if (chapterExamRanksSize==1){
+            Styles.bgPaintMainBlueGreen(linearLayoutBackground);
+        } else if (chapterExamRanksSize==2){
+            Styles.bgPaintMainBlue(linearLayoutBackground);
+        } else if (chapterExamRanksSize==3){
+            Styles.bgPaintMainYellow(linearLayoutBackground);
+        } else if (chapterExamRanksSize==4){
+            Styles.bgPaintMainOrange(linearLayoutBackground);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        btnBack.performClick();
     }
 }

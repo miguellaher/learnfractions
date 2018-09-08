@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,8 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.ChapterExamRank;
-import com.example.laher.learnfractions.classes.SeatWorkRank;
-import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
@@ -43,6 +43,8 @@ public class ChapterExamRankListAdapter extends ArrayAdapter<ChapterExamRank> {
         final View result;
         ChapterExamRank chapterExamRank = getItem(position);
 
+        assert convertView != null;
+
         ViewHolder holder;
         if (convertView==null) {
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
@@ -53,6 +55,28 @@ public class ChapterExamRankListAdapter extends ArrayAdapter<ChapterExamRank> {
             holder.txtSWDone = convertView.findViewById(R.id.rank_adapter_txtSWDone);
             holder.txtTotalScore = convertView.findViewById(R.id.rank_adapter_txtTotalScore);
             holder.txtTotalTime = convertView.findViewById(R.id.rank_adapter_txtTotalTime);
+
+            ConstraintLayout constraintLayout = convertView.findViewById(R.id.rank_adapter_constraintLayout);
+            ConstraintLayout constraintLayout1 = convertView.findViewById(R.id.rank_adapter_constraintLayout1);
+
+            int activityPosition = position + 1;
+            while (activityPosition>4){
+                activityPosition = activityPosition - 4;
+            }
+
+            if (activityPosition==1){
+                Styles.bgPaintMainOrange(constraintLayout);
+                Styles.bgPaintMainOrange(constraintLayout1);
+            } else if (activityPosition==2){
+                Styles.bgPaintMainBlueGreen(constraintLayout);
+                Styles.bgPaintMainBlueGreen(constraintLayout1);
+            } else if (activityPosition==3){
+                Styles.bgPaintMainBlue(constraintLayout);
+                Styles.bgPaintMainBlue(constraintLayout1);
+            } else if (activityPosition==4){
+                Styles.bgPaintMainYellow(constraintLayout);
+                Styles.bgPaintMainYellow(constraintLayout1);
+            }
 
             result = convertView;
 

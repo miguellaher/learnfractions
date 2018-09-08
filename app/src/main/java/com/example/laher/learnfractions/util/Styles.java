@@ -4,9 +4,13 @@ import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.laher.learnfractions.R;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Styles {
     public static void shakeAnimate(View view){
@@ -85,12 +89,30 @@ public class Styles {
 
     }
 
+    public static void bgPaintRandomMainSet2(ConstraintLayout constraintLayout){
+        int random = (int) (Math.random() * 2 + 1);
+        if (random == 1){
+            bgPaintMainOrange(constraintLayout);
+        } else if (random == 2){
+            bgPaintMainBlueGreen(constraintLayout);
+        }
+
+    }
+
     public static void bgPaintMainBlue(ConstraintLayout constraintLayout) {
         constraintLayout.setBackgroundColor(Color.rgb(33,150,243));
     }
 
     public static void bgPaintMainYellow(ConstraintLayout constraintLayout) {
         constraintLayout.setBackgroundColor(Color.rgb(255,193,7));
+    }
+
+    public static void bgPaintMainOrange(ConstraintLayout constraintLayout) {
+        constraintLayout.setBackgroundColor(Color.rgb(241,105,60));
+    }
+
+    public static void bgPaintMainBlueGreen(ConstraintLayout constraintLayout) {
+        constraintLayout.setBackgroundColor(Color.rgb(13,139,156));
     }
 
     public static void bgPaintMainOrange(LinearLayout linearLayout) {
@@ -115,4 +137,31 @@ public class Styles {
         return Color.rgb(r,g,b);
     }
 
+    public static int getRandomFritsImageResource(){
+        ArrayList<Integer> resources = new ArrayList<>();
+
+        int adventureFrits = R.drawable.safari_frits_pic;
+        int gentleFrits = R.drawable.gentle_frits_pic;
+        int kidFrits = R.drawable.kid_frits_pic;
+        int safariFrits = R.drawable.safari_frits_pic;
+        int summerFrits = R.drawable.summer_frits_pic;
+
+        resources.add(adventureFrits);
+        resources.add(gentleFrits);
+        resources.add(kidFrits);
+        resources.add(safariFrits);
+        resources.add(summerFrits);
+
+        Collections.shuffle(resources);
+
+        return resources.get(0);
+    }
+
+    public static void bgPaintMainBlue(LinearLayout linearLayout) {
+        linearLayout.setBackgroundColor(Color.rgb(33,150,243));
+    }
+
+    public static void bgPaintMainYellow(LinearLayout linearLayout) {
+        linearLayout.setBackgroundColor(Color.rgb(255,193,7));
+    }
 }

@@ -129,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             final Teacher teacher = new Teacher();
                             teacher.setId(response.optString("id"));
+                            teacher.setUsername(response.optString("username"));
                             teacher.setTeacher_code(response.optString("teacher_code"));
                             Storage.save(mContext, teacher);
                             Intent intent = new Intent(LoginActivity.this,

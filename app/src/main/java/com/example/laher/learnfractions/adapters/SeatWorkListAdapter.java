@@ -4,15 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
@@ -56,6 +59,10 @@ public class SeatWorkListAdapter extends ArrayAdapter<SeatWork> {
         TextView textView2 = convertView.findViewById(R.id.user_item_txtView2);
         TextView textView3 = convertView.findViewById(R.id.user_item_txtView3);
 
+        Styles.paintBlack(textView1);
+        Styles.paintBlack(textView2);
+        Styles.paintBlack(textView3);
+
         textView1.setText(topicName);
         if (mUserType!=null) {
             if (mUserType.equals(AppConstants.TEACHER)) {
@@ -88,6 +95,22 @@ public class SeatWorkListAdapter extends ArrayAdapter<SeatWork> {
             }
         }
 
+        LinearLayout linearLayoutBackground1 = convertView.findViewById(R.id.linearLayoutBackground);
+
+        int activityPosition = position + 1;
+        while (activityPosition>4){
+            activityPosition = activityPosition - 4;
+        }
+
+        if (activityPosition==1){
+            Styles.bgPaintMainOrange(linearLayoutBackground1);
+        } else if (activityPosition==2){
+            Styles.bgPaintMainBlueGreen(linearLayoutBackground1);
+        } else if (activityPosition==3){
+            Styles.bgPaintMainBlue(linearLayoutBackground1);
+        } else if (activityPosition==4){
+            Styles.bgPaintMainYellow(linearLayoutBackground1);
+        }
 
         return convertView;
     }

@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,6 +37,7 @@ import com.example.laher.learnfractions.teacher.dialogs.ExamUpdateDialog;
 import com.example.laher.learnfractions.teacher.list_adapters.ManageExamsListAdapter;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Styles;
 
 import org.json.JSONObject;
 
@@ -44,9 +47,9 @@ public class ManageExamsActivity extends AppCompatActivity {
     private static final String TAG = "MANAGE_EXAM";
     Context mContext = this;
     ListView examListView;
-    ArrayList<Exercise> exercises;
     ArrayList<ChapterExam> mChapterExams;
     ManageExamsListAdapter manageExamsListAdapter;
+    LinearLayout linearLayoutBackground;
     //TOOLBAR
     TextView txtTitle;
     Button btnBack, btnNext;
@@ -61,6 +64,12 @@ public class ManageExamsActivity extends AppCompatActivity {
         txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(AppConstants.CHAPTER_EXAM);
         btnBack = findViewById(R.id.btnBack);
+
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+        Styles.bgPaintMainYellow(toolbar);
+
+        Styles.bgPaintMainBlue(btnBack);
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +80,7 @@ public class ManageExamsActivity extends AppCompatActivity {
         });
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
+
         //ACTIVITY
         ComparingSimilarSeatWork comparingSimilarSeatWork = new ComparingSimilarSeatWork(AppConstants.COMPARING_SIMILAR_FRACTIONS);
         ComparingDissimilarSeatWork comparingDissimilarSeatWork = new ComparingDissimilarSeatWork(AppConstants.COMPARING_DISSIMILAR_FRACTIONS);
@@ -136,7 +146,29 @@ public class ManageExamsActivity extends AppCompatActivity {
             }
         });
 
+        setLinearLayoutBackground();
     }
+
+    private void setLinearLayoutBackground(){
+        int exams = mChapterExams.size();
+
+        while (exams>4){
+            exams = exams - 4;
+        }
+
+        linearLayoutBackground = findViewById(R.id.linearLayoutBackground);
+
+        if (exams == 1) {
+            Styles.bgPaintMainBlueGreen(linearLayoutBackground);
+        } else if (exams == 2) {
+            Styles.bgPaintMainBlue(linearLayoutBackground);
+        } else if (exams == 3) {
+            Styles.bgPaintMainYellow(linearLayoutBackground);
+        } else if (exams == 4) {
+            Styles.bgPaintMainOrange(linearLayoutBackground);
+        }
+    }
+
     private void updateExams(){
         Service service = new Service("Getting exams...", mContext, new ServiceResponse() {
             @Override

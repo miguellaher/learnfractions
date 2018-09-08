@@ -23,6 +23,7 @@ public class Storage {
     public static final String TEACHER_ID="TEACHER_ID=";
     public static final String STUDENT_ID="STUDENT_ID=";
     public static final String TEACHER_CODE="TEACHER_CODE=";
+    public static final String TEACHER_USERNAME="TEACHER_USERNAME=";
     public static final String USER_TYPE="USER_TYPE=";
 
     public static boolean isEmpty() {
@@ -44,6 +45,8 @@ public class Storage {
             write(teacher_id);
             String teacher_code = TEACHER_CODE + teacher.getTeacher_code();
             write(teacher_code);
+            String teacher_username = TEACHER_USERNAME + teacher.getUsername();
+            write(teacher_username);
             fos.close();
             empty = false;
         } catch (Exception e) {
@@ -122,6 +125,9 @@ public class Storage {
         }
         if (identifier.equals(TEACHER_CODE)){
             out = getStringValue(tokens, TEACHER_CODE);
+        }
+        if (identifier.equals(TEACHER_USERNAME)){
+            out = getStringValue(tokens, TEACHER_USERNAME);
         }
         if (identifier.equals(USER_TYPE)){
             out = getStringValue(tokens, USER_TYPE);

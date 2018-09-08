@@ -72,7 +72,6 @@ public class LessonExercisesListActivity extends MainFrame {
         //ACTIVITY
         exerciseListView = findViewById(R.id.exercise_list);
 
-
         FractionMeaningExerciseActivity fractionMeaningExerciseActivity = new FractionMeaningExerciseActivity();
         FractionMeaningExercise2Activity fractionMeaningExercise2Activity = new FractionMeaningExercise2Activity();
         NonVisualExerciseActivity nonVisualExerciseActivity = new NonVisualExerciseActivity();
@@ -226,5 +225,10 @@ public class LessonExercisesListActivity extends MainFrame {
             i++;
         }
         listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        buttonBack.performClick();
     }
 }
