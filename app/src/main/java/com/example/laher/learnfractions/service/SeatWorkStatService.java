@@ -59,10 +59,14 @@ public class SeatWorkStatService {
         service.get("http://jabahan.com/learnfractions/sw_stat/getStats.php", params);
         service.execute();
     }
-    public static void getAllStats(String teacher_code, Service service){
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("teacher_code", teacher_code);
-        service.get("http://jabahan.com/learnfractions/sw_stat/getAllStats.php", requestParams);
+    public static void getAllStats(Context context, Service service){
+        RequestParams params = new RequestParams();
+
+        String teacher_code = Storage.load(context, Storage.TEACHER_CODE);
+
+        params.put("teacher_code", teacher_code);
+
+        service.get("http://jabahan.com/learnfractions/sw_stat/getAllStats.php", params);
         service.execute();
     }
 }

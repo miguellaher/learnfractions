@@ -28,6 +28,8 @@ import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class FractionMeaningExercise2Activity extends LessonExercise {
     private static final String TAG = "FM_E2";
 
@@ -41,12 +43,13 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
     ImageView imgBox8;
     ImageView imgBox9;
     ImageView imgLine;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
     EditText inputNumerator;
     EditText inputDenominator;
     TextView txtScore;
     TextView txtInstruction;
-    ConstraintLayout layout;
+    ConstraintLayout constraintLayoutBackGround;
+    ConstraintLayout constraintLayoutBottom;
 
     public String title = "Fraction Meaning\nex.2";
     String id = AppIDs.FME2_ID;
@@ -76,9 +79,6 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
         Range range = getRange();
         Probability probability = new Probability(Probability.SUMMATION_NOTATION_1, range);
         setProbability(probability);
-        layout = findViewById(R.id.fme2_layout);
-        layout.setVisibility(View.VISIBLE);
-        layout.bringToFront();
         clChoices = findViewById(R.id.a1_clChoices);
         clChoices.setVisibility(View.INVISIBLE);
         imgBox1 = findViewById(R.id.a1_imgBox1);
@@ -91,9 +91,19 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
         imgBox8 = findViewById(R.id.a1_imgBox8);
         imgBox9 = findViewById(R.id.a1_imgBox9);
         imgLine = findViewById(R.id.fme2_imgLine);
-        imgAvatar = findViewById(R.id.fme2_imgAvatar);
+        gifAvatar = findViewById(R.id.fme2_imgAvatar);
+        int gifID = R.drawable.gentle_frits;
+        gifAvatar.setImageResource(gifID);
         imgLine.setImageResource(R.drawable.line);
-        imgAvatar.setImageResource(R.drawable.avatar);
+
+        constraintLayoutBackGround = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackGround.setBackgroundResource(R.drawable.factory_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.factory_bottom);
+
+        int resourceID = R.drawable.factory_toolbar;
+        setToolBarBackground(resourceID);
 
         inputNumerator = findViewById(R.id.fme2_inputNumerator);
         inputDenominator = findViewById(R.id.fme2_inputDenominator);
@@ -118,6 +128,8 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
         btnOK = findViewById(R.id.a1_btnOk);
         btnOK.setOnClickListener(new BtnOkListener());
         btnOK.setEnabled(false);
+
+        Styles.bgPaintRandomMain(btnOK);
 
         txtScore = findViewById(R.id.a1_txtScore);
         txtInstruction = findViewById(R.id.a1_txtInstruction);

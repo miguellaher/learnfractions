@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.KeyEvent;
 import android.view.TouchDelegate;
 import android.view.View;
@@ -28,6 +29,8 @@ import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
 import java.util.ArrayList;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class DividingFractionsExerciseActivity extends LessonExercise {
     //GUI
@@ -53,7 +56,9 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
     ImageView imgLine3;
     ImageView imgLine4;
     ImageView imgLine5;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //VARIABLES
     ArrayList<DividingFractionsQuestion> mFractionsQuestions;
     DividingFractionsQuestion mFractionsQuestion;
@@ -100,6 +105,7 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
         setClickAreas();
         txtScore = findViewById(R.id.adsm_txtScore);
         txtInstruction = findViewById(R.id.adsm_txtInstruction);
+        Styles.paintWhite(txtInstruction); // SPECIAL CASE - contrast is the purpose
         inputNum = findViewById(R.id.adsm_inputNum);
         inputDenom = findViewById(R.id.adsm_inputDenom);
         inputDenom.setOnEditorActionListener(new InputListener());
@@ -110,18 +116,30 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
         txtSign2.setText("x");
         defaultColor = txtScore.getTextColors();
         btnCheck.setOnClickListener(new BtnCheckListener());
+        Styles.bgPaintRandomMain(btnCheck);
         imgLine1 = findViewById(R.id.adsm_imgLine1);
         imgLine2 = findViewById(R.id.adsm_imgLine2);
         imgLine3 = findViewById(R.id.adsm_imgLine3);
         imgLine4 = findViewById(R.id.adsm_imgLine4);
         imgLine5 = findViewById(R.id.adsm_imgLine5);
-        imgAvatar = findViewById(R.id.adsm_imgAvatar);
         imgLine1.setImageResource(R.drawable.line);
         imgLine2.setImageResource(R.drawable.line);
         imgLine3.setImageResource(R.drawable.line);
         imgLine4.setImageResource(R.drawable.line);
         imgLine5.setImageResource(R.drawable.line);
-        imgAvatar.setImageResource(R.drawable.avatar);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.safari_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.forrest_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.forrest_bottom);
+
+        int resourceID = R.drawable.forrest_toolbar;
+        setToolBarBackground(resourceID);
 
         startExercise();
     }

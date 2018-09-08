@@ -10,7 +10,7 @@
     <include layout="@layout/layout_toolbar"/>
 
     <ListView
-        android:id="@+id/student_swprogress_listSeatWork"
+        android:id="@+id/rank_template_listRanks"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

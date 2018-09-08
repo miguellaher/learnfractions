@@ -22,9 +22,12 @@ import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
 import java.util.ArrayList;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class MultiplyingFractionsExerciseActivity extends LessonExercise {
     //FRACTION EQUATION GUI
@@ -42,7 +45,9 @@ public class MultiplyingFractionsExerciseActivity extends LessonExercise {
     ImageView imgLine1;
     ImageView imgLine2;
     ImageView imgLine3;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //VARIABLES
     ArrayList<MultiplyingFractionsQuestion> mFractionsQuestions;
     MultiplyingFractionsQuestion mFractionsQuestion;
@@ -80,21 +85,34 @@ public class MultiplyingFractionsExerciseActivity extends LessonExercise {
         txtSign.setText("x");
         txtScore = findViewById(R.id.fe_txtScore);
         txtInstruction = findViewById(R.id.fe_txtInstruction);
+        Styles.paintWhite(txtInstruction); // SPECIAL CASE - contrast is the purpose
         inputNum = findViewById(R.id.fe_inputNum);
         inputDenom = findViewById(R.id.fe_inputDenom);
         inputDenom.setOnEditorActionListener(new InputListener());
         btnCheck = findViewById(R.id.fe_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
+        Styles.bgPaintRandomMain(btnCheck);
         clChoices = findViewById(R.id.fe_clChoices);
         clChoices.setVisibility(View.INVISIBLE);
         imgLine1 = findViewById(R.id.fe_imgLine1);
         imgLine2 = findViewById(R.id.fe_imgLine2);
         imgLine3 = findViewById(R.id.fe_imgLine3);
-        imgAvatar = findViewById(R.id.fe_imgAvatar);
         imgLine1.setImageResource(R.drawable.line);
         imgLine2.setImageResource(R.drawable.line);
         imgLine3.setImageResource(R.drawable.line);
-        imgAvatar.setImageResource(R.drawable.avatar);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.safari_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.forrest_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.forrest_bottom);
+
+        int resourceID = R.drawable.forrest_toolbar;
+        setToolBarBackground(resourceID);
 
         startExercise();
     }

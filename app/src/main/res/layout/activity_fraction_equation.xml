@@ -10,6 +10,7 @@
     <include layout="@layout/layout_toolbar" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayoutBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -61,30 +62,6 @@
                 app:layout_constraintStart_toEndOf="@+id/fe_btnChoice1"
                 app:layout_constraintTop_toTopOf="@+id/fe_btnChoice1" />
         </android.support.constraint.ConstraintLayout>
-
-        <ImageView
-            android:id="@+id/fe_imgAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/avatar" />
-
-        <TextView
-            android:id="@+id/fe_txtInstruction"
-            android:layout_width="0dp"
-            android:layout_height="57dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="solve"
-            app:layout_constraintBottom_toBottomOf="@+id/fe_imgAvatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fe_imgAvatar"
-            app:layout_constraintTop_toTopOf="@+id/fe_imgAvatar" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/fe_clFraction3"
@@ -264,6 +241,41 @@
             app:layout_constraintEnd_toEndOf="@+id/fe_clFraction3"
             app:layout_constraintStart_toEndOf="@+id/fe_txtEqual"
             app:layout_constraintTop_toBottomOf="@+id/fe_clFraction3" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayoutBottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/fe_txtInstruction"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="solve"
+                app:layout_constraintBottom_toBottomOf="@+id/gifAvatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/gifAvatar"
+                app:layout_constraintTop_toTopOf="@+id/gifAvatar" />
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/gifAvatar"
+                android:layout_width="101dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/avatar" />
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
 

@@ -28,4 +28,17 @@ public class Student extends BaseModel {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Student){
+            Student objStudent = (Student) obj;
+
+            String objStudentID = objStudent.getId();
+            String thisStudentID = this.getId();
+
+            return thisStudentID.equals(objStudentID);
+        }
+        return super.equals(obj);
+    }
 }

@@ -2,6 +2,7 @@ package com.example.laher.learnfractions.lessons.non_visual_fraction;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,8 @@ import com.example.laher.learnfractions.util.Probability;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class NonVisualExerciseActivity extends LessonExercise {
     //GUI
     TextView txtNumerator;
@@ -24,6 +27,9 @@ public class NonVisualExerciseActivity extends LessonExercise {
     TextView txtInstruction;
     TextView txtScore;
     ImageView imgLine;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
 
     public String title = "Non-Visual Fractions\nex.1";
     String id = AppIDs.NVE_ID;
@@ -62,6 +68,18 @@ public class NonVisualExerciseActivity extends LessonExercise {
         txtScore = findViewById(R.id.b1_txtScore);
         imgLine = findViewById(R.id.nve_imgLine);
         imgLine.setImageResource(R.drawable.line);
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.gentle_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.factory_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.factory_bottom);
+
+        int resourceID = R.drawable.factory_toolbar;
+        setToolBarBackground(resourceID);
 
         instructions = new ArrayList<>();
         instructions.add(INSTRUCTION_NUMERATOR);

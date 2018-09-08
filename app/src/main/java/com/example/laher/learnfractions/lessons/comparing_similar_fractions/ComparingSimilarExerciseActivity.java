@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.lessons.comparing_similar_fractions;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,8 +14,11 @@ import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class ComparingSimilarExerciseActivity extends LessonExercise {
     //private static final String TAG = "CS_E1";
@@ -28,7 +32,9 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
     Button btnGreater;
     Button btnEquals;
     Button btnLess;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //VARIABLES
     public final String GREATER_THAN = ">";
     public final String EQUAL_TO = "=";
@@ -58,14 +64,26 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
         Range range = getRange();
         Probability probability = new Probability(Probability.P_RAISED_TO_2, range);
         setProbability(probability);
+        //TOOLBAR
+        Styles.bgPaintMainYellow(buttonBack); // SPECIAL CASE - colors   are similar
         //GUI
         txtNum1 = findViewById(R.id.c1_txtNum1);
         txtNum2 = findViewById(R.id.c1_txtNum2);
         txtCompareSign = findViewById(R.id.c1_txtCompareSign);
         txtScore = findViewById(R.id.c1_txtScore);
         txtInstruction = findViewById(R.id.c1_txtInstruction);
-        imgAvatar = findViewById(R.id.cse_imgAvatar);
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.summer_frits;
+        gifAvatar.setImageResource(gifID);
 
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.beach_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.beach_bottom);
+
+        int resourceID = R.drawable.beach_toolbar;
+        setToolBarBackground(resourceID);
 
         btnGreater = findViewById(R.id.c1_btnGreater);
         btnEquals = findViewById(R.id.c1_btnEquals);
@@ -73,6 +91,9 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
         btnGreater.setOnClickListener(new BtnListener());
         btnEquals.setOnClickListener(new BtnListener());
         btnLess.setOnClickListener(new BtnListener());
+        Styles.bgPaintMainBlue(btnGreater);
+        Styles.bgPaintMainYellow(btnEquals);
+        Styles.bgPaintMainOrange(btnLess);
 
 
 

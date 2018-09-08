@@ -11,32 +11,9 @@
         layout="@layout/layout_toolbar"/>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayoutBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/c2_imgAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/avatar" />
-
-        <TextView
-            android:id="@+id/c2_txtInstruction"
-            android:layout_width="0dp"
-            android:layout_height="57dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="compare the two fractions"
-            app:layout_constraintBottom_toBottomOf="@+id/c2_imgAvatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/c2_imgAvatar"
-            app:layout_constraintTop_toTopOf="@+id/c2_imgAvatar" />
 
         <TextView
             android:id="@+id/c2_txtScore"
@@ -160,6 +137,41 @@
             app:layout_constraintBottom_toBottomOf="@+id/c2_btnEqual"
             app:layout_constraintStart_toEndOf="@+id/c2_btnEqual"
             app:layout_constraintTop_toTopOf="@+id/c2_btnEqual" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayoutBottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/gifAvatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/avatar" />
+
+            <TextView
+                android:id="@+id/c2_txtInstruction"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="compare the two fractions"
+                app:layout_constraintBottom_toBottomOf="@+id/gifAvatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/gifAvatar"
+                app:layout_constraintTop_toTopOf="@+id/gifAvatar" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
 

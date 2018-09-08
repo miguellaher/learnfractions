@@ -31,10 +31,20 @@ public class ChapterExam extends AppCompatActivity {
     private long timeSpent;
     private boolean answered;
 
+    private Student student;
+
     //FOR DATABASE
     private String compiledSeatWorks;
     private String compiledSeatWorksStats;
     private int examNumber;
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
     public String getCompiledSeatWorksStats() {
         return compiledSeatWorksStats;
@@ -42,6 +52,7 @@ public class ChapterExam extends AppCompatActivity {
 
     public void setCompiledSeatWorksStats(String compiledSeatWorksStats) {
         this.compiledSeatWorksStats = compiledSeatWorksStats;
+        decompileSeatWorksStats();
     }
 
     public String getCompiledSeatWorks() {
@@ -59,15 +70,19 @@ public class ChapterExam extends AppCompatActivity {
     public void setSeatWorksStats(ArrayList<SeatWork> seatWorksStats) {
         this.seatWorksStats = seatWorksStats;
         int totalExamScore = 0;
+        int totalExamItemsSize = 0;
         long totalExamTime = 0;
         for (SeatWork seatWorkStats : seatWorksStats){
             int score = seatWorkStats.getCorrect();
+            int itemsSize = seatWorkStats.getItems_size();
             long timeSpent = seatWorkStats.getTimeSpent();
 
             totalExamScore = totalExamScore + score;
+            totalExamItemsSize = totalExamItemsSize + itemsSize;
             totalExamTime = totalExamTime + timeSpent;
         }
         setTotalScore(totalExamScore);
+        setTotalItems(totalExamItemsSize);
         setTimeSpent(totalExamTime);
     }
 
@@ -256,7 +271,7 @@ public class ChapterExam extends AppCompatActivity {
 
     public static ArrayList<SeatWork> decompileSeatWorksStats(String compiledSeatWorksStats){
         String[] decompiledSeatWorks = compiledSeatWorksStats.split(";");
-        ArrayList<SeatWork> downloadedSeatWorks = new ArrayList<>();
+        ArrayList<SeatWork> decompiledSeatworksStats = new ArrayList<>();
         for (String decompiledSeatWork : decompiledSeatWorks) {
             String[] seatWorkVariables = decompiledSeatWork.split(":");
             if (seatWorkVariables.length > 5) {
@@ -285,11 +300,17 @@ public class ChapterExam extends AppCompatActivity {
                     seatWork.setRange(range);
                     seatWork.setCorrect(score);
                     seatWork.setTimeSpent(timeSpent);
-                    downloadedSeatWorks.add(seatWork);
+                    decompiledSeatworksStats.add(seatWork);
                 }
             }
         }
-        return downloadedSeatWorks;
+        return decompiledSeatworksStats;
+    }
+
+    private void decompileSeatWorksStats(){
+        String compiledSeatWorksStats = getCompiledSeatWorksStats();
+        ArrayList<SeatWork> decompiledSeatWorksStats = decompileSeatWorksStats(compiledSeatWorksStats);
+        setSeatWorksStats(decompiledSeatWorksStats);
     }
 
     public void execute(){
@@ -334,6 +355,13 @@ public class ChapterExam extends AppCompatActivity {
             }
         });
         ExamStatService.postStats(mContext, this, service);
+    }
+
+    public boolean hasSameSeatworksWith(ChapterExam chapterExam){
+        String thisSeatworks = this.getCompiledSeatWorks();
+        String seatworks = chapterExam.getCompiledSeatWorks();
+
+        return thisSeatworks.equals(seatworks);
     }
 
     @Override

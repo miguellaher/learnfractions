@@ -4,7 +4,7 @@ import com.example.laher.learnfractions.model.ChapterExam;
 
 import java.util.ArrayList;
 
-public class ExamList extends ArrayList<ChapterExam> {
+public class ChapterExamList extends ArrayList<ChapterExam> {
 
     @Override
     public boolean add(ChapterExam chapterExam) {

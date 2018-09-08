@@ -10,17 +10,16 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.rankings.ClassExamRanksActivity;
-import com.example.laher.learnfractions.rankings.ClassExerciseRanksActivity;
 import com.example.laher.learnfractions.rankings.ClassSeatWorkRanksActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 
-public class ClassRanksActivity extends AppCompatActivity {
+public class ClassRanksMainActivity extends AppCompatActivity {
     Context mContext = this;
     //TOOLBAR
     TextView txtTitle;
     Button btnBack, btnNext;
     //GUI
-    Button btnExercises, btnSeatWorks, btnExams;
+    Button btnSeatWorks, btnExams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +40,6 @@ public class ClassRanksActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
         //GUI
-        btnExercises = findViewById(R.id.class_ranks_btnExercises);
-        btnExercises.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ClassExerciseRanksActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
         btnSeatWorks = findViewById(R.id.class_ranks_btnSeatWorks);
         btnSeatWorks.setOnClickListener(new View.OnClickListener() {
             @Override

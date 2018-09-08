@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -29,6 +30,8 @@ import com.example.laher.learnfractions.util.Styles;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class ComparingFractionsExercise2Activity extends LessonExercise {
     //private static final String TAG = "CF_E2";
     //GUI
@@ -46,7 +49,9 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
     Button btnLess;
     ImageView imgLine1;
     ImageView imgLine2;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //MULTIPLICATION DIALOG
     Dialog multiplicationDialog;
     View mdView;
@@ -86,6 +91,8 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
         Probability probability = new Probability(Probability.COMPARING_FRACTIONS, range);
         setProbability(probability);
         setRangeEditable(true);
+        //TOOLBAR
+        Styles.bgPaintMainYellow(buttonBack); // SPECIAL CASE - colors are similar
         //GUI
         txtNum1 = findViewById(R.id.e2_txtNum1);
         txtNum2 = findViewById(R.id.e2_txtNum2);
@@ -100,9 +107,14 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
         txtCompareSign = findViewById(R.id.e2_txtCompareSign);
         txtScore = findViewById(R.id.e2_txtScore);
         txtInstruction = findViewById(R.id.e2_txtInstruction);
+
         btnGreater = findViewById(R.id.e2_btnGreater);
         btnEqual = findViewById(R.id.e2_btnEquals);
         btnLess = findViewById(R.id.e2_btnLess);
+        Styles.bgPaintMainBlue(btnGreater);
+        Styles.bgPaintMainYellow(btnEqual);
+        Styles.bgPaintMainOrange(btnLess);
+
         btnGreater.setText(FractionQuestion.ANSWER_GREATER);
         btnEqual.setText(FractionQuestion.ANSWER_EQUAL);
         btnLess.setText(FractionQuestion.ANSWER_LESS);
@@ -111,10 +123,22 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
         btnLess.setOnClickListener(new BtnAnswerListener());
         imgLine1 = findViewById(R.id.imgLine1);
         imgLine2 = findViewById(R.id.imgLine2);
-        imgAvatar = findViewById(R.id.e2_imgAvatar);
         imgLine1.setImageResource(R.drawable.line);
         imgLine2.setImageResource(R.drawable.line);
-        imgAvatar.setImageResource(R.drawable.avatar);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.summer_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.beach_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.beach_bottom);
+
+        int resourceID = R.drawable.beach_toolbar;
+        setToolBarBackground(resourceID);
+
         //MULTIPLICATION DIALOG
         mdView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         multiplicationDialog = new Dialog(ComparingFractionsExercise2Activity.this);

@@ -66,36 +66,7 @@ public class SeatWorkListActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
 
-        //ACTIVITY
-        FractionMeaningSeatWork fractionMeaningSeatWork = new FractionMeaningSeatWork(AppConstants.FRACTION_MEANING);
-        ComparingSimilarSeatWork comparingSimilarSeatWork = new ComparingSimilarSeatWork(AppConstants.COMPARING_SIMILAR_FRACTIONS);
-        ComparingDissimilarSeatWork comparingDissimilarSeatWork = new ComparingDissimilarSeatWork(AppConstants.COMPARING_DISSIMILAR_FRACTIONS);
-        OrderingSimilarSeatWork orderingSimilarSeatWork = new OrderingSimilarSeatWork(AppConstants.ORDERING_SIMILAR);
-        OrderingDissimilarSeatWork orderingDissimilarSeatWork = new OrderingDissimilarSeatWork(AppConstants.ORDERING_DISSIMILAR);
-        AddingSimilarSeatWork addingSimilarSeatWork = new AddingSimilarSeatWork(AppConstants.ADDING_SIMILAR);
-        SubtractingSimilarSeatWork subtractingSimilarSeatWork = new SubtractingSimilarSeatWork(AppConstants.SUBTRACTING_SIMILAR);
-        AddingDissimilarSeatWork addingDissimilarSeatWork = new AddingDissimilarSeatWork(AppConstants.ADDING_DISSIMILAR);
-        SubtractingDissimilarSeatWork subtractingDissimilarSeatWork = new SubtractingDissimilarSeatWork(AppConstants.SUBTRACTING_DISSIMILAR);
-        MultiplyingFractionsSeatWork multiplyingFractionsSeatWork = new MultiplyingFractionsSeatWork(AppConstants.MULTIPLYING_FRACTIONS);
-        DividingFractionsSeatWork dividingFractionsSeatWork = new DividingFractionsSeatWork(AppConstants.DIVIDING_FRACTIONS);
-        AddSubMixedFractionsSeatWork addSubMixedFractionsSeatWork = new AddSubMixedFractionsSeatWork(AppConstants.ADDING_SUBTRACTING_MIXED);
-        MultiplyDivideMixedFractionsSeatWork multiplyDivideMixedFractionsSeatWork = new MultiplyDivideMixedFractionsSeatWork(AppConstants.MULTIPLYING_DIVIDING_MIXED);
-
-
-        seatWorks = new ArrayList<>();
-        seatWorks.add(fractionMeaningSeatWork);
-        seatWorks.add(comparingSimilarSeatWork);
-        seatWorks.add(comparingDissimilarSeatWork);
-        seatWorks.add(orderingSimilarSeatWork);
-        seatWorks.add(orderingDissimilarSeatWork);
-        seatWorks.add(addingSimilarSeatWork);
-        seatWorks.add(subtractingSimilarSeatWork);
-        seatWorks.add(addingDissimilarSeatWork);
-        seatWorks.add(subtractingDissimilarSeatWork);
-        seatWorks.add(multiplyingFractionsSeatWork);
-        seatWorks.add(dividingFractionsSeatWork);
-        seatWorks.add(addSubMixedFractionsSeatWork);
-        seatWorks.add(multiplyDivideMixedFractionsSeatWork);
+        seatWorks = getSeatWorks();
 
         switch (Storage.load(mContext, Storage.USER_TYPE)) {
             case AppConstants.TEACHER:
@@ -141,7 +112,7 @@ public class SeatWorkListActivity extends AppCompatActivity {
             public void postExecute(JSONObject response) {
                 try {
                     int item_count = Integer.valueOf(response.optString("item_count"));
-                    ArrayList<SeatWork> uploadedSeatWorks = new ArrayList<>();
+                    ArrayList<SeatWork> downloadedSeatWorks = new ArrayList<>();
                     for (int i = 1; i <= item_count; i++) {
                         SeatWork seatWork = new SeatWork();
 
@@ -162,13 +133,13 @@ public class SeatWorkListActivity extends AppCompatActivity {
                         seatWork.setItems_size(itemSize);
                         seatWork.setRange(range);
 
-                        uploadedSeatWorks.add(seatWork);
+                        downloadedSeatWorks.add(seatWork);
                     }
-                    for (SeatWork uploadedSeatWork : uploadedSeatWorks){
+                    for (SeatWork downloadedSeatWork : downloadedSeatWorks){
                         int i = 0;
                         for (SeatWork seatWork : seatWorks){
-                            if (uploadedSeatWork.equals(seatWork)){
-                                seatWork.getValuesFrom(uploadedSeatWork);
+                            if (downloadedSeatWork.equals(seatWork)){
+                                seatWork.getValuesFrom(downloadedSeatWork);
                                 seatWorks.set(i, seatWork);
                             }
                             i++;
@@ -187,7 +158,7 @@ public class SeatWorkListActivity extends AppCompatActivity {
             public void postExecute(JSONObject response) {
                 try {
                     int item_count = Integer.valueOf(response.optString("item_count"));
-                    ArrayList<SeatWork> uploadedSeatworkStats = new ArrayList<>();
+                    ArrayList<SeatWork> downloadedSeatworkStats = new ArrayList<>();
                     for (int i = 1; i <= item_count; i++) {
                         String seatworkID = response.optString(i + "seatwork_id");
                         String strItemsSize = response.optString(i + "items_size");
@@ -206,21 +177,21 @@ public class SeatWorkListActivity extends AppCompatActivity {
                         int score = Integer.valueOf(strScore);
                         long timeSpent = Long.valueOf(strTimeSpent);
 
-                        SeatWork uploadedSeatworkStat = new SeatWork();
-                        uploadedSeatworkStat.setId(seatworkID);
-                        uploadedSeatworkStat.setItems_size(itemsSize);
-                        uploadedSeatworkStat.setRange(range);
-                        uploadedSeatworkStat.setTopicName(topic_name);
-                        uploadedSeatworkStat.setCorrect(score);
-                        uploadedSeatworkStat.setTimeSpent(timeSpent);
+                        SeatWork downloadedSeatworkStat = new SeatWork();
+                        downloadedSeatworkStat.setId(seatworkID);
+                        downloadedSeatworkStat.setItems_size(itemsSize);
+                        downloadedSeatworkStat.setRange(range);
+                        downloadedSeatworkStat.setTopicName(topic_name);
+                        downloadedSeatworkStat.setCorrect(score);
+                        downloadedSeatworkStat.setTimeSpent(timeSpent);
 
-                        uploadedSeatworkStats.add(uploadedSeatworkStat);
+                        downloadedSeatworkStats.add(downloadedSeatworkStat);
                     }
-                    for(SeatWork uploadedSeatworkStat : uploadedSeatworkStats){
+                    for(SeatWork downloadedSeatworkStat : downloadedSeatworkStats){
                         int i = 0;
                         for (SeatWork seatWork : seatWorks){
-                            if (seatWork.isUpdatedWith(uploadedSeatworkStat)){
-                                seatWork.getStatsFrom(uploadedSeatworkStat);
+                            if (seatWork.isUpdatedWith(downloadedSeatworkStat)){
+                                seatWork.getStatsFrom(downloadedSeatworkStat);
                                 seatWork.setAnswered(true);
                                 seatWorks.set(i, seatWork);
                             }
@@ -252,7 +223,7 @@ public class SeatWorkListActivity extends AppCompatActivity {
             public void postExecute(JSONObject response) {
                 try {
                     int item_count = Integer.valueOf(response.optString("item_count"));
-                    ArrayList<SeatWork> uploadedSeatWorks = new ArrayList<>();
+                    ArrayList<SeatWork> downloadedSeatWorks = new ArrayList<>();
                     for (int i = 1; i <= item_count; i++) {
                         SeatWork seatWork = new SeatWork();
 
@@ -273,13 +244,13 @@ public class SeatWorkListActivity extends AppCompatActivity {
                         seatWork.setItems_size(itemSize);
                         seatWork.setRange(range);
 
-                        uploadedSeatWorks.add(seatWork);
+                        downloadedSeatWorks.add(seatWork);
                     }
-                    for (SeatWork uploadedSeatWork : uploadedSeatWorks){
+                    for (SeatWork downloadedSeatWork : downloadedSeatWorks){
                         int i = 0;
                         for (SeatWork seatWork : seatWorks){
-                            if (uploadedSeatWork.equals(seatWork)){
-                                seatWork.getValuesFrom(uploadedSeatWork);
+                            if (downloadedSeatWork.equals(seatWork)){
+                                seatWork.getValuesFrom(downloadedSeatWork);
                                 seatWorks.set(i, seatWork);
                             }
                             i++;
@@ -309,6 +280,40 @@ public class SeatWorkListActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    public static ArrayList<SeatWork> getSeatWorks(){ // "ARCHIVE OF SEATWORKS"
+        ArrayList<SeatWork> seatWorks = new ArrayList<>();
+
+        FractionMeaningSeatWork fractionMeaningSeatWork = new FractionMeaningSeatWork(AppConstants.FRACTION_MEANING);
+        ComparingSimilarSeatWork comparingSimilarSeatWork = new ComparingSimilarSeatWork(AppConstants.COMPARING_SIMILAR_FRACTIONS);
+        ComparingDissimilarSeatWork comparingDissimilarSeatWork = new ComparingDissimilarSeatWork(AppConstants.COMPARING_DISSIMILAR_FRACTIONS);
+        OrderingSimilarSeatWork orderingSimilarSeatWork = new OrderingSimilarSeatWork(AppConstants.ORDERING_SIMILAR);
+        OrderingDissimilarSeatWork orderingDissimilarSeatWork = new OrderingDissimilarSeatWork(AppConstants.ORDERING_DISSIMILAR);
+        AddingSimilarSeatWork addingSimilarSeatWork = new AddingSimilarSeatWork(AppConstants.ADDING_SIMILAR);
+        SubtractingSimilarSeatWork subtractingSimilarSeatWork = new SubtractingSimilarSeatWork(AppConstants.SUBTRACTING_SIMILAR);
+        AddingDissimilarSeatWork addingDissimilarSeatWork = new AddingDissimilarSeatWork(AppConstants.ADDING_DISSIMILAR);
+        SubtractingDissimilarSeatWork subtractingDissimilarSeatWork = new SubtractingDissimilarSeatWork(AppConstants.SUBTRACTING_DISSIMILAR);
+        MultiplyingFractionsSeatWork multiplyingFractionsSeatWork = new MultiplyingFractionsSeatWork(AppConstants.MULTIPLYING_FRACTIONS);
+        DividingFractionsSeatWork dividingFractionsSeatWork = new DividingFractionsSeatWork(AppConstants.DIVIDING_FRACTIONS);
+        AddSubMixedFractionsSeatWork addSubMixedFractionsSeatWork = new AddSubMixedFractionsSeatWork(AppConstants.ADDING_SUBTRACTING_MIXED);
+        MultiplyDivideMixedFractionsSeatWork multiplyDivideMixedFractionsSeatWork = new MultiplyDivideMixedFractionsSeatWork(AppConstants.MULTIPLYING_DIVIDING_MIXED);
+
+        seatWorks.add(fractionMeaningSeatWork);
+        seatWorks.add(comparingSimilarSeatWork);
+        seatWorks.add(comparingDissimilarSeatWork);
+        seatWorks.add(orderingSimilarSeatWork);
+        seatWorks.add(orderingDissimilarSeatWork);
+        seatWorks.add(addingSimilarSeatWork);
+        seatWorks.add(subtractingSimilarSeatWork);
+        seatWorks.add(addingDissimilarSeatWork);
+        seatWorks.add(subtractingDissimilarSeatWork);
+        seatWorks.add(multiplyingFractionsSeatWork);
+        seatWorks.add(dividingFractionsSeatWork);
+        seatWorks.add(addSubMixedFractionsSeatWork);
+        seatWorks.add(multiplyDivideMixedFractionsSeatWork);
+
+        return seatWorks;
     }
 
     private void baseMode(){

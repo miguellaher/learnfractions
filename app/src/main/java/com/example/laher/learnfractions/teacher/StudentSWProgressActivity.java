@@ -51,7 +51,7 @@ public class StudentSWProgressActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_swprogress);
+        setContentView(R.layout.activity_rank_template);
 
         //TOOLBAR
         btnBack = findViewById(R.id.btnBack);
@@ -70,7 +70,7 @@ public class StudentSWProgressActivity extends AppCompatActivity {
         txtTitle.setText(AppConstants.SW_PROGRESSES);
 
         //ACTIVITY
-        studentSWProgressListView = findViewById(R.id.student_swprogress_listSeatWork);
+        studentSWProgressListView = findViewById(R.id.rank_template_listRanks);
         mStatAverages = new ArrayList<>();
 
         Log.d(TAG, ":pre service.");
@@ -142,7 +142,7 @@ public class StudentSWProgressActivity extends AppCompatActivity {
                 }
             }
         });
-        SeatWorkStatService.getAllStats(Storage.load(mContext,Storage.TEACHER_CODE),service);
+        SeatWorkStatService.getAllStats(mContext,service);
     }
     private boolean checkSWProgIfLatest(Student_SW_Progress student_sw_progress){
         for (SeatWork seatWork : mSeatWorks){

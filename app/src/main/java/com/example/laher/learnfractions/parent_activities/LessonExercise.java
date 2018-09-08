@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Storage;
+import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
@@ -31,7 +33,8 @@ import org.json.JSONObject;
 public class LessonExercise extends AppCompatActivity {
     Context context;
     //TOOLBAR
-    private Button buttonBack, buttonNext;
+    protected Button buttonBack;
+    private Button buttonNext;
     private TextView txtTitle;
     //IMPORTANT DETAILS
     private String id;
@@ -224,14 +227,33 @@ public class LessonExercise extends AppCompatActivity {
         Log.d(tag, "setToolBarGui()");
         buttonBack = findViewById(R.id.btnBack);
         buttonBack.setOnClickListener(new ButtonBackListener());
+
+        if (Util.randomBoolean()){
+            Styles.bgPaintMainBlue(buttonBack);
+        } else {
+            Styles.bgPaintMainYellow(buttonBack);
+        }
+
         buttonNext = findViewById(R.id.btnNext);
         buttonNext.setEnabled(false);
         buttonNext.setOnClickListener(new ButtonNextListener());
+
+        if (Util.randomBoolean()){
+            Styles.bgPaintMainOrange(buttonNext);
+        } else {
+            Styles.bgPaintMainBlueGreen(buttonNext);
+        }
+
         txtTitle = findViewById(R.id.txtTitle);
         defaultAttributes();
         if (!Storage.isEmpty()&&isNetworkAvailable()) {
             updateExercise();
         }
+    }
+
+    protected void setToolBarBackground(int resourceID){
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+        toolbar.setBackgroundResource(resourceID);
     }
 
     protected void defaultAttributes(){

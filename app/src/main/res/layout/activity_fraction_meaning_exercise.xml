@@ -11,8 +11,44 @@
         layout="@layout/layout_toolbar"/>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/fme_constraintLayoutBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/fme_constraintLayoutBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/txtInstruction"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="click how many parts the whole is divided into"
+                app:layout_constraintBottom_toBottomOf="@+id/a_imgAvatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/a_imgAvatar"
+                app:layout_constraintTop_toTopOf="@+id/a_imgAvatar"
+                app:layout_constraintVertical_bias="0.511" />
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/a_imgAvatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/adventure_frits" />
+        </android.support.constraint.ConstraintLayout>
 
         <ImageView
             android:id="@+id/a_imgBox8"
@@ -33,30 +69,6 @@
             android:text="TextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/a_imgAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/adventure_frits" />
-
-        <TextView
-            android:id="@+id/txtInstruction"
-            android:layout_width="0dp"
-            android:layout_height="57dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:text="click how many parts the whole is divided into"
-            app:layout_constraintBottom_toBottomOf="@+id/a_imgAvatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/a_imgAvatar"
-            app:layout_constraintTop_toTopOf="@+id/a_imgAvatar"
-            app:layout_constraintVertical_bias="0.511" />
 
         <ImageView
             android:id="@+id/a_imgBox2"
@@ -180,6 +192,7 @@
             app:layout_constraintStart_toEndOf="@+id/a_imgBox8"
             app:layout_constraintTop_toBottomOf="@+id/a_imgBox6"
             app:srcCompat="@android:color/background_light" />
+
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>

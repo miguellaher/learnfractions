@@ -7,16 +7,20 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.util.AppCache;
+import com.example.laher.learnfractions.util.Styles;
+import com.example.laher.learnfractions.util.Util;
 
 public class LessonVideo extends AppCompatActivity {
     private Context context;
@@ -24,7 +28,8 @@ public class LessonVideo extends AppCompatActivity {
     private Uri uri;
 
     //TOOLBAR
-    private Button buttonBack, buttonNext;
+    private Button buttonBack;
+    private Button buttonNext;
     private TextView txtTitle;
 
     public void setContext(Context context) {
@@ -45,17 +50,40 @@ public class LessonVideo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         video = findViewById(R.id.videoView);
+
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+
         buttonBack = findViewById(R.id.btnBack);
         buttonBack.setOnClickListener(new ButtonBackListener());
+        if (Util.randomBoolean()){
+            Styles.bgPaintMainBlue(buttonBack);
+            Styles.bgPaintMainYellow(toolbar);
+        } else {
+            Styles.bgPaintMainYellow(buttonBack);
+            Styles.bgPaintMainBlue(toolbar);
+        }
+
+        LinearLayout linearLayout = findViewById(R.id.activity_video_linearLayout);
+
         buttonNext = findViewById(R.id.btnNext);
         buttonNext.setEnabled(false);
         buttonNext.setOnClickListener(new ButtonNextListener());
+        if (Util.randomBoolean()){
+            Styles.bgPaintMainOrange(buttonNext);
+            Styles.bgPaintMainBlueGreen(linearLayout);
+        } else {
+            Styles.bgPaintMainBlueGreen(buttonNext);
+            Styles.bgPaintMainOrange(linearLayout);
+        }
+
         txtTitle = findViewById(R.id.txtTitle);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void go(){
-        video.setVideoURI(this.uri);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small); //SAMPLE VIDEO
+        video.setVideoURI(uri); // TEST
+        //video.setVideoURI(this.uri);
         video.setOnCompletionListener(new VideoListener());
         video.setOnTouchListener(new VideoListener());
         video.requestFocus();

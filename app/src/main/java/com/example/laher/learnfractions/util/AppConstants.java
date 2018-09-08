@@ -23,6 +23,8 @@ public class AppConstants {
     public static final String SEAT_WORKS = "Seat Works";
     public static final String CHAPTER_EXAM = "Chapter Exam";
     public static final String TEACHER_MAIN = "Teacher Main";
+    public static final String SW_RANKING = "Seatwork Ranking";
+    public static final String EXAM_RANKING = "Chapter Exam Ranking";
     public static final String E_PROGRESSES = "Exercise Data";
     public static final String EXAM_PROGRESSES = "Exam Data";
     public static final String LESSONS = "Lessons";

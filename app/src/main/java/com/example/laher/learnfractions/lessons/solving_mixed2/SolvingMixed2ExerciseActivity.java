@@ -35,6 +35,8 @@ import com.example.laher.learnfractions.util.Util;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import pl.droidsonroids.gif.GifImageView;
+
 import static android.content.DialogInterface.OnDismissListener;
 import static android.content.DialogInterface.OnShowListener;
 
@@ -65,7 +67,9 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
     ImageView imgLine3;
     ImageView imgLine4;
     ImageView imgLine5;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //MIXED CONVERT DIALOG
     Dialog dialogMixedConvert;
     View viewMixedConvert;
@@ -135,11 +139,13 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
         txtEquation2 = findViewById(R.id.fem_txtEquation2);
         txtScore = findViewById(R.id.fem_txtScore);
         txtInstruction = findViewById(R.id.fem_txtInstruction);
+        Styles.paintWhite(txtInstruction); // SPECIAL CASE - contrast is the purpose
         inputNum = findViewById(R.id.fem_inputNum);
         inputDenom = findViewById(R.id.fem_inputDenom);
         inputDenom.setOnEditorActionListener(new InputListener());
         btnCheck = findViewById(R.id.fem_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
+        Styles.bgPaintRandomMain(btnCheck);
         clFraction1 = findViewById(R.id.fem_clFraction1);
         clFraction2 = findViewById(R.id.fem_clFraction2);
         imgLine1 = findViewById(R.id.adsm_imgLine1);
@@ -147,13 +153,25 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
         imgLine3 = findViewById(R.id.adsm_imgLine3);
         imgLine4 = findViewById(R.id.adsm_imgLine4);
         imgLine5 = findViewById(R.id.adsm_imgLine5);
-        imgAvatar = findViewById(R.id.fem_imgAvatar);
         imgLine1.setImageResource(R.drawable.line);
         imgLine2.setImageResource(R.drawable.line);
         imgLine3.setImageResource(R.drawable.line);
         imgLine4.setImageResource(R.drawable.line);
         imgLine5.setImageResource(R.drawable.line);
-        imgAvatar.setImageResource(R.drawable.avatar);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.safari_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.forrest_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.forrest_bottom);
+
+        int resourceID = R.drawable.forrest_toolbar;
+        setToolBarBackground(resourceID);
+
         //MIXED CONVERT DIALOG
         viewMixedConvert = getLayoutInflater().inflate(R.layout.layout_mixed_convert, null);
         dialogMixedConvert = new Dialog(SolvingMixed2ExerciseActivity.this);

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -29,6 +30,8 @@ import com.example.laher.learnfractions.util.Util;
 
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class ConvertingFractionsExercise2Activity extends LessonExercise {
     //private static final String TAG = "CF_E2";
     //GUI
@@ -43,7 +46,9 @@ public class ConvertingFractionsExercise2Activity extends LessonExercise {
     Button btnCheck;
     ImageView imgLine1;
     ImageView imgLine2;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //EQUATION DIALOG
     Dialog equationDialog;
     View edView;
@@ -94,12 +99,25 @@ public class ConvertingFractionsExercise2Activity extends LessonExercise {
         inputDenom.setOnEditorActionListener(new InputListener());
         btnCheck = findViewById(R.id.cvt2_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
+        Styles.bgPaintRandomMain(btnCheck);
         imgLine1 = findViewById(R.id.cvt_imgLine1);
         imgLine2 = findViewById(R.id.cvt_imgLine2);
-        imgAvatar = findViewById(R.id.cvt_imgAvatar);
         imgLine1.setImageResource(R.drawable.line);
         imgLine2.setImageResource(R.drawable.line);
-        imgAvatar.setImageResource(R.drawable.avatar);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.kid_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.playground_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.playground_bottom);
+
+        int resourceID = R.drawable.playground_toolbar;
+        setToolBarBackground(resourceID);
+
         //EQUATION DIALOG
         edView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         equationDialog = new Dialog(ConvertingFractionsExercise2Activity.this);

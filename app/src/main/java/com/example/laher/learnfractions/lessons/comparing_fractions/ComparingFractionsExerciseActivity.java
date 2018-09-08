@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.lessons.comparing_fractions;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,9 +15,12 @@ import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class ComparingFractionsExerciseActivity extends LessonExercise {
     //private static final String TAG = "CF_E1";
@@ -31,7 +35,9 @@ public class ComparingFractionsExerciseActivity extends LessonExercise {
     Button btnDissimilar;
     ImageView imgLine1;
     ImageView imgLine2;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //VARIABLES
     ArrayList<ComparingFractionsQuestion> mComparingFractionsQuestions;
     ComparingFractionsQuestion mComparingFractionsQuestion;
@@ -60,6 +66,8 @@ public class ComparingFractionsExerciseActivity extends LessonExercise {
         Probability probability = new Probability(Probability.COMPARING_FRACTIONS, range);
         setProbability(probability);
         setRangeEditable(true);
+        //TOOLBAR
+        Styles.bgPaintMainYellow(buttonBack); // SPECIAL CASE - colors   are similar
         //GUI
         txtNum1 = findViewById(R.id.e1_txtNum1);
         txtNum2 = findViewById(R.id.e1_txtNum2);
@@ -68,15 +76,28 @@ public class ComparingFractionsExerciseActivity extends LessonExercise {
         txtScore = findViewById(R.id.e1_txtScore);
         txtInstruction = findViewById(R.id.e1_txtInstruction);
         btnSimilar = findViewById(R.id.e1_btnSimilar);
+        Styles.bgPaintRandomMainSet1(btnSimilar);
         btnDissimilar = findViewById(R.id.e1_btnDissimilar);
+        Styles.bgPaintRandomMainSet2(btnDissimilar);
         btnSimilar.setOnClickListener(new BtnChoiceListener());
         btnDissimilar.setOnClickListener(new BtnChoiceListener());
         imgLine1 = findViewById(R.id.imgLine1);
         imgLine2 = findViewById(R.id.imgLine2);
-        imgAvatar = findViewById(R.id.e1_imgAvatar);
         imgLine1.setImageResource(R.drawable.line);
         imgLine2.setImageResource(R.drawable.line);
-        imgAvatar.setImageResource(R.drawable.avatar);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.summer_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.beach_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.beach_bottom);
+
+        int resourceID = R.drawable.beach_toolbar;
+        setToolBarBackground(resourceID);
 
         startExercise();
     }

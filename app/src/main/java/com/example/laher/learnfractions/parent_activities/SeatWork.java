@@ -16,6 +16,7 @@ import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
+import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Probability;
@@ -35,6 +36,7 @@ public class SeatWork extends AppCompatActivity {
     private int correct;
     private long startingTime;
     private long timeSpent;
+    private Student student;
     //GUIDELINES
     private int currentItemNum;
     private int maxItemsSize;
@@ -44,6 +46,14 @@ public class SeatWork extends AppCompatActivity {
     private boolean answered;
     //SETTINGS
     private boolean rangeEditable;
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
     public boolean isRangeEditable() {
         return rangeEditable;
@@ -219,6 +229,25 @@ public class SeatWork extends AppCompatActivity {
         }
     }
 
+    public boolean hasEqualValuesWith(SeatWork seatWork){
+        boolean hasEqualValues = true;
+
+        int itemSize = seatWork.getItems_size();
+        int thisItemSize = this.getItems_size();
+
+        if (itemSize!=thisItemSize){
+            hasEqualValues = false;
+        }
+
+        Range range = seatWork.getRange();
+        Range thisRange = seatWork.getRange();
+        if (!thisRange.equals(range)){
+            hasEqualValues = false;
+        }
+
+        return hasEqualValues;
+    }
+
     public boolean isUpdatedWith(SeatWork seatWork){
         if (this.equals(seatWork)){
             int itemsSize = getItems_size();
@@ -235,7 +264,11 @@ public class SeatWork extends AppCompatActivity {
     public void getStatsFrom(SeatWork seatWork){
         int score = seatWork.getCorrect();
         long timeSpent = seatWork.getTimeSpent();
+        Student student = seatWork.getStudent();
 
+        if (student!=null){
+            setStudent(student);
+        }
         setCorrect(score);
         setTimeSpent(timeSpent);
     }

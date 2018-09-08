@@ -2,6 +2,7 @@ package com.example.laher.learnfractions.lessons.non_visual_fraction;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +29,8 @@ import com.example.laher.learnfractions.util.Styles;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class NonVisualExercise2Activity extends LessonExercise {
     private static final String TAG = "NVE2";
     Button btnCheck;
@@ -38,6 +41,9 @@ public class NonVisualExercise2Activity extends LessonExercise {
     TextView txtScore;
     EditText inputAnswer;
     ImageView imgLine;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
 
     public String title = "Non-Visual Fractions ex.2";
     String id = AppIDs.NVE2_ID;
@@ -81,8 +87,21 @@ public class NonVisualExercise2Activity extends LessonExercise {
         btnCheck = findViewById(R.id.b2_btnCheck);
         btnCheck.setOnClickListener(new BtnChkListener());
         btnCheck.setEnabled(false);
+        Styles.bgPaintRandomMain(btnCheck);
         imgLine = findViewById(R.id.nve2_imgLine);
         imgLine.setImageResource(R.drawable.line);
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.gentle_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.factory_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.factory_bottom);
+
+        int resourceID = R.drawable.factory_toolbar;
+        setToolBarBackground(resourceID);
 
         instructions = new ArrayList<>();
         instructions.add(INSTRUCTION_NUMERATOR);

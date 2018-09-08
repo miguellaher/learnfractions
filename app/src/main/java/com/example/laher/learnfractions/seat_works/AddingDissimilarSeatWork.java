@@ -93,7 +93,7 @@ public class AddingDissimilarSeatWork extends SeatWork {
         imgLine1 = findViewById(R.id.fe_imgLine1);
         imgLine2 = findViewById(R.id.fe_imgLine2);
         imgLine3 = findViewById(R.id.fe_imgLine3);
-        imgAvatar = findViewById(R.id.fe_imgAvatar);
+        imgAvatar = findViewById(R.id.gifAvatar);
         imgLine1.setImageResource(R.drawable.line);
         imgLine2.setImageResource(R.drawable.line);
         imgLine3.setImageResource(R.drawable.line);

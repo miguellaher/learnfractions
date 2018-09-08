@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -24,8 +25,11 @@ import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class ComparingDissimilarExerciseActivity extends LessonExercise {
     //private static final String TAG = "CD_E1";
@@ -48,7 +52,9 @@ public class ComparingDissimilarExerciseActivity extends LessonExercise {
     TextView txtInstruction;
     ImageView imgLine1;
     ImageView imgLine2;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //VARIABLES
     ArrayList<Integer> stepsIdList;
 
@@ -80,6 +86,8 @@ public class ComparingDissimilarExerciseActivity extends LessonExercise {
         Probability probability = new Probability(Probability.TWO_DISSIMILAR_FRACTIONS, range);
         setProbability(probability);
         setRangeEditable(true);
+        //TOOLBAR
+        Styles.bgPaintMainYellow(buttonBack); // SPECIAL CASE - colors   are similar
         //MULTIPLICATION DIALOG
         mdView = getLayoutInflater().inflate(R.layout.layout_dialog_equation, null);
         multiplicationDialog = new Dialog(ComparingDissimilarExerciseActivity.this);
@@ -103,10 +111,22 @@ public class ComparingDissimilarExerciseActivity extends LessonExercise {
         txtDenominator2 = findViewById(R.id.d1_txtDenom2);
         imgLine1 = findViewById(R.id.imgLine1);
         imgLine2 = findViewById(R.id.imgLine2);
-        imgAvatar = findViewById(R.id.cde_imgAvatar);
         imgLine1.setImageResource(R.drawable.line);
         imgLine2.setImageResource(R.drawable.line);
-        imgAvatar.setImageResource(R.drawable.avatar);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.summer_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.beach_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.beach_bottom);
+
+        int resourceID = R.drawable.beach_toolbar;
+        setToolBarBackground(resourceID);
+
         resetTxtFractionsColor();
         txtInstruction = findViewById(R.id.d1_txtInstruction);
         stepsIdList = new ArrayList<>();

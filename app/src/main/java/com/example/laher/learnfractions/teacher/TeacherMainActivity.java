@@ -13,13 +13,14 @@ import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
+import com.example.laher.learnfractions.student_activities.ClassRanksMainActivity;
 import com.example.laher.learnfractions.teacher2.LessonExercisesListActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 
 public class TeacherMainActivity extends AppCompatActivity {
     Context mContext = this;
-    Button btnManageExercises, btnManageSeatWorks, btnManageExams, btnCheckSWProgress, btnCheckEProgress, btnCheckExamProgress;
+    Button btnManageExercises, btnManageSeatWorks, btnManageExams, btnClassRanks;
     Button btnBack, btnNext;
     TextView txtTitle;
     @Override
@@ -83,33 +84,12 @@ public class TeacherMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnCheckSWProgress = findViewById(R.id.teacher_main_btnCheckSWProgress);
-        btnCheckSWProgress.setOnClickListener(new View.OnClickListener() {
+        btnClassRanks = findViewById(R.id.teacher_main_btnClassRanks);
+        btnClassRanks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TeacherMainActivity.this,
-                        StudentSWProgressActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnCheckEProgress = findViewById(R.id.teacher_main_btnCheckEProgress);
-        btnCheckEProgress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TeacherMainActivity.this,
-                        StudentEProgressActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
-        btnCheckExamProgress = findViewById(R.id.teacher_main_btnCheckExamProgress);
-        btnCheckExamProgress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TeacherMainActivity.this,
-                        StudentExamProgressActivity.class);
+                        ClassRanksMainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }

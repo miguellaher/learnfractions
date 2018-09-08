@@ -2,6 +2,7 @@ package com.example.laher.learnfractions.lessons.ordering_similar;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +17,8 @@ import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class OrderingSimilarExerciseActivity extends LessonExercise {
     //private static final String TAG = "OS_E1";
     //GUI
@@ -24,7 +27,9 @@ public class OrderingSimilarExerciseActivity extends LessonExercise {
     TextView txtNum3;
     TextView txtScore;
     TextView txtInstruction;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //VARIABLES
     ArrayList<OrderingNumbersQuestion> mOrderingNumbersQuestions;
     OrderingNumbersQuestion mOrderingNumbersQuestion;
@@ -58,8 +63,6 @@ public class OrderingSimilarExerciseActivity extends LessonExercise {
         txtNum3 = findViewById(R.id.os_txtNum3);
         txtScore = findViewById(R.id.os_txtScore);
         txtInstruction = findViewById(R.id.os_txtInstruction);
-        imgAvatar = findViewById(R.id.cs_imgAvatar);
-        imgAvatar.setImageResource(R.drawable.avatar);
         startExercise();
     }
     public void setQuestions(){

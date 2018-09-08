@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -26,8 +27,11 @@ import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class ConvertingFractionsExerciseActivity extends LessonExercise {
     //private static final String TAG = "CF_E1";
@@ -45,7 +49,9 @@ public class ConvertingFractionsExerciseActivity extends LessonExercise {
     Button btnCheck;
     ImageView imgLine1;
     ImageView imgLine2;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //DIVISION DIALOG
     Dialog divisionDialog;
     View ddView;
@@ -98,12 +104,25 @@ public class ConvertingFractionsExerciseActivity extends LessonExercise {
         inputWholeNum = findViewById(R.id.cvt_inputWholeNum);
         btnCheck = findViewById(R.id.cvt_btnCheck);
         btnCheck.setOnClickListener(new BtnCheckListener());
+        Styles.bgPaintRandomMain(btnCheck);
         imgLine1 = findViewById(R.id.cvt_imgLine1);
         imgLine2 = findViewById(R.id.cvt_imgLine2);
-        imgAvatar = findViewById(R.id.cvt_imgAvatar);
         imgLine1.setImageResource(R.drawable.line);
         imgLine2.setImageResource(R.drawable.line);
-        imgAvatar.setImageResource(R.drawable.avatar);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.kid_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.playground_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.playground_bottom);
+
+        int resourceID = R.drawable.playground_toolbar;
+        setToolBarBackground(resourceID);
+
         //DIVISION DIALOG
         ddView = getLayoutInflater().inflate(R.layout.layout_dialog_division, null);
         divisionDialog = new Dialog(ConvertingFractionsExerciseActivity.this);

@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.lessons.fraction_meaning;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 
 
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class FractionMeaningExerciseActivity extends LessonExercise {
     Button btnChoice4;
     TextView txtScore;
     TextView txtInstruction;
+    ConstraintLayout constraintLayoutBackGround;
+    ConstraintLayout constraintLayoutBottom;
 
     public String title = "Fraction Meaning\nex.1"; // IMPORTANT VAR
     String id = AppIDs.FME_ID; // IMPORTANT VAR
@@ -83,18 +87,31 @@ public class FractionMeaningExerciseActivity extends LessonExercise {
         imgBox8 = findViewById(R.id.a_imgBox8);
         imgBox9 = findViewById(R.id.a_imgBox9);
         gifAvatar = findViewById(R.id.a_imgAvatar);
-        int gifID = R.drawable.adventure_frits;
+        int gifID = R.drawable.gentle_frits;
         gifAvatar.setImageResource(gifID);
         btnChoice1 = findViewById(R.id.btnChoice1);
         btnChoice2 = findViewById(R.id.btnChoice2);
         btnChoice3 = findViewById(R.id.btnChoice3);
         btnChoice4 = findViewById(R.id.btnChoice4);
+        Styles.bgPaintMainBlue(btnChoice1);
+        Styles.bgPaintMainYellow(btnChoice2);
+        Styles.bgPaintMainOrange(btnChoice3);
+        Styles.bgPaintMainBlueGreen(btnChoice4);
         btnChoice1.setOnClickListener(new BtnChoiceListener());
         btnChoice2.setOnClickListener(new BtnChoiceListener());
         btnChoice3.setOnClickListener(new BtnChoiceListener());
         btnChoice4.setOnClickListener(new BtnChoiceListener());
         txtInstruction = findViewById(R.id.txtInstruction);
         txtScore = findViewById(R.id.txtScore);
+
+        constraintLayoutBackGround = findViewById(R.id.fme_constraintLayoutBackground);
+        constraintLayoutBackGround.setBackgroundResource(R.drawable.factory_background);
+
+        constraintLayoutBottom = findViewById(R.id.fme_constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.factory_bottom);
+
+        int resourceID = R.drawable.factory_toolbar;
+        setToolBarBackground(resourceID);
 
         instructions = new ArrayList<>();
         instructions.add(INSTRUCTION_DENOMINATOR);

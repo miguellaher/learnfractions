@@ -10,6 +10,7 @@
     <include layout="@layout/layout_toolbar" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayoutBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,36 +18,13 @@
             android:id="@+id/nve2_imgLine"
             android:layout_width="100dp"
             android:layout_height="25dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/b2_imgAvatar"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayoutBottom"
             app:layout_constraintEnd_toStartOf="@+id/b2_inputAnswer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/line" />
-
-        <ImageView
-            android:id="@+id/b2_imgAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/avatar" />
-
-        <TextView
-            android:id="@+id/b2_txtInstruction"
-            android:layout_width="0dp"
-            android:layout_height="57dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="type the numerator"
-            app:layout_constraintBottom_toBottomOf="@+id/b2_imgAvatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/b2_imgAvatar"
-            app:layout_constraintTop_toTopOf="@+id/b2_imgAvatar" />
 
         <TextView
             android:id="@+id/b2_txtNumerator"
@@ -98,16 +76,18 @@
             android:id="@+id/b2_inputAnswer"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="44dp"
             android:ems="10"
             android:inputType="number"
+            android:maxLength="2"
             android:text="99"
             android:textAlignment="center"
-            android:maxLength="2"
             android:textSize="50sp"
-            app:layout_constraintBottom_toTopOf="@+id/b2_imgAvatar"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayoutBottom"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.513" />
 
         <Button
             android:id="@+id/b2_btnCheck"
@@ -120,6 +100,42 @@
             app:layout_constraintEnd_toEndOf="@+id/b2_inputAnswer"
             app:layout_constraintStart_toStartOf="@+id/b2_inputAnswer"
             app:layout_constraintTop_toBottomOf="@+id/b2_inputAnswer" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayoutBottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/gifAvatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/avatar" />
+
+            <TextView
+                android:id="@+id/b2_txtInstruction"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="type the numerator"
+                app:layout_constraintBottom_toBottomOf="@+id/gifAvatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/gifAvatar"
+                app:layout_constraintTop_toTopOf="@+id/gifAvatar" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>

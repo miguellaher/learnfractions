@@ -230,10 +230,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".teacher.ManageExamsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".student_activities.ClassRanksActivity"
+        <activity android:name=".student_activities.ClassRanksMainActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".rankings.ClassExerciseRanksActivity"
-            android:screenOrientation="portrait" />
         <activity android:name=".rankings.ClassExamRanksActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".rankings.ClassSeatWorkRanksActivity"

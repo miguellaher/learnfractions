@@ -217,7 +217,7 @@ public class StudentExamProgressActivity extends AppCompatActivity {
                 }
             }
         });
-        ExamStatService.getAllStats(teacher.getTeacher_code(), service);
+        //ExamStatService.getAllStats(teacher.getTeacher_code(), service);
     }
     private void setListViewAdapter(){
         studentExamProgressAdapter = new StudentExamProgressAdapter(mContext, R.layout.layout_seat_work_item, mExamStatAverages);

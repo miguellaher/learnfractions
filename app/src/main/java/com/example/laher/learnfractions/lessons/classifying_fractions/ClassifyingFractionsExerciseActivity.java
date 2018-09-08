@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.lessons.classifying_fractions;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,9 +17,12 @@ import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class ClassifyingFractionsExerciseActivity extends LessonExercise {
     //private static final String TAG = "CF_E1";
@@ -32,6 +36,9 @@ public class ClassifyingFractionsExerciseActivity extends LessonExercise {
     Button btnImproper;
     Button btnMixed;
     ImageView imgLine;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //VARIABLES
     ArrayList<ClassifyingFractionQuestion> mClassifyingFractionQuestions;
     ClassifyingFractionQuestion mClassifyingFractionQuestion;
@@ -67,11 +74,29 @@ public class ClassifyingFractionsExerciseActivity extends LessonExercise {
         btnProper = findViewById(R.id.clF_btnProper);
         btnImproper = findViewById(R.id.clF_btnImproper);
         btnMixed = findViewById(R.id.clF_btnMixed);
+
+        Styles.bgPaintMainBlue(btnProper);
+        Styles.bgPaintMainYellow(btnImproper);
+        Styles.bgPaintMainOrange(btnMixed);
+
         btnProper.setOnClickListener(new BtnAnswerListener());
         btnImproper.setOnClickListener(new BtnAnswerListener());
         btnMixed.setOnClickListener(new BtnAnswerListener());
         imgLine = findViewById(R.id.cfe_imgLine);
         imgLine.setImageResource(R.drawable.line);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.kid_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.playground_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.playground_bottom);
+
+        int resourceID = R.drawable.playground_toolbar;
+        setToolBarBackground(resourceID);
 
         startExercise();
     }

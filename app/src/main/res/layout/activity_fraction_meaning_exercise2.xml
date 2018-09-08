@@ -10,7 +10,7 @@
     <include layout="@layout/layout_toolbar" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/fme2_layout"
+        android:id="@+id/constraintLayoutBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -78,17 +78,6 @@
             app:srcCompat="@android:color/background_light" />
 
         <ImageView
-            android:id="@+id/fme2_imgAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/avatar" />
-
-        <ImageView
             android:id="@+id/a1_imgBox7"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -140,18 +129,6 @@
             app:layout_constraintEnd_toStartOf="@+id/a1_imgBox2"
             app:layout_constraintTop_toTopOf="@+id/a1_imgBox2"
             app:srcCompat="@android:color/background_light" />
-
-        <TextView
-            android:id="@+id/a1_txtInstruction"
-            android:layout_width="0dp"
-            android:layout_height="57dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:text="fill in the blanks"
-            app:layout_constraintBottom_toBottomOf="@+id/fme2_imgAvatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fme2_imgAvatar"
-            app:layout_constraintTop_toTopOf="@+id/fme2_imgAvatar" />
 
         <ImageView
             android:id="@+id/a1_imgBox8"
@@ -238,6 +215,40 @@
                 app:layout_constraintBottom_toBottomOf="@+id/fe_btnChoice1"
                 app:layout_constraintStart_toEndOf="@+id/fe_btnChoice1"
                 app:layout_constraintTop_toTopOf="@+id/fe_btnChoice1" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayoutBottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/a1_txtInstruction"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:text="fill in the blanks"
+                app:layout_constraintBottom_toBottomOf="@+id/fme2_imgAvatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/fme2_imgAvatar"
+                app:layout_constraintTop_toTopOf="@+id/fme2_imgAvatar" />
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/fme2_imgAvatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/avatar" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
