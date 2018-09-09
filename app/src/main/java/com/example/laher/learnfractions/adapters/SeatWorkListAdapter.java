@@ -64,6 +64,24 @@ public class SeatWorkListAdapter extends ArrayAdapter<SeatWork> {
         Styles.paintBlack(textView3);
 
         textView1.setText(topicName);
+
+        LinearLayout linearLayoutBackground1 = convertView.findViewById(R.id.linearLayoutBackground);
+
+        int activityPosition = position + 1;
+        while (activityPosition>4){
+            activityPosition = activityPosition - 4;
+        }
+
+        if (activityPosition==1){
+            Styles.bgPaintMainOrange(linearLayoutBackground1);
+        } else if (activityPosition==2){
+            Styles.bgPaintMainBlueGreen(linearLayoutBackground1);
+        } else if (activityPosition==3){
+            Styles.bgPaintMainBlue(linearLayoutBackground1);
+        } else if (activityPosition==4){
+            Styles.bgPaintMainYellow(linearLayoutBackground1);
+        }
+
         if (mUserType!=null) {
             if (mUserType.equals(AppConstants.TEACHER)) {
                 textView2.setText("No. of items");
@@ -81,7 +99,7 @@ public class SeatWorkListAdapter extends ArrayAdapter<SeatWork> {
                 textView2.setText(strTxtView2 + strCorrect + " / " + strItemSize);
             } else {
                 textView2.setText(textView2.getText().toString() + "__ / " + seatWork.getItems_size());
-                convertView.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
+                linearLayoutBackground1.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
             }
             textView3.setText("Time spent:\n");
             if (minutes>0){
@@ -93,23 +111,6 @@ public class SeatWorkListAdapter extends ArrayAdapter<SeatWork> {
             if (minutes<1&&seconds<1){
                 textView3.setText(textView3.getText().toString() + "__m__s");
             }
-        }
-
-        LinearLayout linearLayoutBackground1 = convertView.findViewById(R.id.linearLayoutBackground);
-
-        int activityPosition = position + 1;
-        while (activityPosition>4){
-            activityPosition = activityPosition - 4;
-        }
-
-        if (activityPosition==1){
-            Styles.bgPaintMainOrange(linearLayoutBackground1);
-        } else if (activityPosition==2){
-            Styles.bgPaintMainBlueGreen(linearLayoutBackground1);
-        } else if (activityPosition==3){
-            Styles.bgPaintMainBlue(linearLayoutBackground1);
-        } else if (activityPosition==4){
-            Styles.bgPaintMainYellow(linearLayoutBackground1);
         }
 
         return convertView;

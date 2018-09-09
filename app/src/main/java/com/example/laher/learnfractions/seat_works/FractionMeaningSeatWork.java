@@ -89,8 +89,6 @@ public class FractionMeaningSeatWork extends SeatWork {
         imgBox9 = findViewById(R.id.a1_imgBox9);
         inputNum = findViewById(R.id.fme2_inputNumerator);
         inputDenom = findViewById(R.id.fme2_inputDenominator);
-        imgAvatar = findViewById(R.id.fme2_imgAvatar);
-        imgAvatar.setImageResource(R.drawable.avatar);
         imgLine = findViewById(R.id.fme2_imgLine);
         imgLine.setImageResource(R.drawable.line);
         inputNum.setEnabled(false);
@@ -107,6 +105,12 @@ public class FractionMeaningSeatWork extends SeatWork {
         btnChoice2 = findViewById(R.id.fe_btnChoice2);
         btnChoice3 = findViewById(R.id.fe_btnChoice3);
         btnChoice4 = findViewById(R.id.a1_btnChoice4);
+
+        Styles.bgPaintMainBlue(btnChoice1);
+        Styles.bgPaintMainYellow(btnChoice2);
+        Styles.bgPaintMainOrange(btnChoice3);
+        Styles.bgPaintMainBlueGreen(btnChoice4);
+
         btnChoice1.setOnClickListener(new BtnChoiceListener());
         btnChoice2.setOnClickListener(new BtnChoiceListener());
         btnChoice3.setOnClickListener(new BtnChoiceListener());

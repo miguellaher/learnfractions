@@ -80,7 +80,7 @@ public class OrderingSimilarExercise2Activity extends LessonExercise {
         imageLine1 = findViewById(R.id.ose2_imgLine1);
         imageLine2 = findViewById(R.id.ose2_imgLine2);
         imageLine3 = findViewById(R.id.ose2_imgLine3);
-        imageAvatar = findViewById(R.id.os2_imgAvatar);
+        imageAvatar = findViewById(R.id.gifAvatar);
         imageLine1.setImageResource(R.drawable.line);
         imageLine2.setImageResource(R.drawable.line);
         imageLine3.setImageResource(R.drawable.line);

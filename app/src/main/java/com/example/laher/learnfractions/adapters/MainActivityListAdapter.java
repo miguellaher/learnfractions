@@ -19,12 +19,12 @@ import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
-public class TeacherMainActivityListAdapter extends ArrayAdapter<AppActivity> {
+public class MainActivityListAdapter extends ArrayAdapter<AppActivity> {
     private Context mContext;
     private int mResource;
     private String mUserType;
 
-    public TeacherMainActivityListAdapter(@NonNull Context context, int resource, ArrayList<AppActivity> appActivities) {
+    public MainActivityListAdapter(@NonNull Context context, int resource, ArrayList<AppActivity> appActivities) {
         super(context, resource, appActivities);
         mContext = context;
         mResource = resource;

@@ -232,13 +232,13 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
                 android:text="fill in the blanks"
-                app:layout_constraintBottom_toBottomOf="@+id/fme2_imgAvatar"
+                app:layout_constraintBottom_toBottomOf="@+id/gifAvatar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/fme2_imgAvatar"
-                app:layout_constraintTop_toTopOf="@+id/fme2_imgAvatar" />
+                app:layout_constraintStart_toEndOf="@+id/gifAvatar"
+                app:layout_constraintTop_toTopOf="@+id/gifAvatar" />
 
             <pl.droidsonroids.gif.GifImageView
-                android:id="@+id/fme2_imgAvatar"
+                android:id="@+id/gifAvatar"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginBottom="8dp"
@@ -247,8 +247,7 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/avatar" />
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>

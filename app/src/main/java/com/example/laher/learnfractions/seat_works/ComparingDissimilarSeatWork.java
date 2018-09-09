@@ -16,6 +16,7 @@ import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
@@ -81,6 +82,11 @@ public class ComparingDissimilarSeatWork extends SeatWork {
         btnGreater = findViewById(R.id.d2_btnGreater);
         btnEquals = findViewById(R.id.d2_btnEquals);
         btnLess = findViewById(R.id.d2_btnLess);
+
+        Styles.bgPaintMainBlue(btnGreater);
+        Styles.bgPaintMainYellow(btnEquals);
+        Styles.bgPaintMainOrange(btnLess);
+
         btnGreater.setOnClickListener(new BtnListener());
         btnEquals.setOnClickListener(new BtnListener());
         btnLess.setOnClickListener(new BtnListener());

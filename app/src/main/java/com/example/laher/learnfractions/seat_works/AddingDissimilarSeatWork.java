@@ -16,6 +16,7 @@ import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +43,6 @@ public class AddingDissimilarSeatWork extends SeatWork {
     ImageView imgLine1;
     ImageView imgLine2;
     ImageView imgLine3;
-    ImageView imgAvatar;
 
     ArrayList<AddingDissimilarFractionsQuestion> fractionQuestions;
     AddingDissimilarFractionsQuestion fractionQuestion;
@@ -90,14 +90,18 @@ public class AddingDissimilarSeatWork extends SeatWork {
         btnChoice2.setOnClickListener(new BtnChoiceListener());
         btnChoice3.setOnClickListener(new BtnChoiceListener());
         btnChoice4.setOnClickListener(new BtnChoiceListener());
+
+        Styles.bgPaintMainBlue(btnChoice1);
+        Styles.bgPaintMainYellow(btnChoice2);
+        Styles.bgPaintMainOrange(btnChoice3);
+        Styles.bgPaintMainBlueGreen(btnChoice4);
+
         imgLine1 = findViewById(R.id.fe_imgLine1);
         imgLine2 = findViewById(R.id.fe_imgLine2);
         imgLine3 = findViewById(R.id.fe_imgLine3);
-        imgAvatar = findViewById(R.id.gifAvatar);
         imgLine1.setImageResource(R.drawable.line);
         imgLine2.setImageResource(R.drawable.line);
         imgLine3.setImageResource(R.drawable.line);
-        imgAvatar.setImageResource(R.drawable.avatar);
 
         disableInputFraction();
         go();

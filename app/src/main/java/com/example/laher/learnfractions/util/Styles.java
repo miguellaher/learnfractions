@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
@@ -163,5 +164,21 @@ public class Styles {
 
     public static void bgPaintMainYellow(LinearLayout linearLayout) {
         linearLayout.setBackgroundColor(Color.rgb(255,193,7));
+    }
+
+    public static void bgPaintMainBlue(RelativeLayout relativeLayout) {
+        relativeLayout.setBackgroundColor(Color.rgb(33,150,243));
+    }
+
+    public static void bgPaintMainYellow(RelativeLayout relativeLayout) {
+        relativeLayout.setBackgroundColor(Color.rgb(255,193,7));
+    }
+
+    public static void bgPaintMainOrange(RelativeLayout relativeLayout) {
+        relativeLayout.setBackgroundColor(Color.rgb(241,105,60));
+    }
+
+    public static void bgPaintMainBlueGreen(RelativeLayout relativeLayout) {
+        relativeLayout.setBackgroundColor(Color.rgb(13,139,156));
     }
 }

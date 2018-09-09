@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -20,13 +21,20 @@ import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class SeatWork extends AppCompatActivity {
     private Context context;
-    //TOOLBAR
+    //TOOLBAR || GUI
     protected Button buttonBack;
     protected Button buttonNext;
     protected TextView txtTitle;
+    protected GifImageView gifAvatar;
     //IMPORTANT DETAILS
     private String id;
     private int seatWorkNum; // REMEMBER TO REMOVE
@@ -290,11 +298,42 @@ public class SeatWork extends AppCompatActivity {
         }
 
         setToolBarGui();
+        setImgAvatar();
+    }
+
+    private void setImgAvatar() {
+        gifAvatar = findViewById(R.id.gifAvatar);
+
+        ArrayList<Integer> resourceIDs = getResourceIDs();
+        Collections.shuffle(resourceIDs);
+        int resourceID = resourceIDs.get(0);
+        gifAvatar.setImageResource(resourceID);
+    }
+
+    private ArrayList<Integer> getResourceIDs(){
+        // GIF
+        int gentleFrits = R.drawable.gentle_frits;
+        int kidFrits = R.drawable.kid_frits;
+        int safariFrits = R.drawable.safari_frits;
+        int summerFrits = R.drawable.summer_frits;
+
+        ArrayList<Integer> resourceIDs = new ArrayList<>();
+        resourceIDs.add(gentleFrits);
+        resourceIDs.add(kidFrits);
+        resourceIDs.add(safariFrits);
+        resourceIDs.add(summerFrits);
+
+        return resourceIDs;
     }
 
     private void setToolBarGui(){
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+        Styles.bgPaintMainYellow(toolbar);
+
         buttonBack = findViewById(R.id.btnBack);
         buttonBack.setOnClickListener(new ButtonBackListener());
+        Styles.bgPaintMainBlue(buttonBack);
+
         buttonNext = findViewById(R.id.btnNext);
         buttonNext.setVisibility(View.INVISIBLE);
         txtTitle = findViewById(R.id.txtTitle);

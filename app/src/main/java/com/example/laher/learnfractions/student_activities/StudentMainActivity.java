@@ -3,30 +3,42 @@ package com.example.laher.learnfractions.student_activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.ChapterExamListActivity;
+import com.example.laher.learnfractions.LessonsMenuActivity;
 import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
-import com.example.laher.learnfractions.LessonsMenuActivity;
+import com.example.laher.learnfractions.adapters.MainActivityListAdapter;
+import com.example.laher.learnfractions.classes.AppActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
 
+import java.util.ArrayList;
+
 public class StudentMainActivity extends AppCompatActivity {
     Context mContext = this;
-    Button btnLessons, btnSeatWorks, btnChapterExam, btnClassRanks;
 
     //TOOLBAR
     TextView txtTitle;
-    Button btnBack, btnNext;
+    Button btnBack;
+    Button btnNext;
+    //ACTIVITY
+    ListView listViewButtons;
+    TextView txtWelcome;
+    ImageView imgAvatar;
+    ConstraintLayout constraintLayoutBackground;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,57 +69,57 @@ public class StudentMainActivity extends AppCompatActivity {
         btnBack.setText(AppConstants.LOG_OUT);
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
-        //GUI
-        btnLessons = findViewById(R.id.student_main_btnLessons);
-        btnLessons.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StudentMainActivity.this,
-                        LessonsMenuActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnSeatWorks = findViewById(R.id.student_main_btnSeatworks);
-        btnSeatWorks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StudentMainActivity.this,
-                        SeatWorkListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnChapterExam = findViewById(R.id.student_main_btnChapterExam);
-        btnChapterExam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StudentMainActivity.this,
-                        ChapterExamListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-        btnClassRanks = findViewById(R.id.student_main_btnClassRanks);
-        btnClassRanks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StudentMainActivity.this,
-                        ClassRanksMainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-
+        //ACTIVITY
         ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
         Styles.bgPaintMainYellow(toolbar);
 
         Styles.bgPaintMainBlue(btnBack);
 
-        Styles.bgPaintMainBlue(btnLessons);
-        Styles.bgPaintMainYellow(btnSeatWorks);
-        Styles.bgPaintMainOrange(btnChapterExam);
-        Styles.bgPaintMainBlueGreen(btnClassRanks);
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        Styles.bgPaintRandomMainSet2(constraintLayoutBackground);
+
+        imgAvatar = findViewById(R.id.student_main_imgAvatar);
+        int resource = Styles.getRandomFritsImageResource();
+        imgAvatar.setImageResource(resource);
+
+        txtWelcome = findViewById(R.id.student_main_txtWelcome);
+        String studentUsername = Storage.load(mContext, Storage.STUDENT_USERNAME);
+        String strWelcome = "Welcome! " + studentUsername + ".";
+        txtWelcome.setText(strWelcome);
+        Styles.paintBlack(txtWelcome);
+
+        String LessonsTitle = "Lessons";
+        AppActivity manageExercises = new AppActivity(mContext, LessonsMenuActivity.class, LessonsTitle);
+        String seatworksTitle = "Seatworks";
+        AppActivity manageSeatworks = new AppActivity(mContext, SeatWorkListActivity.class, seatworksTitle);
+        String chapterExamsTitle = "Chapter Exams";
+        AppActivity manageExams = new AppActivity(mContext, ChapterExamListActivity.class, chapterExamsTitle);
+        String classRanksTitle = "Class Ranks";
+        AppActivity classRanks = new AppActivity(mContext, ClassRanksMainActivity.class, classRanksTitle);
+
+        final ArrayList<AppActivity> activities = new ArrayList<>();
+        activities.add(manageExercises);
+        activities.add(manageSeatworks);
+        activities.add(manageExams);
+        activities.add(classRanks);
+
+        MainActivityListAdapter adapter = new MainActivityListAdapter(mContext, R.layout.teacher_main_activity_list_item, activities);
+
+        listViewButtons = findViewById(R.id.student_main_listButtons);
+        listViewButtons.setAdapter(adapter);
+
+        listViewButtons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AppActivity appActivity = activities.get(position);
+                Context context = appActivity.getContext();
+                Class theClass = appActivity.getTheClass();
+
+                Intent intent = new Intent(context, theClass);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
 
         /*TEMPORARY
         btnSeatWorks.setEnabled(false);

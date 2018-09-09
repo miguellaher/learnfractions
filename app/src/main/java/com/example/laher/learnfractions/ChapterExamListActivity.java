@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -83,6 +84,8 @@ public class ChapterExamListActivity extends AppCompatActivity {
         btnNext.setVisibility(View.INVISIBLE);
 
         mChapterExams = getChapterExams();
+
+        setLinearLayoutBackground();
 
         setExamListView();
     }
@@ -252,6 +255,26 @@ public class ChapterExamListActivity extends AppCompatActivity {
         chapterExams.add(chapterExam6);
 
         return chapterExams;
+    }
+
+    private void setLinearLayoutBackground(){
+        int exams = mChapterExams.size();
+
+        while (exams>4){
+            exams = exams - 4;
+        }
+
+        LinearLayout linearLayoutBackground = findViewById(R.id.linearLayoutBackground);
+
+        if (exams == 1) {
+            Styles.bgPaintMainBlueGreen(linearLayoutBackground);
+        } else if (exams == 2) {
+            Styles.bgPaintMainBlue(linearLayoutBackground);
+        } else if (exams == 3) {
+            Styles.bgPaintMainYellow(linearLayoutBackground);
+        } else if (exams == 4) {
+            Styles.bgPaintMainOrange(linearLayoutBackground);
+        }
     }
 
     @Override

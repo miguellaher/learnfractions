@@ -24,6 +24,7 @@ import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
 import java.util.ArrayList;
@@ -90,6 +91,12 @@ public class MultiplyDivideMixedFractionsSeatWork extends SeatWork {
         btnChoice2 = findViewById(R.id.fe_btnChoice2);
         btnChoice3 = findViewById(R.id.fe_btnChoice3);
         btnChoice4 = findViewById(R.id.fe_btnChoice4);
+
+        Styles.bgPaintMainBlue(btnChoice1);
+        Styles.bgPaintMainYellow(btnChoice2);
+        Styles.bgPaintMainOrange(btnChoice3);
+        Styles.bgPaintMainBlueGreen(btnChoice4);
+
         btnChoice1.setOnClickListener(new BtnChoiceListener());
         btnChoice2.setOnClickListener(new BtnChoiceListener());
         btnChoice3.setOnClickListener(new BtnChoiceListener());

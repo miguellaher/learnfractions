@@ -25,7 +25,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        android:text="CANCEL"
+        android:text="NO"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialog_confirmation_txtMessage" />
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="OK"
+        android:text="YES"
         app:layout_constraintBottom_toBottomOf="@+id/dialog_confirmation_btnCancel"
         app:layout_constraintEnd_toStartOf="@+id/dialog_confirmation_btnCancel"
         app:layout_constraintTop_toTopOf="@+id/dialog_confirmation_btnCancel" />

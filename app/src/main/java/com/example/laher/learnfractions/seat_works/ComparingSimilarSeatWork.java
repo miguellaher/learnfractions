@@ -14,6 +14,7 @@ import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
@@ -72,6 +73,11 @@ public class ComparingSimilarSeatWork extends SeatWork {
         btnGreater.setText(AppConstants.GREATER_THAN);
         btnEquals.setText(AppConstants.EQUAL_TO);
         btnLess.setText(AppConstants.LESS_THAN);
+
+        Styles.bgPaintMainBlue(btnGreater);
+        Styles.bgPaintMainYellow(btnEquals);
+        Styles.bgPaintMainOrange(btnLess);
+
         btnGreater.setOnClickListener(new BtnListener());
         btnEquals.setOnClickListener(new BtnListener());
         btnLess.setOnClickListener(new BtnListener());

@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/os2_imgAvatar"
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gifAvatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginBottom="8dp"
@@ -31,10 +31,10 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:text="click from least to greatest"
-            app:layout_constraintBottom_toBottomOf="@+id/os2_imgAvatar"
+            app:layout_constraintBottom_toBottomOf="@+id/gifAvatar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/os2_imgAvatar"
-            app:layout_constraintTop_toTopOf="@+id/os2_imgAvatar" />
+            app:layout_constraintStart_toEndOf="@+id/gifAvatar"
+            app:layout_constraintTop_toTopOf="@+id/gifAvatar" />
 
         <TextView
             android:id="@+id/os2_txtScore"

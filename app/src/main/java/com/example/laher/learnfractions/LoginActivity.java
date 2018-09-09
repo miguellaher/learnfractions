@@ -159,9 +159,8 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             final Student student = new Student();
                             student.setId(response.optString("id"));
-                            Log.d(TAG, response.optString("id"));
+                            student.setUsername(response.optString("username"));
                             student.setTeacher_code(response.optString("teacher_code"));
-                            Log.d(TAG, response.optString("teacher_code"));
                             Storage.save(mContext, student);
                             Intent intent = new Intent(LoginActivity.this,
                                     StudentMainActivity.class);

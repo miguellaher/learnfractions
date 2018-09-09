@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
@@ -51,13 +53,30 @@ public class ChapterExamListAdapter extends ArrayAdapter<ChapterExam> {
         TextView textView2 = convertView.findViewById(R.id.user_item_txtView2);
         TextView textView3 = convertView.findViewById(R.id.user_item_txtView3);
 
+        LinearLayout linearLayoutBackground1 = convertView.findViewById(R.id.linearLayoutBackground);
+
+        int activityPosition = position + 1;
+        while (activityPosition>4){
+            activityPosition = activityPosition - 4;
+        }
+
+        if (activityPosition==1){
+            Styles.bgPaintMainOrange(linearLayoutBackground1);
+        } else if (activityPosition==2){
+            Styles.bgPaintMainBlueGreen(linearLayoutBackground1);
+        } else if (activityPosition==3){
+            Styles.bgPaintMainBlue(linearLayoutBackground1);
+        } else if (activityPosition==4){
+            Styles.bgPaintMainYellow(linearLayoutBackground1);
+        }
+
         textView1.setText(title);
         textView2.setText("Score: ");
         if(chapterExam.isAnswered()) {
             textView2.setText(textView2.getText().toString() + score + " / " + chapterExam.getTotalItems());
         } else {
             textView2.setText(textView2.getText().toString() + "__ / " + chapterExam.getTotalItems());
-            convertView.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
+            linearLayoutBackground1.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
         }
         textView3.setText("Time spent:\n");
         if (minutes>0){

@@ -2,6 +2,7 @@ package com.example.laher.learnfractions.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,8 +16,10 @@ import com.bumptech.glide.Glide;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.parent_activities.Lesson;
 import com.example.laher.learnfractions.util.AppCache;
+import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,12 +51,37 @@ public class LessonsViewAdapter extends RecyclerView.Adapter<LessonsViewAdapter.
         ArrayList<Lesson> lessons = this.lessons;
         final Lesson lesson = lessons.get(position);
         final String lessonName = lesson.getLessonName();
-        String imageUrl = lesson.getImageUrl();
+
+        int lessonPosition = position + 1;
+        
+        ArrayList<Integer> resources = getResources();
+        int resourcesSize = resources.size();
+        while (lessonPosition>resourcesSize){
+            lessonPosition = lessonPosition - resourcesSize;
+        }
+        int resource = resources.get(lessonPosition-1);
+        String imgUrl = getURLForResource(resource);
         final Class lessonClass = lesson.getClass();
+        
+        lessonPosition = position + 1;
+        
+        while (lessonPosition>4){
+            lessonPosition = lessonPosition - 4;
+        }
+
+        if (lessonPosition==1){
+            Styles.bgPaintMainOrange(holder.parentLayout);
+        } else if (lessonPosition==2){
+            Styles.bgPaintMainBlueGreen(holder.parentLayout);
+        } else if (lessonPosition==3){
+            Styles.bgPaintMainBlue(holder.parentLayout);
+        } else if (lessonPosition==4){
+            Styles.bgPaintMainYellow(holder.parentLayout);
+        }
 
         Glide.with(mContext)
                 .asBitmap()
-                .load(imageUrl)
+                .load(imgUrl)
                 .into(holder.imgTopic);
 
         holder.txtTopicName.setText(lessonName);
@@ -89,5 +117,24 @@ public class LessonsViewAdapter extends RecyclerView.Adapter<LessonsViewAdapter.
             txtTopicName = itemView.findViewById(R.id.txtTopic);
             parentLayout = itemView.findViewById(R.id.parent_layout_topic);
         }
+    }
+
+    private ArrayList<Integer> getResources(){
+        int gentleFrits = R.drawable.gentle_frits_pic;
+        int kidFrits = R.drawable.kid_frits_pic;
+        int safariFrits = R.drawable.safari_frits_pic;
+        int summerFrits = R.drawable.summer_frits_pic;
+
+        ArrayList<Integer> resources = new ArrayList<>();
+        resources.add(gentleFrits);
+        resources.add(kidFrits);
+        resources.add(safariFrits);
+        resources.add(summerFrits);
+
+        return resources;
+    }
+
+    private String getURLForResource(int resourceId) {
+        return Uri.parse("android.resource://"+R.class.getPackage().getName()+"/" +resourceId).toString();
     }
 }

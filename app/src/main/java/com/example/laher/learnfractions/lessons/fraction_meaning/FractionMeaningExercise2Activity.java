@@ -91,7 +91,7 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
         imgBox8 = findViewById(R.id.a1_imgBox8);
         imgBox9 = findViewById(R.id.a1_imgBox9);
         imgLine = findViewById(R.id.fme2_imgLine);
-        gifAvatar = findViewById(R.id.fme2_imgAvatar);
+        gifAvatar = findViewById(R.id.gifAvatar);
         int gifID = R.drawable.gentle_frits;
         gifAvatar.setImageResource(gifID);
         imgLine.setImageResource(R.drawable.line);

@@ -7,53 +7,43 @@
     android:orientation="vertical"
     tools:context=".student_activities.StudentMainActivity">
 
-    <include layout="@layout/layout_toolbar"/>
+    <include layout="@layout/layout_toolbar" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayoutBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/student_main_btnLessons"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/student_main_txtWelcome"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:text="LESSONS"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/student_main_imgAvatar"
+            app:layout_constraintStart_toStartOf="@+id/student_main_imgAvatar"
+            app:layout_constraintTop_toBottomOf="@+id/student_main_imgAvatar" />
+
+        <ImageView
+            android:id="@+id/student_main_imgAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_background" />
 
-        <Button
-            android:id="@+id/student_main_btnSeatworks"
+        <ListView
+            android:id="@+id/student_main_listButtons"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="SEATWORKS"
-            app:layout_constraintEnd_toEndOf="@+id/student_main_btnLessons"
-            app:layout_constraintStart_toStartOf="@+id/student_main_btnLessons"
-            app:layout_constraintTop_toBottomOf="@+id/student_main_btnLessons" />
-
-        <Button
-            android:id="@+id/student_main_btnChapterExam"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="CHAPTER EXAM"
-            app:layout_constraintEnd_toEndOf="@+id/student_main_btnSeatworks"
-            app:layout_constraintStart_toStartOf="@+id/student_main_btnSeatworks"
-            app:layout_constraintTop_toBottomOf="@+id/student_main_btnSeatworks" />
-
-        <Button
-            android:id="@+id/student_main_btnClassRanks"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="CLASS RANKS"
-            app:layout_constraintEnd_toEndOf="@+id/student_main_btnChapterExam"
-            app:layout_constraintStart_toStartOf="@+id/student_main_btnChapterExam"
-            app:layout_constraintTop_toBottomOf="@+id/student_main_btnChapterExam" />
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/student_main_txtWelcome" />
 
     </android.support.constraint.ConstraintLayout>
 

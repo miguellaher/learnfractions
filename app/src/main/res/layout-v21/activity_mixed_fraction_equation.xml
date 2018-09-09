@@ -260,7 +260,7 @@
             app:layout_constraintStart_toEndOf="@+id/gifAvatar"
             app:layout_constraintTop_toTopOf="@+id/gifAvatar" />
 
-        <ImageView
+        <pl.droidsonroids.gif.GifImageView
             android:id="@+id/gifAvatar"
             android:layout_width="100dp"
             android:layout_height="100dp"

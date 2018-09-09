@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
-import com.example.laher.learnfractions.adapters.TeacherMainActivityListAdapter;
+import com.example.laher.learnfractions.adapters.MainActivityListAdapter;
 import com.example.laher.learnfractions.classes.AppActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.student_activities.ClassRanksMainActivity;
@@ -70,6 +70,9 @@ public class TeacherMainActivity extends AppCompatActivity {
         txtTitle.setText(AppConstants.TEACHER_MAIN);
 
         //ACTIVITY
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+        Styles.bgPaintMainYellow(toolbar);
+
         constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
         Styles.bgPaintRandomMainSet2(constraintLayoutBackground);
 
@@ -98,12 +101,10 @@ public class TeacherMainActivity extends AppCompatActivity {
         activities.add(manageExams);
         activities.add(classRanks);
 
-        TeacherMainActivityListAdapter adapter = new TeacherMainActivityListAdapter(mContext, R.layout.teacher_main_activity_list_item, activities);
+        MainActivityListAdapter adapter = new MainActivityListAdapter(mContext, R.layout.teacher_main_activity_list_item, activities);
 
         listViewButtons = findViewById(R.id.teacher_main_listButtons);
         listViewButtons.setAdapter(adapter);
-        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
-        Styles.bgPaintMainYellow(toolbar);
 
         listViewButtons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
