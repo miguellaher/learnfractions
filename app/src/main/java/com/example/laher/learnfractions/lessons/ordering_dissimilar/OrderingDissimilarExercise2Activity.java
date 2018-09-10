@@ -29,6 +29,8 @@ import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class OrderingDissimilarExercise2Activity extends LessonExercise {
     //private static final String TAG = "OD_E2";
     //EQUATION DIALOG
@@ -78,7 +80,9 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
     ImageView imgLine4;
     ImageView imgLine5;
     ImageView imgLine6;
-    ImageView imgAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //VARIABLES
     ArrayList<OrderingDissimilarQuestion> mOrderingDissimilarQuestions;
     OrderingDissimilarQuestion mOrderingDissimilarQuestion;
@@ -169,14 +173,25 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
         imgLine4 = findViewById(R.id.od_imgLine4);
         imgLine5 = findViewById(R.id.od_imgLine5);
         imgLine6 = findViewById(R.id.od_imgLine6);
-        imgAvatar = findViewById(R.id.od_imgAvatar);
         imgLine1.setImageResource(R.drawable.line);
         imgLine2.setImageResource(R.drawable.line);
         imgLine3.setImageResource(R.drawable.line);
         imgLine4.setImageResource(R.drawable.line);
         imgLine5.setImageResource(R.drawable.line);
         imgLine6.setImageResource(R.drawable.line);
-        imgAvatar.setImageResource(R.drawable.avatar);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.kid_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.playground_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.playground_bottom);
+
+        int resourceID = R.drawable.playground_toolbar;
+        setToolBarBackground(resourceID);
 
         startExercise();
     }

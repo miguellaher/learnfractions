@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".lessons.non_visual_fraction.NonVisualExerciseActivity">
+    tools:mContext=".lessons.non_visual_fraction.NonVisualExerciseActivity">
 
     <include
         layout="@layout/layout_toolbar"/>

@@ -15,17 +15,8 @@ import java.util.ArrayList;
 public class Lesson extends AppCompatActivity {
     private Context context = this;
     private String lessonName;
-    private String imageUrl;
     private ArrayList<Activity> activities;
     private int activityNumber;
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 
     public String getLessonName() {
         return lessonName;
@@ -47,9 +38,6 @@ public class Lesson extends AppCompatActivity {
     {
         this.lessonName = lessonName;
         activities = new ArrayList<>();
-    }
-
-    public Lesson() {
     }
 
     @Override

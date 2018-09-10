@@ -140,7 +140,7 @@ public class StudentEProgressActivity extends AppCompatActivity {
                 }
             }
         });
-        ExerciseStatService.getAllStats(Storage.load(mContext,Storage.TEACHER_CODE),service);
+        //ExerciseStatService.getAllStats(Storage.load(mContext,Storage.TEACHER_CODE),service);
     }
     private boolean isUpdated(ExerciseStat exerciseStat) {
         for (Exercise exercise : mExercises) {

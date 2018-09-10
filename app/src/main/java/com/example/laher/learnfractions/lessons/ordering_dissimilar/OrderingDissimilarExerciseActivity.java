@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -25,6 +26,8 @@ import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class OrderingDissimilarExerciseActivity extends LessonExercise {
     //private static final String TAG = "OD_E1";
     //LCM DIALOG
@@ -41,6 +44,9 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
     TextView txtNum3;
     TextView txtScore;
     TextView txtInstruction;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //VARIABLES
     ArrayList<GettingLcmQuestion> mGettingLcmQuestions;
     GettingLcmQuestion mGettingLcmQuestion;
@@ -92,6 +98,19 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
         txtNum3 = findViewById(R.id.od1_txtNum3);
         txtScore = findViewById(R.id.od1_txtScore);
         txtInstruction = findViewById(R.id.od1_txtInstruction);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.kid_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.playground_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.playground_bottom);
+
+        int resourceID = R.drawable.playground_toolbar;
+        setToolBarBackground(resourceID);
 
         startExercise();
     }

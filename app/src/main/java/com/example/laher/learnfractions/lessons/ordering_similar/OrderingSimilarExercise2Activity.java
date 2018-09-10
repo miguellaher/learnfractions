@@ -18,6 +18,8 @@ import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class OrderingSimilarExercise2Activity extends LessonExercise {
     //private static final String TAG = "OS_E2";
     //GUI
@@ -35,7 +37,9 @@ public class OrderingSimilarExercise2Activity extends LessonExercise {
     ImageView imageLine1;
     ImageView imageLine2;
     ImageView imageLine3;
-    ImageView imageAvatar;
+    GifImageView gifAvatar;
+    ConstraintLayout constraintLayoutBackground;
+    ConstraintLayout constraintLayoutBottom;
     //VARIABLES
     ArrayList<OrderingSimilarQuestion> mOrderingSimilarQuestions;
     OrderingSimilarQuestion mOrderingSimilarQuestion;
@@ -80,11 +84,22 @@ public class OrderingSimilarExercise2Activity extends LessonExercise {
         imageLine1 = findViewById(R.id.ose2_imgLine1);
         imageLine2 = findViewById(R.id.ose2_imgLine2);
         imageLine3 = findViewById(R.id.ose2_imgLine3);
-        imageAvatar = findViewById(R.id.gifAvatar);
         imageLine1.setImageResource(R.drawable.line);
         imageLine2.setImageResource(R.drawable.line);
         imageLine3.setImageResource(R.drawable.line);
-        imageAvatar.setImageResource(R.drawable.avatar);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.kid_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.playground_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.playground_bottom);
+
+        int resourceID = R.drawable.playground_toolbar;
+        setToolBarBackground(resourceID);
 
         startExercise();
     }

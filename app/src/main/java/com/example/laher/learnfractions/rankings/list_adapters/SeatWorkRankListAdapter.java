@@ -110,7 +110,9 @@ public class SeatWorkRankListAdapter extends ArrayAdapter<SeatWorkRank> {
         holder.txtRank.setText(strTop + " " + strRank);
         holder.txtSWDone.setText(strSWDone);
         holder.txtTotalScore.setText(strScore + " / " + strTotalItemsSize);
-        if (minutes<=0){
+
+        holder.txtTotalTime.setText("");
+        if (minutes>0){
             holder.txtTotalTime.setText(minutes + "m");
         }
         String strTxtTotalTime = holder.txtTotalTime.getText().toString().trim();

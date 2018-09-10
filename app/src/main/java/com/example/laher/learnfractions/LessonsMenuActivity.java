@@ -124,95 +124,78 @@ public class LessonsMenuActivity extends AppCompatActivity {
 
         //Lessons
         Lesson fractionMeaningLesson = new Lesson("Fraction Meaning");
-        fractionMeaningLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         fractionMeaningLesson.addActivity(new FractionMeaningVideoActivity());
         fractionMeaningLesson.addActivity(new FractionMeaningExerciseActivity());
         fractionMeaningLesson.addActivity(new FractionMeaningExercise2Activity());
 
         Lesson nonVisualLesson = new Lesson("Non-Visual Fractions");
-        nonVisualLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         nonVisualLesson.addActivity(new NonVisualVideoActivity());
         nonVisualLesson.addActivity(new NonVisualExerciseActivity());
         nonVisualLesson.addActivity(new NonVisualExercise2Activity());
 
         Lesson comparingSimilarLesson = new Lesson("Comparing Similar Fractions");
-        comparingSimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         comparingSimilarLesson.addActivity(new ComparingSimilarVideoActivity());
         comparingSimilarLesson.addActivity(new ComparingSimilarExerciseActivity());
         comparingSimilarLesson.addActivity(new ComparingSimilarExercise2Activity());
 
         Lesson comparingDissimilarLesson = new Lesson("Comparing Dissimilar Fractions");
-        comparingDissimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         comparingDissimilarLesson.addActivity(new ComparingDissimilarVideoActivity());
         comparingDissimilarLesson.addActivity(new ComparingDissimilarExerciseActivity());
         comparingDissimilarLesson.addActivity(new ComparingDissimilarExercise2Activity());
 
         Lesson comparingFractionsLesson = new Lesson("Comparing Fractions");
-        comparingFractionsLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         comparingFractionsLesson.addActivity(new ComparingFractionsVideoActivity());
         comparingFractionsLesson.addActivity(new ComparingFractionsExerciseActivity());
         comparingFractionsLesson.addActivity(new ComparingFractionsExercise2Activity());
 
         Lesson orderingSimilarLesson = new Lesson("Ordering Similar Fractions");
-        orderingSimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         orderingSimilarLesson.addActivity(new OrderingSimilarVideoActivity());
         orderingSimilarLesson.addActivity(new OrderingSimilarExerciseActivity());
         orderingSimilarLesson.addActivity(new OrderingSimilarExercise2Activity());
 
         Lesson orderingDissimilarLesson = new Lesson("Ordering Dissimilar Fractions");
-        orderingDissimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         orderingDissimilarLesson.addActivity(new OrderingDissimilarVideoActivity());
         orderingDissimilarLesson.addActivity(new OrderingDissimilarExerciseActivity());
         orderingDissimilarLesson.addActivity(new OrderingDissimilarExercise2Activity());
 
         Lesson classifyingFractionsLesson = new Lesson("Classifying Fractions");
-        classifyingFractionsLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         classifyingFractionsLesson.addActivity(new ClassifyingFractionsVideoActivity());
         classifyingFractionsLesson.addActivity(new ClassifyingFractionsExerciseActivity());
 
         Lesson convertingFractionsLesson = new Lesson("Converting Fractions");
-        convertingFractionsLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         convertingFractionsLesson.addActivity(new ConvertingFractionsVideoActivity());
         convertingFractionsLesson.addActivity(new ConvertingFractionsExerciseActivity());
         convertingFractionsLesson.addActivity(new ConvertingFractionsExercise2Activity());
 
         Lesson addingSimilarLesson = new Lesson("Adding Similar Fractions");
-        addingSimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         addingSimilarLesson.addActivity(new AddingSimilarVideoActivity());
         addingSimilarLesson.addActivity(new AddingSimilarExerciseActivity());
 
         Lesson addingDissimilarLesson = new Lesson("Adding Dissimilar Fractions");
-        addingDissimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         addingDissimilarLesson.addActivity(new AddingDissimilarVideoActivity());
         addingDissimilarLesson.addActivity(new AddingDissimilarExerciseActivity());
 
         Lesson subtractingSimilarLesson = new Lesson("Subtracting Similar Fractions");
-        subtractingSimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         subtractingSimilarLesson.addActivity(new SubtractingSimilarVideoActivity());
         subtractingSimilarLesson.addActivity(new SubtractingSimilarExerciseActivity());
 
         Lesson subtractingDissimilarLesson = new Lesson("Subtracting Dissimilar Fractions");
-        subtractingDissimilarLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         subtractingDissimilarLesson.addActivity(new SubtractingDissimilarVideoActivity());
         subtractingDissimilarLesson.addActivity(new SubtractingDissimilarExerciseActivity());
 
         Lesson multiplyingLesson = new Lesson("Multiplying Fractions");
-        multiplyingLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         multiplyingLesson.addActivity(new MultiplyingFractionsVideoActivity());
         multiplyingLesson.addActivity(new MultiplyingFractionsExerciseActivity());
 
         Lesson dividingLesson = new Lesson("Dividing Fractions");
-        dividingLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         dividingLesson.addActivity(new DividingFractionsVideoActivity());
         dividingLesson.addActivity(new DividingFractionsExerciseActivity());
 
         Lesson solvingMixedLesson = new Lesson("Adding and Subtracting with Mixed Fraction");
-        solvingMixedLesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         solvingMixedLesson.addActivity(new SolvingMixedVideoActivity());
         solvingMixedLesson.addActivity(new SolvingMixedExerciseActivity());
 
         Lesson solvingMixed2Lesson = new Lesson("Multiplying and Dividing with Mixed Fraction");
-        solvingMixed2Lesson.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Salto_del_Angel-Canaima-Venezuela08.JPG/1200px-Salto_del_Angel-Canaima-Venezuela08.JPG");
         solvingMixed2Lesson.addActivity(new SolvingMixed2VideoActivity());
         solvingMixed2Lesson.addActivity(new SolvingMixed2ExerciseActivity());
 

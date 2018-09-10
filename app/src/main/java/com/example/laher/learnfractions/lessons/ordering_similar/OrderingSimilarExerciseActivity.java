@@ -63,6 +63,20 @@ public class OrderingSimilarExerciseActivity extends LessonExercise {
         txtNum3 = findViewById(R.id.os_txtNum3);
         txtScore = findViewById(R.id.os_txtScore);
         txtInstruction = findViewById(R.id.os_txtInstruction);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.kid_frits;
+        gifAvatar.setImageResource(gifID);
+
+        constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
+        constraintLayoutBackground.setBackgroundResource(R.drawable.playground_background);
+
+        constraintLayoutBottom = findViewById(R.id.constraintLayoutBottom);
+        constraintLayoutBottom.setBackgroundResource(R.drawable.playground_bottom);
+
+        int resourceID = R.drawable.playground_toolbar;
+        setToolBarBackground(resourceID);
+
         startExercise();
     }
     public void setQuestions(){

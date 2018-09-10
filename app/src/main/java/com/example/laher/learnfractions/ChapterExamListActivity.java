@@ -162,6 +162,7 @@ public class ChapterExamListActivity extends AppCompatActivity {
             public void postExecute(JSONObject response) {
                 try{
                     int item_count = Integer.valueOf(response.optString("item_count"));
+
                     ArrayList<SeatWork> builtInSeatWorks = SeatWorkListActivity.getSeatWorks(); // "ARCHIVE OF SEATWORKS"
 
                     for (int i = 1; i <= item_count; i++) {
@@ -281,5 +282,10 @@ public class ChapterExamListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateExams();
+    }
+
+    @Override
+    public void onBackPressed() {
+        btnBack.performClick();
     }
 }

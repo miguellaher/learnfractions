@@ -17,6 +17,7 @@ import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
+import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -338,6 +339,11 @@ public class SeatWork extends AppCompatActivity {
         buttonNext.setVisibility(View.INVISIBLE);
         txtTitle = findViewById(R.id.txtTitle);
         String title = getTopicName();
+        if (AppCache.isInChapterExam()){
+            ChapterExam chapterExam = AppCache.getChapterExam();
+            String examTitle = chapterExam.getExamTitle();
+            title = examTitle + ": " + title;
+        }
         txtTitle.setText(title);
     }
 

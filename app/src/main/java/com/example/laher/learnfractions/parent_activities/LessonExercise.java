@@ -95,6 +95,10 @@ public class LessonExercise extends AppCompatActivity {
         this.range = range;
     }
 
+    public void setTotalWrongs(int totalWrongs) {
+        this.totalWrongs = totalWrongs;
+    }
+
     public int getTotalWrongs() {
         return totalWrongs;
     }
@@ -418,7 +422,7 @@ public class LessonExercise extends AppCompatActivity {
         //DEFAULT
         Range range = new Range(1,9);
         setRange(range);
-        setItemsSize(3);
+        setItemsSize(5);
         setMaxWrong(3);
         setCorrectsShouldBeConsecutive(false);
         setWrongsShouldBeConsecutive(true);
@@ -434,6 +438,42 @@ public class LessonExercise extends AppCompatActivity {
             return thisId.equals(objId);
         }
         return super.equals(obj);
+    }
+
+    public boolean hasTheSameAttributesWith(LessonExercise lessonExercise){
+        boolean hasTheSameAttributes = true;
+
+        int thisItemsSize = this.getItemsSize();
+        int itemsSize = lessonExercise.getItemsSize();
+        if (thisItemsSize!=itemsSize){
+            hasTheSameAttributes = false;
+        }
+
+        boolean thisCorrectsShouldBeConsecutive = this.isCorrectsShouldBeConsecutive();
+        boolean correctsShouldBeConsecutive = lessonExercise.isCorrectsShouldBeConsecutive();
+        if (thisCorrectsShouldBeConsecutive!=correctsShouldBeConsecutive){
+            hasTheSameAttributes = false;
+        }
+
+        int thisMaxWrong = this.getMaxWrong();
+        int maxWrong = lessonExercise.getMaxWrong();
+        if (thisMaxWrong!=maxWrong){
+            hasTheSameAttributes = false;
+        }
+
+        boolean thisWrongsShouldBeConsecutive = this.isWrongsShouldBeConsecutive();
+        boolean wrongsShouldBeConsecutive = lessonExercise.isWrongsShouldBeConsecutive();
+        if (thisWrongsShouldBeConsecutive!=wrongsShouldBeConsecutive){
+            hasTheSameAttributes = false;
+        }
+
+        Range thisRange = this.getRange();
+        Range range = lessonExercise.getRange();
+        if(!thisRange.equals(range)){
+            hasTheSameAttributes = false;
+        }
+
+        return hasTheSameAttributes;
     }
 
     private class ButtonBackListener implements View.OnClickListener{

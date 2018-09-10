@@ -4,22 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:mContext=".LoginActivity">
 
     <ImageView
-        android:id="@+id/cvt_imgAvatar2"
-        android:layout_width="100dp"
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgLogo"
+        app:layout_constraintEnd_toEndOf="@+id/imgLogo"
+        app:layout_constraintStart_toStartOf="@+id/imgLogo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/main_colors" />
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="200dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.06999999"
-        app:srcCompat="@drawable/avatar" />
+        app:srcCompat="@drawable/logo" />
 
     <EditText
         android:id="@+id/inputPassword"
@@ -42,7 +50,6 @@
         android:hint="Username"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/spinnerUserType"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/spinnerUserType"
         app:layout_constraintTop_toBottomOf="@+id/spinnerUserType" />
 
@@ -55,17 +62,18 @@
         android:layout_marginTop="8dp"
         android:text="Login"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/cvt_imgAvatar2"
-        app:layout_constraintStart_toStartOf="@+id/cvt_imgAvatar2"
-        app:layout_constraintTop_toBottomOf="@+id/cvt_imgAvatar2" />
+        app:layout_constraintEnd_toEndOf="@+id/imgLogo"
+        app:layout_constraintStart_toStartOf="@+id/imgLogo"
+        app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/main_colors"
         android:text="LOGIN"
         app:layout_constraintEnd_toEndOf="@+id/inputPassword"
         app:layout_constraintStart_toStartOf="@+id/inputPassword"
@@ -75,7 +83,7 @@
         android:id="@+id/txtRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:text="Register"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -100,5 +108,14 @@
         app:layout_constraintEnd_toEndOf="@+id/txtError"
         app:layout_constraintStart_toStartOf="@+id/txtError"
         app:layout_constraintTop_toBottomOf="@+id/txtError" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/txtRegister"
+        app:layout_constraintEnd_toEndOf="@+id/txtRegister"
+        app:layout_constraintStart_toStartOf="@+id/txtRegister"
+        app:srcCompat="@drawable/snooping_frits" />
 
 </android.support.constraint.ConstraintLayout>

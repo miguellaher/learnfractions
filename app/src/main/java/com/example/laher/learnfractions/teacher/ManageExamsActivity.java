@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,8 +14,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.SeatWorkListActivity;
+import com.example.laher.learnfractions.classes.ChapterExamList;
+import com.example.laher.learnfractions.dialog_layout.MessageDialog;
 import com.example.laher.learnfractions.model.ChapterExam;
-import com.example.laher.learnfractions.model.Exercise;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.seat_works.AddSubMixedFractionsSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingDissimilarSeatWork;
@@ -36,18 +37,17 @@ import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.teacher.dialogs.ExamUpdateDialog;
 import com.example.laher.learnfractions.teacher.list_adapters.ManageExamsListAdapter;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
+import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class ManageExamsActivity extends AppCompatActivity {
-    private static final String TAG = "MANAGE_EXAM";
     Context mContext = this;
     ListView examListView;
-    ArrayList<ChapterExam> mChapterExams;
+    ChapterExamList mChapterExams;
     ManageExamsListAdapter manageExamsListAdapter;
     LinearLayout linearLayoutBackground;
     //TOOLBAR
@@ -119,7 +119,7 @@ public class ManageExamsActivity extends AppCompatActivity {
         chapterExam6.addSeatWork(addSubMixedFractionsSeatWork);
         chapterExam6.addSeatWork(multiplyDivideMixedFractionsSeatWork);
 
-        mChapterExams = new ArrayList<>();
+        mChapterExams = new ChapterExamList();
         mChapterExams.add(chapterExam1);
         mChapterExams.add(chapterExam2);
         mChapterExams.add(chapterExam3);
@@ -146,6 +146,7 @@ public class ManageExamsActivity extends AppCompatActivity {
             }
         });
 
+        updateExams();
         setLinearLayoutBackground();
     }
 
@@ -175,45 +176,54 @@ public class ManageExamsActivity extends AppCompatActivity {
             public void postExecute(JSONObject response) {
                 try{
                     int item_count = Integer.valueOf(response.optString("item_count"));
-                    ArrayList<ChapterExam> onlineChapterExams = new ArrayList<>();
+                    ArrayList<SeatWork> builtInSeatWorks = SeatWorkListActivity.getSeatWorks(); // "ARCHIVE OF SEATWORKS"
+
                     for (int i = 1; i <= item_count; i++) {
-                        ChapterExam chapterExam = new ChapterExam();
-                        String exam_title = response.optString(i + "exam_title");
-                        Log.d(TAG, "Exam title: " + exam_title);
-                        chapterExam.setExamTitle(exam_title);
-                        String seat_works = response.optString(i + "seat_works");
-                        Log.d(TAG, "Seat works: " + seat_works);
-                        String[] sw_tokens = seat_works.split(";");
-                        ArrayList<SeatWork> seatWorks = new ArrayList<>();
-                        for (String token : sw_tokens){
-                            String[] tokens2 = token.split(":");
-                            String topicName = tokens2[0];
-                            int swNum = Integer.valueOf(tokens2[1]);
-                            int item_size = Integer.valueOf(tokens2[2]);
-                            SeatWork seatWork = new SeatWork();
-                            seatWork.setTopicName(topicName);
-                            seatWork.setSeatWorkNum(swNum);
-                            seatWork.setItems_size(item_size);
-                            seatWorks.add(seatWork);
-                        }
-                        chapterExam.setSeatWorks(seatWorks);
-                        onlineChapterExams.add(chapterExam);
-                    }
-                    for (ChapterExam onlineChapterExam : onlineChapterExams){
-                        int i = 0;
-                        for (ChapterExam chapterExam : mChapterExams){
-                            if (onlineChapterExam.getExamTitle().equals(chapterExam.getExamTitle())){
-                                mChapterExams.set(i, onlineChapterExam);
+                        ChapterExam onlineChapterExam = new ChapterExam();
+                        String strExamNumber = response.optString(i + "exam_number");
+                        if (Util.isNumeric(strExamNumber)) {
+                            int examNumber = Integer.valueOf(strExamNumber);
+                            String examTitle = response.optString(i + "exam_title");
+                            String compiledSeatWorks = response.optString(i + "seat_works");
+
+                            ArrayList<SeatWork> downloadedSeatWorks = ChapterExam.decompileSeatWorks(compiledSeatWorks);
+                            ArrayList<SeatWork> examSeatWorks = new ArrayList<>();
+                            for (SeatWork downloadedSeatWork : downloadedSeatWorks) {
+                                for (SeatWork builtInSeatWork : builtInSeatWorks) {
+                                    if (builtInSeatWork.equals(downloadedSeatWork)) {
+                                        builtInSeatWork.getValuesFrom(downloadedSeatWork);
+                                        examSeatWorks.add(builtInSeatWork);
+                                    }
+                                }
                             }
-                            i++;
+
+                            onlineChapterExam.setExamNumber(examNumber);
+                            onlineChapterExam.setExamTitle(examTitle);
+                            onlineChapterExam.setSeatWorks(examSeatWorks);
+                            int i1 = 0;
+                            for (ChapterExam mChapterExam : mChapterExams) {
+                                if (mChapterExam.equals(onlineChapterExam)) {
+                                    mChapterExam = onlineChapterExam;
+
+                                    mChapterExams.set(i1, mChapterExam);
+                                }
+                                i1++;
+                            }
                         }
                     }
                     manageExamsListAdapter.notifyDataSetChanged();
                 } catch (Exception e){
                     e.printStackTrace();
+                    MessageDialog messageDialog = new MessageDialog(mContext, "\nService error.\n");
+                    messageDialog.show();
                 }
             }
         });
         ExamService.getExams(mContext, service);
+    }
+
+    @Override
+    public void onBackPressed() {
+        btnBack.performClick();
     }
 }

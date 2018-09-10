@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.rankings.ClassExamRanksActivity;
+import com.example.laher.learnfractions.rankings.ClassExercisesRanksActivity;
 import com.example.laher.learnfractions.rankings.ClassSeatWorkRanksActivity;
 import com.example.laher.learnfractions.teacher.TeacherMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -21,9 +22,12 @@ public class ClassRanksMainActivity extends AppCompatActivity {
     Context mContext = this;
     //TOOLBAR
     TextView txtTitle;
-    Button btnBack, btnNext;
+    Button btnBack;
+    Button btnNext;
     //GUI
-    Button btnSeatWorks, btnExams;
+    Button btnExercises;
+    Button btnSeatWorks;
+    Button btnExams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +63,18 @@ public class ClassRanksMainActivity extends AppCompatActivity {
                 }
             });
         }
-
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
         //GUI
+        btnExercises = findViewById(R.id.class_ranks_btnExercises);
+        btnExercises.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ClassExercisesRanksActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
         btnSeatWorks = findViewById(R.id.class_ranks_btnSeatWorks);
         btnSeatWorks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +94,13 @@ public class ClassRanksMainActivity extends AppCompatActivity {
             }
         });
 
-        Styles.bgPaintMainOrange(btnSeatWorks);
-        Styles.bgPaintMainBlueGreen(btnExams);
+        Styles.bgPaintMainOrange(btnExercises);
+        Styles.bgPaintMainBlueGreen(btnSeatWorks);
+        Styles.bgPaintMainBlue(btnExams);
+    }
+
+    @Override
+    public void onBackPressed() {
+        btnBack.performClick();
     }
 }

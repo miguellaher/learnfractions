@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.ChapterExamListActivity;
@@ -39,6 +40,9 @@ public class OrderingSimilarSeatWork extends SeatWork {
     ConstraintLayout clFraction1;
     ConstraintLayout clFraction2;
     ConstraintLayout clFraction3;
+    ImageView imageLine1;
+    ImageView imageLine2;
+    ImageView imageLine3;
 
     ArrayList<OrderingSimilarQuestion> questions;
     int questionNum;
@@ -80,6 +84,14 @@ public class OrderingSimilarSeatWork extends SeatWork {
         clFraction1 = findViewById(R.id.os2_clFraction1);
         clFraction2 = findViewById(R.id.os2_clFraction2);
         clFraction3 = findViewById(R.id.os2_clFraction3);
+
+        imageLine1 = findViewById(R.id.ose2_imgLine1);
+        imageLine2 = findViewById(R.id.ose2_imgLine2);
+        imageLine3 = findViewById(R.id.ose2_imgLine3);
+
+        imageLine1.setImageResource(R.drawable.line);
+        imageLine2.setImageResource(R.drawable.line);
+        imageLine3.setImageResource(R.drawable.line);
 
         go();
     }

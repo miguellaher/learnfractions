@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.laher.learnfractions.MainActivity">
+    tools:mContext="com.example.laher.learnfractions.MainActivity">
 
     <include layout="@layout/layout_toolbar" />
     <android.support.constraint.ConstraintLayout

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
@@ -32,6 +33,8 @@ public class ComparingSimilarSeatWork extends SeatWork {
     Button btnGreater;
     Button btnEquals;
     Button btnLess;
+    ImageView imgLine1;
+    ImageView imgLine2;
 
     int questionNum;
     ComparingSimilarQuestion fractionQuestion;
@@ -81,6 +84,12 @@ public class ComparingSimilarSeatWork extends SeatWork {
         btnGreater.setOnClickListener(new BtnListener());
         btnEquals.setOnClickListener(new BtnListener());
         btnLess.setOnClickListener(new BtnListener());
+
+        imgLine1 = findViewById(R.id.cse2_imgLine1);
+        imgLine2 = findViewById(R.id.cse2_imgLine2);
+
+        imgLine1.setImageResource(R.drawable.line);
+        imgLine2.setImageResource(R.drawable.line);
 
         go();
     }

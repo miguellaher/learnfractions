@@ -1,12 +1,12 @@
 package com.example.laher.learnfractions;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -14,10 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.admin_activities.AdminMainActivity;
+import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.model.Admin;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.model.Teacher;
@@ -35,14 +37,20 @@ import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class LoginActivity extends AppCompatActivity {
     Context mContext = this;
     public final String TAG = "LOGIN_ACTIVITY";
 
-    TextView txtError, txtRegister;
+    TextView txtError;
+    TextView txtRegister;
     Spinner spinnerUserType;
-    EditText inputUsername, inputPassword;
+    EditText inputUsername;
+    EditText inputPassword;
     Button btnLogin;
+    ImageView imgLogo;
+    GifImageView gifAvatar;
 
     String userType;
     ArrayAdapter<CharSequence> adapter;
@@ -75,8 +83,16 @@ public class LoginActivity extends AppCompatActivity {
         inputPassword.setOnEditorActionListener(new InputPasswordOnEditorActionListener());
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new BtnLoginListener());
+        btnLogin.setBackgroundResource(R.drawable.main_colors);
         txtError.setVisibility(TextView.INVISIBLE);
         inputUsername.requestFocus();
+
+        imgLogo = findViewById(R.id.imgLogo);
+        imgLogo.setImageResource(R.drawable.logo);
+
+        gifAvatar = findViewById(R.id.gifAvatar);
+        int gifID = R.drawable.snooping_frits;
+        gifAvatar.setImageResource(gifID);
 
         adapter = ArrayAdapter.createFromResource(this,R.array.user_types,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -86,9 +102,11 @@ public class LoginActivity extends AppCompatActivity {
     }
     private String checkErrors(){
         if (inputUsername.getText().toString().matches("")){
+            Styles.shakeAnimate(inputUsername);
             return "Input username.";
         }
         if (inputPassword.getText().toString().matches("")){
+            Styles.shakeAnimate(inputPassword);
             return "Input password.";
         }
         return null;
@@ -228,5 +246,19 @@ public class LoginActivity extends AppCompatActivity {
             }
             return false;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext, "Are you sure you want to exit app?");
+        confirmationDialog.show();
+        confirmationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (confirmationDialog.isConfirmed()){
+                    finishAffinity();
+                }
+            }
+        });
     }
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".lessons.converting_fractions.ConvertingFractionsExercise2Activity">
+    tools:mContext=".lessons.converting_fractions.ConvertingFractionsExercise2Activity">
 
     <include layout="@layout/layout_toolbar"/>
 

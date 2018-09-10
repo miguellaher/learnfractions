@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".lessons.comparing_dissimilar_fractions.ComparingDissimilarExerciseActivity">
+    tools:mContext=".lessons.comparing_dissimilar_fractions.ComparingDissimilarExerciseActivity">
 
     <include
         layout="@layout/layout_toolbar"/>

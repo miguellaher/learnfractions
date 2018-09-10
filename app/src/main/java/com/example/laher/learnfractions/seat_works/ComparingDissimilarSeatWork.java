@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
@@ -35,6 +36,8 @@ public class ComparingDissimilarSeatWork extends SeatWork {
     Button btnGreater;
     Button btnEquals;
     Button btnLess;
+    ImageView imgLine1;
+    ImageView imgLine2;
 
     ArrayList<Integer> stepsIdList;
 
@@ -90,6 +93,12 @@ public class ComparingDissimilarSeatWork extends SeatWork {
         btnGreater.setOnClickListener(new BtnListener());
         btnEquals.setOnClickListener(new BtnListener());
         btnLess.setOnClickListener(new BtnListener());
+
+        imgLine1 = findViewById(R.id.imgLine1);
+        imgLine2 = findViewById(R.id.imgLine2);
+
+        imgLine1.setImageResource(R.drawable.line);
+        imgLine2.setImageResource(R.drawable.line);
 
         go();
     }

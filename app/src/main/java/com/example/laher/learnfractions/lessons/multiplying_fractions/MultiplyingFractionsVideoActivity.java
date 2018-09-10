@@ -15,8 +15,9 @@ public class MultiplyingFractionsVideoActivity extends LessonVideo {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(TITLE);
-        setContext(context);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.multiplying_fractions); //SAMPLE VIDEO
+        setmContext(context);
+        String path = "http://jabahan.com/learnfractions/videos/multiplying.mp4";
+        Uri uri = Uri.parse(path);
         setUri(uri);
     }
 }

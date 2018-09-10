@@ -1,9 +1,12 @@
 package com.example.laher.learnfractions.parent_activities;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,18 +16,22 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
+import com.example.laher.learnfractions.dialog_layout.MessageDialog;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
 public class LessonVideo extends AppCompatActivity {
-    private Context context;
-    private VideoView video;
+    private Context mContext;
+    private VideoView mVideo;
+    private ProgressDialog mProgressDialog;
     private Uri uri;
 
     //TOOLBAR
@@ -32,13 +39,26 @@ public class LessonVideo extends AppCompatActivity {
     private Button buttonNext;
     private TextView txtTitle;
 
-    public void setContext(Context context) {
-        this.context = context;
+    public void setmContext(Context mContext) {
+        this.mContext = mContext;
     }
 
     public void setUri(Uri uri) {
         this.uri = uri;
-        go();
+
+        if (isNetworkAvailable()) {
+            go();
+        } else {
+            String message = "Connect to the internet\nto watch video tutorial";
+            MessageDialog messageDialog = new MessageDialog(mContext, message);
+            messageDialog.show();
+            messageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    buttonNext.setEnabled(true);
+                }
+            });
+        }
     }
 
     public void setTitle(String title){
@@ -49,7 +69,7 @@ public class LessonVideo extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-        video = findViewById(R.id.videoView);
+        mVideo = findViewById(R.id.videoView);
 
         ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
 
@@ -81,16 +101,25 @@ public class LessonVideo extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     private void go(){
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small); //SAMPLE VIDEO
-        video.setVideoURI(uri); // TEST
-        //video.setVideoURI(this.uri);
-        video.setOnCompletionListener(new VideoListener());
-        video.setOnTouchListener(new VideoListener());
-        video.requestFocus();
-        video.start();
+        mVideo.setVideoURI(this.uri);
+        mVideo.setOnCompletionListener(new VideoListener());
+        mVideo.setOnTouchListener(new VideoListener());
+        mVideo.requestFocus();
+
+        mVideo.setOnPreparedListener(new VideoListener());
+
+        mVideo.setOnInfoListener(new MediaPlayerListener());
+
+        mProgressDialog = new ProgressDialog(mContext);
+        String message = "Loading...";
+        mProgressDialog.setMessage(message);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+
+        mVideo.start();
     }
 
-    public class VideoListener implements MediaPlayer.OnCompletionListener, View.OnTouchListener{
+    public class VideoListener implements MediaPlayer.OnCompletionListener, View.OnTouchListener, MediaPlayer.OnPreparedListener{
         @Override
         public void onCompletion(MediaPlayer mp) {
             buttonNext.setEnabled(true);
@@ -109,12 +138,32 @@ public class LessonVideo extends AppCompatActivity {
             }
             return false;
         }
+
+        @Override
+        public void onPrepared(MediaPlayer mp) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    private class MediaPlayerListener implements MediaPlayer.OnInfoListener{
+        @Override
+        public boolean onInfo(MediaPlayer mp, int what, int extra) {
+            switch (what) {
+                case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+                    mProgressDialog.show();
+                    break;
+                case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                    mProgressDialog.cancel();
+                    break;
+            }
+            return false;
+        }
     }
 
     private class ButtonBackListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            final ConfirmationDialog confirmationDialog = new ConfirmationDialog(context,"Are you sure you want to go back?");
+            final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext,"Are you sure you want to go back?");
             confirmationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -139,5 +188,13 @@ public class LessonVideo extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         buttonBack.performClick();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connectivityManager != null;
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

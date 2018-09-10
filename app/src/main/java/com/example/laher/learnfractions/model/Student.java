@@ -41,4 +41,7 @@ public class Student extends BaseModel {
         }
         return super.equals(obj);
     }
+
+    public Student() {
+    }
 }

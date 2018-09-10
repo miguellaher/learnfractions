@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".student_activities.StudentMainActivity">
+    tools:mContext=".student_activities.StudentMainActivity">
 
     <include layout="@layout/layout_toolbar" />
 
@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="TextView"
+            android:textAlignment="center"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/student_main_imgAvatar"
             app:layout_constraintStart_toStartOf="@+id/student_main_imgAvatar"

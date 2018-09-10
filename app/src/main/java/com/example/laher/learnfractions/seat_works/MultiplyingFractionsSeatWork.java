@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
@@ -36,6 +37,9 @@ public class MultiplyingFractionsSeatWork extends SeatWork {
     Button btnChoice2;
     Button btnChoice3;
     Button btnChoice4;
+    ImageView imgLine1;
+    ImageView imgLine2;
+    ImageView imgLine3;
 
     ArrayList<MultiplyingFractionsQuestion> questions;
     int questionNum;
@@ -88,6 +92,14 @@ public class MultiplyingFractionsSeatWork extends SeatWork {
         btnChoice2.setOnClickListener(new BtnChoiceListener());
         btnChoice3.setOnClickListener(new BtnChoiceListener());
         btnChoice4.setOnClickListener(new BtnChoiceListener());
+
+        imgLine1 = findViewById(R.id.fe_imgLine1);
+        imgLine2 = findViewById(R.id.fe_imgLine2);
+        imgLine3 = findViewById(R.id.fe_imgLine3);
+
+        imgLine1.setImageResource(R.drawable.line);
+        imgLine2.setImageResource(R.drawable.line);
+        imgLine3.setImageResource(R.drawable.line);
 
         disableInputFraction();
         go();

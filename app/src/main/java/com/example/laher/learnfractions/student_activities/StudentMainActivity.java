@@ -22,6 +22,7 @@ import com.example.laher.learnfractions.adapters.MainActivityListAdapter;
 import com.example.laher.learnfractions.classes.AppActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Encryptor;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
 
@@ -82,9 +83,11 @@ public class StudentMainActivity extends AppCompatActivity {
         int resource = Styles.getRandomFritsImageResource();
         imgAvatar.setImageResource(resource);
 
-        txtWelcome = findViewById(R.id.student_main_txtWelcome);
         String studentUsername = Storage.load(mContext, Storage.STUDENT_USERNAME);
-        String strWelcome = "Welcome! " + studentUsername + ".";
+        String teacherCode = Storage.load(mContext, Storage.TEACHER_CODE);
+        teacherCode = Encryptor.decrypt(teacherCode);
+        String strWelcome = "Welcome! " + studentUsername + ",\n from Class " + teacherCode;
+        txtWelcome = findViewById(R.id.student_main_txtWelcome);
         txtWelcome.setText(strWelcome);
         Styles.paintBlack(txtWelcome);
 

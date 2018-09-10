@@ -1,11 +1,13 @@
 package com.example.laher.learnfractions.service;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Util;
 import com.loopj.android.http.RequestParams;
 
@@ -102,10 +104,14 @@ public class ExerciseStatService {
         service.post("http://jabahan.com/learnfractions/e_stat/insert.php", params);
         service.execute();
     }
-    public static void getAllStats(String teacher_code, Service service){
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("teacher_code", teacher_code);
-        service.get("http://jabahan.com/learnfractions/e_stat/getAllStats.php", requestParams);
+    public static void getAllStats(Context context, Service service){
+        RequestParams params = new RequestParams();
+
+        String teacherCode = Storage.load(context, Storage.TEACHER_CODE);
+
+        params.put("teacher_code", teacherCode);
+
+        service.get("http://jabahan.com/learnfractions/e_stat/getAllStats.php", params);
         service.execute();
     }
 }

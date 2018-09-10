@@ -15,7 +15,7 @@ public class SubtractingDissimilarVideoActivity extends LessonVideo {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(TITLE);
-        setContext(context);
+        setmContext(context);
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small); //SAMPLE VIDEO
         setUri(uri);
     }

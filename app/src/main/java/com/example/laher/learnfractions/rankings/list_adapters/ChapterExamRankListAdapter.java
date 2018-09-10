@@ -26,6 +26,7 @@ public class ChapterExamRankListAdapter extends ArrayAdapter<ChapterExamRank> {
         TextView txtUsername;
         TextView txtRank;
         TextView txtSWDone;
+        TextView txtStrSWDone;
         TextView txtTotalScore;
         TextView txtTotalTime;
     }
@@ -53,6 +54,7 @@ public class ChapterExamRankListAdapter extends ArrayAdapter<ChapterExamRank> {
             holder.txtUsername = convertView.findViewById(R.id.rank_adapter_txtUserName);
             holder.txtRank = convertView.findViewById(R.id.rank_adapter_txtRank);
             holder.txtSWDone = convertView.findViewById(R.id.rank_adapter_txtSWDone);
+            holder.txtStrSWDone = convertView.findViewById(R.id.rank_adapter_strSWDone);
             holder.txtTotalScore = convertView.findViewById(R.id.rank_adapter_txtTotalScore);
             holder.txtTotalTime = convertView.findViewById(R.id.rank_adapter_txtTotalTime);
 
@@ -111,8 +113,12 @@ public class ChapterExamRankListAdapter extends ArrayAdapter<ChapterExamRank> {
         String strTop = "TOP";
         holder.txtRank.setText(strTop + " " + strRank);
         holder.txtSWDone.setText(strSWDone);
+        String strExamsDone = "Exams\nDone";
+        holder.txtStrSWDone.setText(strExamsDone);
         holder.txtTotalScore.setText(strScore + " / " + strTotalItemsSize);
-        if (minutes<=0){
+
+        holder.txtTotalTime.setText("");
+        if (minutes>0){
             holder.txtTotalTime.setText(minutes + "m");
         }
         String strTxtTotalTime = holder.txtTotalTime.getText().toString().trim();

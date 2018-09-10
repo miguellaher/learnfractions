@@ -134,24 +134,68 @@ public class Styles {
         shakeAnimate(v);
     }
 
-    public static int getColor(int r, int g, int b){
-        return Color.rgb(r,g,b);
-    }
-
     public static int getRandomFritsImageResource(){
         ArrayList<Integer> resources = new ArrayList<>();
 
-        int adventureFrits = R.drawable.safari_frits_pic;
+        int adventureFrits = R.drawable.adventure_frits_pic;
+        int adventureFrits1 = R.drawable.adventure_frits_pic1;
+        int adventureFrits2 = R.drawable.adventure_frits_pic2;
+        int adventureFrits3 = R.drawable.adventure_frits_pic3;
+        int adventureFrits4 = R.drawable.adventure_frits_pic4;
+
         int gentleFrits = R.drawable.gentle_frits_pic;
+        int gentleFrits1 = R.drawable.gentle_frits_pic1;
+        int gentleFrits2 = R.drawable.gentle_frits_pic2;
+        int gentleFrits3 = R.drawable.gentle_frits_pic3;
+        int gentleFrits4 = R.drawable.gentle_frits_pic4;
+
         int kidFrits = R.drawable.kid_frits_pic;
-        int safariFrits = R.drawable.safari_frits_pic;
+        int kidFrits1 = R.drawable.kid_frits_pic1;
+        int kidFrits2 = R.drawable.kid_frits_pic2;
+        int kidFrits3 = R.drawable.kid_frits_pic3;
+        int kidFrits4 = R.drawable.kid_frits_pic4;
+
+        int chefFrits = R.drawable.chef_frits_pic;
+        int chefFrits1 = R.drawable.chef_frits_pic1;
+        int chefFrits2 = R.drawable.chef_frits_pic2;
+        int chefFrits3 = R.drawable.chef_frits_pic3;
+        int chefFrits4 = R.drawable.chef_frits_pic4;
+
         int summerFrits = R.drawable.summer_frits_pic;
+        int summerFrits1 = R.drawable.summer_frits_pic1;
+        int summerFrits2 = R.drawable.summer_frits_pic2;
+        int summerFrits3 = R.drawable.summer_frits_pic3;
+        int summerFrits4 = R.drawable.summer_frits_pic4;
 
         resources.add(adventureFrits);
+        resources.add(adventureFrits1);
+        resources.add(adventureFrits2);
+        resources.add(adventureFrits3);
+        resources.add(adventureFrits4);
+
         resources.add(gentleFrits);
+        resources.add(gentleFrits1);
+        resources.add(gentleFrits2);
+        resources.add(gentleFrits3);
+        resources.add(gentleFrits4);
+
         resources.add(kidFrits);
-        resources.add(safariFrits);
+        resources.add(kidFrits1);
+        resources.add(kidFrits2);
+        resources.add(kidFrits3);
+        resources.add(kidFrits4);
+
+        resources.add(chefFrits);
+        resources.add(chefFrits1);
+        resources.add(chefFrits2);
+        resources.add(chefFrits3);
+        resources.add(chefFrits4);
+
         resources.add(summerFrits);
+        resources.add(summerFrits1);
+        resources.add(summerFrits2);
+        resources.add(summerFrits3);
+        resources.add(summerFrits4);
 
         Collections.shuffle(resources);
 

@@ -14,9 +14,12 @@ import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Styles;
+import com.example.laher.learnfractions.util.Util;
 
 public class ExamSeatWorkUpdateDialog extends Dialog {
+    private Context mContext;
     private SeatWork mSeatWork;
+
     private EditText inputItemSize;
     private EditText inputMinimum;
     private EditText inputMaximum;
@@ -24,6 +27,7 @@ public class ExamSeatWorkUpdateDialog extends Dialog {
 
     ExamSeatWorkUpdateDialog(@NonNull Context context, SeatWork seatWork) {
         super(context);
+        mContext = context;
         mSeatWork = seatWork;
 
         setGui();
@@ -78,6 +82,18 @@ public class ExamSeatWorkUpdateDialog extends Dialog {
                 Styles.shakeAnimate(inputMaximum);
                 fieldsFilled = false;
             }
+            if (Util.isNumeric(strInputMinimum) && Util.isNumeric(strInputMaximum)){
+                int intInputMinimum = Integer.valueOf(strInputMinimum);
+                int intInputMaximum = Integer.valueOf(strInputMaximum);
+
+                if (intInputMinimum>=intInputMaximum){
+                    Styles.shakeAnimate(inputMinimum);
+                    Styles.shakeAnimate(inputMaximum);
+                    String message = "Input a larger number on the maximum field.";
+                    Util.toast(mContext, message);
+                    fieldsFilled = false;
+                }
+            }
         }
         return fieldsFilled;
     }
@@ -111,6 +127,7 @@ public class ExamSeatWorkUpdateDialog extends Dialog {
             ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) constraintLayoutRange.getLayoutParams();
             params.height = 0;
             constraintLayoutRange.setLayoutParams(params);
+            constraintLayoutRange.setVisibility(View.INVISIBLE);
             inputMinimum.setEnabled(false);
             inputMaximum.setEnabled(false);
         } else {

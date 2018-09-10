@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions.rankings;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -15,6 +16,7 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.classes.SeatWorkRank;
+import com.example.laher.learnfractions.dialog_layout.MessageDialog;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.rankings.list_adapters.SeatWorkRankListAdapter;
@@ -24,6 +26,8 @@ import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.student_activities.ClassRanksMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Encryptor;
+import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
 
 import org.json.JSONObject;
@@ -69,7 +73,12 @@ public class ClassSeatWorkRanksActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
         txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(AppConstants.SW_RANKING);
+        String title = AppConstants.SW_RANKING;
+        String teacherCode = Storage.load(mContext, Storage.TEACHER_CODE);
+        teacherCode = Encryptor.decrypt(teacherCode);
+        title = title + "\n of Class " + teacherCode;
+        txtTitle.setText(title);
+        Styles.paintBlack(txtTitle);
 
         //ACTIVITY
         studentRanksListView = findViewById(R.id.rank_template_listRanks);
@@ -202,6 +211,14 @@ public class ClassSeatWorkRanksActivity extends AppCompatActivity {
                     setListAdapter(mSeatWorkRanks);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    MessageDialog messageDialog = new MessageDialog(mContext, "\nService error.\n");
+                    messageDialog.show();
+                    messageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            btnBack.performClick();
+                        }
+                    });
                 }
             }
         });

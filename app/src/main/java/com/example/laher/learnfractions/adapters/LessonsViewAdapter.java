@@ -19,7 +19,6 @@ import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -122,7 +121,7 @@ public class LessonsViewAdapter extends RecyclerView.Adapter<LessonsViewAdapter.
     private ArrayList<Integer> getResources(){
         int gentleFrits = R.drawable.gentle_frits_pic;
         int kidFrits = R.drawable.kid_frits_pic;
-        int safariFrits = R.drawable.safari_frits_pic;
+        int safariFrits = R.drawable.adventure_frits_pic;
         int summerFrits = R.drawable.summer_frits_pic;
 
         ArrayList<Integer> resources = new ArrayList<>();

@@ -22,6 +22,7 @@ import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.student_activities.ClassRanksMainActivity;
 import com.example.laher.learnfractions.teacher2.LessonExercisesListActivity;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Encryptor;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
 
@@ -82,7 +83,9 @@ public class TeacherMainActivity extends AppCompatActivity {
 
         txtWelcome = findViewById(R.id.teacher_main_txtWelcome);
         String teacherUsername = Storage.load(mContext, Storage.TEACHER_USERNAME);
-        String strWelcome = "Welcome! " + teacherUsername + ".";
+        String teacherCode = Storage.load(mContext, Storage.TEACHER_CODE);
+        teacherCode = Encryptor.decrypt(teacherCode);
+        String strWelcome = "Welcome! " + teacherUsername + ",\nteacher of Class " + teacherCode;
         txtWelcome.setText(strWelcome);
         Styles.paintBlack(txtWelcome);
 

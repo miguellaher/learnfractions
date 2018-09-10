@@ -5,36 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".lessons.ordering_similar.OrderingSimilarExercise2Activity">
+    tools:mContext=".lessons.ordering_similar.OrderingSimilarExercise2Activity">
 
     <include
         layout="@layout/layout_toolbar"/>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayoutBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/gifAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/avatar" />
-
-        <TextView
-            android:id="@+id/os2_txtInstruction"
-            android:layout_width="0dp"
-            android:layout_height="57dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:text="click from least to greatest"
-            app:layout_constraintBottom_toBottomOf="@+id/gifAvatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/gifAvatar"
-            app:layout_constraintTop_toTopOf="@+id/gifAvatar" />
 
         <TextView
             android:id="@+id/os2_txtScore"
@@ -45,6 +24,39 @@
             android:text="99 / 99"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayoutBottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/os2_txtInstruction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="click from least to greatest"
+                app:layout_constraintBottom_toBottomOf="@+id/gifAvatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/gifAvatar"
+                app:layout_constraintTop_toTopOf="@+id/gifAvatar" />
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/gifAvatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/avatar" />
+        </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/os2_clFraction1"
@@ -69,7 +81,7 @@
             <ImageView
                 android:id="@+id/ose2_imgLine1"
                 android:layout_width="100dp"
-                android:layout_height="25dp"
+                android:layout_height="23dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
@@ -188,6 +200,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/line" />
         </android.support.constraint.ConstraintLayout>
+
     </android.support.constraint.ConstraintLayout>
 
 

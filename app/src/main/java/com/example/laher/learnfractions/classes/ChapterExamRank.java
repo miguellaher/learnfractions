@@ -76,12 +76,12 @@ public class ChapterExamRank implements Comparable<ChapterExamRank>{
 
     @Override
     public int compareTo(@NonNull ChapterExamRank o) {
-        int thisSWDone = this.getExamDone();
-        int oSWDone = o.getExamDone();
+        int thisExamDone = this.getExamDone();
+        int oExamDone = o.getExamDone();
 
-        if (thisSWDone>oSWDone){
+        if (thisExamDone>oExamDone){
             return -1;
-        } else if (thisSWDone<oSWDone){
+        } else if (thisExamDone<oExamDone){
             return 1;
         } else {
             double thisAvgScore = this.getAverageScore();

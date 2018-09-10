@@ -340,4 +340,9 @@ public class SeatWorkListActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        btnBack.performClick();
+    }
 }
