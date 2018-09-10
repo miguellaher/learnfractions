@@ -40,6 +40,9 @@ public class Lesson extends AppCompatActivity {
         activities = new ArrayList<>();
     }
 
+    public Lesson() { // app needs an empty constructor
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

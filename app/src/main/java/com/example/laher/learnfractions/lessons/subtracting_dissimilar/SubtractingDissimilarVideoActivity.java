@@ -16,7 +16,8 @@ public class SubtractingDissimilarVideoActivity extends LessonVideo {
         super.onCreate(savedInstanceState);
         setTitle(TITLE);
         setmContext(context);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small); //SAMPLE VIDEO
+        String path = "http://jabahan.com/learnfractions/videos/subtracting_dissimilar.mp4";
+        Uri uri = Uri.parse(path);
         setUri(uri);
     }
 }

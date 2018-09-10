@@ -134,7 +134,7 @@ public class Styles {
         shakeAnimate(v);
     }
 
-    public static int getRandomFritsImageResource(){
+    public static ArrayList<Integer> getFritsImageResources(){
         ArrayList<Integer> resources = new ArrayList<>();
 
         int adventureFrits = R.drawable.adventure_frits_pic;
@@ -168,34 +168,40 @@ public class Styles {
         int summerFrits4 = R.drawable.summer_frits_pic4;
 
         resources.add(adventureFrits);
-        resources.add(adventureFrits1);
-        resources.add(adventureFrits2);
-        resources.add(adventureFrits3);
-        resources.add(adventureFrits4);
-
-        resources.add(gentleFrits);
         resources.add(gentleFrits1);
-        resources.add(gentleFrits2);
-        resources.add(gentleFrits3);
-        resources.add(gentleFrits4);
-
-        resources.add(kidFrits);
-        resources.add(kidFrits1);
         resources.add(kidFrits2);
-        resources.add(kidFrits3);
-        resources.add(kidFrits4);
-
-        resources.add(chefFrits);
-        resources.add(chefFrits1);
-        resources.add(chefFrits2);
         resources.add(chefFrits3);
-        resources.add(chefFrits4);
-
-        resources.add(summerFrits);
-        resources.add(summerFrits1);
-        resources.add(summerFrits2);
-        resources.add(summerFrits3);
         resources.add(summerFrits4);
+
+        resources.add(adventureFrits1);
+        resources.add(gentleFrits2);
+        resources.add(kidFrits3);
+        resources.add(chefFrits4);
+        resources.add(summerFrits);
+
+        resources.add(adventureFrits2);
+        resources.add(gentleFrits3);
+        resources.add(kidFrits4);
+        resources.add(chefFrits);
+        resources.add(summerFrits1);
+
+        resources.add(adventureFrits3);
+        resources.add(gentleFrits4);
+        resources.add(kidFrits);
+        resources.add(chefFrits1);
+        resources.add(summerFrits2);
+
+        resources.add(adventureFrits4);
+        resources.add(gentleFrits);
+        resources.add(kidFrits1);
+        resources.add(chefFrits2);
+        resources.add(summerFrits3);
+
+        return resources;
+    }
+
+    public static int getRandomFritsImageResource(){
+        ArrayList<Integer> resources = getFritsImageResources();
 
         Collections.shuffle(resources);
 

@@ -228,6 +228,7 @@ public class LessonsMenuActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
     public class BtnBackListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {

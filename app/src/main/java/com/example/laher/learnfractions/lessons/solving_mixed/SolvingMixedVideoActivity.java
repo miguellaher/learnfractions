@@ -16,7 +16,7 @@ public class SolvingMixedVideoActivity extends LessonVideo {
         super.onCreate(savedInstanceState);
         setTitle(TITLE);
         setmContext(context);
-        String path = "http://jabahan.com/learnfractions/videos/mixed2.mp4";
+        String path = "http://jabahan.com/learnfractions/videos/mixed1.mp4";
         Uri uri = Uri.parse(path);
         setUri(uri);
     }

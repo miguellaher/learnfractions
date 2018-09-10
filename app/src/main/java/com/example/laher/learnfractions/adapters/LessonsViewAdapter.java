@@ -53,7 +53,7 @@ public class LessonsViewAdapter extends RecyclerView.Adapter<LessonsViewAdapter.
 
         int lessonPosition = position + 1;
         
-        ArrayList<Integer> resources = getResources();
+        ArrayList<Integer> resources = Styles.getFritsImageResources();
         int resourcesSize = resources.size();
         while (lessonPosition>resourcesSize){
             lessonPosition = lessonPosition - resourcesSize;
@@ -116,21 +116,6 @@ public class LessonsViewAdapter extends RecyclerView.Adapter<LessonsViewAdapter.
             txtTopicName = itemView.findViewById(R.id.txtTopic);
             parentLayout = itemView.findViewById(R.id.parent_layout_topic);
         }
-    }
-
-    private ArrayList<Integer> getResources(){
-        int gentleFrits = R.drawable.gentle_frits_pic;
-        int kidFrits = R.drawable.kid_frits_pic;
-        int safariFrits = R.drawable.adventure_frits_pic;
-        int summerFrits = R.drawable.summer_frits_pic;
-
-        ArrayList<Integer> resources = new ArrayList<>();
-        resources.add(gentleFrits);
-        resources.add(kidFrits);
-        resources.add(safariFrits);
-        resources.add(summerFrits);
-
-        return resources;
     }
 
     private String getURLForResource(int resourceId) {

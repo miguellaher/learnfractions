@@ -110,6 +110,8 @@ public class LessonVideo extends AppCompatActivity {
 
         mVideo.setOnInfoListener(new MediaPlayerListener());
 
+        mVideo.setOnErrorListener(new VideoListener());
+
         mProgressDialog = new ProgressDialog(mContext);
         String message = "Loading...";
         mProgressDialog.setMessage(message);
@@ -119,7 +121,7 @@ public class LessonVideo extends AppCompatActivity {
         mVideo.start();
     }
 
-    public class VideoListener implements MediaPlayer.OnCompletionListener, View.OnTouchListener, MediaPlayer.OnPreparedListener{
+    public class VideoListener implements MediaPlayer.OnCompletionListener, View.OnTouchListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener{
         @Override
         public void onCompletion(MediaPlayer mp) {
             buttonNext.setEnabled(true);
@@ -142,6 +144,21 @@ public class LessonVideo extends AppCompatActivity {
         @Override
         public void onPrepared(MediaPlayer mp) {
             mProgressDialog.dismiss();
+        }
+
+        @Override
+        public boolean onError(MediaPlayer mp, int what, int extra) {
+            mProgressDialog.dismiss();
+            String message = "Video playing error.";
+            MessageDialog messageDialog = new MessageDialog(mContext, message);
+            messageDialog.show();
+            messageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    buttonNext.setEnabled(true);
+                }
+            });
+            return true;
         }
     }
 
