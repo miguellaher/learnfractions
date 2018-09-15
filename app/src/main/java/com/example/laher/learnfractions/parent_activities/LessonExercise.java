@@ -18,11 +18,13 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.model.User;
 import com.example.laher.learnfractions.service.ExerciseService;
 import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.util.AppCache;
+import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
@@ -41,6 +43,7 @@ public class LessonExercise extends AppCompatActivity {
     private String exerciseTitle;
     //STATISTIC
     private Student student;
+    private User user;
     private int correct;
     private int wrong;
     private int totalWrongs;
@@ -58,6 +61,14 @@ public class LessonExercise extends AppCompatActivity {
     protected final Handler handler = new Handler();
     //SETTINGS
     private boolean rangeEditable;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Probability getProbability() {
         return probability;
@@ -250,7 +261,11 @@ public class LessonExercise extends AppCompatActivity {
 
         txtTitle = findViewById(R.id.txtTitle);
         defaultAttributes();
-        if (!Storage.isEmpty()&&isNetworkAvailable()) {
+
+        String userType = Storage.load(context,Storage.USER_TYPE);
+
+        if (!Storage.isEmpty()&&isNetworkAvailable()
+                && userType.equals(AppConstants.STUDENT)) {
             updateExercise();
         }
     }
@@ -388,12 +403,26 @@ public class LessonExercise extends AppCompatActivity {
         long endingTime = getEndingTime();
         long timeSpent = endingTime - startingTime;
         setTimeSpent(timeSpent);
-        Student student = new Student();
-        String student_id = Storage.load(context,Storage.STUDENT_ID);
-        String teacher_code = Storage.load(context,Storage.TEACHER_CODE);
-        student.setId(student_id);
-        student.setTeacher_code(teacher_code);
-        setStudent(student);
+
+        String userType = Storage.load(context, Storage.USER_TYPE);
+
+        if (userType.equals(AppConstants.STUDENT)) {
+            Student student = new Student();
+            String student_id = Storage.load(context, Storage.STUDENT_ID);
+            String teacher_code = Storage.load(context, Storage.TEACHER_CODE);
+            student.setId(student_id);
+            student.setTeacher_code(teacher_code);
+            setStudent(student);
+        } else if (userType.equals(AppConstants.USER)){
+            User user = new User();
+            String user_id = Storage.load(context, Storage.USER_ID);
+            String user_code = AppConstants.USER_CODE;
+
+            user.setId(user_id);
+            user.setCode(user_code);
+
+            setUser(user);
+        }
 
         Service service = new Service("Posting data...", context, new ServiceResponse() {
             @Override

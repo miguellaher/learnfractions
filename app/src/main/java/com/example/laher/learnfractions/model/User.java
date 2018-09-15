@@ -1,17 +1,18 @@
 package com.example.laher.learnfractions.model;
 
-import java.util.ArrayList;
+import com.example.laher.learnfractions.util.AppConstants;
 
 public class User extends BaseModel {
     private int age;
     private String gender;
-    private ArrayList<String> activitiesDone;
+    private String code;
 
-    public ArrayList<String> getActivitiesDone() {
-        return activitiesDone;
+    public String getCode() {
+        return code;
     }
-    public void setActivitiesDone(ArrayList<String> activitiesDone) {
-        this.activitiesDone = activitiesDone;
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public int getAge() {
@@ -24,7 +25,11 @@ public class User extends BaseModel {
     public String getGender() {
         return gender;
     }
-    public void setGender(String gender) { this.gender = gender; }
+    public void setGender(String gender) {
+        if (gender.equals(AppConstants.MALE) || gender.equals(AppConstants.FEMALE)) {
+            this.gender = gender;
+        }
+    }
 
     public User(){
 

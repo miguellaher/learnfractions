@@ -1,4 +1,4 @@
-package com.example.laher.learnfractions.student_activities;
+package com.example.laher.learnfractions.user_activities;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,7 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.ChapterExamListActivity;
-import com.example.laher.learnfractions.ClassRanksMainActivity;
 import com.example.laher.learnfractions.LessonsMenuActivity;
 import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
@@ -24,14 +23,14 @@ import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.adapters.MainActivityListAdapter;
 import com.example.laher.learnfractions.classes.AppActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
+import com.example.laher.learnfractions.ClassRanksMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
-import com.example.laher.learnfractions.util.Encryptor;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
-public class StudentMainActivity extends AppCompatActivity {
+public class UserMainActivity extends AppCompatActivity {
     Context mContext = this;
 
     //TOOLBAR
@@ -49,7 +48,7 @@ public class StudentMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student_main);
         //TOOLBAR
         txtTitle = findViewById(R.id.txtTitle);
-        txtTitle.setText(AppConstants.STUDENT_MAIN);
+        txtTitle.setText(AppConstants.USER_MAIN);
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +60,7 @@ public class StudentMainActivity extends AppCompatActivity {
                     public void onDismiss(DialogInterface dialog) {
                         if (confirmationDialog.isConfirmed()){
                             Storage.logout(mContext);
-                            Intent intent = new Intent(StudentMainActivity.this,
+                            Intent intent = new Intent(UserMainActivity.this,
                                     LoginActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -94,10 +93,8 @@ public class StudentMainActivity extends AppCompatActivity {
         int resource = Styles.getRandomFritsImageResource();
         imgAvatar.setImageResource(resource);
 
-        String studentUsername = Storage.load(mContext, Storage.STUDENT_USERNAME);
-        String teacherCode = Storage.load(mContext, Storage.TEACHER_CODE);
-        teacherCode = Encryptor.decrypt(teacherCode);
-        String strWelcome = "Welcome! " + studentUsername + ",\n from Class " + teacherCode;
+        String userUserName = Storage.load(mContext,Storage.USER_USERNAME);
+        String strWelcome = "Welcome! " + userUserName + ".";
         txtWelcome = findViewById(R.id.student_main_txtWelcome);
         txtWelcome.setText(strWelcome);
         Styles.paintBlack(txtWelcome);

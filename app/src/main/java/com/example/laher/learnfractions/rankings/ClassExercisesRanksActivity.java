@@ -23,11 +23,10 @@ import com.example.laher.learnfractions.service.ExerciseService;
 import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
-import com.example.laher.learnfractions.student_activities.ClassRanksMainActivity;
+import com.example.laher.learnfractions.ClassRanksMainActivity;
 import com.example.laher.learnfractions.teacher2.LessonExercisesListActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Encryptor;
-import com.example.laher.learnfractions.util.Probability;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
@@ -72,10 +71,20 @@ public class ClassExercisesRanksActivity extends AppCompatActivity {
         });
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
-        String title = AppConstants.EXERCISE_RANKING;
-        String teacherCode = Storage.load(mContext, Storage.TEACHER_CODE);
-        teacherCode = Encryptor.decrypt(teacherCode);
-        title = title + "\n of Class " + teacherCode;
+        txtTitle = findViewById(R.id.txtTitle);
+
+        String userType = Storage.load(mContext, Storage.USER_TYPE);
+
+        String title;
+        if (userType.equals(AppConstants.USER)) {
+            title = AppConstants.EXERCISE_RANKING;
+        } else {
+            title = AppConstants.EXERCISE_RANKING;
+            String teacherCode = Storage.load(mContext, Storage.TEACHER_CODE);
+            teacherCode = Encryptor.decrypt(teacherCode);
+            title = title + "\n of Class " + teacherCode;
+        }
+
         txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(title);
         //ACTIVITY
@@ -83,7 +92,11 @@ public class ClassExercisesRanksActivity extends AppCompatActivity {
 
         mLessonExercises = LessonExercisesListActivity.getExercises();
 
-        updateExams();
+        if (userType.equals(AppConstants.USER)){
+            getStudentsStats();
+        } else { // if user type is either student or teacher
+            updateExams();
+        }
     }
 
     private void updateExams(){
@@ -140,18 +153,18 @@ public class ClassExercisesRanksActivity extends AppCompatActivity {
                         }
                     }
                     updateList(exercises);
-                    getExercisesStats();
+                    getStudentsStats();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    getExercisesStats();
+                    getStudentsStats();
                 }
             }
         });
         ExerciseService.getUpdates(mContext,service);
     }
 
-    private void getExercisesStats(){
-        Service service = new Service("Getting exercise stats...", mContext, new ServiceResponse() {
+    private void getStudentsStats(){
+        Service service = new Service("Getting exercises stats...", mContext, new ServiceResponse() {
             @Override
             public void postExecute(JSONObject response) {
                 try {
@@ -159,7 +172,16 @@ public class ClassExercisesRanksActivity extends AppCompatActivity {
                     ArrayList<LessonExercise> downloadedLessonExercises = new ArrayList<>();
                     for (int i = 1; i <= item_count; i++) {
                         String studentID = response.optString(i + "stud_id");
-                        String studentUserName = response.optString(i + "student_username");
+
+                        String userType = Storage.load(mContext, Storage.USER_TYPE);
+
+                        String studentUserName;
+                        if (userType.equals(AppConstants.USER)){
+                            studentUserName = response.optString(i + "user_username");
+                        } else {
+                            studentUserName = response.optString(i + "student_username");
+                        }
+
                         String exerciseID = response.optString(i + "exercise_id");
                         String strTimeSpent = response.optString(i + "time_spent");
                         String strErrors = response.optString(i + "errors");

@@ -37,6 +37,7 @@ import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
+import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
@@ -281,7 +282,14 @@ public class ChapterExamListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateExams();
+
+        String userType = Storage.load(mContext, Storage.USER_TYPE);
+
+        if (userType.equals(AppConstants.STUDENT)) {
+            updateExams();
+        } else if (userType.equals(AppConstants.USER)) {
+            getStudentStats();
+        }
     }
 
     @Override

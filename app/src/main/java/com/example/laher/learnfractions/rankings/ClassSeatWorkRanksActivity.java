@@ -24,7 +24,7 @@ import com.example.laher.learnfractions.service.SeatWorkService;
 import com.example.laher.learnfractions.service.SeatWorkStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
-import com.example.laher.learnfractions.student_activities.ClassRanksMainActivity;
+import com.example.laher.learnfractions.ClassRanksMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Encryptor;
 import com.example.laher.learnfractions.util.Storage;
@@ -73,10 +73,19 @@ public class ClassSeatWorkRanksActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
         txtTitle = findViewById(R.id.txtTitle);
-        String title = AppConstants.SW_RANKING;
-        String teacherCode = Storage.load(mContext, Storage.TEACHER_CODE);
-        teacherCode = Encryptor.decrypt(teacherCode);
-        title = title + "\n of Class " + teacherCode;
+
+        String userType = Storage.load(mContext, Storage.USER_TYPE);
+
+        String title;
+        if (userType.equals(AppConstants.USER)) {
+            title = AppConstants.SW_RANKING;
+        } else {
+            title = AppConstants.SW_RANKING;
+            String teacherCode = Storage.load(mContext, Storage.TEACHER_CODE);
+            teacherCode = Encryptor.decrypt(teacherCode);
+            title = title + "\n of Class " + teacherCode;
+        }
+
         txtTitle.setText(title);
         Styles.paintBlack(txtTitle);
 
@@ -85,10 +94,14 @@ public class ClassSeatWorkRanksActivity extends AppCompatActivity {
 
         mSeatWorks = SeatWorkListActivity.getSeatWorks();
 
-        getLatestSeatWorks();
+        if (userType.equals(AppConstants.USER)){
+            getStudentsStats();
+        } else { // if user type is either student or teacher
+            updateSeatworks();
+        }
     }
 
-    private void getLatestSeatWorks(){
+    private void updateSeatworks(){
         Service service = new Service("Getting updated seat works...", mContext, new ServiceResponse() {
             @Override
             public void postExecute(JSONObject response) {
@@ -147,7 +160,15 @@ public class ClassSeatWorkRanksActivity extends AppCompatActivity {
                     for (int i = 1; i <= item_count; i++) {
                         SeatWork downloadedSeatWorkStats = new SeatWork();
 
-                        String studentUserName = response.optString(i + "student_username");
+                        String userType = Storage.load(mContext, Storage.USER_TYPE);
+
+                        String studentUserName;
+                        if (userType.equals(AppConstants.USER)){
+                            studentUserName = response.optString(i + "user_username");
+                        } else {
+                            studentUserName = response.optString(i + "student_username");
+                        }
+
                         String studentID = response.optString(i + "stud_id");
                         String seatwork_id = response.optString(i + "seatwork_id");
                         String strItemSize = response.optString(i + "items_size");

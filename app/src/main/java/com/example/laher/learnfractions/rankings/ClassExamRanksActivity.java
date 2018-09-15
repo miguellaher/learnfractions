@@ -26,7 +26,7 @@ import com.example.laher.learnfractions.service.ExamService;
 import com.example.laher.learnfractions.service.ExamStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
-import com.example.laher.learnfractions.student_activities.ClassRanksMainActivity;
+import com.example.laher.learnfractions.ClassRanksMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Encryptor;
 import com.example.laher.learnfractions.util.Storage;
@@ -71,11 +71,22 @@ public class ClassExamRanksActivity extends AppCompatActivity {
         });
         btnNext = findViewById(R.id.btnNext);
         btnNext.setVisibility(View.INVISIBLE);
-        String title = AppConstants.EXAM_RANKING;
-        String teacherCode = Storage.load(mContext, Storage.TEACHER_CODE);
-        teacherCode = Encryptor.decrypt(teacherCode);
-        title = title + "\n of Class " + teacherCode;
         txtTitle = findViewById(R.id.txtTitle);
+
+        String userType = Storage.load(mContext, Storage.USER_TYPE);
+
+        String title;
+        if (userType.equals(AppConstants.USER)) {
+            title = AppConstants.EXAM_RANKING;
+        } else {
+            title = AppConstants.EXAM_RANKING;
+            String teacherCode = Storage.load(mContext, Storage.TEACHER_CODE);
+            teacherCode = Encryptor.decrypt(teacherCode);
+            title = title + "\n of Class " + teacherCode;
+        }
+
+        txtTitle = findViewById(R.id.txtTitle);
+
         txtTitle.setText(title);
 
         //ACTIVITY
@@ -83,7 +94,11 @@ public class ClassExamRanksActivity extends AppCompatActivity {
 
         mChapterExams = ChapterExamListActivity.getChapterExams();
 
-        updateExams();
+        if (userType.equals(AppConstants.USER)){
+            getStudentsStats();
+        } else { // if user type is either student or teacher
+            updateExams();
+        }
     }
     private void getStudentsStats(){
         Service service = new Service("Getting exams stats...", mContext, new ServiceResponse() {
@@ -97,7 +112,16 @@ public class ClassExamRanksActivity extends AppCompatActivity {
                         ChapterExam chapterExamStats = new ChapterExam();
 
                         String studentId = response.optString(i + "stud_id");
-                        String username = response.optString(i + "student_username");
+
+                        String userType = Storage.load(mContext, Storage.USER_TYPE);
+
+                        String username;
+                        if (userType.equals(AppConstants.USER)){
+                            username = response.optString(i + "user_username");
+                        } else {
+                            username = response.optString(i + "student_username");
+                        }
+
                         Student student = new Student();
                         student.setId(studentId);
                         student.setUsername(username);

@@ -6,7 +6,9 @@ import android.util.Log;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.model.ExerciseStat;
 import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.model.User;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Util;
 import com.loopj.android.http.RequestParams;
@@ -50,10 +52,21 @@ public class ExerciseStatService {
     public static void post(LessonExercise exercise, Service service){
         RequestParams params = new RequestParams();
         Student student = exercise.getStudent();
+        User user = exercise.getUser();
 
+        String teacher_code = null;
+        String student_id = null;
+        if (student!=null) {
+            teacher_code = student.getTeacher_code();
+            student_id = student.getId();
+        }
+        String user_code = null;
+        String user_id = null;
+        if (user!=null) {
+            user_code = user.getCode();
+            user_id = user.getId();
+        }
 
-        String teacher_code = student.getTeacher_code();
-        String student_id = student.getId();
         String exercise_id = exercise.getId();
         String title = exercise.getExerciseTitle();
 
@@ -86,8 +99,19 @@ public class ExerciseStatService {
         String strMaximum = String.valueOf(maximum);
 
         params.put("stat_id", Util.generateId());
-        params.put("teacher_code", teacher_code);
-        params.put("student_id", student_id);
+
+        if (teacher_code!=null) {
+            params.put("teacher_code", teacher_code);
+        } else if (user_code!=null){
+            params.put("teacher_code", user_code);
+        }
+
+        if (student_id!=null) {
+            params.put("student_id", student_id);
+        } else if (user_id!=null) {
+            params.put("student_id", user_id);
+        }
+
         params.put("exercise_id", exercise_id);
         params.put("title", title);
 
@@ -107,9 +131,17 @@ public class ExerciseStatService {
     public static void getAllStats(Context context, Service service){
         RequestParams params = new RequestParams();
 
-        String teacherCode = Storage.load(context, Storage.TEACHER_CODE);
+        String userType = Storage.load(context,Storage.USER_TYPE);
 
-        params.put("teacher_code", teacherCode);
+        if (userType.equals(AppConstants.USER)){
+            String userCode = AppConstants.USER_CODE;
+
+            params.put("teacher_code", userCode);
+        } else { // if user type is either a student or teacher
+            String teacherCode = Storage.load(context, Storage.TEACHER_CODE);
+
+            params.put("teacher_code", teacherCode);
+        }
 
         service.get("http://jabahan.com/learnfractions/e_stat/getAllStats.php", params);
         service.execute();

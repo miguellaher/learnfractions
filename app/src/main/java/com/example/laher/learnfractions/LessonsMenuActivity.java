@@ -1,6 +1,7 @@
 package com.example.laher.learnfractions;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.adapters.LessonsViewAdapter;
+import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.MessageDialog;
 import com.example.laher.learnfractions.lessons.adding_dissimilar.AddingDissimilarExerciseActivity;
 import com.example.laher.learnfractions.lessons.adding_dissimilar.AddingDissimilarVideoActivity;
@@ -60,6 +62,7 @@ import com.example.laher.learnfractions.lessons.subtracting_similar.SubtractingS
 import com.example.laher.learnfractions.lessons.subtracting_similar.SubtractingSimilarVideoActivity;
 import com.example.laher.learnfractions.parent_activities.Lesson;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
+import com.example.laher.learnfractions.user_activities.UserMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
@@ -89,21 +92,39 @@ public class LessonsMenuActivity extends AppCompatActivity {
 
         Styles.bgPaintMainBlue(btnBack);
 
-        if (!isNetworkAvailable()&&!LessonsMenuActivity.openedOnce){
-            LessonsMenuActivity.openedOnce = true;
-            final MessageDialog messageDialog = new MessageDialog(mContext, "Go online to login/register.");
-            messageDialog.show();
-            btnBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isNetworkAvailable()){
-                        btnBack.setOnClickListener(new BtnBackListener());
-                        btnBack.performClick();
-                    } else {
-                        messageDialog.show();
+        if (!isNetworkAvailable()){
+            if(!LessonsMenuActivity.openedOnce) {
+                LessonsMenuActivity.openedOnce = true;
+                final MessageDialog messageDialog = new MessageDialog(mContext, "Go online to login/register.");
+                messageDialog.show();
+                btnBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (isNetworkAvailable()) {
+                            btnBack.setOnClickListener(new BtnBackListener());
+                            btnBack.performClick();
+                        } else {
+                            messageDialog.show();
+                        }
+                        Storage.logout(mContext);
                     }
-                }
-            });
+                });
+            } else {
+                final MessageDialog messageDialog = new MessageDialog(mContext, "Go online to login/register.");
+                btnBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (isNetworkAvailable()) {
+                            btnBack.setOnClickListener(new BtnBackListener());
+                            btnBack.performClick();
+                        } else {
+                            messageDialog.show();
+                        }
+                        Storage.logout(mContext);
+                    }
+                });
+            }
+            Storage.logout(mContext);
         } else {
             btnBack.setOnClickListener(new BtnBackListener());
         }
@@ -233,16 +254,39 @@ public class LessonsMenuActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (!Storage.isEmpty()) {
-                if (Storage.load(mContext, Storage.USER_TYPE).equals(AppConstants.STUDENT)) {
-                    Intent intent = new Intent(LessonsMenuActivity.this,
-                            StudentMainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                } else {
-                    finish();
+                switch (Storage.load(mContext, Storage.USER_TYPE)) {
+                    case AppConstants.STUDENT: {
+                        Intent intent = new Intent(LessonsMenuActivity.this,
+                                StudentMainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        break;
+                    }
+                    case AppConstants.USER: {
+                        Intent intent = new Intent(LessonsMenuActivity.this,
+                                UserMainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        break;
+                    }
+                    default:
+                        final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext, "Are you sure you want to exit app?");
+                        confirmationDialog.show();
+                        confirmationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                if (confirmationDialog.isConfirmed()) {
+                                    finishAffinity();
+                                }
+                            }
+                        });
+                        break;
                 }
             } else {
-                finish();
+                Intent intent = new Intent(LessonsMenuActivity.this,
+                        LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         }
     }

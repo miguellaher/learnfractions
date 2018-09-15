@@ -3,6 +3,8 @@ package com.example.laher.learnfractions.teacher;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +15,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.LessonsMenuActivity;
 import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.adapters.MainActivityListAdapter;
 import com.example.laher.learnfractions.classes.AppActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
-import com.example.laher.learnfractions.student_activities.ClassRanksMainActivity;
+import com.example.laher.learnfractions.ClassRanksMainActivity;
 import com.example.laher.learnfractions.teacher2.LessonExercisesListActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Encryptor;
@@ -69,6 +72,13 @@ public class TeacherMainActivity extends AppCompatActivity {
         btnNext.setVisibility(View.INVISIBLE);
         txtTitle = findViewById(R.id.txtTitle);
         txtTitle.setText(AppConstants.TEACHER_MAIN);
+
+        if (!isNetworkAvailable()){
+            Storage.logout(mContext);
+            Intent intent = new Intent(mContext,
+                    LessonsMenuActivity.class);
+            startActivity(intent);
+        }
 
         //ACTIVITY
         ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
@@ -129,5 +139,13 @@ public class TeacherMainActivity extends AppCompatActivity {
         btnCheckSWProgress.setEnabled(false);
         btnCheckEProgress.setEnabled(false);
         btnCheckExamProgress.setEnabled(false);*/
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connectivityManager != null;
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

@@ -36,6 +36,7 @@ import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
 import com.example.laher.learnfractions.teacher.TeacherMainActivity;
 import com.example.laher.learnfractions.teacher.dialogs.SeatWorkUpdateDialog;
+import com.example.laher.learnfractions.user_activities.UserMainActivity;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
@@ -85,7 +86,7 @@ public class SeatWorkListActivity extends AppCompatActivity {
             studentMode();
 
         } else {
-            baseMode();
+            userMode();
 
         }
     }
@@ -325,7 +326,18 @@ public class SeatWorkListActivity extends AppCompatActivity {
         return seatWorks;
     }
 
-    private void baseMode(){
+    private void userMode(){
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SeatWorkListActivity.this,
+                        UserMainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+            }
+        });
+
         Log.d(TAG, "User type: " + Storage.load(mContext,Storage.USER_TYPE));
 
         seatworkListAdapter = new SeatWorkListAdapter(mContext, R.layout.layout_user_item, seatWorks);
@@ -334,11 +346,68 @@ public class SeatWorkListActivity extends AppCompatActivity {
         seatWorkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SeatWork seatWork = seatWorks.get(position);
+                AppCache.setSeatWork(seatWork);
                 Intent intent = new Intent(mContext, seatWorks.get(position).getClass());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
+
+        Service getStatsService = new Service("Getting stats...", mContext, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try {
+                    int item_count = Integer.valueOf(response.optString("item_count"));
+                    ArrayList<SeatWork> downloadedSeatworkStats = new ArrayList<>();
+                    for (int i = 1; i <= item_count; i++) {
+                        String seatworkID = response.optString(i + "seatwork_id");
+                        String strItemsSize = response.optString(i + "items_size");
+                        String strMinimum = response.optString(i + "r_minimum");
+                        String strMaximum = response.optString(i + "r_maximum");
+                        String topic_name = response.optString(i + "topic_name");
+                        String strScore = response.optString(i + "score");
+                        String strTimeSpent = response.optString(i + "time_spent");
+
+                        int itemsSize = Integer.valueOf(strItemsSize);
+
+                        int minimum = Integer.valueOf(strMinimum);
+                        int maximum = Integer.valueOf(strMaximum);
+                        Range range = new Range(minimum,maximum);
+
+                        int score = Integer.valueOf(strScore);
+                        long timeSpent = Long.valueOf(strTimeSpent);
+
+                        SeatWork downloadedSeatworkStat = new SeatWork();
+                        downloadedSeatworkStat.setId(seatworkID);
+                        downloadedSeatworkStat.setItems_size(itemsSize);
+                        downloadedSeatworkStat.setRange(range);
+                        downloadedSeatworkStat.setTopicName(topic_name);
+                        downloadedSeatworkStat.setCorrect(score);
+                        downloadedSeatworkStat.setTimeSpent(timeSpent);
+
+                        downloadedSeatworkStats.add(downloadedSeatworkStat);
+                    }
+                    for(SeatWork downloadedSeatworkStat : downloadedSeatworkStats){
+                        int i = 0;
+                        for (SeatWork seatWork : seatWorks){
+                            if (seatWork.isUpdatedWith(downloadedSeatworkStat)){
+                                seatWork.getStatsFrom(downloadedSeatworkStat);
+                                seatWork.setAnswered(true);
+                                seatWorks.set(i, seatWork);
+                            }
+                            i++;
+                        }
+                    }
+                    seatworkListAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    seatworkListAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+        SeatWorkStatService.getStats(mContext, getStatsService);
+
     }
 
     @Override

@@ -36,7 +36,6 @@ public class FractionMeaningSeatWork extends SeatWork {
     ImageView imgBox7;
     ImageView imgBox8;
     ImageView imgBox9;
-    ImageView imgAvatar;
     ImageView imgLine;
     EditText inputNum;
     EditText inputDenom;

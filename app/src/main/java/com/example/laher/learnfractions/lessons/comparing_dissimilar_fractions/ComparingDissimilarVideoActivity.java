@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.parent_activities.LessonVideo;
 
 public class ComparingDissimilarVideoActivity extends LessonVideo {
@@ -15,7 +14,7 @@ public class ComparingDissimilarVideoActivity extends LessonVideo {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(TITLE);
-        setmContext(context);
+        setMContext(context);
         String path = "http://jabahan.com/learnfractions/videos/comparing_dissimilar.mp4";
         Uri uri = Uri.parse(path);
         setUri(uri);

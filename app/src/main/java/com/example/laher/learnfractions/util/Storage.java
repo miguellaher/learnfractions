@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.model.Teacher;
+import com.example.laher.learnfractions.model.User;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -22,9 +23,11 @@ public class Storage {
 
     public static final String TEACHER_ID="TEACHER_ID=";
     public static final String STUDENT_ID="STUDENT_ID=";
+    public static final String USER_ID="USER_ID=";
     public static final String TEACHER_CODE="TEACHER_CODE=";
     public static final String TEACHER_USERNAME="TEACHER_USERNAME=";
     public static final String STUDENT_USERNAME="STUDENT_USERNAME=";
+    public static final String USER_USERNAME="USER_USERNAME=";
     public static final String USER_TYPE="USER_TYPE=";
 
     public static boolean isEmpty() {
@@ -73,6 +76,24 @@ public class Storage {
             e.printStackTrace();
         }
     }
+
+    public static void save(Context context, User user) {
+
+        try {
+            fos = context.getApplicationContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            String user_type = USER_TYPE + AppConstants.USER;
+            write(user_type);
+            String user_id = USER_ID + user.getId();
+            write(user_id);
+            String student_username = USER_USERNAME + user.getUsername();
+            write(student_username);
+            fos.close();
+            empty = false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void write(String s) throws IOException {
         fos.write(s.getBytes());
         fos.write(";".getBytes());
@@ -120,23 +141,31 @@ public class Storage {
         String out = sb.toString();
         String[] tokens = out.split(";");
 
-        if (identifier.equals(TEACHER_ID)){
-            out = getStringValue(tokens, TEACHER_ID);
-        }
-        if (identifier.equals(STUDENT_ID)){
-            out = getStringValue(tokens, STUDENT_ID);
-        }
-        if (identifier.equals(STUDENT_USERNAME)){
-            out = getStringValue(tokens, STUDENT_USERNAME);
-        }
-        if (identifier.equals(TEACHER_CODE)){
-            out = getStringValue(tokens, TEACHER_CODE);
-        }
-        if (identifier.equals(TEACHER_USERNAME)){
-            out = getStringValue(tokens, TEACHER_USERNAME);
-        }
-        if (identifier.equals(USER_TYPE)){
-            out = getStringValue(tokens, USER_TYPE);
+        switch (identifier) {
+            case TEACHER_ID:
+                out = getStringValue(tokens, TEACHER_ID);
+                break;
+            case STUDENT_ID:
+                out = getStringValue(tokens, STUDENT_ID);
+                break;
+            case USER_ID:
+                out = getStringValue(tokens, USER_ID);
+                break;
+            case STUDENT_USERNAME:
+                out = getStringValue(tokens, STUDENT_USERNAME);
+                break;
+            case USER_USERNAME:
+                out = getStringValue(tokens, USER_USERNAME);
+                break;
+            case TEACHER_CODE:
+                out = getStringValue(tokens, TEACHER_CODE);
+                break;
+            case TEACHER_USERNAME:
+                out = getStringValue(tokens, TEACHER_USERNAME);
+                break;
+            case USER_TYPE:
+                out = getStringValue(tokens, USER_TYPE);
+                break;
         }
         if (out!=null) {
             out = out.trim();

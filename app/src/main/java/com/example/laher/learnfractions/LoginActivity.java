@@ -18,18 +18,18 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.laher.learnfractions.admin_activities.AdminMainActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
-import com.example.laher.learnfractions.model.Admin;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.model.Teacher;
-import com.example.laher.learnfractions.service.AdminService;
+import com.example.laher.learnfractions.model.User;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.service.StudentService;
 import com.example.laher.learnfractions.service.TeacherService;
+import com.example.laher.learnfractions.service.UserService;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
 import com.example.laher.learnfractions.teacher.TeacherMainActivity;
+import com.example.laher.learnfractions.user_activities.UserMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
@@ -62,6 +62,11 @@ public class LoginActivity extends AppCompatActivity {
             Storage.logout(mContext);
             Intent intent = new Intent(LoginActivity.this,
                     LessonsMenuActivity.class);
+            startActivity(intent);
+        }
+        if (Storage.load(mContext,Storage.USER_ID)!=null){
+            Intent intent = new Intent(LoginActivity.this,
+                    UserMainActivity.class);
             startActivity(intent);
         }
         if (Storage.load(mContext,Storage.STUDENT_ID)!=null){
@@ -112,31 +117,6 @@ public class LoginActivity extends AppCompatActivity {
         return null;
     }
     private void login(String userType){
-        if (userType.trim().matches(AppConstants.ADMIN)){
-            Service service = new Service("Signing in...", mContext, new ServiceResponse() {
-                @Override
-                public void postExecute(JSONObject response) {
-                    try {
-                        if (response.optString("message") != null && response.optString("message").equals("Incorrect username or password.")) {
-                            showTxtError(String.valueOf(response.optString("message")));
-                        }else{
-                            final Admin admin = new Admin();
-                            admin.setId(response.optString("id"));
-                            Intent intent = new Intent(LoginActivity.this,
-                                    AdminMainActivity.class);
-                            intent.putExtra("id", admin.getId());
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }
-                    }catch (Exception e){e.printStackTrace();}
-                }
-            });
-            Admin admin = new Admin();
-            admin.setUsername(String.valueOf(inputUsername.getText()));
-            admin.setPassword(String.valueOf(inputPassword.getText()));
-            AdminService.login(admin, service);
-        }
-
         if (userType.trim().matches(AppConstants.TEACHER)){
             Service service = new Service("Signing in...", mContext, new ServiceResponse() {
                 @Override
@@ -196,11 +176,54 @@ public class LoginActivity extends AppCompatActivity {
             student.setPassword(String.valueOf(inputPassword.getText()));
             StudentService.login(student, service);
         }
+
+        if (userType.trim().matches(AppConstants.USER)){
+            Service service = new Service("Signing in...", mContext, new ServiceResponse() {
+                @Override
+                public void postExecute(JSONObject response) {
+                    try{
+                        if (response.optString("message") != null && response.optString("message").equals("Incorrect username or password.")){
+                            showTxtError(String.valueOf(response.optString("message")));
+                        } else {
+                            User user = new User();
+
+                            String id = response.optString("id");
+                            String username = response.optString("username");
+                            String password = response.optString("password");
+
+                            user.setId(id);
+                            user.setUsername(username);
+                            user.setPassword(password);
+
+                            Storage.save(mContext, user);
+
+                            Intent intent = new Intent(LoginActivity.this,
+                                    UserMainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        Util.toast(mContext, AppConstants.SERVER_DOWN);
+                    }
+                }
+            });
+            User user = new User();
+
+            String username = inputUsername.getText().toString().trim();
+            String password = inputPassword.getText().toString().trim();
+
+            user.setUsername(username);
+            user.setPassword(password);
+
+            UserService.login(user, service);
+        }
     }
     private void showTxtError(String errorMsg){
         txtError.setText(errorMsg);
         Styles.paintRed(txtError);
         txtError.setVisibility(TextView.VISIBLE);
+        Styles.shakeAnimate(txtError);
     }
     private class BtnLoginListener implements Button.OnClickListener{
         @Override

@@ -4,6 +4,8 @@ import android.graphics.Color;
 
 import com.example.laher.learnfractions.fraction_util.Fraction;
 
+import java.util.ArrayList;
+
 public class AppConstants {
     public static final String METHOD_GET = "METHOD_GET";
     public static final String METHOD_POST = "METHOD_POST";
@@ -11,10 +13,6 @@ public class AppConstants {
     public static final String USER = "User";
     public static final String STUDENT = "Student";
     public static final String TEACHER = "Teacher";
-    public static final String ADMIN = "Admin";
-
-    public static final String ENABLE = "Enable";
-    public static final String DISABLE = "Disable";
 
     public static final String MALE= "MALE";
     public static final String FEMALE= "FEMALE";
@@ -23,6 +21,8 @@ public class AppConstants {
     public static final String SEAT_WORKS = "Seat Works";
     public static final String CHAPTER_EXAM = "Chapter Exam";
     public static final String TEACHER_MAIN = "Teacher Main";
+    public static final String USER_CODE = "THIS_IS_A_USER";
+    public static final String USER_MAIN = "User Main";
     public static final String EXERCISE_RANKING = "Exercise Ranking";
     public static final String SW_RANKING = "Seatwork Ranking";
     public static final String EXAM_RANKING = "Chapter Exam Ranking";
@@ -44,7 +44,7 @@ public class AppConstants {
     public static final String DENOMINATOR = "Denominator";
 
     public static final String CLASS_RANKS = "Class Ranks";
-    public static final String EXERCISE_RANKS = "Exercise Ranks";
+    public static final String GLOBAL_RANKS = "Global User ranks.";
 
 
     //LESSONS
@@ -81,25 +81,24 @@ public class AppConstants {
     public static final String LESS_THAN = "<";
     public static final String EQUAL_TO = "=";
 
-    public static final int EQUAL = 0;
     public static final Fraction EQUAL_FRACTIONS = new Fraction(0,0);
     public static final String SERVER_DOWN = "Internal Server Error.";
 
 
-    public static final String FAILED_CONSECUTIVE(int error){
+    public static String FAILED_CONSECUTIVE(int error){
         return "You had " + error + " consecutive error/s. Preparing to start previous activity.";
     }
-    public static final String FAILED(int error){
+    public static String FAILED(int error){
         return "You had " + error + " error/s. Preparing to start previous activity.";
     }
-    public static final String SCORE(int correct, int items){
+    public static String SCORE(int correct, int items){
         if (items>=correct) {
             return correct + " / " + items;
         } else {
             return null;
         }
     }
-    public static final String ITEM(int currentItem, int items){
+    public static String ITEM(int currentItem, int items){
         if (items>=currentItem) {
             return "#" + currentItem + " of " + items;
         } else {
@@ -117,4 +116,19 @@ public class AppConstants {
 
     //COLORS
     public static final int BG_DEFAULT_NOT_FINISHED = Color.rgb(169,169,169);
+
+    public static ArrayList<String> getSecurityQuestions(){
+        ArrayList<String> securityQuestionsList = new ArrayList<>();
+
+        securityQuestionsList.add("What was your childhood nickname?");
+        securityQuestionsList.add("What is the name of your childhood dog?");
+        securityQuestionsList.add("What is your oldest sibling's middle name?");
+        securityQuestionsList.add("What was the name of your first stuffed animal?");
+        securityQuestionsList.add("What street did you live on in third grade?");
+        securityQuestionsList.add("What is your mother's middle name?");
+        securityQuestionsList.add("Who was your childhood superhero?");
+        securityQuestionsList.add("What is your favorite movie?");
+
+        return securityQuestionsList;
+    }
 }

@@ -1,30 +1,23 @@
 package com.example.laher.learnfractions;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.laher.learnfractions.dialog_layout.AdminVerificationDialog;
-import com.example.laher.learnfractions.model.Admin;
+import com.example.laher.learnfractions.classes.SecurityQuestionAdapter;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.model.Teacher;
 import com.example.laher.learnfractions.model.User;
-import com.example.laher.learnfractions.service.AdminService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.service.StudentService;
@@ -41,31 +34,36 @@ import java.util.ArrayList;
 public class RegisterActivity extends AppCompatActivity {
     Context context = this;
 
-    TextView txtTitle, txtError, txtMessage;
-    Spinner spinnerUserType, spinnerSecurityQuestion;
-    EditText inputUserName, inputPassword, inputConfirmPassword, inputAge, inputSecurityAnswer, inputTeacherCode;
+    TextView txtTitle;
+    TextView txtError;
+    TextView txtMessage;
+    Spinner spinnerUserType;
+    Spinner spinnerSecurityQuestion;
+    EditText inputUserName;
+    EditText inputPassword;
+    EditText inputConfirmPassword;
+    EditText inputAge;
+    EditText inputSecurityAnswer;
+    EditText inputTeacherCode;
     RadioGroup radioGroupGender;
-    RadioButton radioMale, radioFemale;
+    RadioButton radioMale;
+    RadioButton radioFemale;
     Button btnRegister;
-
-    //FOR REGISTERING AN ADMIN
-    int easterEggClicks;
 
     String userType;
     ArrayAdapter<CharSequence> adapter;
 
-    ArrayList<String> securtiy_questions_list;
-    ArrayAdapter<String> security_questions_adapter;
+    ArrayList<String> security_questions_list;
+    SecurityQuestionAdapter security_questions_adapter;
     String security_question;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         txtTitle = findViewById(R.id.rTxtTitle);
-        easterEggClicks = 0;
-        txtTitle.setOnClickListener(new TextViewTitleListener());
         txtError = findViewById(R.id.rTxtError);
         txtError.setVisibility(TextView.INVISIBLE);
+
         txtMessage = findViewById(R.id.rTxtMessage);
         txtMessage.setOnClickListener(new TextView.OnClickListener() {
             @Override
@@ -76,6 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         spinnerUserType = findViewById(R.id.rSpinnerUserType);
         inputUserName = findViewById(R.id.rInputUsername);
         inputPassword = findViewById(R.id.rInputPassword);
@@ -94,17 +93,10 @@ public class RegisterActivity extends AppCompatActivity {
         spinnerUserType.setAdapter(adapter);
         spinnerUserType.setOnItemSelectedListener(new UserTypeSpinnerListener());
 
-        securtiy_questions_list = new ArrayList<>();
-        securtiy_questions_list.add("What was your childhood nickname?");
-        securtiy_questions_list.add("What is the name of your childhood dog?");
-        securtiy_questions_list.add("What is your oldest sibling's middle name?");
-        securtiy_questions_list.add("What was the name of your first stuffed animal?");
-        securtiy_questions_list.add("What street did you live on in third grade?");
-        securtiy_questions_list.add("What is your mother's middle name?");
-        securtiy_questions_list.add("Who was your childhood superhero?");
-        securtiy_questions_list.add("What is your favorite movie?");
-        security_questions_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, securtiy_questions_list);
-        security_questions_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        security_questions_list = AppConstants.getSecurityQuestions();
+
+        security_questions_adapter = new SecurityQuestionAdapter(this, R.id.security_question_dropdown_item_txtView1, security_questions_list);
+
         spinnerSecurityQuestion.setAdapter(security_questions_adapter);
         spinnerSecurityQuestion.setOnItemSelectedListener(new SecurityQuestionSpinnerListener());
     }
@@ -114,95 +106,32 @@ public class RegisterActivity extends AppCompatActivity {
         txtError.setVisibility(View.VISIBLE);
         Styles.shakeAnimate(txtError);
     }
-    private void setAdminRegistration(){
-        txtTitle.setText("Admin Registration");
-        inputAge.setVisibility(View.INVISIBLE);
-        radioGroupGender.setVisibility(View.INVISIBLE);
-        spinnerSecurityQuestion.setVisibility(View.INVISIBLE);
-        inputSecurityAnswer.setVisibility(View.INVISIBLE);
-        inputTeacherCode.setVisibility(View.INVISIBLE);
-        btnRegister.setOnClickListener(new AdminRegistrationButtonListener());
-    }
-    private void register(Admin admin){
-        Service service = new Service("Registering admin...", RegisterActivity.this, new ServiceResponse() {
-            @Override
-            public void postExecute(JSONObject response) {
-                try {
-                    if (response.getString("message").equals("Admin created.")){
-                        Util.toast(context, response.getString("message"));
-                        Intent intent = new Intent(RegisterActivity.this,
-                                LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    } else {
-                        Util.toast(context, response.getString("message"));
-                    }
-                } catch (Exception e){}
-            }
-        });
-        AdminService.register(admin,service);
-    }
-    private class AdminRegistrationButtonListener implements Button.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            if (!inputUserName.getText().toString().trim().matches("") &&
-                    !inputPassword.getText().toString().trim().matches("") &&
-                    !inputConfirmPassword.getText().toString().trim().matches("")){
-                if (inputUserName.getText().length()>1){
-                    if (inputPassword.getText().length()>5) {
-                        if (inputPassword.getText().toString().trim().matches(inputConfirmPassword.getText().toString().trim())) {
-                            Admin admin = new Admin();
-                            admin.setUsername(String.valueOf(inputUserName.getText()));
-                            admin.setPassword(String.valueOf(inputPassword.getText()));
-                            register(admin);
-                        } else {
-                            showTxtError("Password and Confirm Password do not match.");
-                        }
-                    } else {
-                        showTxtError("Passwords should be 6 or more characters.");
-                    }
-                } else {
-                    showTxtError("Username should be 2 or more characters.");
-                }
-            } else {
-                showTxtError("Some field/s are missing.");
-            }
-        }
-    }
-    private class TextViewTitleListener implements TextView.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            easterEggClicks++;
-            if (easterEggClicks==5){
-                final AdminVerificationDialog adminVerificationDialog = new AdminVerificationDialog(context);
-                adminVerificationDialog.show();
-                adminVerificationDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        if (adminVerificationDialog.isLegit()){
-                            setAdminRegistration();
-                        }
-                    }
-                });
-            }
-        }
-    }
     private void setUserRegistration(){
-        txtTitle.setText("User Registration");
+        String title = "User Registration";
+        txtTitle.setText(title);
         inputAge.setVisibility(View.VISIBLE);
         radioGroupGender.setVisibility(View.VISIBLE);
         inputTeacherCode.setVisibility(View.INVISIBLE);
         btnRegister.setOnClickListener(new UserRegistrationButtonListener());
     }
-    private boolean checkErrorsBase(){
-        if (!inputUserName.getText().toString().trim().matches("") &&
-                !inputPassword.getText().toString().trim().matches("") &&
-                !inputConfirmPassword.getText().toString().trim().matches("") &&
-                !inputSecurityAnswer.getText().toString().trim().matches("")){
 
-            if (inputUserName.getText().length()>1){
-                if (inputPassword.getText().length()>5) {
-                    if (inputPassword.getText().toString().trim().matches(inputConfirmPassword.getText().toString().trim())) {
+    private boolean checkErrorsBase(){
+        String strInputUserName = inputUserName.getText().toString().trim();
+        String strInputPassword = inputPassword.getText().toString().trim();
+        String strInputConfirmPassword = inputConfirmPassword.getText().toString().trim();
+        String strInputSecurityAnswer = inputSecurityAnswer.getText().toString().trim();
+
+        if (!strInputUserName.matches("") &&
+                !strInputPassword.matches("") &&
+                !strInputConfirmPassword.matches("") &&
+                !strInputSecurityAnswer.matches("")){
+            if (strInputUserName.length()>1){
+                if (strInputPassword.length()>5) {
+                    if (strInputPassword.matches(strInputConfirmPassword)) {
+                        if (strInputSecurityAnswer.length()<4){
+                            showTxtError("Security answers should be 4 or more characters.");
+                            return false;
+                        }
                         return true;
                     } else {
                         showTxtError("Password and Confirm Password do not match.");
@@ -221,12 +150,13 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
     }
+
     private void register(User user){
         Service service = new Service("Registering user...", RegisterActivity.this, new ServiceResponse() {
             @Override
             public void postExecute(JSONObject response) {
                 try {
-                    if (response.getString("message").equals("User created.")){
+                    if (response.getString("message").equals("User registered.")){
                         Util.toast(context, response.getString("message"));
                         Intent intent = new Intent(RegisterActivity.this,
                                 LoginActivity.class);
@@ -235,29 +165,47 @@ public class RegisterActivity extends AppCompatActivity {
                     } else {
                         showTxtError(response.getString("message"));
                     }
-                } catch (Exception e){}
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
         UserService.register(user, service);
     }
+
     private class UserRegistrationButtonListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
             if (checkErrorsBase()){
-                if(!inputAge.getText().toString().trim().matches("")) {
+                String strInputAge = inputAge.getText().toString().trim();
+
+                if(!strInputAge.matches("")) {
                     if (radioGroupGender.getCheckedRadioButtonId() != -1) {
                         User user = new User();
-                        user.setUsername(String.valueOf(inputUserName.getText()));
-                        user.setPassword(String.valueOf(inputPassword.getText()));
-                        user.setAge(Integer.valueOf(String.valueOf(inputAge.getText())));
-                        if (radioMale.isChecked()) {
-                            user.setGender(AppConstants.MALE);
-                        } else if (radioFemale.isChecked()) {
-                            user.setGender(AppConstants.FEMALE);
+
+                        String strInputUserName = inputUserName.getText().toString().trim();
+                        String strInputPassword = inputPassword.getText().toString().trim();
+                        String strAge = inputAge.getText().toString().trim();
+                        String strInputSecuritAnswer = inputSecurityAnswer.getText().toString().trim();
+
+                        if (Util.isNumeric(strAge)) {
+                            int age = Integer.valueOf(strAge);
+
+                            user.setUsername(strInputUserName);
+                            user.setPassword(strInputPassword);
+                            user.setAge(age);
+
+                            if (radioMale.isChecked()) {
+                                user.setGender(AppConstants.MALE);
+                            } else if (radioFemale.isChecked()) {
+                                user.setGender(AppConstants.FEMALE);
+                            }
+
+                            user.setSecurity_question(security_question);
+                            user.setSecurity_answer(strInputSecuritAnswer);
+
+                            register(user);
                         }
-                        user.setSecurity_question(security_question);
-                        user.setSecurity_answer(String.valueOf(inputSecurityAnswer.getText()));
-                        register(user);
                     } else {
                         showTxtError("Input gender.");
                     }
@@ -268,7 +216,8 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
     private void setTeacherRegistration(){
-        txtTitle.setText("Teacher Registration");
+        String title = "Teacher Registration";
+        txtTitle.setText(title);
         inputAge.setVisibility(View.INVISIBLE);
         radioGroupGender.setVisibility(View.INVISIBLE);
         inputTeacherCode.setVisibility(View.VISIBLE);
@@ -288,7 +237,9 @@ public class RegisterActivity extends AppCompatActivity {
                     } else {
                         showTxtError(response.getString("message"));
                     }
-                } catch (Exception e){}
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
         TeacherService.register(teacher, service);
@@ -316,7 +267,8 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
     private void setStudentRegistration(){
-        txtTitle.setText("Student Registration");
+        String title = "Student Registration";
+        txtTitle.setText(title);
         inputAge.setVisibility(View.VISIBLE);
         radioGroupGender.setVisibility(View.VISIBLE);
         inputTeacherCode.setVisibility(View.VISIBLE);
@@ -351,7 +303,9 @@ public class RegisterActivity extends AppCompatActivity {
                     } else {
                         showTxtError(response.getString("message"));
                     }
-                } catch (Exception e){}
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
         StudentService.register(student, service);

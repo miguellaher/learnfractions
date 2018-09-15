@@ -16,8 +16,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -39,7 +37,7 @@ public class LessonVideo extends AppCompatActivity {
     private Button buttonNext;
     private TextView txtTitle;
 
-    public void setmContext(Context mContext) {
+    public void setMContext(Context mContext) {
         this.mContext = mContext;
     }
 
@@ -119,9 +117,10 @@ public class LessonVideo extends AppCompatActivity {
         mProgressDialog.show();
 
         mVideo.start();
+        buttonNext.setEnabled(true);
     }
 
-    public class VideoListener implements MediaPlayer.OnCompletionListener, View.OnTouchListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener{
+        public class VideoListener implements MediaPlayer.OnCompletionListener, View.OnTouchListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener{
         @Override
         public void onCompletion(MediaPlayer mp) {
             buttonNext.setEnabled(true);

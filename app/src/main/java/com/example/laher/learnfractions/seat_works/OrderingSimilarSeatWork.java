@@ -1,8 +1,6 @@
 package com.example.laher.learnfractions.seat_works;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -10,21 +8,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.laher.learnfractions.ChapterExamListActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
-import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
-import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.OrderingSimilarQuestion;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
-import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class OrderingSimilarSeatWork extends SeatWork {
     Context mContext = this;

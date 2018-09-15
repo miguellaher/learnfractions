@@ -14,7 +14,7 @@ public class FractionMeaningVideoActivity extends LessonVideo {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(TITLE);
-        setmContext(context);
+        setMContext(context);
         String path = "http://jabahan.com/learnfractions/videos/fraction_meaning.mp4";
         Uri uri = Uri.parse(path);
         setUri(uri);
