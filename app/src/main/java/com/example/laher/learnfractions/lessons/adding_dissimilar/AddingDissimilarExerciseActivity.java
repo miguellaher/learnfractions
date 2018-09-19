@@ -23,6 +23,7 @@ import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.AddingDissimilarFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -236,6 +237,7 @@ public class AddingDissimilarExerciseActivity extends LessonExercise {
         btnCheck.setEnabled(false);
         setLcmListeners(true);
         txtInstruction.setText("Get the lcd of the two denominators by clicking them.");
+        ActivityUtil.playMusic(getContext(), R.raw.ad_get_lcd);
     }
     public void resetColors(){
         txtDenom1.setTextColor(defaultColor);
@@ -428,16 +430,21 @@ public class AddingDissimilarExerciseActivity extends LessonExercise {
             int lcd = mFractionQuestion.getEquationLcd();
             String strLcd = String.valueOf(lcd);
             String strLcdInput = String.valueOf(diagLcmInputLcm.getText());
-            int intLcdInput = Integer.valueOf(strLcdInput);
-            if (intLcdInput==lcd){
-                txtDenom3.setText(strLcd);
-                txtDenom4.setText(strLcd);
-                setLcmListeners(false);
-                setFractionSet2DenomVisibility(true);
-                setDivisionListeners(true);
-                lcmDialog.dismiss();
-                txtInstruction.setText("Divide a new denominator to its' corresponding denominator by clicking the" +
-                        " new denominator first.");
+            if (!strLcdInput.trim().matches("")) {
+                int intLcdInput = Integer.valueOf(strLcdInput);
+                if (intLcdInput == lcd) {
+                    txtDenom3.setText(strLcd);
+                    txtDenom4.setText(strLcd);
+                    setLcmListeners(false);
+                    setFractionSet2DenomVisibility(true);
+                    setDivisionListeners(true);
+                    lcmDialog.dismiss();
+                    txtInstruction.setText("Divide a new denominator to its' corresponding denominator by clicking the" +
+                            " new denominator first.");
+                    ActivityUtil.playMusic(getContext(), R.raw.ad_divide_new);
+                } else {
+                    Styles.shakeAnimate(diagLcmInputLcm);
+                }
             } else {
                 Styles.shakeAnimate(diagLcmInputLcm);
             }
@@ -499,11 +506,13 @@ public class AddingDissimilarExerciseActivity extends LessonExercise {
                             equationDialog.dismiss();
                         }
                         txtInstruction.setText("Divide the other two also.");
+                        ActivityUtil.playMusic(getContext(), R.raw.ad_divide_other);
                         if (txtEquation1.getVisibility()==TextView.VISIBLE &&
                                 txtEquation2.getVisibility()==TextView.VISIBLE){
                             setMultiplicationListeners(true);
                             txtInstruction.setText("Multiply a quotient to its' corresponding numerator by" +
                                     " clicking the quotient first.");
+                            ActivityUtil.playMusic(getContext(), R.raw.ad_multiply_quotient);
                         }
                     } else {
                         Styles.shakeAnimate(diagEdInputAnswer);
@@ -528,6 +537,7 @@ public class AddingDissimilarExerciseActivity extends LessonExercise {
                             equationDialog.dismiss();
                         }
                         txtInstruction.setText("Multiply the other two also.");
+                        ActivityUtil.playMusic(getContext(), R.raw.ad_multiply_other);
                         if (txtNum3.getVisibility()==TextView.VISIBLE &&
                                 txtNum4.getVisibility()==TextView.VISIBLE){
                             inputNum.setEnabled(true);
@@ -535,6 +545,7 @@ public class AddingDissimilarExerciseActivity extends LessonExercise {
                             inputNum.requestFocus();
                             btnCheck.setEnabled(true);
                             txtInstruction.setText("Add the numerators and copy the denominators.");
+                            ActivityUtil.playMusic(getContext(), R.raw.ad_add_numerators);
                         }
                     } else {
                         Styles.shakeAnimate(diagEdInputAnswer);
@@ -659,7 +670,8 @@ public class AddingDissimilarExerciseActivity extends LessonExercise {
     @Override
     protected void preFinished() {
         super.preFinished();
-        txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        txtInstruction.setText(AppConstants.FINISHED_LESSON);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
     }
 
     @Override

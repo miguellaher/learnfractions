@@ -11,6 +11,7 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.questions.OrderingNumbersQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -105,6 +106,7 @@ public class OrderingSimilarExerciseActivity extends LessonExercise {
         setTxtNumListener();
         String instruction = "Click from least to greatest.";
         txtInstruction.setText(instruction);
+        ActivityUtil.playMusic(getContext(), R.raw.ose_least_greatest);
     }
     public void resetTxtNumColor(){
         txtNum1.setTextColor(Color.rgb(128,128,128));
@@ -184,6 +186,7 @@ public class OrderingSimilarExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_exercise);
     }
 
     @Override

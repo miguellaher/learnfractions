@@ -22,6 +22,7 @@ import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.DividingFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -192,6 +193,7 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
         paintContainer();
         setTxtFractionListener(true);
         txtInstruction.setText("Click the right number to put in the colored space.");
+        ActivityUtil.playMusic(getContext(), R.raw.df_click);
     }
     public void setAnswerEnabled(boolean b){
         inputNum.setEnabled(b);
@@ -248,6 +250,7 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
                     btnCheck.setEnabled(true);
                     inputNum.requestFocus();
                     txtInstruction.setText("Solve the equation.");
+                    ActivityUtil.playMusic(getContext(), R.raw.solve_the_equation);
                     if (mQuestionNum>1) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         assert imm != null;
@@ -382,7 +385,8 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
     @Override
     protected void preFinished() {
         super.preFinished();
-        txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        txtInstruction.setText(AppConstants.FINISHED_LESSON);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
     }
 
     @Override

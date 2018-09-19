@@ -11,6 +11,7 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.NonVisualQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -110,7 +111,14 @@ public class NonVisualExerciseActivity extends LessonExercise {
     }
     public void generateInstruction(){
         Collections.shuffle(instructions);
-        txtInstruction.setText(instructions.get(0));
+        String instruction = instructions.get(0);
+        if (instruction.equals(INSTRUCTION_NUMERATOR)){
+            ActivityUtil.playMusic(getContext(),R.raw.nv1_numerator);
+        } else if (instruction.equals(INSTRUCTION_DENOMINATOR)){
+            ActivityUtil.playMusic(getContext(),R.raw.nv1_denominator);
+        }
+        txtInstruction.setText(instruction);
+
     }
 
     public void resetColor() {
@@ -187,6 +195,7 @@ public class NonVisualExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        ActivityUtil.playMusic(getContext(),R.raw.finished_exercise);
     }
 
     @Override

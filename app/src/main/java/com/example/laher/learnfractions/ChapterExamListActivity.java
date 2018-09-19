@@ -2,6 +2,8 @@ package com.example.laher.learnfractions;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -88,7 +90,11 @@ public class ChapterExamListActivity extends AppCompatActivity {
 
         setLinearLayoutBackground();
 
-        setExamListView();
+        if (isNetworkAvailable()) {
+            setExamListView();
+        } else {
+            btnBack.performClick();
+        }
     }
     private void getStudentStats(){
         Log.d(TAG, "getStudentStats()");
@@ -295,5 +301,13 @@ public class ChapterExamListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         btnBack.performClick();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connectivityManager != null;
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

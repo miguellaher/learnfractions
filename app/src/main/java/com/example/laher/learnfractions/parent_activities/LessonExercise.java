@@ -23,6 +23,7 @@ import com.example.laher.learnfractions.service.ExerciseService;
 import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Probability;
@@ -264,7 +265,7 @@ public class LessonExercise extends AppCompatActivity {
 
         String userType = Storage.load(context,Storage.USER_TYPE);
 
-        if (!Storage.isEmpty()&&isNetworkAvailable()
+        if (!Storage.isEmpty() && isNetworkAvailable()
                 && userType.equals(AppConstants.STUDENT)) {
             updateExercise();
         }
@@ -301,6 +302,7 @@ public class LessonExercise extends AppCompatActivity {
 
     protected void finishExercise(){
         preFinished();
+
         buttonNext.setEnabled(true);
     }
 
@@ -514,6 +516,7 @@ public class LessonExercise extends AppCompatActivity {
                 public void onDismiss(DialogInterface dialog) {
                     if (confirmationDialog.isConfirmed()){
                         AppCache.setBackClicked(true);
+                        ActivityUtil.stopMusic();
                         finish();
                     }
                 }
@@ -554,6 +557,7 @@ public class LessonExercise extends AppCompatActivity {
             }
             finishExercise(); //exercise done
         } else {
+            ActivityUtil.playMusic(context,R.raw.correct);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -576,6 +580,7 @@ public class LessonExercise extends AppCompatActivity {
         showScore();
         if (wrong >= maxWrong) {
             preFail();
+            ActivityUtil.playMusic(context,R.raw.fail);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -584,6 +589,7 @@ public class LessonExercise extends AppCompatActivity {
                 }
             }, 3000);
         } else {
+            ActivityUtil.playMusic(context,R.raw.wrong);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

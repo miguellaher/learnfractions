@@ -21,6 +21,7 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.FractionMeaningQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -146,6 +147,7 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
         inputDenominator.setText("");
         String instruction = "Fill in the blanks.";
         txtInstruction.setText(instruction);
+        ActivityUtil.playMusic(getContext(),R.raw.fill_in_the_blanks);
         btnOK.setEnabled(false);
         inputNumerator.requestFocus();
         Log.d(TAG, "nextQuestion() last statement");
@@ -303,6 +305,7 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
+        ActivityUtil.playMusic(getContext(),R.raw.finished_lesson);
     }
 
     @Override

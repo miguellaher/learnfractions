@@ -3,6 +3,8 @@ package com.example.laher.learnfractions.parent_activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -376,14 +378,18 @@ public class SeatWork extends AppCompatActivity {
         setTimeSpent(totalTimeSpent);
 
         SeatWorkStatDialog seatWorkStatDialog = new SeatWorkStatDialog(context, this);
-        seatWorkStatDialog.show();
+        if (isNetworkAvailable()) {
+            seatWorkStatDialog.show();
 
-        if (AppCache.isInChapterExam()){
-            SeatWork seatWork = this;
-            AppCache.setSeatWork(seatWork);
-            seatWorkStatDialog.setOnDismissListener(new IfInChapterExamListener());
+            if (AppCache.isInChapterExam()) {
+                SeatWork seatWork = this;
+                AppCache.setSeatWork(seatWork);
+                seatWorkStatDialog.setOnDismissListener(new IfInChapterExamListener());
+            } else {
+                seatWorkStatDialog.setOnDismissListener(new DialogListener());
+            }
         } else {
-            seatWorkStatDialog.setOnDismissListener(new DialogListener());
+            finish();
         }
     }
 
@@ -430,5 +436,13 @@ public class SeatWork extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         buttonBack.performClick();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connectivityManager != null;
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

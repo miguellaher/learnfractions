@@ -19,6 +19,7 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.questions.GettingLcmQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -142,8 +143,9 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
         txtNum1.setText(String.valueOf(number1));
         txtNum2.setText(String.valueOf(number2));
         txtNum3.setText(String.valueOf(number3));
-        String instruction = "Click all numbers.";
+        String instruction = "Click all the numbers.";
         txtInstruction.setText(instruction);
+        ActivityUtil.playMusic(getContext(), R.raw.ode_click_all);
     }
     public void setTxtListeners(){
         txtNum1.setOnClickListener(new TxtNumListener());
@@ -172,6 +174,7 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
         lcmDialog.show();
         String instruction = "Get the lcm.";
         txtInstruction.setText(instruction);
+        ActivityUtil.playMusic(getContext(), R.raw.ode_get_lcm);
     }
     public void removeTxtNumListener(){
         txtNum1.setOnClickListener(null);
@@ -233,8 +236,9 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
         }
         @Override
         public void onCancel(DialogInterface dialog) {
-            String instruction = "Click all numbers.";
+            String instruction = "Click all the numbers.";
             txtInstruction.setText(instruction);
+            ActivityUtil.playMusic(getContext(), R.raw.ode_click_all);
         }
         @Override
         public void onShow(DialogInterface dialog) {
@@ -286,6 +290,7 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_exercise);
     }
 
     @Override

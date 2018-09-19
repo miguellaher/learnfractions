@@ -11,6 +11,7 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.questions.ComparingNumbersQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -119,6 +120,7 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
         txtNum2.setText(String.valueOf(number2));
         String instruction = "Compare the two numbers.";
         txtInstruction.setText(instruction);
+        ActivityUtil.playMusic(getContext(),R.raw.cse_compare_the);
     }
     public class BtnListener implements Button.OnClickListener{
         @Override
@@ -215,6 +217,7 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        ActivityUtil.playMusic(getContext(),R.raw.finished_exercise);
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.NonVisualQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -133,8 +134,10 @@ public class NonVisualExercise2Activity extends LessonExercise {
         Collections.shuffle(instructions);
         txtInstruction.setText(instructions.get(0));
         if (txtInstruction.getText().toString().equals(INSTRUCTION_NUMERATOR)){
+            ActivityUtil.playMusic(getContext(),R.raw.nv2_numerator);
             txtInstruction2.setText(AppConstants.NUMERATOR);
         } else {
+            ActivityUtil.playMusic(getContext(),R.raw.nv2_denominator);
             txtInstruction2.setText(AppConstants.DENOMINATOR);
         }
     }
@@ -263,6 +266,7 @@ public class NonVisualExercise2Activity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
+        ActivityUtil.playMusic(getContext(),R.raw.finished_lesson);
         inputAnswer.getText().clear();
     }
 

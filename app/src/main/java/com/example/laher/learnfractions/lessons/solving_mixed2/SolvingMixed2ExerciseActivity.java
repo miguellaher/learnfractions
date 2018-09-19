@@ -26,6 +26,7 @@ import com.example.laher.learnfractions.fraction_util.MixedFraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.DividingMixedFractionsQuestion;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.MultiplyingMixedFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -234,6 +235,7 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
         inputDenom.setEnabled(false);
         btnCheck.setEnabled(false);
         txtInstruction.setText("Convert a mixed fraction to an improper fraction by clicking on it.");
+        ActivityUtil.playMusic(getContext(), R.raw.sm_convert);
     }
     public void setFractionQuestions(){
         mQuestionNum = 1;
@@ -605,6 +607,7 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
                     setTxtInvertListener();
                 }
                 txtInstruction.setText("Now the equation is familiar to you, solve it.");
+                ActivityUtil.playMusic(getContext(), R.raw.sm2_familiar);
             }
         }
     }
@@ -749,7 +752,8 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
     @Override
     protected void preFinished() {
         super.preFinished();
-        txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        txtInstruction.setText(AppConstants.FINISHED_LESSON);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
     }
 
     @Override

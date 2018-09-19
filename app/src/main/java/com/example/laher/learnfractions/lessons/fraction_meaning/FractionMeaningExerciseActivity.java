@@ -12,6 +12,7 @@ import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.FractionMeaningQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -194,8 +195,10 @@ public class FractionMeaningExerciseActivity extends LessonExercise {
         txtInstruction.setText(instructions.get(0));
         if(instructions.get(0).equals(INSTRUCTION_DENOMINATOR)){
             strCorrectAns = String.valueOf(mFractionMeaningQuestions.get(mQuestionNum-1).getDenominator());
+            ActivityUtil.playMusic(getContext(),R.raw.fme_how_many_parts);
         } else if (instructions.get(0).equals(INSTRUCTION_NUM)){
             strCorrectAns = String.valueOf(mFractionMeaningQuestions.get(mQuestionNum-1).getNumerator());
+            ActivityUtil.playMusic(getContext(),R.raw.fme_we_have);
         }
         setButtonChoices();
     }
@@ -270,6 +273,7 @@ public class FractionMeaningExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        ActivityUtil.playMusic(getContext(),R.raw.finished_exercise);
     }
 
     @Override

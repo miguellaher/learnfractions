@@ -44,7 +44,7 @@ public class AppConstants {
     public static final String DENOMINATOR = "Denominator";
 
     public static final String CLASS_RANKS = "Class Ranks";
-    public static final String GLOBAL_RANKS = "Global User ranks.";
+    public static final String GLOBAL_RANKS = "Global User Ranks";
 
 
     //LESSONS

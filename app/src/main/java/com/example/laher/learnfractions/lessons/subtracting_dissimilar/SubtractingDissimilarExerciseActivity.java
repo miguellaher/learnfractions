@@ -23,6 +23,7 @@ import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.SubtractingDissimilarFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -240,6 +241,7 @@ public class SubtractingDissimilarExerciseActivity extends LessonExercise {
         btnCheck.setEnabled(false);
         setLcmListeners(true);
         txtInstruction.setText("Get the lcd of the two denominators by clicking them.");
+        ActivityUtil.playMusic(getContext(), R.raw.ad_get_lcd);
     }
     public void resetColors(){
         txtDenom1.setTextColor(defaultColor);
@@ -441,6 +443,7 @@ public class SubtractingDissimilarExerciseActivity extends LessonExercise {
                     lcmDialog.dismiss();
                     txtInstruction.setText("Divide a new denominator to its' corresponding denominator by clicking the" +
                             " new denominator first.");
+                    ActivityUtil.playMusic(getContext(), R.raw.ad_divide_new);
                 } else {
                     Styles.shakeAnimate(diagLcmInputLcm);
                 }
@@ -503,11 +506,13 @@ public class SubtractingDissimilarExerciseActivity extends LessonExercise {
                             equationDialog.dismiss();
                         }
                         txtInstruction.setText("Divide the other two also.");
+                        ActivityUtil.playMusic(getContext(), R.raw.ad_divide_other);
                         if (txtEquation1.getVisibility()==TextView.VISIBLE &&
                                 txtEquation2.getVisibility()==TextView.VISIBLE){
                             setMultiplicationListeners(true);
                             txtInstruction.setText("Multiply a quotient to its' corresponding numerator by" +
                                     " clicking the quotient first.");
+                            ActivityUtil.playMusic(getContext(), R.raw.ad_multiply_quotient);
                         }
                     } else {
                         Styles.shakeAnimate(diagEdInputAnswer);
@@ -532,6 +537,7 @@ public class SubtractingDissimilarExerciseActivity extends LessonExercise {
                             equationDialog.dismiss();
                         }
                         txtInstruction.setText("Multiply the other two also.");
+                        ActivityUtil.playMusic(getContext(), R.raw.ad_multiply_other);
                         if (txtNum3.getVisibility()==TextView.VISIBLE &&
                                 txtNum4.getVisibility()==TextView.VISIBLE){
                             inputNum.setEnabled(true);
@@ -539,6 +545,7 @@ public class SubtractingDissimilarExerciseActivity extends LessonExercise {
                             inputNum.requestFocus();
                             btnCheck.setEnabled(true);
                             txtInstruction.setText("Subtract the numerators and copy the denominators.");
+                            ActivityUtil.playMusic(getContext(), R.raw.sd_subtract);
                         }
                     } else {
                         Styles.shakeAnimate(diagEdInputAnswer);
@@ -663,7 +670,8 @@ public class SubtractingDissimilarExerciseActivity extends LessonExercise {
     @Override
     protected void preFinished() {
         super.preFinished();
-        txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        txtInstruction.setText(AppConstants.FINISHED_LESSON);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
     }
 
     @Override

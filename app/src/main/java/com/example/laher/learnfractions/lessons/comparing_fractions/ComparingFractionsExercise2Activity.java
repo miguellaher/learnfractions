@@ -22,6 +22,7 @@ import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.FractionQuestion;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.ComparingFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -164,6 +165,8 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
         txtCompareSign.setText("_");
         String instruction = "Compare the two fractions.";
         txtInstruction.setText(instruction);
+        ActivityUtil.playMusic(getContext(), R.raw.cse2_compare_the);
+
         crossMultiplicationStepList.clear();
     }
     private void setFractionQuestions(){
@@ -219,7 +222,7 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
     public void diagInputProduct(int num, int denom){
         String instruction = "Get the product of the clicked numbers.";
         txtInstruction.setText(instruction);
-
+        ActivityUtil.playMusic(getContext(), R.raw.cde_get_the_product);
         dialogTxtMultiplicand.setText(String.valueOf(denom));
         dialogTxtMultiplier.setText(String.valueOf(num));
         multiplicationDialog.show();
@@ -256,14 +259,23 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
                 crossMultiplicationStepList.clear();
                 String instruction = "It's not necessary to use the cross multiplication technique to similar fractions.";
                 txtInstruction.setText(instruction);
+                // INSERT PLAY MUSIC METHOD FROM ACTIVITY UTIL
                 enableBtnAnswers(false);
                 Styles.shakeAnimate(txtNum1);
                 Styles.shakeAnimate(txtNum2);
                 Styles.shakeAnimate(txtDenominator1);
                 Styles.shakeAnimate(txtDenominator2);
+                txtNum1.setClickable(false);
+                txtNum2.setClickable(false);
+                txtDenominator1.setClickable(false);
+                txtDenominator2.setClickable(false);
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        txtNum1.setClickable(true);
+                        txtNum2.setClickable(true);
+                        txtDenominator1.setClickable(true);
+                        txtDenominator2.setClickable(true);
                         wrong();
                     }
                 }, 4000);
@@ -437,7 +449,8 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
     @Override
     protected void preFinished() {
         super.preFinished();
-        txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        txtInstruction.setText(AppConstants.FINISHED_LESSON);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
     }
 
     @Override

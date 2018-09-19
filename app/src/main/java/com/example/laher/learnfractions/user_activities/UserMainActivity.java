@@ -105,7 +105,7 @@ public class UserMainActivity extends AppCompatActivity {
         AppActivity manageSeatworks = new AppActivity(mContext, SeatWorkListActivity.class, seatworksTitle);
         String chapterExamsTitle = "Chapter Exams";
         AppActivity manageExams = new AppActivity(mContext, ChapterExamListActivity.class, chapterExamsTitle);
-        String classRanksTitle = "Class Ranks";
+        String classRanksTitle = "Global Ranks";
         AppActivity classRanks = new AppActivity(mContext, ClassRanksMainActivity.class, classRanksTitle);
 
         final ArrayList<AppActivity> activities = new ArrayList<>();

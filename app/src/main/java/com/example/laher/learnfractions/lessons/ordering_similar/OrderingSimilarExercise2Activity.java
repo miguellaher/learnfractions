@@ -12,6 +12,7 @@ import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.OrderingSimilarQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -125,6 +126,7 @@ public class OrderingSimilarExercise2Activity extends LessonExercise {
         Fraction fraction3 = mOrderingSimilarQuestion.getFraction3();
         String instruction = "Click from least to greatest.";
         txtInstruction.setText(instruction);
+        ActivityUtil.playMusic(getContext(), R.raw.ose_least_greatest);
         txtNum1.setText(String.valueOf(fraction1.getNumerator()));
         txtNum2.setText(String.valueOf(fraction2.getNumerator()));
         txtNum3.setText(String.valueOf(fraction3.getNumerator()));
@@ -236,7 +238,8 @@ public class OrderingSimilarExercise2Activity extends LessonExercise {
     @Override
     protected void preFinished() {
         super.preFinished();
-        txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        txtInstruction.setText(AppConstants.FINISHED_LESSON);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
     }
 
     @Override

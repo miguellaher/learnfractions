@@ -28,6 +28,7 @@ import com.example.laher.learnfractions.fraction_util.MixedFraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.AddingMixedFractionsQuestion;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.SubtractingMixedFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -238,6 +239,8 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
         inputDenom.setEnabled(false);
         btnCheck.setEnabled(false);
         txtInstruction.setText("Convert a mixed fraction to an improper fraction by clicking on it.");
+        ActivityUtil.playMusic(getContext(), R.raw.sm_convert);
+
     }
     public void setFractionQuestions(){
         mQuestionNum = 1;
@@ -623,6 +626,7 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
                     txtDenom4.setText(String.valueOf(txtDenom1.getText()));
                     txtInstruction.setText("Looks like we have an equation of two similar fractions." +
                             " Remember the steps from the previous lesson.");
+                    ActivityUtil.playMusic(getContext(), R.raw.sm_looks_like);
                     inputNum.setEnabled(true);
                     inputDenom.setEnabled(true);
                     btnCheck.setEnabled(true);
@@ -632,9 +636,11 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
                     if (mFractionsQuestion instanceof AddingMixedFractionsQuestion){
                         txtInstruction.setText("Now, we have an equation of two dissimilar fractions. Add the two" +
                                 " dissimilar fractions like we did last time.");
+                        ActivityUtil.playMusic(getContext(), R.raw.sm_now_add);
                     } else if (mFractionsQuestion instanceof SubtractingMixedFractionsQuestion){
                         txtInstruction.setText("Now, we have an equation of two dissimilar fractions. Subtract the two" +
                                 " dissimilar fractions like we did last time.");
+                        ActivityUtil.playMusic(getContext(), R.raw.sm_now_subtract);
                     }
                 }
             }
@@ -949,7 +955,8 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
     @Override
     protected void preFinished() {
         super.preFinished();
-        txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        txtInstruction.setText(AppConstants.FINISHED_LESSON);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
     }
 
     @Override

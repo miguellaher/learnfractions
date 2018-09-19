@@ -19,6 +19,7 @@ import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.SubtractingSimilarFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -136,6 +137,7 @@ public class SubtractingSimilarExerciseActivity extends LessonExercise {
     public void startUp(){
         txtInstruction.setText("Subtract the two numerators and the new denominator is the same " +
                 "with the similar denominators.");
+        ActivityUtil.playMusic(getContext(), R.raw.ss_subtract);
         clearInputFraction();
     }
     public void clearInputFraction(){
@@ -171,6 +173,7 @@ public class SubtractingSimilarExerciseActivity extends LessonExercise {
         String strDenominator1 = String.valueOf(denominator1);
         String strDenominator2 = String.valueOf(denominator2);
         txtInstruction.setText("Solve the equation.");
+        ActivityUtil.playMusic(getContext(), R.raw.solve_the_equation);
         txtNum1.setText(strNumerator1);
         txtNum2.setText(strNumerator2);
         txtDenom1.setText(strDenominator1);
@@ -268,7 +271,8 @@ public class SubtractingSimilarExerciseActivity extends LessonExercise {
     @Override
     protected void preFinished() {
         super.preFinished();
-        txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        txtInstruction.setText(AppConstants.FINISHED_LESSON);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
     }
 
     @Override

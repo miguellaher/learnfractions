@@ -3,6 +3,8 @@ package com.example.laher.learnfractions.rankings;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -94,10 +96,14 @@ public class ClassSeatWorkRanksActivity extends AppCompatActivity {
 
         mSeatWorks = SeatWorkListActivity.getSeatWorks();
 
-        if (userType.equals(AppConstants.USER)){
-            getStudentsStats();
-        } else { // if user type is either student or teacher
-            updateSeatworks();
+        if (isNetworkAvailable()) {
+            if (userType.equals(AppConstants.USER)) {
+                getStudentsStats();
+            } else { // if user type is either student or teacher
+                updateSeatworks();
+            }
+        } else {
+            btnBack.performClick();
         }
     }
 
@@ -272,5 +278,13 @@ public class ClassSeatWorkRanksActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         btnBack.performClick();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connectivityManager != null;
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

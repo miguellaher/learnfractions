@@ -10,10 +10,10 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.fraction_util.Fraction;
-import com.example.laher.learnfractions.fraction_util.FractionQuestionClass;
 import com.example.laher.learnfractions.fraction_util.MixedFraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.ClassifyingFractionQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -140,6 +140,7 @@ public class ClassifyingFractionsExerciseActivity extends LessonExercise {
     public void setGuiFraction(){
         String instruction = "Classify the fraction.";
         txtInstruction.setText(instruction);
+        ActivityUtil.playMusic(getContext(), R.raw.cf_classify);
         mClassifyingFractionQuestion = mClassifyingFractionQuestions.get(mQuestionNum-1);
         Fraction fraction = mClassifyingFractionQuestion.getFraction();
         int numerator = fraction.getNumerator();
@@ -220,6 +221,7 @@ public class ClassifyingFractionsExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_exercise);
     }
 
     @Override
@@ -246,12 +248,16 @@ public class ClassifyingFractionsExerciseActivity extends LessonExercise {
             for (ClassifyingFractionQuestion fractionQuestion : mClassifyingFractionQuestions){
                 Fraction fraction1 = fractionQuestion.getFraction();
                 String modifier1 = fraction1.getModifier();
-                if (modifier1.equals(Fraction.IMPROPER)){
-                    improperFractionsItems++;
-                } else if (modifier1.equals(Fraction.PROPER)){
-                    properFractionsItems++;
-                } else if (modifier1.equals(Fraction.MIXED)){
-                    mixedFractionsItems++;
+                switch (modifier1) {
+                    case Fraction.IMPROPER:
+                        improperFractionsItems++;
+                        break;
+                    case Fraction.PROPER:
+                        properFractionsItems++;
+                        break;
+                    case Fraction.MIXED:
+                        mixedFractionsItems++;
+                        break;
                 }
             }
             int maxItemSize = getMaxItemSize()/3;

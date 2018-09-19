@@ -24,6 +24,7 @@ import com.example.laher.learnfractions.fraction_util.Fraction;
 import com.example.laher.learnfractions.fraction_util.MixedFraction;
 import com.example.laher.learnfractions.fraction_util.fraction_questions.ConvertingFractionsQuestion;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.AppIDs;
 import com.example.laher.learnfractions.util.Probability;
@@ -173,6 +174,7 @@ public class ConvertingFractionsExerciseActivity extends LessonExercise {
     public void setUp(){
         txtInstruction.setText("To divide the numerator by the denominator, click the numerator first and the " +
                 "denominator second.");
+        ActivityUtil.playMusic(getContext(), R.raw.cff_to_divide);
         setFractionTxtListener(true);
         setAnswerVisibility(false);
         setInputEnabled(false);
@@ -208,6 +210,7 @@ public class ConvertingFractionsExerciseActivity extends LessonExercise {
         divisionDialog.show();
         diagDdInputAnswer.requestFocus();
         txtInstruction.setText("Get the quotient and remainder.");
+        ActivityUtil.playMusic(getContext(), R.raw.cff_get_quotient);
     }
     public void clearInputAreas(){
         inputWholeNum.setText("");
@@ -281,6 +284,7 @@ public class ConvertingFractionsExerciseActivity extends LessonExercise {
                         divisionDialog.dismiss();
                         txtInstruction.setText("The quotient will be the whole number. The remainder will be the numerator. " +
                                 "The denominator remains the same.");
+                        ActivityUtil.playMusic(getContext(), R.raw.cff_the_quotient);
                     }
                 } catch (Exception e) {e.printStackTrace();}
             } else {
@@ -416,5 +420,6 @@ public class ConvertingFractionsExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
+        ActivityUtil.playMusic(getContext(), R.raw.finished_exercise);
     }
 }
