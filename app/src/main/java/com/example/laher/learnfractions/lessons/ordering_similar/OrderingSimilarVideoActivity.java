@@ -13,7 +13,7 @@ public class OrderingSimilarVideoActivity extends LessonVideo {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(TITLE);
+        setTxtTitle(TITLE);
         setMContext(context);
         String path = "http://jabahan.com/learnfractions/videos/ordering_similar.mp4";
         Uri uri = Uri.parse(path);

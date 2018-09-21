@@ -145,7 +145,7 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
         txtNum3.setText(String.valueOf(number3));
         String instruction = "Click all the numbers.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(), R.raw.ode_click_all);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.ode_click_all);
     }
     public void setTxtListeners(){
         txtNum1.setOnClickListener(new TxtNumListener());
@@ -174,7 +174,7 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
         lcmDialog.show();
         String instruction = "Get the lcm.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(), R.raw.ode_get_lcm);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.ode_get_lcm);
     }
     public void removeTxtNumListener(){
         txtNum1.setOnClickListener(null);
@@ -238,7 +238,7 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
         public void onCancel(DialogInterface dialog) {
             String instruction = "Click all the numbers.";
             txtInstruction.setText(instruction);
-            ActivityUtil.playMusic(getContext(), R.raw.ode_click_all);
+            ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.ode_click_all);
         }
         @Override
         public void onShow(DialogInterface dialog) {
@@ -290,7 +290,7 @@ public class OrderingDissimilarExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
-        ActivityUtil.playMusic(getContext(), R.raw.finished_exercise);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.finished_exercise);
     }
 
     @Override

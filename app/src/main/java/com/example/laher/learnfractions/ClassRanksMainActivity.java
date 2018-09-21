@@ -2,14 +2,13 @@ package com.example.laher.learnfractions;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.parent_activities.MainFrame;
 import com.example.laher.learnfractions.rankings.ClassExamRanksActivity;
 import com.example.laher.learnfractions.rankings.ClassExercisesRanksActivity;
 import com.example.laher.learnfractions.rankings.ClassSeatWorkRanksActivity;
@@ -20,7 +19,7 @@ import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
 
-public class ClassRanksMainActivity extends AppCompatActivity {
+public class ClassRanksMainActivity extends MainFrame {
     Context mContext = this;
     //TOOLBAR
     TextView txtTitle;

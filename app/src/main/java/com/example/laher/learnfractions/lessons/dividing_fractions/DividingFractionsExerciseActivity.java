@@ -187,13 +187,13 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
         inputDenom.setText("");
         txtNum4.setText("    ");
         txtDenom4.setText("    ");
-        txtNum4.setBackgroundColor(Color.rgb(255,255,255));
-        txtDenom4.setBackgroundColor(Color.rgb(255,255,255));
+        txtNum4.setBackgroundColor(Color.rgb(209,230,173));
+        txtDenom4.setBackgroundColor(Color.rgb(209,230,173));
         setAnswerEnabled(false);
         paintContainer();
         setTxtFractionListener(true);
         txtInstruction.setText("Click the right number to put in the colored space.");
-        ActivityUtil.playMusic(getContext(), R.raw.df_click);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.df_click);
     }
     public void setAnswerEnabled(boolean b){
         inputNum.setEnabled(b);
@@ -250,7 +250,7 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
                     btnCheck.setEnabled(true);
                     inputNum.requestFocus();
                     txtInstruction.setText("Solve the equation.");
-                    ActivityUtil.playMusic(getContext(), R.raw.solve_the_equation);
+                    ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.solve_the_equation);
                     if (mQuestionNum>1) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         assert imm != null;
@@ -274,12 +274,12 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
             TextView t = (TextView) v;
             if (txtContainer == txtNum4 && t.getId() == txtDenom2.getId()){
                 txtNum4.setText(strDenominator2);
-                txtNum4.setBackgroundColor(Color.rgb(255,255,255));
+                txtNum4.setBackgroundColor(Color.rgb(209,230,173));
                 paintContainer();
                 readyCheck();
             } else if (txtContainer == txtDenom4 && t.getId() == txtNum2.getId()){
                 txtDenom4.setText(strNumerator2);
-                txtDenom4.setBackgroundColor(Color.rgb(255,255,255));
+                txtDenom4.setBackgroundColor(Color.rgb(209,230,173));
                 paintContainer();
                 readyCheck();
             } else {
@@ -386,7 +386,7 @@ public class DividingFractionsExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.finished_lesson);
     }
 
     @Override

@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.adapters.SeatWorkListAdapter;
 import com.example.laher.learnfractions.classes.Range;
+import com.example.laher.learnfractions.parent_activities.MainFrame;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.seat_works.AddSubMixedFractionsSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingDissimilarSeatWork;
@@ -46,7 +46,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SeatWorkListActivity extends AppCompatActivity {
+public class SeatWorkListActivity extends MainFrame {
     private static final String TAG = "SW_LIST";
     Context mContext = this;
     ListView seatWorkListView;

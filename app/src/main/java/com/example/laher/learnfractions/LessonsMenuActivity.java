@@ -5,9 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -61,6 +60,7 @@ import com.example.laher.learnfractions.lessons.subtracting_dissimilar.Subtracti
 import com.example.laher.learnfractions.lessons.subtracting_similar.SubtractingSimilarExerciseActivity;
 import com.example.laher.learnfractions.lessons.subtracting_similar.SubtractingSimilarVideoActivity;
 import com.example.laher.learnfractions.parent_activities.Lesson;
+import com.example.laher.learnfractions.parent_activities.MainFrame;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
 import com.example.laher.learnfractions.user_activities.UserMainActivity;
 import com.example.laher.learnfractions.util.AppConstants;
@@ -69,7 +69,7 @@ import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
-public class LessonsMenuActivity extends AppCompatActivity {
+public class LessonsMenuActivity extends MainFrame {
     Context mContext = this;
     private static final String TAG = "LessonsMenuActivity";
     private static boolean openedOnce = false;

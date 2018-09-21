@@ -126,7 +126,7 @@ public class OrderingSimilarExercise2Activity extends LessonExercise {
         Fraction fraction3 = mOrderingSimilarQuestion.getFraction3();
         String instruction = "Click from least to greatest.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(), R.raw.ose_least_greatest);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.ose_least_greatest);
         txtNum1.setText(String.valueOf(fraction1.getNumerator()));
         txtNum2.setText(String.valueOf(fraction2.getNumerator()));
         txtNum3.setText(String.valueOf(fraction3.getNumerator()));
@@ -239,7 +239,7 @@ public class OrderingSimilarExercise2Activity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.finished_lesson);
     }
 
     @Override

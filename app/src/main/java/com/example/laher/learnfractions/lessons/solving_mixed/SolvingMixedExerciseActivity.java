@@ -239,7 +239,7 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
         inputDenom.setEnabled(false);
         btnCheck.setEnabled(false);
         txtInstruction.setText("Convert a mixed fraction to an improper fraction by clicking on it.");
-        ActivityUtil.playMusic(getContext(), R.raw.sm_convert);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.sm_convert);
 
     }
     public void setFractionQuestions(){
@@ -626,7 +626,7 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
                     txtDenom4.setText(String.valueOf(txtDenom1.getText()));
                     txtInstruction.setText("Looks like we have an equation of two similar fractions." +
                             " Remember the steps from the previous lesson.");
-                    ActivityUtil.playMusic(getContext(), R.raw.sm_looks_like);
+                    ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.sm_looks_like);
                     inputNum.setEnabled(true);
                     inputDenom.setEnabled(true);
                     btnCheck.setEnabled(true);
@@ -636,11 +636,11 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
                     if (mFractionsQuestion instanceof AddingMixedFractionsQuestion){
                         txtInstruction.setText("Now, we have an equation of two dissimilar fractions. Add the two" +
                                 " dissimilar fractions like we did last time.");
-                        ActivityUtil.playMusic(getContext(), R.raw.sm_now_add);
+                        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.sm_now_add);
                     } else if (mFractionsQuestion instanceof SubtractingMixedFractionsQuestion){
                         txtInstruction.setText("Now, we have an equation of two dissimilar fractions. Subtract the two" +
                                 " dissimilar fractions like we did last time.");
-                        ActivityUtil.playMusic(getContext(), R.raw.sm_now_subtract);
+                        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.sm_now_subtract);
                     }
                 }
             }
@@ -956,7 +956,7 @@ public class SolvingMixedExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.finished_lesson);
     }
 
     @Override

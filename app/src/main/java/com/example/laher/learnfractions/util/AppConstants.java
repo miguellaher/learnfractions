@@ -83,6 +83,7 @@ public class AppConstants {
 
     public static final Fraction EQUAL_FRACTIONS = new Fraction(0,0);
     public static final String SERVER_DOWN = "Internal Server Error.";
+    public static final String HELP = "HELP";
 
 
     public static String FAILED_CONSECUTIVE(int error){

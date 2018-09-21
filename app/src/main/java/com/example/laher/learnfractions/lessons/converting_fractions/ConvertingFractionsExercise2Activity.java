@@ -174,7 +174,7 @@ public class ConvertingFractionsExercise2Activity extends LessonExercise {
         setMultiplyTxtListeners(true);
         txtInstruction.setText("Multiply the denominator to the whole number by clicking the denominator first and " +
                 "whole number, second.");
-        // MISSING PLAY MUSIC METHOD FROM CLASS ACTIVITY UTIL
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.cf2_multiply);
     }
     public void setMultiplyTxtListeners(boolean bool){
         if (bool){
@@ -291,6 +291,7 @@ public class ConvertingFractionsExercise2Activity extends LessonExercise {
                         });
                         equationDialog.dismiss();
                         txtInstruction.setText("The new denominator remains the same.");
+                        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.cf2_the_new);
                     } else {
                         Styles.shakeAnimate(diagEdInputAnswer);
                     }
@@ -309,6 +310,7 @@ public class ConvertingFractionsExercise2Activity extends LessonExercise {
                             equationDialog.dismiss();
                             txtInstruction.setText("To get the new numerator, add the product and the numerator by" +
                                     " clicking the product first and numerator, second.");
+                            ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.cf2_to_get);
                         } else {
                             Styles.shakeAnimate(diagEdInputAnswer);
                         }
@@ -421,6 +423,6 @@ public class ConvertingFractionsExercise2Activity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.finished_lesson);
     }
 }

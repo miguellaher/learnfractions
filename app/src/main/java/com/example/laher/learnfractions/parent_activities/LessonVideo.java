@@ -22,6 +22,7 @@ import android.widget.VideoView;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.MessageDialog;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
@@ -31,6 +32,8 @@ public class LessonVideo extends AppCompatActivity {
     private VideoView mVideo;
     private ProgressDialog mProgressDialog;
     private Uri uri;
+
+    private String lessonTitle;
 
     //TOOLBAR
     private Button buttonBack;
@@ -59,7 +62,16 @@ public class LessonVideo extends AppCompatActivity {
         }
     }
 
-    public void setTitle(String title){
+    public String getLessonTitle() {
+        return lessonTitle;
+    }
+
+    public void setLessonTitle(String lessonTitle) {
+        this.lessonTitle = lessonTitle;
+    }
+
+    public void setTxtTitle(String title){
+        setLessonTitle(title);
         txtTitle.setText(title);
     }
 
@@ -120,7 +132,7 @@ public class LessonVideo extends AppCompatActivity {
         buttonNext.setEnabled(true);
     }
 
-        public class VideoListener implements MediaPlayer.OnCompletionListener, View.OnTouchListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener{
+    public class VideoListener implements MediaPlayer.OnCompletionListener, View.OnTouchListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener{
         @Override
         public void onCompletion(MediaPlayer mp) {
             buttonNext.setEnabled(true);
@@ -133,8 +145,16 @@ public class LessonVideo extends AppCompatActivity {
                 VideoView video = (VideoView) v;
                 if (video.isPlaying()){
                     video.pause();
+                    if (txtTitle!=null){
+                        String paused = "PAUSED";
+                        txtTitle.setText(paused);
+                    }
                 } else {
                     video.start();
+                    if (txtTitle!=null){
+                        String title = getLessonTitle();
+                        txtTitle.setText(title);
+                    }
                 }
             }
             return false;
@@ -142,6 +162,7 @@ public class LessonVideo extends AppCompatActivity {
 
         @Override
         public void onPrepared(MediaPlayer mp) {
+            ActivityUtil.muteBgMusicMediaPlayer();
             mProgressDialog.dismiss();
         }
 
@@ -198,6 +219,7 @@ public class LessonVideo extends AppCompatActivity {
         public void onClick(View v) {
             AppCache.setNextClicked(true);
             finish();
+            ActivityUtil.stopBgMusicMediaPlayer();
         }
     }
 
@@ -212,5 +234,17 @@ public class LessonVideo extends AppCompatActivity {
         assert connectivityManager != null;
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ActivityUtil.muteBgMusicMediaPlayer();
+    }
+
+    @Override
+    protected void onStart() {
+        ActivityUtil.unmuteBgMusicMediaPlayer();
+        super.onStart();
     }
 }

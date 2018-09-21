@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.ChapterExamListActivity;
+import com.example.laher.learnfractions.HelpActivity;
 import com.example.laher.learnfractions.LessonsMenuActivity;
 import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
@@ -24,13 +24,15 @@ import com.example.laher.learnfractions.adapters.MainActivityListAdapter;
 import com.example.laher.learnfractions.classes.AppActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.ClassRanksMainActivity;
+import com.example.laher.learnfractions.parent_activities.MainFrame;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
-public class UserMainActivity extends AppCompatActivity {
+public class UserMainActivity extends MainFrame {
     Context mContext = this;
 
     //TOOLBAR
@@ -71,7 +73,16 @@ public class UserMainActivity extends AppCompatActivity {
         });
         btnBack.setText(AppConstants.LOG_OUT);
         btnNext = findViewById(R.id.btnNext);
-        btnNext.setVisibility(View.INVISIBLE);
+        btnNext.setText(AppConstants.HELP);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtil.stopBgMusicMediaPlayer();
+                Intent intent = new Intent(UserMainActivity.this,
+                        HelpActivity.class);
+                startActivity(intent);
+            }
+        });
 
         if (!isNetworkAvailable()){
             Storage.logout(mContext);
@@ -86,8 +97,10 @@ public class UserMainActivity extends AppCompatActivity {
 
         Styles.bgPaintMainBlue(btnBack);
 
+        Styles.bgPaintMainOrange(btnNext);
+
         constraintLayoutBackground = findViewById(R.id.constraintLayoutBackground);
-        Styles.bgPaintRandomMainSet2(constraintLayoutBackground);
+        Styles.bgPaintMainBlueGreen(constraintLayoutBackground);
 
         imgAvatar = findViewById(R.id.student_main_imgAvatar);
         int resource = Styles.getRandomFritsImageResource();
@@ -127,7 +140,6 @@ public class UserMainActivity extends AppCompatActivity {
                 Class theClass = appActivity.getTheClass();
 
                 Intent intent = new Intent(context, theClass);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -145,5 +157,10 @@ public class UserMainActivity extends AppCompatActivity {
         assert connectivityManager != null;
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+    @Override
+    public void onBackPressed() {
+        btnBack.performClick();
     }
 }

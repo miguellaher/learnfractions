@@ -30,6 +30,7 @@ import com.example.laher.learnfractions.service.UserService;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
 import com.example.laher.learnfractions.teacher.TeacherMainActivity;
 import com.example.laher.learnfractions.user_activities.UserMainActivity;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Storage;
 import com.example.laher.learnfractions.util.Styles;
@@ -104,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
         spinnerUserType.setAdapter(adapter);
         spinnerUserType.setOnItemSelectedListener(new UserTypeSpinnerListener());
 
+        ActivityUtil.stopBgMusicMediaPlayer();
     }
     private String checkErrors(){
         if (inputUsername.getText().toString().matches("")){
@@ -199,7 +201,6 @@ public class LoginActivity extends AppCompatActivity {
 
                             Intent intent = new Intent(LoginActivity.this,
                                     UserMainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                         }
                     } catch (Exception e){
@@ -258,6 +259,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connectivityManager != null;
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
@@ -284,4 +286,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

@@ -139,7 +139,7 @@ public class ComparingSimilarExercise2Activity extends LessonExercise {
         txtDenominator2.setText(String.valueOf(denominator2));
         String instruction = "Compare the two fractions.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(),R.raw.cse2_compare_the);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cse2_compare_the);
         txtCompareSign.setText("_");
     }
     public void enableButtons(boolean bool){
@@ -234,7 +234,7 @@ public class ComparingSimilarExercise2Activity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(),R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.finished_lesson);
     }
 
     @Override

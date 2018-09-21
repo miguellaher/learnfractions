@@ -23,6 +23,7 @@ import com.example.laher.learnfractions.adapters.MainActivityListAdapter;
 import com.example.laher.learnfractions.classes.AppActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.ClassRanksMainActivity;
+import com.example.laher.learnfractions.parent_activities.MainFrame;
 import com.example.laher.learnfractions.teacher2.LessonExercisesListActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Encryptor;
@@ -31,7 +32,7 @@ import com.example.laher.learnfractions.util.Styles;
 
 import java.util.ArrayList;
 
-public class TeacherMainActivity extends AppCompatActivity {
+public class TeacherMainActivity extends MainFrame {
     Context mContext = this;
     //TOOLBAR
     Button btnBack;

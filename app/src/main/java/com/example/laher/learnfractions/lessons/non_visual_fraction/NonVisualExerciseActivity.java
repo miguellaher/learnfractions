@@ -113,9 +113,9 @@ public class NonVisualExerciseActivity extends LessonExercise {
         Collections.shuffle(instructions);
         String instruction = instructions.get(0);
         if (instruction.equals(INSTRUCTION_NUMERATOR)){
-            ActivityUtil.playMusic(getContext(),R.raw.nv1_numerator);
+            ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.nv1_numerator);
         } else if (instruction.equals(INSTRUCTION_DENOMINATOR)){
-            ActivityUtil.playMusic(getContext(),R.raw.nv1_denominator);
+            ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.nv1_denominator);
         }
         txtInstruction.setText(instruction);
 
@@ -195,7 +195,7 @@ public class NonVisualExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
-        ActivityUtil.playMusic(getContext(),R.raw.finished_exercise);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.finished_exercise);
     }
 
     @Override

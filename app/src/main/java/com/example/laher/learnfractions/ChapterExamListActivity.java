@@ -7,7 +7,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 import com.example.laher.learnfractions.adapters.ChapterExamListAdapter;
 import com.example.laher.learnfractions.classes.ChapterExamList;
 import com.example.laher.learnfractions.model.ChapterExam;
+import com.example.laher.learnfractions.parent_activities.MainFrame;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.seat_works.AddSubMixedFractionsSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingDissimilarSeatWork;
@@ -48,7 +48,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ChapterExamListActivity extends AppCompatActivity {
+public class ChapterExamListActivity extends MainFrame {
     private static final String TAG = "CHAPTER_EXAM_ACTIVITY";
     Context mContext = this;
     ListView examListView;

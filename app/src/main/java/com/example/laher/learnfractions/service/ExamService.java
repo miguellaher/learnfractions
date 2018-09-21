@@ -43,6 +43,9 @@ public class ExamService {
         if (userType.equals(AppConstants.USER)) {
             user_code = AppConstants.USER_CODE;
         }
+        if (userType.equals(AppConstants.TEACHER)){
+            teacher_code = Storage.load(context, Storage.TEACHER_CODE);
+        }
 
         if (teacher_code!=null) {
             params.put("teacher_code", teacher_code);

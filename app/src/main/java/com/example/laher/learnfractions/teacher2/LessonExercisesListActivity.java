@@ -3,6 +3,7 @@ package com.example.laher.learnfractions.teacher2;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -44,6 +45,7 @@ import com.example.laher.learnfractions.teacher.TeacherMainActivity;
 import com.example.laher.learnfractions.teacher2.dialog.LessonExerciseUpdateDialog;
 import com.example.laher.learnfractions.teacher2.list_adpaters.LessonExercisesListAdapter;
 import com.example.laher.learnfractions.util.Probability;
+import com.example.laher.learnfractions.util.Styles;
 import com.example.laher.learnfractions.util.Util;
 
 import org.json.JSONObject;
@@ -63,12 +65,26 @@ public class LessonExercisesListActivity extends MainFrame {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_exercise_list);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_exercise_list);
+
+        //TOOLBAR
+        buttonBack = findViewById(R.id.btnBack);
+        buttonNext = findViewById(R.id.btnNext);
+        buttonNext.setEnabled(false);
+
+        ConstraintLayout toolbar = findViewById(R.id.constraintLayoutToolbar);
+        Styles.bgPaintMainYellow(toolbar);
+
+        Styles.bgPaintMainBlue(buttonBack);
+
+        txtTitle = findViewById(R.id.txtTitle);
+
         setButtonBack(context,TeacherMainActivity.class);
         Button buttonNext = getButtonNext();
         buttonNext.setVisibility(View.INVISIBLE);
         setTitle(TITLE);
+
         //ACTIVITY
         exerciseListView = findViewById(R.id.exercise_list);
 

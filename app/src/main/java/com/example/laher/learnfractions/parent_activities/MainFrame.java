@@ -2,25 +2,24 @@ package com.example.laher.learnfractions.parent_activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.example.laher.learnfractions.R;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.Styles;
 
 public class MainFrame extends AppCompatActivity {//TOOLBAR
+    private Context mContext = this;
+
     protected Button buttonBack;
-    private Button buttonNext;
-    private TextView txtTitle;
+    protected Button buttonNext;
+    protected TextView txtTitle;
 
     public Button getButtonNext() {
         return buttonNext;
@@ -55,6 +54,7 @@ public class MainFrame extends AppCompatActivity {//TOOLBAR
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         buttonBack = findViewById(R.id.btnBack);
         buttonNext = findViewById(R.id.btnNext);
         buttonNext.setEnabled(false);
@@ -67,4 +67,22 @@ public class MainFrame extends AppCompatActivity {//TOOLBAR
         txtTitle = findViewById(R.id.txtTitle);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ActivityUtil.muteBgMusicMediaPlayer();
+        ActivityUtil.playMediaPlayer(mContext, R.raw.clicked);
+    }
+
+    @Override
+    protected void onResume() {
+        ActivityUtil.unmuteBgMusicMediaPlayer();
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        ActivityUtil.playBgMusicMediaPlayer(mContext);
+        super.onStart();
+    }
 }

@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
@@ -106,7 +105,7 @@ public class OrderingSimilarExerciseActivity extends LessonExercise {
         setTxtNumListener();
         String instruction = "Click from least to greatest.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(), R.raw.ose_least_greatest);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.ose_least_greatest);
     }
     public void resetTxtNumColor(){
         txtNum1.setTextColor(Color.rgb(128,128,128));
@@ -186,7 +185,7 @@ public class OrderingSimilarExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
-        ActivityUtil.playMusic(getContext(), R.raw.finished_exercise);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.finished_exercise);
     }
 
     @Override

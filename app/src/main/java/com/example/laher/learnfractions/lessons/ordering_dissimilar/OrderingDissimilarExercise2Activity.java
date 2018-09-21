@@ -215,6 +215,7 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
     public void resetVariables(){
         String instruction = "Click the denominators and get the lcd (least common denominator).";
         txtInstruction.setText(instruction);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.od_click_denominators);
         diagEdTxtSign.setText("÷");
         clicks = 0;
     }
@@ -304,6 +305,7 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
         lcmDialog.show();
         String instruction = "Get the lcd.";
         txtInstruction.setText(instruction);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.od_get_lcd);
     }
     public void popUpDivisionDialog(){
         diagEdInputAnswer.setText("");
@@ -314,6 +316,7 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
         equationDialog.show();
         String instruction = "Get the quotient.";
         txtInstruction.setText(instruction);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.od_get_quotient);
     }
     public void popUpMultiplicationDialog(){
         diagEdInputAnswer.setText("");
@@ -323,6 +326,7 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
         equationDialog.show();
         String instruction = "Get the product.";
         txtInstruction.setText(instruction);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.od_get_product);
     }
     public void resetTextColors(){
         txtDenom1.setTextColor(defaultColor);
@@ -442,7 +446,7 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
                     setTxtQuotientListener();
                     String instruction = "Divide the lcd to its' corresponding denominator by clicking the two.";
                     txtInstruction.setText(instruction);
-
+                    ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.od_divide_lcd);
                     lcmDialog.dismiss();
                 } else {
                     Styles.shakeAnimate(diagLcmInputLcm);
@@ -548,6 +552,7 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
                         removeCorrespondingListener(standByTxtEquation);
                         String instruction = "Click another two.";
                         txtInstruction.setText(instruction);
+                        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.od_click_two);
                         equationDialog.dismiss();
                     } else {
                         Styles.shakeAnimate(diagEdInputAnswer);
@@ -557,6 +562,7 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
                             txtEquation2.getVisibility() == TextView.VISIBLE &&
                             txtEquation3.getVisibility() == TextView.VISIBLE) {
                         txtInstruction.setText("Multiply the quotient and the corresponding numerator above by clicking the two.");
+                        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.od_multiply_quotient);
                         setTxtProductListener();
                     }
                 } else if (diagEdTxtSign.getText().toString().matches("x")) {
@@ -568,6 +574,7 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
                         showTxtView(standByTxtNum);
                         removeCorrespondingListener2(standByTxtNum);
                         txtInstruction.setText("Click another two.");
+                        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.od_click_two);
                         equationDialog.dismiss();
                     } else {
                         Styles.shakeAnimate(diagEdInputAnswer);
@@ -577,6 +584,7 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
                             txtNum5.getVisibility() == TextView.VISIBLE &&
                             txtNum6.getVisibility() == TextView.VISIBLE) {
                         txtInstruction.setText("Click the fractions above from least to greatest according to their corresponding fractions");
+                        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.od_click_fractions);
                         setFractionListener();
                     }
                 }
@@ -700,7 +708,7 @@ public class OrderingDissimilarExercise2Activity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.finished_lesson);
     }
 
     @Override

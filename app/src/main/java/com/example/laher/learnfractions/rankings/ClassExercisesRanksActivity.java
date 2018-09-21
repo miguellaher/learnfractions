@@ -7,25 +7,25 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.ClassRanksMainActivity;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.ExerciseRank;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.MessageDialog;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.parent_activities.LessonExercise;
+import com.example.laher.learnfractions.parent_activities.MainFrame;
 import com.example.laher.learnfractions.rankings.list_adapters.ExercisesRankListAdapter;
 import com.example.laher.learnfractions.service.ExerciseService;
 import com.example.laher.learnfractions.service.ExerciseStatService;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
-import com.example.laher.learnfractions.ClassRanksMainActivity;
 import com.example.laher.learnfractions.teacher2.LessonExercisesListActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Encryptor;
@@ -38,7 +38,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ClassExercisesRanksActivity extends AppCompatActivity {
+public class ClassExercisesRanksActivity extends MainFrame {
     Context mContext = this;
     //TOOLBAR
     TextView txtTitle;

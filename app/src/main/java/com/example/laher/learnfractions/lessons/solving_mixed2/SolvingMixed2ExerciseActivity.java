@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -235,7 +236,7 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
         inputDenom.setEnabled(false);
         btnCheck.setEnabled(false);
         txtInstruction.setText("Convert a mixed fraction to an improper fraction by clicking on it.");
-        ActivityUtil.playMusic(getContext(), R.raw.sm_convert);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.sm_convert);
     }
     public void setFractionQuestions(){
         mQuestionNum = 1;
@@ -607,7 +608,7 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
                     setTxtInvertListener();
                 }
                 txtInstruction.setText("Now the equation is familiar to you, solve it.");
-                ActivityUtil.playMusic(getContext(), R.raw.sm2_familiar);
+                ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.sm2_familiar);
             }
         }
     }
@@ -618,7 +619,7 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
             if (txtContainer == txtNum4) {
                 if (t.getId() == txtDenom2.getId()) {
                     txtNum4.setText(String.valueOf(txtDenom2.getText()));
-                    Styles.bgPaintWhite(txtNum4);
+                    txtNum4.setBackgroundColor(Color.rgb(209,230,173));
                     Styles.removeListener(t);
                     randomizeContainer();
                 } else {
@@ -627,7 +628,7 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
             } else if (txtContainer == txtDenom4) {
                 if (t.getId() == txtNum2.getId()) {
                     txtDenom4.setText(String.valueOf(txtNum2.getText()));
-                    Styles.bgPaintWhite(txtDenom4);
+                    txtDenom4.setBackgroundColor(Color.rgb(209,230,173));
                     Styles.removeListener(t);
                     randomizeContainer();
                 } else {
@@ -753,7 +754,7 @@ public class SolvingMixed2ExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.finished_lesson);
     }
 
     @Override

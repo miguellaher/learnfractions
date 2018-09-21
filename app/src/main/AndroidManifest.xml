@@ -170,9 +170,6 @@
             android:name=".teacher.TeacherMainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".teacher.ExercisesListActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".student_activities.StudentMainActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -220,35 +217,40 @@
         <activity
             android:name=".seat_works.MultiplyDivideMixedFractionsSeatWork"
             android:screenOrientation="portrait" />
-        <activity android:name=".teacher.StudentSWProgressActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".teacher.StudentEProgressActivity"
-            android:screenOrientation="portrait" />
         <activity android:name=".ChapterExamListActivity" />
         <activity android:name=".model.ChapterExam" />
-        <activity android:name=".teacher.StudentExamProgressActivity"
+        <activity
+            android:name=".teacher.ManageExamsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".teacher.ManageExamsActivity"
+        <activity
+            android:name=".ClassRanksMainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ClassRanksMainActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".rankings.ClassExamRanksActivity"
+        <activity
+            android:name=".rankings.ClassExamRanksActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".rankings.ClassSeatWorkRanksActivity"
+        <activity
+            android:name=".rankings.ClassSeatWorkRanksActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".parent_activities.Lesson"
+        <activity
+            android:name=".parent_activities.Lesson"
             android:screenOrientation="portrait" />
-        <activity android:name=".parent_activities.LessonVideo"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".parent_activities.LessonExercise"
+        <activity
+            android:name=".parent_activities.LessonVideo"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".parent_activities.LessonExercise"
             android:screenOrientation="portrait" />
-        <activity android:name=".teacher2.LessonExercisesListActivity"
+        <activity
+            android:name=".teacher2.LessonExercisesListActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".parent_activities.MainFrame"
+        <activity
+            android:name=".parent_activities.MainFrame"
             android:screenOrientation="portrait" />
-        <activity android:name=".rankings.ClassExercisesRanksActivity"
+        <activity
+            android:name=".rankings.ClassExercisesRanksActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".user_activities.UserMainActivity" />
+        <activity android:name=".HelpActivity"></activity>
     </application>
 
 </manifest>

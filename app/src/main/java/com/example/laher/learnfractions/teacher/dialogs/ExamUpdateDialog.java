@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
+import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
+import com.example.laher.learnfractions.dialog_layout.MessageDialog;
 import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.service.ExamService;
@@ -40,6 +42,7 @@ public class ExamUpdateDialog extends Dialog {
         mContext = context;
         mChapterExam = chapterExam;
         final ArrayList<SeatWork> mSeatWorks;
+        setCanceledOnTouchOutside(false);
 
         setGui();
 
@@ -119,5 +122,19 @@ public class ExamUpdateDialog extends Dialog {
 
     public ChapterExam getChapterExam() {
         return mChapterExam;
+    }
+
+    @Override
+    public void onBackPressed() {
+        final ConfirmationDialog confirmationDialog = new ConfirmationDialog(mContext, "Are you sure you want to exit without saving?");
+        confirmationDialog.show();
+        confirmationDialog.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (confirmationDialog.isConfirmed()){
+                    dismiss();
+                }
+            }
+        });
     }
 }

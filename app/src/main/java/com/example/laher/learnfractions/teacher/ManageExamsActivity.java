@@ -18,6 +18,7 @@ import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.classes.ChapterExamList;
 import com.example.laher.learnfractions.dialog_layout.MessageDialog;
 import com.example.laher.learnfractions.model.ChapterExam;
+import com.example.laher.learnfractions.parent_activities.MainFrame;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.seat_works.AddSubMixedFractionsSeatWork;
 import com.example.laher.learnfractions.seat_works.AddingDissimilarSeatWork;
@@ -44,7 +45,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ManageExamsActivity extends AppCompatActivity {
+public class ManageExamsActivity extends MainFrame {
     Context mContext = this;
     ListView examListView;
     ChapterExamList mChapterExams;

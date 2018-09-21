@@ -134,10 +134,10 @@ public class NonVisualExercise2Activity extends LessonExercise {
         Collections.shuffle(instructions);
         txtInstruction.setText(instructions.get(0));
         if (txtInstruction.getText().toString().equals(INSTRUCTION_NUMERATOR)){
-            ActivityUtil.playMusic(getContext(),R.raw.nv2_numerator);
+            ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.nv2_numerator);
             txtInstruction2.setText(AppConstants.NUMERATOR);
         } else {
-            ActivityUtil.playMusic(getContext(),R.raw.nv2_denominator);
+            ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.nv2_denominator);
             txtInstruction2.setText(AppConstants.DENOMINATOR);
         }
     }
@@ -266,7 +266,7 @@ public class NonVisualExercise2Activity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(),R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.finished_lesson);
         inputAnswer.getText().clear();
     }
 

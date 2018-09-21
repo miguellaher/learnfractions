@@ -140,7 +140,7 @@ public class ClassifyingFractionsExerciseActivity extends LessonExercise {
     public void setGuiFraction(){
         String instruction = "Classify the fraction.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(), R.raw.cf_classify);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.cf_classify);
         mClassifyingFractionQuestion = mClassifyingFractionQuestions.get(mQuestionNum-1);
         Fraction fraction = mClassifyingFractionQuestion.getFraction();
         int numerator = fraction.getNumerator();
@@ -221,7 +221,7 @@ public class ClassifyingFractionsExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
-        ActivityUtil.playMusic(getContext(), R.raw.finished_exercise);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.finished_exercise);
     }
 
     @Override

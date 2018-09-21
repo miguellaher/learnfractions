@@ -152,7 +152,7 @@ public class ComparingDissimilarExercise2Activity extends LessonExercise {
         txtCompareSign.setText("_");
         String instruction = "Click a denominator.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(),R.raw.cde_click_the);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_click_the);
     }
     private void generateFractionQuestions(){
         mQuestionNum = 1;
@@ -200,7 +200,7 @@ public class ComparingDissimilarExercise2Activity extends LessonExercise {
     public void dialogInputProduct(int num, int denominator){
         String instruction = "Get the product of the clicked numbers.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(),R.raw.cde_prod_of_clicked);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_prod_of_clicked);
 
         dialogTxtMultiplicand.setText(String.valueOf(denominator));
         dialogTxtMultiplier.setText(String.valueOf(num));
@@ -259,12 +259,12 @@ public class ComparingDissimilarExercise2Activity extends LessonExercise {
                     txtDenominator1.setTextColor(Color.rgb(0,255,0));
                     String instruction = "Click the numerator of the second fraction.";
                     txtInstruction.setText(instruction);
-                    ActivityUtil.playMusic(getContext(),R.raw.cde_second_numerator);
+                    ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_second_numerator);
                 } else if (stepsIdList.get(0) == txtDenominator2.getId()){
                     txtDenominator2.setTextColor(Color.rgb(0,255,0));
                     String instruction = "Click the numerator of the first fraction.";
                     txtInstruction.setText(instruction);
-                    ActivityUtil.playMusic(getContext(),R.raw.cde_first_numerator);
+                    ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_first_numerator);
                 } else {
                     //wrong
                     shakeAnimate(txtDenominator1);
@@ -302,7 +302,7 @@ public class ComparingDissimilarExercise2Activity extends LessonExercise {
                             txtDenominator2.setTextColor(Color.rgb(0, 255, 0));
                             String instruction = "Click the numerator of the first fraction.";
                             txtInstruction.setText(instruction);
-                            ActivityUtil.playMusic(getContext(),R.raw.cde_first_numerator);
+                            ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_first_numerator);
                         } else {
                             shakeAnimate(txtDenominator2);
                             stepsIdList.remove(2);
@@ -314,7 +314,7 @@ public class ComparingDissimilarExercise2Activity extends LessonExercise {
                             txtDenominator1.setTextColor(Color.rgb(0, 255, 0));
                             String instruction = "Click the numerator of the second fraction.";
                             txtInstruction.setText(instruction);
-                            ActivityUtil.playMusic(getContext(),R.raw.cde_second_numerator);
+                            ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_second_numerator);
                         } else {
                             shakeAnimate(txtDenominator1);
                             stepsIdList.remove(2);
@@ -376,7 +376,7 @@ public class ComparingDissimilarExercise2Activity extends LessonExercise {
                             || txtProduct2.getVisibility() != TextView.VISIBLE) {
                         String instruction = "Click the other denominator.";
                         txtInstruction.setText(instruction);
-                        ActivityUtil.playMusic(getContext(), R.raw.cde_other_denominator);
+                        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.cde_other_denominator);
                     }
                 } else {
                     shakeAnimate(dialogInputProduct);
@@ -419,7 +419,7 @@ public class ComparingDissimilarExercise2Activity extends LessonExercise {
                     stepsIdList.clear();
                     String instruction = "Click a denominator.";
                     txtInstruction.setText(instruction);
-                    ActivityUtil.playMusic(getContext(),R.raw.cde_click_the);
+                    ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_click_the);
                 }
             }
             if (stepsIdList.size()==4){
@@ -500,7 +500,7 @@ public class ComparingDissimilarExercise2Activity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(),R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.finished_lesson);
     }
 
     @Override

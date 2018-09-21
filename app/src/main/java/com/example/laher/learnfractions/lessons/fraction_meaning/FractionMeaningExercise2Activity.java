@@ -135,7 +135,6 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
         txtScore = findViewById(R.id.a1_txtScore);
         txtInstruction = findViewById(R.id.a1_txtInstruction);
 
-        Log.d(TAG, "startExercise()");
         startExercise();
     }
 
@@ -147,7 +146,7 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
         inputDenominator.setText("");
         String instruction = "Fill in the blanks.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(),R.raw.fill_in_the_blanks);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.fill_in_the_blanks);
         btnOK.setEnabled(false);
         inputNumerator.requestFocus();
         Log.d(TAG, "nextQuestion() last statement");
@@ -305,7 +304,7 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(),R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.finished_lesson);
     }
 
     @Override

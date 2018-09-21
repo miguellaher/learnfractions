@@ -168,7 +168,7 @@ public class ComparingDissimilarExerciseActivity extends LessonExercise {
         txtProduct2.setVisibility(TextView.INVISIBLE);
         String instruction = "Click a denominator.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(),R.raw.cde_click_the);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_click_the);
     }
     public void shakeAnimate(TextView textview){
         ObjectAnimator.ofFloat(textview, "translationX", 0, 25, -25, 25, -25, 15, -15, 6, -6, 0)
@@ -178,7 +178,7 @@ public class ComparingDissimilarExerciseActivity extends LessonExercise {
     public void diagInputProduct(int num, int denom){
         String instruction = "Get the product of the clicked numbers.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(),R.raw.cde_get_the_product);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_get_the_product);
 
 
         dialogTxtMultiplicand.setText(String.valueOf(denom));
@@ -212,12 +212,12 @@ public class ComparingDissimilarExerciseActivity extends LessonExercise {
                     txtDenominator1.setTextColor(Color.rgb(0,255,0));
                     String instruction = "Click the numerator of the second fraction.";
                     txtInstruction.setText(instruction);
-                    ActivityUtil.playMusic(getContext(),R.raw.cde_second_numerator);
+                    ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_second_numerator);
                 } else if (stepsIdList.get(0) == txtDenominator2.getId()){
                     txtDenominator2.setTextColor(Color.rgb(0,255,0));
                     String instruction = "Click the numerator of the first fraction.";
                     txtInstruction.setText(instruction);
-                    ActivityUtil.playMusic(getContext(),R.raw.cde_first_numerator);
+                    ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_first_numerator);
                 } else {
                     //wrong
                     shakeAnimate(txtDenominator1);
@@ -255,7 +255,7 @@ public class ComparingDissimilarExerciseActivity extends LessonExercise {
                             txtDenominator2.setTextColor(Color.rgb(0, 255, 0));
                             String instruction = "Click the numerator of the first fraction.";
                             txtInstruction.setText(instruction);
-                            ActivityUtil.playMusic(getContext(),R.raw.cde_first_numerator);
+                            ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_first_numerator);
                         } else {
                             shakeAnimate(txtDenominator2);
                             stepsIdList.remove(2);
@@ -267,7 +267,7 @@ public class ComparingDissimilarExerciseActivity extends LessonExercise {
                             txtDenominator1.setTextColor(Color.rgb(0, 255, 0));
                             String instruction = "Click the numerator of the second fraction.";
                             txtInstruction.setText(instruction);
-                            ActivityUtil.playMusic(getContext(),R.raw.cde_second_numerator);
+                            ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_second_numerator);
                         } else {
                             shakeAnimate(txtDenominator1);
                             stepsIdList.remove(2);
@@ -328,7 +328,7 @@ public class ComparingDissimilarExerciseActivity extends LessonExercise {
                         if (txtProduct1.getVisibility() != TextView.VISIBLE || txtProduct2.getVisibility() != TextView.VISIBLE) {
                             String instruction = "Click the other denominator.";
                             txtInstruction.setText(instruction);
-                            ActivityUtil.playMusic(getContext(),R.raw.cde_other_denominator);
+                            ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_other_denominator);
                         }
                         if (txtProduct1.getVisibility() == TextView.VISIBLE && txtProduct2.getVisibility() == TextView.VISIBLE) {
                             correct();
@@ -355,7 +355,7 @@ public class ComparingDissimilarExerciseActivity extends LessonExercise {
                     stepsIdList.clear();
                     String instruction = "Click a denominator.";
                     txtInstruction.setText(instruction);
-                    ActivityUtil.playMusic(getContext(),R.raw.cde_click_the);
+                    ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cde_click_the);
                 }
             }
             if (stepsIdList.size()==4){
@@ -434,6 +434,6 @@ public class ComparingDissimilarExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
-        ActivityUtil.playMusic(getContext(),R.raw.finished_exercise);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.finished_exercise);
     }
 }

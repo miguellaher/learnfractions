@@ -133,7 +133,6 @@ public class ComparingDissimilarSeatWork extends SeatWork {
     }
     public void setGuiFractions(){
         ComparingDissimilarQuestion question = questions.get(questionNum);
-        txtCompareSign.setText("");
         Fraction fraction1 = question.getFraction1();
         Fraction fraction2 = question.getFraction2();
         int numerator1 = fraction1.getNumerator();
@@ -203,15 +202,12 @@ public class ComparingDissimilarSeatWork extends SeatWork {
         @Override
         public void onClick(View v) {
             if (v.getId() == btnGreater.getId()){
-                txtCompareSign.setText(GREATER_THAN);
                 check(GREATER_THAN);
             }
             if (v.getId() == btnEquals.getId()){
-                txtCompareSign.setText(EQUAL_TO);
                 check(EQUAL_TO);
             }
             if (v.getId() == btnLess.getId()){
-                txtCompareSign.setText(LESS_THAN);
                 check(LESS_THAN);
             }
         }

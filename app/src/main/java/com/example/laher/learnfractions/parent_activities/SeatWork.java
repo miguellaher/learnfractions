@@ -21,6 +21,7 @@ import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
 import com.example.laher.learnfractions.dialog_layout.SeatWorkStatDialog;
 import com.example.laher.learnfractions.model.ChapterExam;
 import com.example.laher.learnfractions.model.Student;
+import com.example.laher.learnfractions.util.ActivityUtil;
 import com.example.laher.learnfractions.util.AppCache;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Probability;
@@ -445,4 +446,25 @@ public class SeatWork extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ActivityUtil.muteBgMusicMediaPlayer();
+    }
+
+    @Override
+    protected void onResume() {
+        ActivityUtil.unmuteBgMusicMediaPlayer();
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        ActivityUtil.playBgMusicMediaPlayer(context);
+        super.onStart();
+    }
+
 }

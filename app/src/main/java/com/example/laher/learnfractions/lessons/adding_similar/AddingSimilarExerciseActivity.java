@@ -125,7 +125,7 @@ public class AddingSimilarExerciseActivity extends LessonExercise {
     @SuppressLint("SetTextI18n")
     public void startUp(){
         txtInstruction.setText("Add the two numerators for the new numerator and copy the similar denominator for the new denominator.");
-        ActivityUtil.playMusic(getContext(), R.raw.as_add_two);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.as_add_two);
         clearInputFraction();
     }
     public void clearInputFraction(){
@@ -166,7 +166,7 @@ public class AddingSimilarExerciseActivity extends LessonExercise {
         String strDenominator1 = String.valueOf(denominator1);
         String strDenominator2 = String.valueOf(denominator2);
         txtInstruction.setText("Solve the equation.");
-        ActivityUtil.playMusic(getContext(), R.raw.solve_the_equation);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.solve_the_equation);
         txtNum1.setText(strNumerator1);
         txtNum2.setText(strNumerator2);
         txtDenom1.setText(strDenominator1);
@@ -265,7 +265,7 @@ public class AddingSimilarExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.finished_lesson);
     }
 
     @Override

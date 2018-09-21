@@ -165,7 +165,7 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
         txtCompareSign.setText("_");
         String instruction = "Compare the two fractions.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(), R.raw.cse2_compare_the);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.cse2_compare_the);
 
         crossMultiplicationStepList.clear();
     }
@@ -222,7 +222,7 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
     public void diagInputProduct(int num, int denom){
         String instruction = "Get the product of the clicked numbers.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(), R.raw.cde_get_the_product);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.cde_get_the_product);
         dialogTxtMultiplicand.setText(String.valueOf(denom));
         dialogTxtMultiplier.setText(String.valueOf(num));
         multiplicationDialog.show();
@@ -259,7 +259,7 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
                 crossMultiplicationStepList.clear();
                 String instruction = "It's not necessary to use the cross multiplication technique to similar fractions.";
                 txtInstruction.setText(instruction);
-                // INSERT PLAY MUSIC METHOD FROM ACTIVITY UTIL
+                ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.cf_not_necessary);
                 enableBtnAnswers(false);
                 Styles.shakeAnimate(txtNum1);
                 Styles.shakeAnimate(txtNum2);
@@ -450,7 +450,7 @@ public class ComparingFractionsExercise2Activity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_LESSON);
-        ActivityUtil.playMusic(getContext(), R.raw.finished_lesson);
+        ActivityUtil.playAvatarMediaPlayer(getContext(), R.raw.finished_lesson);
     }
 
     @Override

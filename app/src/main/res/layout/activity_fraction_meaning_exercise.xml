@@ -137,7 +137,6 @@
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:text="99"
-                app:layout_constraintStart_toEndOf="@+id/btnChoice1"
                 tools:layout_editor_absoluteY="0dp" />
 
             <Button
@@ -147,7 +146,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_toStartOf="@+id/btnChoice3"
                 android:text="99"
-                app:layout_constraintStart_toEndOf="@+id/btnChoice2"
                 tools:layout_editor_absoluteY="0dp" />
 
             <Button
@@ -158,7 +156,6 @@
                 android:layout_toStartOf="@+id/btnChoice4"
                 android:text="99"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btnChoice3"
                 tools:layout_editor_absoluteY="0dp" />
 
             <Button

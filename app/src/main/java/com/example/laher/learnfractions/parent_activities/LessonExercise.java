@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.LearnFractionsApp;
 import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
@@ -59,7 +60,12 @@ public class LessonExercise extends AppCompatActivity {
     private Range range;
     private Probability probability;
     private int maxItemSize;
+
     protected final Handler handler = new Handler();
+
+    FailPostDelayed failPostDelayed;
+    WrongPostDelayed wrongPostDelayed;
+    CorrectPostDelayed correctPostDelayed;
     //SETTINGS
     private boolean rangeEditable;
 
@@ -289,6 +295,8 @@ public class LessonExercise extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContext(this);
+        ActivityUtil.playBgMusicMediaPlayer(context);
+        LearnFractionsApp.appResumed();
         super.onCreate(savedInstanceState);
         setToolBarGui();
         String title = getExerciseTitle();
@@ -342,6 +350,7 @@ public class LessonExercise extends AppCompatActivity {
         Service service = new Service("Getting update...", context, new ServiceResponse() {
             @Override
             public void postExecute(JSONObject response) {
+                LearnFractionsApp.appResumed();
                 try {
                     String title = response.optString("title");
                     String strItemsSize = response.optString("items_size");
@@ -397,6 +406,7 @@ public class LessonExercise extends AppCompatActivity {
                 }
             }
         });
+        LearnFractionsApp.appPaused();
         ExerciseService.getUpdate(context, this, service);
     }
 
@@ -516,7 +526,7 @@ public class LessonExercise extends AppCompatActivity {
                 public void onDismiss(DialogInterface dialog) {
                     if (confirmationDialog.isConfirmed()){
                         AppCache.setBackClicked(true);
-                        ActivityUtil.stopMusic();
+                        ActivityUtil.stopAvatarMediaPlayer();
                         finish();
                     }
                 }
@@ -557,14 +567,10 @@ public class LessonExercise extends AppCompatActivity {
             }
             finishExercise(); //exercise done
         } else {
-            ActivityUtil.playMusic(context,R.raw.correct);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    postAnswered();
-                    postCorrect();
-                }
-            }, 2000);
+            ActivityUtil.playAvatarMediaPlayer(context,R.raw.correct);
+            correctPostDelayed = new CorrectPostDelayed();
+            handler.postDelayed(correctPostDelayed, 2000);
+            correctPostDelayed = null;
         }
     }
 
@@ -580,23 +586,37 @@ public class LessonExercise extends AppCompatActivity {
         showScore();
         if (wrong >= maxWrong) {
             preFail();
-            ActivityUtil.playMusic(context,R.raw.fail);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    AppCache.setBackClicked(true); //exercise failed
-                    finish();
-                }
-            }, 3000);
+            ActivityUtil.playAvatarMediaPlayer(context,R.raw.fail);
+            failPostDelayed = new FailPostDelayed();
+            handler.postDelayed(failPostDelayed, 3000);
+            failPostDelayed = null;
         } else {
-            ActivityUtil.playMusic(context,R.raw.wrong);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    postAnswered();
-                    postWrong();
-                }
-            }, 2000);
+            ActivityUtil.playAvatarMediaPlayer(context,R.raw.wrong);
+            wrongPostDelayed = new WrongPostDelayed();
+            handler.postDelayed(wrongPostDelayed, 2000);
+            wrongPostDelayed = null;
+        }
+    }
+
+    private class FailPostDelayed implements Runnable{
+        @Override
+        public void run() {
+            AppCache.setBackClicked(true); //exercise failed
+            finish();
+        }
+    }
+    private class WrongPostDelayed implements Runnable{
+        @Override
+        public void run() {
+            postAnswered();
+            postWrong();
+        }
+    }
+    private class CorrectPostDelayed implements Runnable{
+        @Override
+        public void run() {
+            postAnswered();
+            postCorrect();
         }
     }
 
@@ -648,5 +668,20 @@ public class LessonExercise extends AppCompatActivity {
 
     protected void postAnswered(){ // remove restriction
 
+    }
+
+    @Override
+    protected void onPause() {
+        ActivityUtil.stopAvatarMediaPlayer();
+        ActivityUtil.stopBgMusicMediaPlayer();
+        LearnFractionsApp.appPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        LearnFractionsApp.appResumed();
+        ActivityUtil.playBgMusicMediaPlayer(context);
+        super.onResume();
     }
 }

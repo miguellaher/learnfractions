@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laher.learnfractions.R;
@@ -96,8 +95,6 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
         Styles.bgPaintMainYellow(btnEquals);
         Styles.bgPaintMainOrange(btnLess);
 
-
-
         startExercise();
     }
     private void generateNumbers(){
@@ -120,7 +117,7 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
         txtNum2.setText(String.valueOf(number2));
         String instruction = "Compare the two numbers.";
         txtInstruction.setText(instruction);
-        ActivityUtil.playMusic(getContext(),R.raw.cse_compare_the);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.cse_compare_the);
     }
     public class BtnListener implements Button.OnClickListener{
         @Override
@@ -217,7 +214,7 @@ public class ComparingSimilarExerciseActivity extends LessonExercise {
     protected void preFinished() {
         super.preFinished();
         txtInstruction.setText(AppConstants.FINISHED_EXERCISE);
-        ActivityUtil.playMusic(getContext(),R.raw.finished_exercise);
+        ActivityUtil.playAvatarMediaPlayer(getContext(),R.raw.finished_exercise);
     }
 
     @Override
