@@ -98,14 +98,14 @@ public class ClassExercisesRanksActivity extends MainFrame {
             if (userType.equals(AppConstants.USER)) {
                 getStudentsStats();
             } else { // if user type is either student or teacher
-                updateExams();
+                updateExercises();
             }
         } else {
             btnBack.performClick();
         }
     }
 
-    private void updateExams(){
+    private void updateExercises(){
         Service service = new Service("Updating exercise list...", mContext, new ServiceResponse() {
             @Override
             public void postExecute(JSONObject response) {
@@ -271,6 +271,11 @@ public class ClassExercisesRanksActivity extends MainFrame {
                         }
                     }
                     Collections.sort(mExerciseRanks);
+
+                    while (mExerciseRanks.size()>10){
+                        mExerciseRanks.remove(mExerciseRanks.size()-1);
+                    }
+
                     setListAdapter(mExerciseRanks);
                 } catch (Exception e){
                     e.printStackTrace();

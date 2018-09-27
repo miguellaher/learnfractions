@@ -99,7 +99,11 @@ public class SeatWorkListAdapter extends ArrayAdapter<SeatWork> {
                 textView2.setText(strTxtView2 + strCorrect + " / " + strItemSize);
             } else {
                 textView2.setText(textView2.getText().toString() + "__ / " + seatWork.getItems_size());
-                linearLayoutBackground1.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
+                if (activityPosition==1||activityPosition==3) {
+                    linearLayoutBackground1.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
+                } else {
+                    linearLayoutBackground1.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED2);
+                }
             }
             textView3.setText("Time spent:\n");
             if (minutes>0){

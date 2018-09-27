@@ -117,6 +117,7 @@ public class AppConstants {
 
     //COLORS
     public static final int BG_DEFAULT_NOT_FINISHED = Color.rgb(169,169,169);
+public static final int BG_DEFAULT_NOT_FINISHED2 = Color.rgb(195,195,195);
 
     public static ArrayList<String> getSecurityQuestions(){
         ArrayList<String> securityQuestionsList = new ArrayList<>();

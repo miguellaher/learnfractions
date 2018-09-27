@@ -46,7 +46,7 @@ public class FractionMeaningExerciseActivity extends LessonExercise {
     ConstraintLayout constraintLayoutBackGround;
     ConstraintLayout constraintLayoutBottom;
 
-    public String title = "Fraction Meaning\nex.1"; // IMPORTANT VAR
+    public String title = "Fraction Meaning ex.1"; // IMPORTANT VAR
     String id = AppIDs.FME_ID; // IMPORTANT VAR
 
     //ACTIVITY VARIABLES

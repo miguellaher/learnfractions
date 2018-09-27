@@ -3,6 +3,7 @@ package com.example.laher.learnfractions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,7 +18,6 @@ import com.example.laher.learnfractions.classes.SecurityQuestionAdapter;
 import com.example.laher.learnfractions.model.Student;
 import com.example.laher.learnfractions.model.Teacher;
 import com.example.laher.learnfractions.model.User;
-import com.example.laher.learnfractions.parent_activities.MainFrame;
 import com.example.laher.learnfractions.service.Service;
 import com.example.laher.learnfractions.service.ServiceResponse;
 import com.example.laher.learnfractions.service.StudentService;
@@ -31,7 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class RegisterActivity extends MainFrame {
+public class RegisterActivity extends AppCompatActivity {
     Context context = this;
 
     TextView txtTitle;
@@ -186,7 +186,7 @@ public class RegisterActivity extends MainFrame {
                         String strInputUserName = inputUserName.getText().toString().trim();
                         String strInputPassword = inputPassword.getText().toString().trim();
                         String strAge = inputAge.getText().toString().trim();
-                        String strInputSecuritAnswer = inputSecurityAnswer.getText().toString().trim();
+                        String strInputSecurityAnswer = inputSecurityAnswer.getText().toString().trim();
 
                         if (Util.isNumeric(strAge)) {
                             int age = Integer.valueOf(strAge);
@@ -202,10 +202,11 @@ public class RegisterActivity extends MainFrame {
                             }
 
                             user.setSecurity_question(security_question);
-                            user.setSecurity_answer(strInputSecuritAnswer);
+                            user.setSecurity_answer(strInputSecurityAnswer);
 
                             register(user);
                         }
+
                     } else {
                         showTxtError("Input gender.");
                     }
@@ -244,19 +245,40 @@ public class RegisterActivity extends MainFrame {
         });
         TeacherService.register(teacher, service);
     }
+    private void checkTeacherCode(final Teacher teacher){
+        Service service = new Service("Checking teacher code...", context, new ServiceResponse() {
+            @Override
+            public void postExecute(JSONObject response) {
+                try {
+                    if (!response.optString("teacher_code").matches("")){
+                        String errorMessage = "Teacher code already exists.";
+                        showTxtError(errorMessage);
+                    } else {
+                        register(teacher);
+                    }
+                }catch (Exception e){e.printStackTrace();}
+            }
+        });
+        TeacherService.checkTeacherCode(teacher, service);
+    }
     private class TeacherRegistrationButtonListener implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
             if (checkErrorsBase()){
                 if (!inputTeacherCode.getText().toString().trim().matches("")){
                     if (inputTeacherCode.getText().length()>3){
+                        String strInputUserName = inputUserName.getText().toString().trim();
+                        String strInputPassword = inputPassword.getText().toString().trim();
+                        String strInputSecurityAnswer = inputSecurityAnswer.getText().toString().trim();
+                        String strInputTeacherCode = inputTeacherCode.getText().toString().trim();
+
                         Teacher teacher = new Teacher();
-                        teacher.setUsername(String.valueOf(inputUserName.getText()));
-                        teacher.setPassword(String.valueOf(inputPassword.getText()));
-                        teacher.setSecurity_question(String.valueOf(security_question));
-                        teacher.setSecurity_answer(String.valueOf(inputSecurityAnswer.getText()));
-                        teacher.setTeacher_code(String.valueOf(inputTeacherCode.getText()));
-                        register(teacher);
+                        teacher.setUsername(strInputUserName);
+                        teacher.setPassword(strInputPassword);
+                        teacher.setSecurity_question(security_question);
+                        teacher.setSecurity_answer(strInputSecurityAnswer);
+                        teacher.setTeacher_code(strInputTeacherCode);
+                        checkTeacherCode(teacher);
                     } else {
                         showTxtError("Teacher codes should be 4 or more characters.");
                     }
@@ -279,8 +301,8 @@ public class RegisterActivity extends MainFrame {
             @Override
             public void postExecute(JSONObject response) {
                 try {
-                    if (response.optString("message") != null && response.optString("message").equals("Incorrect teacher code.")) {
-                        showTxtError(String.valueOf(response.optString("message")));
+                    if (response.optString("teacher_code").equals("null")) {
+                        showTxtError("Teacher code does not exist.");
                     }else{
                         register(student);
                     }
@@ -319,17 +341,17 @@ public class RegisterActivity extends MainFrame {
                         if (!inputTeacherCode.getText().toString().trim().matches("")){
                             if (inputTeacherCode.getText().length()>3){
                                 Student student = new Student();
-                                student.setUsername(String.valueOf(inputUserName.getText()));
-                                student.setPassword(String.valueOf(inputPassword.getText()));
-                                student.setAge(Integer.valueOf(String.valueOf(inputAge.getText())));
+                                student.setUsername(String.valueOf(inputUserName.getText()).trim());
+                                student.setPassword(String.valueOf(inputPassword.getText()).trim());
+                                student.setAge(Integer.valueOf(String.valueOf(inputAge.getText()).trim()));
                                 if (radioMale.isChecked()) {
                                     student.setGender(AppConstants.MALE);
                                 } else if (radioFemale.isChecked()) {
                                     student.setGender(AppConstants.FEMALE);
                                 }
                                 student.setSecurity_question(security_question);
-                                student.setSecurity_answer(String.valueOf(inputSecurityAnswer.getText()));
-                                student.setTeacher_code(String.valueOf(inputTeacherCode.getText()));
+                                student.setSecurity_answer(String.valueOf(inputSecurityAnswer.getText()).trim());
+                                student.setTeacher_code(String.valueOf(inputTeacherCode.getText()).trim());
                                 checkTeacherCode(student);
                             } else {
                                 showTxtError("Teacher codes should be 4 or more characters.");

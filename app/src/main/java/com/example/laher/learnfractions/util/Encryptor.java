@@ -20,6 +20,7 @@ public class Encryptor {
 			 Cipher cipher = Cipher.getInstance("DES");
 			 cipher.init(Cipher.ENCRYPT_MODE, skey);
 			 String encrypedPwd = Base64.encodeToString(cipher.doFinal(value.getBytes("UTF-8")), Base64.DEFAULT);
+			 encrypedPwd = encrypedPwd.trim();
 			 return encrypedPwd;
 		 } catch (Exception e) {
 		 }

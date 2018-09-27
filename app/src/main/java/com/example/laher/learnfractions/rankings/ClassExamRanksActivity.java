@@ -173,6 +173,11 @@ public class ClassExamRanksActivity extends MainFrame {
                         }
                     }
                     Collections.sort(mChapterExamRanks);
+
+                    while (mChapterExamRanks.size()>10){
+                        mChapterExamRanks.remove(mChapterExamRanks.size()-1);
+                    }
+
                     setListAdapter(mChapterExamRanks);
                 } catch (Exception e){
                     e.printStackTrace();

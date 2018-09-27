@@ -76,7 +76,11 @@ public class ChapterExamListAdapter extends ArrayAdapter<ChapterExam> {
             textView2.setText(textView2.getText().toString() + score + " / " + chapterExam.getTotalItems());
         } else {
             textView2.setText(textView2.getText().toString() + "__ / " + chapterExam.getTotalItems());
-            linearLayoutBackground1.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
+            if (activityPosition==1||activityPosition==3) {
+                linearLayoutBackground1.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED);
+            } else {
+                linearLayoutBackground1.setBackgroundColor(AppConstants.BG_DEFAULT_NOT_FINISHED2);
+            }
         }
         textView3.setText("Time spent:\n");
         if (minutes>0){

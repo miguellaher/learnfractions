@@ -31,6 +31,9 @@ public class Util {
     }
     public static boolean isNumeric(String str)
     {
+        if (str.trim().matches("")){
+            return false;
+        }
         NumberFormat formatter = NumberFormat.getInstance();
         ParsePosition pos = new ParsePosition(0);
         formatter.parse(str, pos);

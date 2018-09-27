@@ -51,6 +51,7 @@ public class LessonsViewAdapter extends RecyclerView.Adapter<LessonsViewAdapter.
         final Lesson lesson = lessons.get(position);
         final String lessonName = lesson.getLessonName();
 
+        // *START* FOR IMAGE ATTACHMENT
         int lessonPosition = position + 1;
         
         ArrayList<Integer> resources = Styles.getFritsImageResources();
@@ -59,7 +60,7 @@ public class LessonsViewAdapter extends RecyclerView.Adapter<LessonsViewAdapter.
             lessonPosition = lessonPosition - resourcesSize;
         }
         int resource = resources.get(lessonPosition-1);
-        String imgUrl = getURLForResource(resource);
+
         final Class lessonClass = lesson.getClass();
         
         lessonPosition = position + 1;
@@ -77,11 +78,9 @@ public class LessonsViewAdapter extends RecyclerView.Adapter<LessonsViewAdapter.
         } else if (lessonPosition==4){
             Styles.bgPaintMainYellow(holder.parentLayout);
         }
+        // FOR IMAGE ATTACHMENT *END*
 
-        Glide.with(mContext)
-                .asBitmap()
-                .load(imgUrl)
-                .into(holder.imgTopic);
+        holder.imgTopic.setImageResource(resource);
 
         holder.txtTopicName.setText(lessonName);
 

@@ -52,7 +52,7 @@ public class FractionMeaningExercise2Activity extends LessonExercise {
     ConstraintLayout constraintLayoutBackGround;
     ConstraintLayout constraintLayoutBottom;
 
-    public String title = "Fraction Meaning\nex.2";
+    public String title = "Fraction Meaning ex.2";
     String id = AppIDs.FME2_ID;
 
     Button btnOK;

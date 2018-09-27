@@ -4,8 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toolbar;
 
+import com.example.laher.learnfractions.R;
 import com.example.laher.learnfractions.classes.Range;
 import com.example.laher.learnfractions.parent_activities.MainFrame;
 import com.example.laher.learnfractions.parent_activities.SeatWork;
@@ -368,6 +372,9 @@ public class ChapterExam extends MainFrame {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
+        ConstraintLayout toolbar = findViewById(R.id.toolbar);
+        toolbar.setVisibility(View.INVISIBLE);
+
         AppCache.setInChapterExam(true); // REMEMBER TO TURN OFF
 
         ChapterExam chapterExam = AppCache.getChapterExam();

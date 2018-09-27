@@ -221,6 +221,7 @@ public class ChapterExamListActivity extends MainFrame {
                     mChapterExamListAdapter.notifyDataSetChanged();
                     getStudentStats();
                 } catch (Exception e){
+                    getStudentStats();
                     e.printStackTrace();
                 }
             }
@@ -244,27 +245,35 @@ public class ChapterExamListActivity extends MainFrame {
         AddSubMixedFractionsSeatWork addSubMixedFractionsSeatWork = new AddSubMixedFractionsSeatWork(AppConstants.ADDING_SUBTRACTING_MIXED);
         MultiplyDivideMixedFractionsSeatWork multiplyDivideMixedFractionsSeatWork = new MultiplyDivideMixedFractionsSeatWork(AppConstants.MULTIPLYING_DIVIDING_MIXED);
 
-        ChapterExam chapterExam1 = new ChapterExam(AppConstants.C_EXAM1);
+        String exam1Title = "Comparing Fractions";
+        String exam2Title = "Ordering Fractions";
+        String exam3Title = "Add/Minus Similar Fractions";
+        String exam4Title = "Add/Minus Dissimilar Fractions";
+        String exam5Title = "Multiply/Divide Fractions";
+        String exam6Title = "Equations with Mixed Fractions";
+
+
+        ChapterExam chapterExam1 = new ChapterExam(exam1Title);
         chapterExam1.addSeatWork(comparingSimilarSeatWork);
         chapterExam1.addSeatWork(comparingDissimilarSeatWork);
 
-        ChapterExam chapterExam2 = new ChapterExam(AppConstants.C_EXAM2);
+        ChapterExam chapterExam2 = new ChapterExam(exam2Title);
         chapterExam2.addSeatWork(orderingSimilarSeatWork);
         chapterExam2.addSeatWork(orderingDissimilarSeatWork);
 
-        ChapterExam chapterExam3 = new ChapterExam(AppConstants.C_EXAM3);
+        ChapterExam chapterExam3 = new ChapterExam(exam3Title);
         chapterExam3.addSeatWork(addingSimilarSeatWork);
         chapterExam3.addSeatWork(subtractingSimilarSeatWork);
 
-        ChapterExam chapterExam4 = new ChapterExam(AppConstants.C_EXAM4);
+        ChapterExam chapterExam4 = new ChapterExam(exam4Title);
         chapterExam4.addSeatWork(addingDissimilarSeatWork);
         chapterExam4.addSeatWork(subtractingDissimilarSeatWork);
 
-        ChapterExam chapterExam5 = new ChapterExam(AppConstants.C_EXAM5);
+        ChapterExam chapterExam5 = new ChapterExam(exam5Title);
         chapterExam5.addSeatWork(multiplyingFractionsSeatWork);
         chapterExam5.addSeatWork(dividingFractionsSeatWork);
 
-        ChapterExam chapterExam6 = new ChapterExam(AppConstants.C_EXAM6);
+        ChapterExam chapterExam6 = new ChapterExam(exam6Title);
         chapterExam6.addSeatWork(addSubMixedFractionsSeatWork);
         chapterExam6.addSeatWork(multiplyDivideMixedFractionsSeatWork);
 

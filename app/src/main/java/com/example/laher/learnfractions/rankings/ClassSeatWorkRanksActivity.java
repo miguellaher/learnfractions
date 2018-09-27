@@ -235,6 +235,11 @@ public class ClassSeatWorkRanksActivity extends MainFrame {
                         }
                     }
                     Collections.sort(mSeatWorkRanks);
+
+                    while (mSeatWorkRanks.size()>10){
+                        mSeatWorkRanks.remove(mSeatWorkRanks.size()-1);
+                    }
+
                     setListAdapter(mSeatWorkRanks);
                 } catch (Exception e) {
                     e.printStackTrace();

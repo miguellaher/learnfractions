@@ -60,6 +60,7 @@ import com.example.laher.learnfractions.lessons.subtracting_dissimilar.Subtracti
 import com.example.laher.learnfractions.lessons.subtracting_similar.SubtractingSimilarExerciseActivity;
 import com.example.laher.learnfractions.lessons.subtracting_similar.SubtractingSimilarVideoActivity;
 import com.example.laher.learnfractions.parent_activities.Lesson;
+import com.example.laher.learnfractions.parent_activities.LessonExercise;
 import com.example.laher.learnfractions.parent_activities.MainFrame;
 import com.example.laher.learnfractions.student_activities.StudentMainActivity;
 import com.example.laher.learnfractions.user_activities.UserMainActivity;
@@ -303,5 +304,62 @@ public class LessonsMenuActivity extends MainFrame {
     @Override
     public void onBackPressed() {
         btnBack.performClick();
+    }
+
+    public static ArrayList<LessonExercise> getLessonExercises(){
+        FractionMeaningExerciseActivity fractionMeaningExerciseActivity = new FractionMeaningExerciseActivity();
+        FractionMeaningExercise2Activity fractionMeaningExercise2Activity =  new FractionMeaningExercise2Activity();
+        NonVisualExerciseActivity nonVisualExerciseActivity = new NonVisualExerciseActivity();
+        NonVisualExercise2Activity nonVisualExercise2Activity = new NonVisualExercise2Activity();
+        ComparingSimilarExerciseActivity comparingSimilarExerciseActivity = new ComparingSimilarExerciseActivity();
+        ComparingSimilarExercise2Activity comparingSimilarExercise2Activity = new ComparingSimilarExercise2Activity();
+        ComparingDissimilarExerciseActivity comparingDissimilarExerciseActivity = new ComparingDissimilarExerciseActivity();
+        ComparingDissimilarExercise2Activity comparingDissimilarExercise2Activity = new ComparingDissimilarExercise2Activity();
+        ComparingFractionsExerciseActivity comparingFractionsExerciseActivity = new ComparingFractionsExerciseActivity();
+        ComparingFractionsExercise2Activity comparingFractionsExercise2Activity = new ComparingFractionsExercise2Activity();
+        OrderingSimilarExerciseActivity orderingSimilarExerciseActivity = new OrderingSimilarExerciseActivity();
+        OrderingSimilarExercise2Activity orderingSimilarExercise2Activity = new OrderingSimilarExercise2Activity();
+        OrderingDissimilarExerciseActivity orderingDissimilarExerciseActivity = new OrderingDissimilarExerciseActivity();
+        OrderingDissimilarExercise2Activity orderingDissimilarExercise2Activity = new OrderingDissimilarExercise2Activity();
+        ClassifyingFractionsExerciseActivity classifyingFractionsExerciseActivity = new ClassifyingFractionsExerciseActivity();
+        ConvertingFractionsExerciseActivity convertingFractionsExerciseActivity= new ConvertingFractionsExerciseActivity();
+        ConvertingFractionsExercise2Activity convertingFractionsExercise2Activity = new ConvertingFractionsExercise2Activity();
+        AddingSimilarExerciseActivity addingSimilarExerciseActivity = new AddingSimilarExerciseActivity();
+        AddingDissimilarExerciseActivity addingDissimilarExerciseActivity = new AddingDissimilarExerciseActivity();
+        SubtractingSimilarExerciseActivity subtractingSimilarExerciseActivity = new SubtractingSimilarExerciseActivity();
+        SubtractingDissimilarExerciseActivity subtractingDissimilarExerciseActivity = new SubtractingDissimilarExerciseActivity();
+        MultiplyingFractionsExerciseActivity multiplyingFractionsExerciseActivity = new MultiplyingFractionsExerciseActivity();
+        DividingFractionsExerciseActivity dividingFractionsExerciseActivity = new DividingFractionsExerciseActivity();
+        SolvingMixedExerciseActivity solvingMixedExerciseActivity = new SolvingMixedExerciseActivity();
+        SolvingMixed2ExerciseActivity solvingMixed2ExerciseActivity = new SolvingMixed2ExerciseActivity();
+
+        ArrayList<LessonExercise> lessonExercises = new ArrayList<>();
+        lessonExercises.add(fractionMeaningExerciseActivity);
+        lessonExercises.add(fractionMeaningExercise2Activity);
+        lessonExercises.add(nonVisualExerciseActivity);
+        lessonExercises.add(nonVisualExercise2Activity);
+        lessonExercises.add(comparingSimilarExerciseActivity);
+        lessonExercises.add(comparingSimilarExercise2Activity);
+        lessonExercises.add(comparingDissimilarExerciseActivity);
+        lessonExercises.add(comparingDissimilarExercise2Activity);
+        lessonExercises.add(comparingFractionsExerciseActivity);
+        lessonExercises.add(comparingFractionsExercise2Activity);
+        lessonExercises.add(orderingSimilarExerciseActivity);
+        lessonExercises.add(orderingSimilarExercise2Activity);
+        lessonExercises.add(orderingDissimilarExerciseActivity);
+        lessonExercises.add(orderingDissimilarExercise2Activity);
+        lessonExercises.add(classifyingFractionsExerciseActivity);
+        lessonExercises.add(convertingFractionsExerciseActivity);
+        lessonExercises.add(convertingFractionsExercise2Activity);
+        lessonExercises.add(addingSimilarExerciseActivity);
+        lessonExercises.add(addingDissimilarExerciseActivity);
+        lessonExercises.add(subtractingSimilarExerciseActivity);
+        lessonExercises.add(subtractingDissimilarExerciseActivity);
+        lessonExercises.add(multiplyingFractionsExerciseActivity);
+        lessonExercises.add(dividingFractionsExerciseActivity);
+        lessonExercises.add(solvingMixedExerciseActivity);
+        lessonExercises.add(solvingMixed2ExerciseActivity);
+
+        return lessonExercises;
     }
 }

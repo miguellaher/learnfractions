@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.laher.learnfractions.ClassRanksMainActivity;
 import com.example.laher.learnfractions.LessonsMenuActivity;
 import com.example.laher.learnfractions.LoginActivity;
 import com.example.laher.learnfractions.R;
@@ -22,9 +22,9 @@ import com.example.laher.learnfractions.SeatWorkListActivity;
 import com.example.laher.learnfractions.adapters.MainActivityListAdapter;
 import com.example.laher.learnfractions.classes.AppActivity;
 import com.example.laher.learnfractions.dialog_layout.ConfirmationDialog;
-import com.example.laher.learnfractions.ClassRanksMainActivity;
 import com.example.laher.learnfractions.parent_activities.MainFrame;
 import com.example.laher.learnfractions.teacher2.LessonExercisesListActivity;
+import com.example.laher.learnfractions.teacher2.StudentProgressActivity;
 import com.example.laher.learnfractions.util.AppConstants;
 import com.example.laher.learnfractions.util.Encryptor;
 import com.example.laher.learnfractions.util.Storage;
@@ -108,12 +108,15 @@ public class TeacherMainActivity extends MainFrame {
         AppActivity manageExams = new AppActivity(mContext, ManageExamsActivity.class, manageExamsTitle);
         String manageClassRanksTitle = "Class Ranks";
         AppActivity classRanks = new AppActivity(mContext, ClassRanksMainActivity.class, manageClassRanksTitle);
+        String studentProgressesTitle = "Student Progresses";
+        AppActivity studentProgresses = new AppActivity(mContext, StudentProgressActivity.class, studentProgressesTitle);
 
         final ArrayList<AppActivity> activities = new ArrayList<>();
         activities.add(manageExercises);
         activities.add(manageSeatworks);
         activities.add(manageExams);
         activities.add(classRanks);
+        activities.add(studentProgresses);
 
         MainActivityListAdapter adapter = new MainActivityListAdapter(mContext, R.layout.teacher_main_activity_list_item, activities);
 

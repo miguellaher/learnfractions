@@ -94,6 +94,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:text="type the numerator"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/gifAvatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/gifAvatar"

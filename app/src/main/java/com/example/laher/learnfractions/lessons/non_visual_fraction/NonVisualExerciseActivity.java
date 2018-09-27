@@ -32,7 +32,7 @@ public class NonVisualExerciseActivity extends LessonExercise {
     ConstraintLayout constraintLayoutBackground;
     ConstraintLayout constraintLayoutBottom;
 
-    public String title = "Non-Visual Fractions\nex.1";
+    public String title = "Non-Visual Fractions ex.1";
     String id = AppIDs.NVE_ID;
 
     //ACTIVITY VARIABLES

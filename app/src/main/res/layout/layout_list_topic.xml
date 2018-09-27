@@ -10,14 +10,14 @@
         android:src="@mipmap/ic_launcher"/>
 
     <TextView
+        android:id="@+id/txtTopic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="asdasdasd"
-        android:id="@+id/txtTopic"
-        android:layout_toRightOf="@id/imgTopic"
-        android:textColor="#000"
         android:layout_centerVertical="true"
-        android:textSize="17sp"
-        android:layout_marginLeft="30dp"/>
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@id/imgTopic"
+        android:text="asdasdasd"
+        android:textColor="#000"
+        android:textSize="22sp" />
 
 </RelativeLayout>

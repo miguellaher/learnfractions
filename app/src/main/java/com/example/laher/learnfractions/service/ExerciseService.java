@@ -63,12 +63,6 @@ public class ExerciseService {
         service.get("http://jabahan.com/learnfractions/exercise/getUpdate.php", params);
         service.execute();
     }
-    public static void getUpdates(String teacher_code, Service service){
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("teacher_code", teacher_code);
-        service.get("http://jabahan.com/learnfractions/exercise/getUpdates.php", requestParams);
-        service.execute();
-    }
 
     public static void getUpdates(Context context, Service service){
         RequestParams params = new RequestParams();

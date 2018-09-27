@@ -72,6 +72,17 @@ public class SeatWorkStatService {
         service.post("http://jabahan.com/learnfractions/sw_stat/insert.php",params);
         service.execute();
     }
+    public static void getStats(Context context, String studentID, Service service){
+        RequestParams params = new RequestParams();
+
+        String teacherCode = Storage.load(context, Storage.TEACHER_CODE);
+
+        params.put("teacher_code", teacherCode);
+        params.put("student_id", studentID);
+
+        service.get("http://jabahan.com/learnfractions/sw_stat/getStats.php", params);
+        service.execute();
+    }
     public static void getStats(Context context, Service service){
         RequestParams params = new RequestParams();
 

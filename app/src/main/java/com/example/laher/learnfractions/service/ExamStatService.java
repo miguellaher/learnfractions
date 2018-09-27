@@ -57,6 +57,17 @@ public class ExamStatService {
         service.post("http://jabahan.com/learnfractions/exam_stat/insert.php", params);
         service.execute();
     }
+    public static void getStudentStats(Context context, String studentID, Service service){
+        RequestParams params = new RequestParams();
+
+        String teacherCode = Storage.load(context, Storage.TEACHER_CODE);
+
+        params.put("teacher_code", teacherCode);
+        params.put("student_id", studentID);
+
+        service.get("http://jabahan.com/learnfractions/exam_stat/getStudentStats.php", params);
+        service.execute();
+    }
 
     public static void getStudentStats(Context context, Service service){
         RequestParams params = new RequestParams();

@@ -3,9 +3,8 @@ package com.example.laher.learnfractions.util;
 import android.annotation.SuppressLint;
 
 import com.example.laher.learnfractions.model.ChapterExam;
-import com.example.laher.learnfractions.model.ExamStat;
-import com.example.laher.learnfractions.parent_activities.SeatWork;
 import com.example.laher.learnfractions.parent_activities.Lesson;
+import com.example.laher.learnfractions.parent_activities.SeatWork;
 
 import java.util.ArrayList;
 
@@ -14,21 +13,6 @@ public class AppCache {
     private static SeatWork seatWork;
     @SuppressLint("StaticFieldLeak")
     private static ChapterExam chapterExam;
-    @SuppressLint("StaticFieldLeak")
-    private static ExamStat examStat;
-
-    public static ExamStat getExamStat() {
-        return examStat;
-    }
-
-    public static void setExamStat(ExamStat examStat) {
-        AppCache.examStat = examStat;
-    }
-
-
-    public static void postSeatWorkStat(SeatWork seatWorkStat) {
-        AppCache.seatWork = seatWorkStat;
-    }
 
     //LESSON ACTIVITIES
     @SuppressLint("StaticFieldLeak")

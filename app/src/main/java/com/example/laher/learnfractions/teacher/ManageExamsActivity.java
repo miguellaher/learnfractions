@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -176,39 +175,41 @@ public class ManageExamsActivity extends MainFrame {
             @Override
             public void postExecute(JSONObject response) {
                 try{
-                    int item_count = Integer.valueOf(response.optString("item_count"));
-                    ArrayList<SeatWork> builtInSeatWorks = SeatWorkListActivity.getSeatWorks(); // "ARCHIVE OF SEATWORKS"
+                    if (!response.optString("item_count").matches("")) {
+                        int item_count = Integer.valueOf(response.optString("item_count"));
+                        ArrayList<SeatWork> builtInSeatWorks = SeatWorkListActivity.getSeatWorks(); // "ARCHIVE OF SEATWORKS"
 
-                    for (int i = 1; i <= item_count; i++) {
-                        ChapterExam onlineChapterExam = new ChapterExam();
-                        String strExamNumber = response.optString(i + "exam_number");
-                        if (Util.isNumeric(strExamNumber)) {
-                            int examNumber = Integer.valueOf(strExamNumber);
-                            String examTitle = response.optString(i + "exam_title");
-                            String compiledSeatWorks = response.optString(i + "seat_works");
+                        for (int i = 1; i <= item_count; i++) {
+                            ChapterExam onlineChapterExam = new ChapterExam();
+                            String strExamNumber = response.optString(i + "exam_number");
+                            if (Util.isNumeric(strExamNumber)) {
+                                int examNumber = Integer.valueOf(strExamNumber);
+                                String examTitle = response.optString(i + "exam_title");
+                                String compiledSeatWorks = response.optString(i + "seat_works");
 
-                            ArrayList<SeatWork> downloadedSeatWorks = ChapterExam.decompileSeatWorks(compiledSeatWorks);
-                            ArrayList<SeatWork> examSeatWorks = new ArrayList<>();
-                            for (SeatWork downloadedSeatWork : downloadedSeatWorks) {
-                                for (SeatWork builtInSeatWork : builtInSeatWorks) {
-                                    if (builtInSeatWork.equals(downloadedSeatWork)) {
-                                        builtInSeatWork.getValuesFrom(downloadedSeatWork);
-                                        examSeatWorks.add(builtInSeatWork);
+                                ArrayList<SeatWork> downloadedSeatWorks = ChapterExam.decompileSeatWorks(compiledSeatWorks);
+                                ArrayList<SeatWork> examSeatWorks = new ArrayList<>();
+                                for (SeatWork downloadedSeatWork : downloadedSeatWorks) {
+                                    for (SeatWork builtInSeatWork : builtInSeatWorks) {
+                                        if (builtInSeatWork.equals(downloadedSeatWork)) {
+                                            builtInSeatWork.getValuesFrom(downloadedSeatWork);
+                                            examSeatWorks.add(builtInSeatWork);
+                                        }
                                     }
                                 }
-                            }
 
-                            onlineChapterExam.setExamNumber(examNumber);
-                            onlineChapterExam.setExamTitle(examTitle);
-                            onlineChapterExam.setSeatWorks(examSeatWorks);
-                            int i1 = 0;
-                            for (ChapterExam mChapterExam : mChapterExams) {
-                                if (mChapterExam.equals(onlineChapterExam)) {
-                                    mChapterExam = onlineChapterExam;
+                                onlineChapterExam.setExamNumber(examNumber);
+                                onlineChapterExam.setExamTitle(examTitle);
+                                onlineChapterExam.setSeatWorks(examSeatWorks);
+                                int i1 = 0;
+                                for (ChapterExam mChapterExam : mChapterExams) {
+                                    if (mChapterExam.equals(onlineChapterExam)) {
+                                        mChapterExam = onlineChapterExam;
 
-                                    mChapterExams.set(i1, mChapterExam);
+                                        mChapterExams.set(i1, mChapterExam);
+                                    }
+                                    i1++;
                                 }
-                                i1++;
                             }
                         }
                     }

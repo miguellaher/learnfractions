@@ -250,7 +250,8 @@
             android:name=".rankings.ClassExercisesRanksActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".user_activities.UserMainActivity" />
-        <activity android:name=".HelpActivity"></activity>
+        <activity android:name=".HelpActivity" />
+        <activity android:name=".teacher2.StudentProgressActivity"></activity>
     </application>
 
 </manifest>
